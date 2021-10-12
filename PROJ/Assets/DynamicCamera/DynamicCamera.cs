@@ -11,6 +11,7 @@ namespace DynamicCamera {
         [SerializeField] private Vector3 offset;
         [SerializeField] private float mouseSensitivity;
         [SerializeField][Range(0, 1)] private float averageMovementPerFrame;
+        [SerializeField] private int whiskers;
         
         private const string XRotationInputName = "Mouse Y";
         private const string YRotationInputName = "Mouse X";
@@ -21,6 +22,7 @@ namespace DynamicCamera {
 
         private void Awake() {
             thisTransform = transform;
+            Cursor.lockState = CursorLockMode.Locked;
         }
         
         private void LateUpdate() {
@@ -31,6 +33,7 @@ namespace DynamicCamera {
             
             RotateCamera();
             
+            RaycastFromTarget();
         }
 
         private void GetInput() {
@@ -51,10 +54,11 @@ namespace DynamicCamera {
         }
 
         private void RaycastFromTarget() {
-            Ray ray = new Ray(target.position + Vector3.up, Vector3.forward + Vector3.down,  )
-                
-            Debug.Log();
-            
+
+            Vector3 angle = Quaternion.Euler(0, -45, 0) * thisTransform.forward;
+
+            Debug.DrawLine(thisTransform.position, thisTransform.position + angle, Color.red);
+
         }
         
     }
