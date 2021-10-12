@@ -31,8 +31,7 @@ public abstract class PuzzleObject : MonoBehaviour
 
     public string GetTranslation()
     {
-        //translation = AdjustForModifiers();
-        return translation;
+        return AdjustForModifiers();
     }
 
     protected string AdjustForModifiers()

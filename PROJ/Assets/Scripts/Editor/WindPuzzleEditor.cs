@@ -10,6 +10,7 @@ public class WindPuzzleEditor : Editor
 {
     WindPuzzle serObj;
     SerializedProperty puzzleObjects;
+    SerializedProperty solution;
     string[] strings;
     int[] index;
     Object[] modifiers;
@@ -19,6 +20,8 @@ public class WindPuzzleEditor : Editor
     {
         //Get the list of puzzleobjects
         puzzleObjects = serializedObject.FindProperty("puzzleObjects");
+        solution = serializedObject.FindProperty("solution");
+
         listRE = new ReorderableList(serializedObject, puzzleObjects, true, true, true, true);
 
 
@@ -93,6 +96,8 @@ public class WindPuzzleEditor : Editor
             serializedObject.Update(); // Update the array property's representation in the inspector
 
             listRE.DoLayoutList(); // Have the ReorderableList do its work
+
+            EGL.PropertyField(solution);
 
             // We need to call this so that changes on the Inspector are saved by Unity.
             serializedObject.ApplyModifiedProperties();
