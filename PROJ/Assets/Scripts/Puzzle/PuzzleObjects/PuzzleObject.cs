@@ -10,15 +10,14 @@ public abstract class PuzzleObject : MonoBehaviour
 {
     [SerializeField] protected string translation;
     [SerializeField] private Vector3 modifierPosition;
-    [SerializeField] private ModifierInfo modInfo;
-    [SerializeField] private PuzzleObjectModifier modifier;
+    [SerializeField] private ModifierHolder modifier;
 
-
-    //[HideInInspector]
+    [HideInInspector]
     [SerializeField] private ModifierVariant modVariant;
+    
+
+    private ModifierInfo modInfo;
     private Image modifierImage; //dekal som ska visas någonstans!?!? HUR GÖR MAN
-
-
 
     private void Start()
     {

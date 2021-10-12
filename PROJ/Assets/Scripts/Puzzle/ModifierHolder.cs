@@ -4,10 +4,9 @@ using UnityEngine;
 using UnityEditor;
 
 [CreateAssetMenu(menuName = "Puzzle/ObjectModifierHolder")]
-public class PuzzleObjectModifier : ScriptableObject
+public class ModifierHolder : ScriptableObject
 {
 
-    
     [SerializeField] private List<KeyValuePair> modifiers = new List<KeyValuePair>();
 
     public ModifierInfo GetModifier(ModifierVariant var) 
