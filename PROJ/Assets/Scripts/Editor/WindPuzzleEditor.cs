@@ -44,19 +44,29 @@ public class WindPuzzleEditor : Editor
         SerializedProperty element = listRE.serializedProperty.GetArrayElementAtIndex(index); // The element in the list
 
         //Create a property field and label field for each property. 
+        SerializedObject obj = new SerializedObject(element.objectReferenceValue);
 
-        //The 'quantity' property
-        //The label field for quantity (width 100, height of a single line)
-        EditorGUI.LabelField(new Rect(rect.x, rect.y, 100, EditorGUIUtility.singleLineHeight), "Modifier");
+        //The property field for level. Since we do not need so much space in an int, width is set to 20, height of a single line.
+        EditorGUI.PropertyField(
+            new Rect(rect.x, rect.y, 175, EditorGUIUtility.singleLineHeight),
+            element,
+            GUIContent.none
+        );
+
+
+        //The label field for Modifier (width 100, height of a single line)
+        EditorGUI.LabelField(new Rect(rect.x + 180, rect.y, 100, EditorGUIUtility.singleLineHeight), "Modifier: ");
 
         //The 'mobs' property. Since the enum is self-evident, I am not making a label field for it. 
         //The property field for mobs (width 100, height of a single line)
         EditorGUI.PropertyField(
-            new Rect(rect.x, rect.y, 100, EditorGUIUtility.singleLineHeight),
-            element.FindPropertyRelative("modVariant"),
+            new Rect(rect.x + 240, rect.y, 100, EditorGUIUtility.singleLineHeight),
+            obj.FindProperty("modVariant"),
             GUIContent.none);
 
 
+
+        obj.ApplyModifiedProperties();
        
     }
 
@@ -72,17 +82,25 @@ public class WindPuzzleEditor : Editor
     //This is the function that makes the custom editor work
     public override void OnInspectorGUI()
     {
-        DrawDefaultInspector();
-        /*
-        base.OnInspectorGUI();
-        serializedObject.Update(); // Update the array property's representation in the inspector
 
-        listRE.DoLayoutList(); // Have the ReorderableList do its work
+        
+        if(listRE.count < 1)
+        {
+            base.DrawDefaultInspector();
+        }
+        else
+        {
+            serializedObject.Update(); // Update the array property's representation in the inspector
 
-        // We need to call this so that changes on the Inspector are saved by Unity.
-        serializedObject.ApplyModifiedProperties();
-        */
+            listRE.DoLayoutList(); // Have the ReorderableList do its work
 
+            // We need to call this so that changes on the Inspector are saved by Unity.
+            serializedObject.ApplyModifiedProperties();
+        }
+        
+        
+ 
+        
     }
 
 

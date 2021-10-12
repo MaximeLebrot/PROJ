@@ -1,13 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
-[System.Serializable]
-public class PuzzleObjectModifier : MonoBehaviour
+[CreateAssetMenu(menuName = "Puzzle/ObjectModifierHolder")]
+public class PuzzleObjectModifier : ScriptableObject
 {
-    [SerializeField] private Sprite image; //modifier image to display
-    [SerializeField] private char modifierTranslation;
 
-    public char GetModifier() { return modifierTranslation; }
+    
+    [SerializeField] private List<KeyValuePair> modifiers = new List<KeyValuePair>();
+
+    public ModifierInfo GetModifier(ModifierVariant var) 
+    { 
+        foreach(KeyValuePair kv in modifiers)
+        {
+            if (kv.variant == var)
+                return kv.info;
+        }
+
+        return null;
+    }
 
 }
+
+[System.Serializable]
+public class KeyValuePair
+{
+    public ModifierVariant variant;
+    public ModifierInfo info;
+}
+
+
+
