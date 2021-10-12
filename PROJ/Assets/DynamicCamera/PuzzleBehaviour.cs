@@ -1,6 +1,7 @@
 using UnityEngine;
 
 namespace DynamicCamera {
+    
     public class PuzzleBehaviour : CameraBehaviour {
 
         private readonly float speed;
