@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PlayerPhysicsSplit : MonoBehaviour
 {
-    //modifierar .y-värdet på velocity, kan alltså inte vara en property
+    //modifierar .y-vÃ¤rdet pÃ¥ velocity, kan alltsÃ¥ inte vara en property
     public Vector3 velocity;
-    //går denna att göra private istället? 
+    //gÃ¥r denna att gÃ¶ra private istÃ¤llet? 
     [SerializeField] private LayerMask collisionMask;
     private Vector3 colliderTopHalf, colliderBottomHalf;
 
