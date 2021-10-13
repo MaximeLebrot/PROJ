@@ -13,6 +13,15 @@ public abstract class Puzzle : MonoBehaviour
     protected PuzzleTranslator translator = new PuzzleTranslator();
     protected void Translate(List<PuzzleObject> objects) { solution = translator.CalculateSolution(puzzleObjects); }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            solution = "";
+            Translate(puzzleObjects);
+        }
+    }
+
 }
 
 

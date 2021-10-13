@@ -5,14 +5,8 @@ using UnityEngine;
 
 public class WindPuzzle : Puzzle
 {
-    //Vill ha tillgång till alla dörrar i pusslet och ska kunna spela upp vindarna i rätt ordning? kan också ta in symboler?
+    //play the winds in the order of the puzzleobjects
 
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Translate(puzzleObjects);
-        }
-    }
+    
 }

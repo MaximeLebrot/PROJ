@@ -15,7 +15,8 @@ public class PuzzleTranslator
     public string CalculateSolution(List<PuzzleObject> objects)
     {
         solution = "";
-        Debug.Log(objects.Count);
+        translations.Clear();
+
         //bygg först en array med alla symbolers översättningar. så streck upp blir bara en 8 t.ex
         foreach(PuzzleObject obj in objects)
         {
@@ -38,7 +39,9 @@ public class PuzzleTranslator
 
                 case 'R':
                     newString = SkipFirstChar(oldString);
+                    translations[i] = newString;
                     translations.Insert(i + 1, newString);
+                    i++;
                     break;
 
                 case 'X':

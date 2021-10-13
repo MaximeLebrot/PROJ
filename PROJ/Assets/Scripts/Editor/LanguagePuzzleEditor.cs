@@ -5,8 +5,8 @@ using UnityEditor;
 using UnityEditorInternal;
 using EGL = UnityEditor.EditorGUILayout;
 
-[CustomEditor(typeof(WindPuzzle))]
-public class WindPuzzleEditor : Editor
+[CustomEditor(typeof(LanguagePuzzle))]
+public class LanguagePuzzleEditor : Editor
 {
     WindPuzzle serObj;
     SerializedProperty puzzleObjects;
@@ -24,12 +24,12 @@ public class WindPuzzleEditor : Editor
 
         listRE = new ReorderableList(serializedObject, puzzleObjects, true, true, true, true);
 
-
-        if (listRE.count > 0)
+        if(listRE.count > 0)
         {
             listRE.drawElementCallback = DrawListItems;
             listRE.drawHeaderCallback = DrawHeader;
         }
+        
 
 
         /*
@@ -73,12 +73,12 @@ public class WindPuzzleEditor : Editor
 
 
         obj.ApplyModifiedProperties();
-       
+
     }
 
 
-        //Draws the header
-        void DrawHeader(Rect rect)
+    //Draws the header
+    void DrawHeader(Rect rect)
     {
         string name = "Puzzle Objects";
         EditorGUI.LabelField(rect, name);
@@ -89,8 +89,8 @@ public class WindPuzzleEditor : Editor
     public override void OnInspectorGUI()
     {
 
-        
-        if(listRE.count < 1)
+
+        if (listRE.count < 1)
         {
             base.DrawDefaultInspector();
         }
@@ -105,12 +105,9 @@ public class WindPuzzleEditor : Editor
             // We need to call this so that changes on the Inspector are saved by Unity.
             serializedObject.ApplyModifiedProperties();
         }
-        
-        
- 
-        
+
     }
 
-
-
 }
+
+

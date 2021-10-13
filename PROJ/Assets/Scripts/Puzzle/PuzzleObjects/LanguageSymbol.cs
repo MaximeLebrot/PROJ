@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Symbol : PuzzleObject
+public class LanguageSymbol : PuzzleObject
 {
 
     

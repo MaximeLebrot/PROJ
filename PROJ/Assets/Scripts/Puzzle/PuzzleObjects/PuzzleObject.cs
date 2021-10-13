@@ -2,21 +2,26 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
+
 public abstract class PuzzleObject : MonoBehaviour
 {
     [SerializeField] protected string translation;
-    [SerializeField] private Transform modifierPosition;
-    [SerializeField] protected ModifierInfo modifier;
-    public ModifierVariant modVariant;
+    [SerializeField] private Vector3 modifierPosition;
+    [SerializeField] private ModifierHolder modifier;
 
+    [HideInInspector]
+    [SerializeField] private ModifierVariant modVariant;
+    
 
+    private ModifierInfo modInfo;
+    private Image modifierImage; //dekal som ska visas någonstans!?!? HUR GÖR MAN
 
     private void Start()
     {
-        //This should happen when the puzzle loads
-        //PlaceModifier();
+        
     }
 
     private void PlaceModifier()
@@ -26,17 +31,18 @@ public abstract class PuzzleObject : MonoBehaviour
 
     public string GetTranslation()
     {
-        translation = AdjustForModifiers();
-        return translation;
+        return AdjustForModifiers();
     }
 
     protected string AdjustForModifiers()
     {
+        modInfo = modifier.GetModifier(modVariant);
+
         string modifiedString = "";
         
-        if(modifier.ModifierTranslation.Equals(""))
+        if(modInfo != null)
         {
-            modifiedString += modifier.ModifierTranslation;
+            modifiedString += modInfo.ModifierTranslation;
         }
 
         //CANNOT COMBINE MODIFIERS RIGHT NOW
