@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public Vector3 force;
     private float xMove, zMove;
     private bool surf = false;
+    private float groundCheckBoxSize = 0.25f;
     void Awake()
     {
         cameraTransform = Camera.main.transform;
@@ -179,13 +180,7 @@ public class PlayerController : MonoBehaviour
     /// <returns></returns>
     public bool IsGrounded()
     {
-        //MAGIC NUMBER
-        if (Physics.BoxCast(transform.position + Vector3.up, Vector3.one * 0.25f, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance, groundCheckMask))
-            wasGrounded = true;
-
-        //Old groundcheck, kept in case the boxcast misbehaves. 
-        //Physics.Raycast(transform.position, Vector3.down, out groundHitInfo, groundCheckDistance, groundCheckMask);       
-
+        Physics.BoxCast(transform.position + Vector3.up, Vector3.one * groundCheckBoxSize, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance, groundCheckMask);
         return groundHitInfo.collider;
     }
 
