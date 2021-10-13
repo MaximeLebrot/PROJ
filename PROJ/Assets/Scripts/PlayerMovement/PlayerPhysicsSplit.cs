@@ -65,13 +65,14 @@ public class PlayerPhysicsSplit : MonoBehaviour
     public void Update()
     {
         AddGravity();
-        SeparateInput();      
+        //SeparateInput();
+        CheckForCollisions(0);
         ClampSpeed();
 
         transform.position += velocity * Time.deltaTime;
         MoveOutOfGeometry();
     }
-    private void SeparateInput()
+    public void SeparateInput()
     {
         //May also want to include the normal of the´ground? if we're only supposed to be able to glide (or at least start it) down hill
         if (velocity.magnitude > surfThreshold)
@@ -83,9 +84,11 @@ public class PlayerPhysicsSplit : MonoBehaviour
         }
         else
             ActivateWalkValues();
-
-        CheckForCollisions(0);
         return;
+    }
+    public void PuzzleControllerInput()
+    {
+        ActivatePuzzleValues();
     }
     private void ActivateGlideValues()
     {
@@ -96,6 +99,14 @@ public class PlayerPhysicsSplit : MonoBehaviour
         gravity = glideGravity;
     }
     private void ActivateWalkValues()
+    {
+        staticFrictionCoefficient = walkStaticFriction;
+        kineticFrictionCoefficient = walkKineticFriction;
+        airResistance = walkAirResistance;
+        maxSpeed = walkMaxSpeed;
+        gravity = walkGravity;
+    }
+    private void ActivatePuzzleValues()
     {
         staticFrictionCoefficient = walkStaticFriction;
         kineticFrictionCoefficient = walkKineticFriction;
@@ -199,7 +210,10 @@ public class PlayerPhysicsSplit : MonoBehaviour
         velocity = maxSpeed != 0 ? Vector3.ClampMagnitude(new Vector3(velocity.x, 0, velocity.z), maxSpeed) : velocity;
         velocity.y = temp;
     }
-
+    public void SetMaxSpeed(float speed)
+    {
+        maxSpeed = speed;
+    }
     public void ResetPosition()
     {
         transform.position = startPosition;
