@@ -1,5 +1,4 @@
 ﻿using System;
-
 using UnityEngine;
 
 
@@ -24,19 +23,17 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    [HideInInspector] public Vector3 force;
+   
 
     //Component references
     public PlayerPhysicsSplit physics;
-   // public PhysicsComponent physics { get; private set; }
     public Animator animator { get; private set; }
-    private AudioSource audioSource;
     private Vector3 input;
     private bool jump;
     private Transform cameraTransform;
     private RaycastHit groundHitInfo;
-    private bool wasGrounded;
-
+    
+    [HideInInspector] public Vector3 force;
     private float xMove, zMove;
     private bool surf = false;
     void Awake()
@@ -44,7 +41,6 @@ public class PlayerController : MonoBehaviour
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PlayerPhysicsSplit>();
         groundCheckBox = GetComponentInChildren<BoxCollider>();
-        audioSource = GetComponent<AudioSource>();
     }
 
 
@@ -121,17 +117,10 @@ public class PlayerController : MonoBehaviour
         float dot = Vector3.Dot(inputXZ.normalized, physics.GetXZMovement().normalized);
 
         force = input * acceleration;
-        /*
-        om vi accelerar i en annan riktning vill vi egentligen bromsa f�rst
-        skal�rprodukten anv�nds i multiplikation f�r att avg�ra hur mycket av decelerationen som ska
-        appliceras, d� detta b�r bero p� vinkeln i vilken man byter riktning/velocitet/momentum
-        */
-
         force -= (((dot - 1) * turnRate *  -physics.GetXZMovement().normalized) / 2);
         //addera * turnSpeed av kraften vi precis tog bort, till v�r nya riktning.
         //g�r i princip att man sv�nger snabbare
         force += (((dot - 1) * turnRate * retainedSpeedWhenTurning * -inputXZ.normalized) / 2);
-        //Debug.DrawLine(transform.position, transform.position + -((dot - 1) * turnRate * -physics.velocity.normalized) / 2, Color.red);
     }
     private void AccelerateAirborne()
     {
@@ -215,6 +204,6 @@ public class PlayerController : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        Debug.DrawLine(transform.position, transform.position + physics.velocity, Color.red);
+        //Debug.DrawLine(transform.position, transform.position + physics.velocity, Color.red);
     }
 }

@@ -4,20 +4,6 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-   /* public Transform cameraFollowTarget;
-    public float yOffset;
-    public float xzOffset;
-    Vector3 offsetVector;
-    private void Awake()
-    {
-         offsetVector = new Vector3(xzOffset / 2, yOffset, xzOffset / 2); 
-    }
-    private void Update()
-    {
-        transform.position = cameraFollowTarget.transform.position + offsetVector;
-    }
-
-*/
     [SerializeField] private LayerMask collisionMask;
     [SerializeField] private Vector3 TargetOffset;
     [SerializeField] private Transform PlayerTarget;
