@@ -5,21 +5,14 @@ using UnityEngine;
 public class PlayerPhysicsSplit : MonoBehaviour
 {
     //modifierar .y-värdet på velocity, kan alltså inte vara en property
-    public Vector3 velocity;
-    //går denna att göra private istället? 
-    [SerializeField] private LayerMask collisionMask;
-    private Vector3 colliderTopHalf, colliderBottomHalf;
+   
 
+    public Vector3 velocity;
     public RaycastHit groundHitInfo { get; private set; }
 
-    [Header("Values")]
-    
-    [SerializeField] public float glideMaxSpeed;
-    [SerializeField] public float walkMaxSpeed;
+    [Header("Values")]    
     [SerializeField] protected float skinWidth = 0.05f;
     [SerializeField] private float inputThreshold = 0.1f;
-    [SerializeField] private float walkGravity = 10f;
-    [SerializeField] private float glideGravity = 10f;
     [SerializeField] private float gravityWhenFalling = 10f;
     [SerializeField] private float currentGravity;
 
@@ -36,12 +29,16 @@ public class PlayerPhysicsSplit : MonoBehaviour
     [SerializeField] private int powerOf = 2;
     [SerializeField] private float surfThreshold = 1;
 
-    [Header("Friktion Walk"), ]
+    [Header("Walk"), ]
+    [SerializeField] public float walkMaxSpeed;
+    [SerializeField] private float walkGravity = 10f;
     [Range(0f, 1f)] [SerializeField] private float walkStaticFriction = 0.5f;
     [Range(0f, 1f)] [SerializeField] private float walkKineticFriction   = 0.35f;
     [Range(0f, 1f)] [SerializeField] private float walkAirResistance = 0.35f;
 
-    [Header("Friktion Glide")]
+    [Header("Glide")]
+    [SerializeField] public float glideMaxSpeed;
+    [SerializeField] private float glideGravity = 10f;
     [Range(0f, 1f)] [SerializeField] private float glideStaticFriction = 0.3f;
     [Range(0f, 1f)] [SerializeField] private float glideKineticFriction = 0.15f;
     [Range(0f, 1f)] [SerializeField] private float glideAirResistance = 0.6f;
@@ -52,6 +49,8 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
     private CapsuleCollider attachedCollider;
     private Vector3 startPosition;
+    [SerializeField] private LayerMask collisionMask;
+    private Vector3 colliderTopHalf, colliderBottomHalf;
 
 
     private void OnEnable()
@@ -74,10 +73,11 @@ public class PlayerPhysicsSplit : MonoBehaviour
     }
     private void SeparateInput()
     {
+        //May also want to include the normal of the´ground? if we're only supposed to be able to glide (or at least start it) down hill
         if (velocity.magnitude > surfThreshold)
         {
             // TODO;
-            //No need to assign the variables each frame, only when velocity actually drops below threshold, and vice verse
+            //No need to assign the variables each frame, only when velocity actually drops below threshold, and vice versa
             ActivateGlideValues();
             SplitCollisionCheck(0);
         }

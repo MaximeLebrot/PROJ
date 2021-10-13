@@ -149,7 +149,7 @@ public class PlayerController : MonoBehaviour
 
         input = camRotation * input;
         input.y = 0;
-        input = input.magnitude * Vector3.ProjectOnPlane(input, physics.groundHitInfo.normal).normalized;
+        input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;
         RotateTowardsCameraDirection();
     }
     private void RotateTowardsCameraDirection()
@@ -165,6 +165,7 @@ public class PlayerController : MonoBehaviour
         temp.x = 0;
         Quaternion rotation = Quaternion.Euler(temp);
         input = rotation * input;
+        input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;
 
         transform.Rotate(0, xMove * turnSpeed, 0);
     }
@@ -189,9 +190,8 @@ public class PlayerController : MonoBehaviour
     /// <returns></returns>
     public bool IsGrounded()
     {
-        //wasGrounded used to prohibit consecutive dashes without touching ground
-
-        if (Physics.BoxCast(transform.position + Vector3.up, groundCheckBox.size, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance, groundCheckMask))
+        //MAGIC NUMBER
+        if (Physics.BoxCast(transform.position + Vector3.up, Vector3.one * 0.25f, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance, groundCheckMask))
             wasGrounded = true;
 
         //Old groundcheck, kept in case the boxcast misbehaves. 
@@ -212,5 +212,9 @@ public class PlayerController : MonoBehaviour
     public void SetJump()
     {
         jump = true;
+    }
+    private void OnDrawGizmos()
+    {
+        Debug.DrawLine(transform.position, transform.position + physics.velocity, Color.red);
     }
 }
