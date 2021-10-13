@@ -22,7 +22,7 @@ namespace DynamicCamera {
             Cursor.lockState = CursorLockMode.Locked;
             thisTransform = transform;
 
-            Puzzle.PuzzleInit += ChangeBehaviour;
+            PuzzleCameraInfo.PuzzleInit += ChangeBehaviour;
             
 
         }

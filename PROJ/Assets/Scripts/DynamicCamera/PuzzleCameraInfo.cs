@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Puzzle : MonoBehaviour {
+public class PuzzleCameraInfo : MonoBehaviour {
 
     [SerializeField] private Transform cameraPosition;
 
