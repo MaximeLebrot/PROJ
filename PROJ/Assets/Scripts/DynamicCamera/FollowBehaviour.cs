@@ -3,7 +3,7 @@ using UnityEngine;
 namespace DynamicCamera {
     
     public class FollowBehaviour : CameraBehaviour {
-
+        
         private const string XRotationInputName = "Mouse Y";
         private const string YRotationInputName = "Mouse X";
     
@@ -26,16 +26,20 @@ namespace DynamicCamera {
         }
         
         private void GetInput() {
-            input.x -= Input.GetAxis(XRotationInputName) * mouseSensitivity * Time.deltaTime;
-            input.y += Input.GetAxis(YRotationInputName) * mouseSensitivity * Time.deltaTime;
+            input.x -= Input.GetAxis(XRotationInputName) * mouseSensitivity;
+            input.y += Input.GetAxis(YRotationInputName) * mouseSensitivity;
+
+            input.x = Mathf.Clamp(input.x, -40, 40);
         }
         
-        private void RotateCamera(Transform transform) => transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(input.x, input.y, 0), speed* Time.deltaTime);
+        private void RotateCamera(Transform transform) {
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(input.x, input.y, 0), speed * Time.deltaTime);
+        }
 
         private void MoveCamera(Transform transform, Transform target) {
             Vector3 offsetPosition = transform.rotation * offset;
         
-            transform.position = Vector3.Slerp(transform.position, target.position + offsetPosition, speed * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, target.position + offsetPosition, speed * Time.deltaTime);
         }
     }
 }

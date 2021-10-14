@@ -24,7 +24,6 @@ namespace DynamicCamera {
 
             PuzzleCameraInfo.PuzzleInit += ChangeBehaviour;
             
-
         }
         
         private void LateUpdate() {
