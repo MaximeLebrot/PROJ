@@ -23,8 +23,6 @@ public class Node : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("COLLISION");
-        Debug.Log(OnNodeSelected);
         OnNodeSelected?.Invoke(this);
     }
 

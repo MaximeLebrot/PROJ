@@ -5,32 +5,38 @@ using UnityEngine;
 public class PuzzleGrid : MonoBehaviour {
 
     [SerializeField] private LineRenderer lineRendererPrefab;
-    private int gridWidth = 8;
-    Node[,] allNodes;
-    
-    
-    private int _width;
-    private int _height;
-    
-    private List<Node> _closestNodes = new List<Node>();
 
-    private List<LineRenderer> _lineRenderers = new List<LineRenderer>();
+    
+    
+    private int width;
+    private int height;
+    
+    private List<Node> closestNodes = new List<Node>();
 
-    private Node _currentNode;
+    private Stack<LineObject> lineRenderers = new Stack<LineObject>();
+
+    private Node currentNode;
     
     private void Awake() {
+
+        StartGrid();
+        
+    }
+
+    private void StartGrid()
+    {
         List<Node> allNodes = new List<Node>();
 
 
-        allNodes.AddRange( transform.GetComponentsInChildren<Node>());
+        allNodes.AddRange(transform.GetComponentsInChildren<Node>());
 
         Debug.Log(allNodes.Count);
-        Node startNode = _currentNode = FindStartNode(ref allNodes);
-        
-        _width = CalculateWidth(ref allNodes);
-        _height = allNodes.Count / _width;
-        
-        foreach(Node node in allNodes) 
+        Node startNode = currentNode = FindStartNode(ref allNodes);
+
+        width = CalculateWidth(ref allNodes);
+        height = allNodes.Count / width;
+
+        foreach (Node node in allNodes)
             node.gameObject.SetActive(false);
 
         startNode.gameObject.SetActive(true);
@@ -38,8 +44,6 @@ public class PuzzleGrid : MonoBehaviour {
 
         //AddSelectedNode(startNode);
     }
-
-
 
     private Node FindStartNode(ref List<Node> nodes) {
         foreach(Node node in nodes)
@@ -56,13 +60,36 @@ public class PuzzleGrid : MonoBehaviour {
     }
     
     private void AddSelectedNode(Node node) {
-        LineRenderer newLineRenderer = Instantiate(lineRendererPrefab, transform);
-        newLineRenderer.SetPosition(0, _currentNode.transform.position);
-        newLineRenderer.SetPosition(1, node.transform.position);
-        
-        _lineRenderers.Add(newLineRenderer);
+        LineObject newLine = new LineObject(node);
+        if (lineRenderers.Count > 0 && lineRenderers.Peek().CompareLastLine(newLine))
+        {
+            LineObject oldLine = lineRenderers.Pop();
+            foreach (Node n in currentNode._neighbours)
+            {
+                n.gameObject.SetActive(false);
+            }
+            Destroy(oldLine.line);
+        }
+        else
+        {
+            LineRenderer newLineRenderer = Instantiate(lineRendererPrefab, transform);
+            newLineRenderer.SetPosition(0, currentNode.transform.position);
+            newLineRenderer.SetPosition(1, node.transform.position);
 
-        _currentNode = node;
+            LineObject line = new LineObject(currentNode, newLineRenderer);
+
+            lineRenderers.Push(line);
+        }
+
+        //GRID goes around with player?
+        /*
+        foreach(Node n in _currentNode._neighbours)
+        {
+            n.gameObject.SetActive(false);
+        }
+        */
+
+        currentNode = node;
         ActivateNode(node);
     }
 
@@ -82,12 +109,12 @@ public class PuzzleGrid : MonoBehaviour {
     private void ActivateNode(Node node) {
         node.gameObject.SetActive(true);
 
-        if (_closestNodes.Count > 0) {
-            foreach(Node closestNode in _closestNodes)
+        if (closestNodes.Count > 0) {
+            foreach(Node closestNode in closestNodes)
                 closestNode.ClearSelectable();
         }
         
-        _closestNodes = node._neighbours;
+        closestNodes = node._neighbours;
         
         foreach (Node neighbour in node._neighbours) {
             neighbour.gameObject.SetActive(true);
@@ -95,6 +122,47 @@ public class PuzzleGrid : MonoBehaviour {
         }
             
     }
-    
+
+}
+
+public class LineObject
+{
+    public Node x;
+    public LineRenderer line;
+
+    public LineObject(Node a, LineRenderer lineRen)
+    {
+        x = a;
+        line = lineRen;
+    }
+    public LineObject(Node a)
+    {
+        x = a;
+    }
+    public bool CompareLastLine(LineObject other)
+    {
+        return x == other.x;
+    }
+    public bool CheckIfLineExists(LineObject other)
+    {
+        List<Vector3> thisPos = new List<Vector3>();
+        for(int i = 0; i < line.positionCount; i++)
+        {
+            thisPos[i] = line.GetPosition(i);
+        }
+
+        List<Vector3> otherPos = new List<Vector3>();
+        for (int i = 0; i < line.positionCount; i++)
+        {
+            otherPos[i] = other.line.GetPosition(i);
+        }
+
+        if(thisPos.Contains(otherPos[0]) && thisPos.Contains(otherPos[1]))
+        {
+            return true;
+        }
+
+        return false;
+    }
 
 }
