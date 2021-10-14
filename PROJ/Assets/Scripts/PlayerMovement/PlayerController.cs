@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
     
     [HideInInspector] public Vector3 force;
     private float xMove, zMove;
-    private bool surf = false;
+    private bool surfCamera = false;
     private float groundCheckBoxSize = 0.25f;
     void Awake()
     {
@@ -53,11 +53,15 @@ public class PlayerController : MonoBehaviour
         Vector3 input =
         Vector3.right * xMove + 
         Vector3.forward * zMove;
-        //InputGrounded(input);
-        if(surf)
+        input.Normalize();
+
+        if(surfCamera)
             InputSurfGrounded(input);
         else
             InputGrounded(input);
+
+        physics.SeparateInput();
+
 
         //For testing only
         if (Input.GetKeyUp(KeyCode.G))
@@ -172,7 +176,7 @@ public class PlayerController : MonoBehaviour
 
     private void TransitionSurf()
     {
-        surf = !surf;
+        surfCamera = !surfCamera;
     }
     /// <summary>
     /// Boxcast to get a little thickness to the groundcheck so as to not get stuck in crevasses or similar geometry. 
