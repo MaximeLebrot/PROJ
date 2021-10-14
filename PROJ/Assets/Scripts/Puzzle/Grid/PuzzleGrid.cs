@@ -6,16 +6,14 @@ public class PuzzleGrid : MonoBehaviour {
 
     [SerializeField] private LineRenderer lineRendererPrefab;
 
-    
-    
     private int width;
     private int height;
     
     private List<Node> closestNodes = new List<Node>();
-
     private Stack<LineObject> lineRenderers = new Stack<LineObject>();
-
     private Node currentNode;
+
+    
     
     private void Awake() {
 
@@ -59,10 +57,13 @@ public class PuzzleGrid : MonoBehaviour {
         return null;
     }
     
-    private void AddSelectedNode(Node node) {
+    private void AddSelectedNode(Node node) 
+    {
         LineObject newLine = new LineObject(node);
+        
         if (lineRenderers.Count > 0 && lineRenderers.Peek().CompareLastLine(newLine))
         {
+            //Checks if this was the last line that was drawn, if so delete that line (eraser)
             LineObject oldLine = lineRenderers.Pop();
             foreach (Node n in currentNode._neighbours)
             {
@@ -75,19 +76,30 @@ public class PuzzleGrid : MonoBehaviour {
             LineRenderer newLineRenderer = Instantiate(lineRendererPrefab, transform);
             newLineRenderer.SetPosition(0, currentNode.transform.position);
             newLineRenderer.SetPosition(1, node.transform.position);
-
             LineObject line = new LineObject(currentNode, newLineRenderer);
+
+
+            if (lineRenderers.Count > 1)
+            {
+                //Checks if there exists a line between these nodes already, if so it destroys the line that was created
+                foreach (LineObject obj in lineRenderers)
+                {
+                    if (obj.CheckIfLineExists(line))
+                    {
+                        //Debug.Log("This line already exists");
+                        Destroy(newLineRenderer);
+                        return;
+                    }
+
+                }
+            }
 
             lineRenderers.Push(line);
         }
 
-        //GRID goes around with player?
-        /*
-        foreach(Node n in _currentNode._neighbours)
-        {
-            n.gameObject.SetActive(false);
-        }
-        */
+        //This is the input in a comparable string. This needs to connect to the puzzles solution
+        if (lineRenderers.Count > 1) 
+            Debug.Log(PuzzleHelper.TranslateInput(node, currentNode)); 
 
         currentNode = node;
         ActivateNode(node);
@@ -123,10 +135,13 @@ public class PuzzleGrid : MonoBehaviour {
             
     }
 
+
+
 }
 
 public class LineObject
 {
+    //Object that can compare lines between nodes, stored in a stack in the grid
     public Node x;
     public LineRenderer line;
 
@@ -139,6 +154,10 @@ public class LineObject
     {
         x = a;
     }
+    public LineObject(LineRenderer lineRen)
+    {
+        line = lineRen;
+    }
     public bool CompareLastLine(LineObject other)
     {
         return x == other.x;
@@ -146,15 +165,15 @@ public class LineObject
     public bool CheckIfLineExists(LineObject other)
     {
         List<Vector3> thisPos = new List<Vector3>();
-        for(int i = 0; i < line.positionCount; i++)
+        for(int i = 0; i < 2; i++)
         {
-            thisPos[i] = line.GetPosition(i);
+            thisPos.Add(line.GetPosition(i));
         }
 
         List<Vector3> otherPos = new List<Vector3>();
-        for (int i = 0; i < line.positionCount; i++)
+        for (int i = 0; i < 2; i++)
         {
-            otherPos[i] = other.line.GetPosition(i);
+            otherPos.Add(other.line.GetPosition(i));
         }
 
         if(thisPos.Contains(otherPos[0]) && thisPos.Contains(otherPos[1]))
