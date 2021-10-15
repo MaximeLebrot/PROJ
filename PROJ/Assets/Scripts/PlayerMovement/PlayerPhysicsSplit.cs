@@ -48,24 +48,24 @@ public class PlayerPhysicsSplit : MonoBehaviour
         AddGravity();
         ClampSpeed();
         MoveOutOfGeometry();
-        //Rigidbody move ist? verkar lagga
     }
     private void Update()
     {
-        //ResolveMove(velocity * Time.deltaTime);
-        transform.position += velocity * Time.deltaTime; 
+        
     }
     public void GlideInput()
     {
-        CheckForCollisionsWalk(0);
+        CheckForCollisions(0);
         SplitCollisionCheck(0);
+        transform.position += velocity * Time.deltaTime;
 
         Debug.DrawLine(transform.position, transform.position + velocity, Color.red);
         
     }
     public void WalkInput()
     {
-        CheckForCollisionsWalk(0);
+        CheckForCollisions(0);
+        transform.position += velocity * Time.deltaTime;
         Debug.DrawLine(transform.position, transform.position + velocity, Color.red);
     }
     public void SetValues(ControllerValues values)
@@ -114,15 +114,10 @@ public class PlayerPhysicsSplit : MonoBehaviour
             /*if (i < 10)
                 SplitCollisionCheck(i + 1);*/
         }
-
-        //If we recieve no hit on the spherecast, we're not grounded? and therefore should use gravityWhenFalling
-        //Should probably depend on a groundcheck and not any of these collision detectors
-        /*else
-            currentGravity = gravityWhenFalling;*/
     }
-    private void CheckForCollisions(int i)
+    private void CheckForCollisionsWithoutY(int i)
     {
-        RaycastHit hitInfo = CastCollision(transform.position, velocity.normalized, velocity.magnitude * Time.fixedDeltaTime + skinWidth);
+        RaycastHit hitInfo = CastCollision(transform.position, velocity.normalized, velocity.magnitude * Time.deltaTime + skinWidth);
         if (hitInfo.collider && hitInfo.collider.isTrigger == false)
         {
             float distanceToColliderNeg = skinWidth / Vector3.Dot(velocity.normalized, hitInfo.normal);
@@ -149,13 +144,13 @@ public class PlayerPhysicsSplit : MonoBehaviour
             //Do not apply normal force on y-axis if gliding, that will be done by split collision check
             Vector3 normalForceApplication = new Vector3(normalForce.x, 0, normalForce.z);
             velocity += normalForceApplication;
-            ApplyFriction(normalForceApplication);
+            ApplyFriction(normalForce);
 
             if (i < 10)
                 CheckForCollisions(i + 1);
         }
     }
-    private void CheckForCollisionsWalk(int i)
+    private void CheckForCollisions(int i)
     {
         RaycastHit hitInfo = CastCollision(transform.position, velocity.normalized, velocity.magnitude * Time.deltaTime + skinWidth);
         if (hitInfo.collider && hitInfo.collider.isTrigger == false)
@@ -184,7 +179,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
             ApplyFriction(normalForce);
 
             if (i < 10)
-                CheckForCollisionsWalk(i + 1);
+                CheckForCollisions(i + 1);
         }
     }
     private void MoveOutOfGeometry()

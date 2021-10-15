@@ -40,8 +40,8 @@ public class MetaPlayerController : MonoBehaviour
     }
 
     private void Update()
-    {       
-        
+    {
+        stateMachine.RunUpdate();
         if (Input.GetKeyDown(KeyCode.P))
             EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent());
         if (Input.GetKeyDown(KeyCode.O))
@@ -49,6 +49,6 @@ public class MetaPlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        stateMachine.RunUpdate();
+        
     }
 }
