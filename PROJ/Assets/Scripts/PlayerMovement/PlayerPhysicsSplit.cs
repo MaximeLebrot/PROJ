@@ -34,14 +34,11 @@ public class PlayerPhysicsSplit : MonoBehaviour
     private CapsuleCollider attachedCollider;
     private Vector3 startPosition;
     private Vector3 colliderTopHalf, colliderBottomHalf;
-    private Rigidbody rigidbody;
-
 
     private void OnEnable()
     {
         startPosition = transform.position;
         attachedCollider = GetComponent<CapsuleCollider>();
-        rigidbody = GetComponent<Rigidbody>();
     }
     private void FixedUpdate()
     {
@@ -49,24 +46,16 @@ public class PlayerPhysicsSplit : MonoBehaviour
         ClampSpeed();
         MoveOutOfGeometry();
     }
-    private void Update()
-    {
-        
-    }
     public void GlideInput()
     {
         CheckForCollisions(0);
         SplitCollisionCheck(0);
-        transform.position += velocity * Time.deltaTime;
-
-        Debug.DrawLine(transform.position, transform.position + velocity, Color.red);
-        
+        transform.position += velocity * Time.deltaTime;      
     }
     public void WalkInput()
     {
         CheckForCollisions(0);
         transform.position += velocity * Time.deltaTime;
-        Debug.DrawLine(transform.position, transform.position + velocity, Color.red);
     }
     public void SetValues(ControllerValues values)
     {
@@ -89,17 +78,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
         }
     }
 
-   /* private void SplitCollisionCheck(int i)
-    {
-        float castLength = velocity.magnitude * Time.fixedDeltaTime + skinWidth;
-        Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, velocity.normalized, out RaycastHit smoothingCastHitInfo, castLength + smoothingMaxDistance, collisionMask);
-        if (smoothingCastHitInfo.collider && smoothingCastHitInfo.collider.isTrigger == false)
-        {
-            Vector3 smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, smoothingCastHitInfo.normal) * Mathf.Pow((1 +  -(smoothingCastHitInfo.distance / smoothingMaxDistance)), powerOf);
-            velocity += new Vector3(0, smoothingNormalForce.y, 0);
-        }
-    }*/
-    //SurfTest Code
     private void SplitCollisionCheck(int i)
     {
         if (velocity.magnitude < surfThreshold)
@@ -111,43 +89,8 @@ public class PlayerPhysicsSplit : MonoBehaviour
         {
             Vector3 smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, smoothingCastHitInfo.normal) * Mathf.Pow((1 + -(smoothingCastHitInfo.distance / smoothingMaxDistance)), powerOf);
             velocity += new Vector3(0, smoothingNormalForce.y, 0);
-            /*if (i < 10)
-                SplitCollisionCheck(i + 1);*/
-        }
-    }
-    private void CheckForCollisionsWithoutY(int i)
-    {
-        RaycastHit hitInfo = CastCollision(transform.position, velocity.normalized, velocity.magnitude * Time.deltaTime + skinWidth);
-        if (hitInfo.collider && hitInfo.collider.isTrigger == false)
-        {
-            float distanceToColliderNeg = skinWidth / Vector3.Dot(velocity.normalized, hitInfo.normal);
-            float allowedMovementDistance = hitInfo.distance + distanceToColliderNeg;
 
-            // Can we move further than we want to this frame?
-            if (allowedMovementDistance > velocity.magnitude * Time.deltaTime)
-            {
-                return;
-            }
-
-            // Are we allowed to move forward?
-            if (allowedMovementDistance > 0)
-            {
-                transform.position += velocity.normalized * allowedMovementDistance;
-            }
-
-
-            RaycastHit normalHitInfo = CastCollision(transform.position, -hitInfo.normal, hitInfo.distance);
-            Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, normalHitInfo.normal);
-
-            velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
-
-            //Do not apply normal force on y-axis if gliding, that will be done by split collision check
-            Vector3 normalForceApplication = new Vector3(normalForce.x, 0, normalForce.z);
-            velocity += normalForceApplication;
-            ApplyFriction(normalForce);
-
-            if (i < 10)
-                CheckForCollisions(i + 1);
+            //Should this also be recursive?
         }
     }
     private void CheckForCollisions(int i)
@@ -212,76 +155,14 @@ public class PlayerPhysicsSplit : MonoBehaviour
         }
     }
 
-    //Daniels Kod
-    private void ResolveMove(Vector3 movement)
-    {
-        // Save position before move
-        Vector3 position = transform.position;
-        // Try move
-        transform.position += movement;
-
-
-        const int MAX_ITER = 5;
-        for (int i = 0; i < MAX_ITER; i++)
-        {
-            Collider[] colliders = Physics.OverlapCapsule(
-                colliderTopHalf,
-                colliderBottomHalf,
-                attachedCollider.radius,
-                collisionMask
-            );
-
-            // Exit condition
-            if (colliders.Length == 0)
-            {
-                return;
-            }
-
-            Vector3? separation = null;
-            foreach (Collider coll in colliders)
-            {
-                Vector3 direction;
-                float distance;
-
-                Physics.ComputePenetration(
-                    attachedCollider,
-                    transform.position,
-                    transform.rotation,
-                    coll,
-                    coll.transform.position,
-                    coll.transform.rotation,
-                    out direction,
-                    out distance
-                );
-
-                if (distance < (separation?.magnitude ?? float.MaxValue))
-                {
-                    separation = direction * distance;
-                }
-            }
-
-            if (separation.HasValue)
-            {
-                Debug.Log("Separation has value");
-                // Translate the minimum separation axis + the collisionMargin
-                transform.position += separation.Value + separation.Value.normalized * skinWidth;
-                // NOTE: Since we picked up a collision that the collision function missed, we should apply normal force here
-                velocity += PhysicsFunctions.NormalForce3D(velocity, separation.Value.normalized);
-            }
-        }
-        Debug.Log("Exit condition wasnt triggered");
-        // If exit condition wasn't triggered, we consider the move to fail. Ideally this should never happen.
-        transform.position = position;
-    }
-
     #region Friction, Resistance and Gravity
-    protected void AddGravity()
+    private void AddGravity()
     {
         Vector3 gravityMovement = currentGravity * Vector3.down * Time.fixedDeltaTime;
         velocity += gravityMovement;
         currentGravity = gravity;
     }
-    public void ApplyFriction(Vector3 normalForce)
+    private void ApplyFriction(Vector3 normalForce)
     {
         if (velocity.magnitude < normalForce.magnitude * staticFrictionCoefficient)
             velocity = Vector3.zero;
@@ -291,8 +172,14 @@ public class PlayerPhysicsSplit : MonoBehaviour
         }
         ApplyAirResistance();
     }
-    public void ApplyAirResistance() { velocity *= Mathf.Pow(airResistance, Time.fixedDeltaTime); }
+    private void ApplyAirResistance() { velocity *= Mathf.Pow(airResistance, Time.fixedDeltaTime); }
     #endregion
+    private void ClampSpeed()
+    {
+        float temp = velocity.y;
+        velocity = maxSpeed != 0 ? Vector3.ClampMagnitude(new Vector3(velocity.x, 0, velocity.z), maxSpeed) : velocity;
+        velocity.y = temp;
+    }
     public void AddForce(Vector3 input)
     {
         velocity += input.magnitude < inputThreshold ? Vector3.zero : input * Time.fixedDeltaTime;
@@ -300,12 +187,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
     public Vector3 GetXZMovement()
     {
         return new Vector3(velocity.x, 0, velocity.z);
-    }
-    private void ClampSpeed()
-    {
-        float temp = velocity.y;
-        velocity = maxSpeed != 0 ? Vector3.ClampMagnitude(new Vector3(velocity.x, 0, velocity.z), maxSpeed) : velocity;
-        velocity.y = temp;
     }
     public void ResetPosition()
     {
