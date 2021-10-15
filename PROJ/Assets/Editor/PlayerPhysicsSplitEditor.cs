@@ -52,8 +52,8 @@ public class PlayerPhysicsSplitEditor : Editor {
         
         showTarget = EGL.Foldout(showTarget, "Variables");
         
-        if(showTarget)
+        /*if(showTarget)
             foreach(SerializedProperty property in variablesProperties)
-                EGL.PropertyField(property);
+                EGL.PropertyField(property);*/
     }
 }

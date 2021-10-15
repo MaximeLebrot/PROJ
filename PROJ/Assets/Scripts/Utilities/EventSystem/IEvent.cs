@@ -19,11 +19,11 @@ public class DebugEvent : IEvent
 }
 #endregion
 
+public class StartPuzzleEvent : IEvent 
+{
+    //Maybe this should hold puzzle id or position?
+}
+public class EndPuzzleEvent : IEvent { }
 
-#region ATTACK_EVENTS
-public class StartPlayerAttackEvent : IEvent { }
-
-public class EndPlayerAttackEvent : IEvent { }
-#endregion
 
 
