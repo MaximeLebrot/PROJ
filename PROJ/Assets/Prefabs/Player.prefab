@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2677558544307140229}
   - component: {fileID: 2677558544307140228}
   - component: {fileID: 2677558544307140235}
-  m_Layer: 2
+  m_Layer: 6
   m_Name: Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,8 @@ GameObject:
   - component: {fileID: 1478064848147924391}
   - component: {fileID: 2677558544405405545}
   - component: {fileID: 2677558544405405542}
-  m_Layer: 0
+  - component: {fileID: 826072976}
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,7 +125,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2677558544405405551}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 349.03, y: 61.87, z: 42.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -159,7 +160,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 0c56e9d245e2f9941b704674d4a5583d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -208,9 +209,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   states:
-  - {fileID: 11400000, guid: 8a2538c6844338c459f3063ce4b0af1c, type: 2}
   - {fileID: 11400000, guid: 0d38e3e091434a548bf9edf9f4ce28d4, type: 2}
-  - {fileID: 11400000, guid: e5df94585b9645644af99a94c203b460, type: 2}
+  - {fileID: 11400000, guid: 8a2538c6844338c459f3063ce4b0af1c, type: 2}
+  controllerValues:
+  - {fileID: 11400000, guid: ede1155289adbad459ea3f0f7bd44a5f, type: 2}
+  - {fileID: 11400000, guid: 1c86d9228b43e8c40a6a34963bc366f3, type: 2}
+  - {fileID: 11400000, guid: b13653734636c2a438782ec4917610f9, type: 2}
 --- !u!114 &2677558544405405545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,17 +229,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpHeight: 5
   acceleration: 14
-  deceleration: 1.2
+  deceleration: 5
   airControl: 1
   maxSpeed: 40
   turnRate: 10
-  turnSpeed: 0.45
-  retainedSpeedWhenTurning: 0.6
+  turnSpeed: 1
+  retainedSpeedWhenTurning: 1
   groundCheckMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 183
   groundCheckDistance: 0.05
-  physics: {fileID: 0}
   force: {x: 0, y: 0, z: 0}
 --- !u!114 &2677558544405405542
 MonoBehaviour:
@@ -250,23 +253,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   velocity: {x: 0, y: 0, z: 0}
-  skinWidth: 0.05
+  skinWidth: 0.08
   inputThreshold: 0.1
-  gravityWhenFalling: 27
+  gravityWhenFalling: 9.81
   currentGravity: 0
-  smoothingMaxDistance: 3
-  powerOf: 2
-  surfThreshold: 0
-  walkMaxSpeed: 0
-  walkGravity: 10
-  walkStaticFriction: 0.5
-  walkKineticFriction: 0.35
-  walkAirResistance: 0.35
-  glideMaxSpeed: 0
-  glideGravity: 10
-  glideStaticFriction: 0.3
-  glideKineticFriction: 0.15
-  glideAirResistance: 0.6
   collisionMask:
     serializedVersion: 2
     m_Bits: 59
+  maxSpeed: 12
+  gravity: 9.81
+  smoothingMaxDistance: 3
+  powerOf: 2
+  surfThreshold: 9
+  staticFrictionCoefficient: 0.5
+  kineticFrictionCoefficient: 0.35
+  airResistance: 0.35
+--- !u!114 &826072976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2677558544405405551}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52d3210336e582042bec90ca6a2097e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  acceleration: 30
+  deceleration: 5
+  maxSpeed: 10
+  turnRate: 10
+  turnSpeed: 30
+  force: {x: 0, y: 0, z: 0}
