@@ -132,6 +132,42 @@ public class PuzzleTranslator
 
 public static class PuzzleHelper
 {
+
+    public static char TranslateInput(Node aNode, Node bNode)
+    {
+        char c = '0';
+        Vector3 a = aNode.transform.position;
+        Vector3 b = bNode.transform.position;
+
+        if (a.x == b.x && a.y > b.y)
+            c = '8';
+
+        if (a.x > b.x && a.y > b.y)
+            c = '9';
+
+        if (a.x > b.x && a.y == b.y)
+            c = '6';
+
+        if (a.x > b.x && a.y < b.y)
+            c = '3';
+
+        if (a.x == b.x && a.y < b.y)
+            c = '2';
+
+        if (a.x < b.x && a.y < b.y)
+            c = '1';
+
+        if (a.x < b.x && a.y == b.y)
+            c = '4';
+
+        if (a.x < b.x && a.y > b.y)
+            c = '7';
+
+
+
+        return c;
+    }
+
     public static string RotateSymbols(string chars)
     {
         //switch case för att rotera varje char. foreach char in chars.. switch() t.ex. case 8 = 6

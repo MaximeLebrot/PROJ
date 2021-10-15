@@ -9,6 +9,7 @@ public abstract class Puzzle : MonoBehaviour
 
     [SerializeField] public List<PuzzleObject> puzzleObjects = new List<PuzzleObject>();
     [SerializeField] protected string solution;
+    [SerializeField] private string playerInput = "";
 
     protected PuzzleTranslator translator = new PuzzleTranslator();
     protected void Translate(List<PuzzleObject> objects) { solution = translator.CalculateSolution(puzzleObjects); }
@@ -19,6 +20,19 @@ public abstract class Puzzle : MonoBehaviour
         {
             solution = "";
             Translate(puzzleObjects);
+        }
+    }
+
+    public void AddInput(char c)
+    {
+        playerInput += c;
+    }
+    public void RemoveInput()
+    {
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < playerInput.Length - 1; i++)
+        {
+            sb.Append(playerInput[i]);
         }
     }
 
