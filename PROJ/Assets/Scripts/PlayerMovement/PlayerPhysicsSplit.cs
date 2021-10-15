@@ -40,17 +40,17 @@ public class PlayerPhysicsSplit : MonoBehaviour
         startPosition = transform.position;
         attachedCollider = GetComponent<CapsuleCollider>();
     }
-    private void FixedUpdate()
+    private void FixedUpdateTick()
     {
         AddGravity();
         ClampSpeed();
+        CheckForCollisions(0);
+        SplitCollisionCheck(0);    
         MoveOutOfGeometry();
     }
     public void GlideInput()
     {
-        CheckForCollisions(0);
-        SplitCollisionCheck(0);
-        transform.position += velocity * Time.deltaTime;      
+        transform.position += velocity * Time.deltaTime;
     }
     public void WalkInput()
     {
@@ -80,10 +80,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
     private void SplitCollisionCheck(int i)
     {
-        if (velocity.magnitude < surfThreshold)
-            return;
-
-        float castLength = velocity.magnitude * Time.deltaTime + skinWidth;
+        float castLength = velocity.magnitude * Time.fixedDeltaTime + skinWidth;
         Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, velocity.normalized, out RaycastHit smoothingCastHitInfo, castLength + smoothingMaxDistance, collisionMask);
         if (smoothingCastHitInfo.collider && smoothingCastHitInfo.collider.isTrigger == false)
         {
@@ -95,7 +92,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     }
     private void CheckForCollisions(int i)
     {
-        RaycastHit hitInfo = CastCollision(transform.position, velocity.normalized, velocity.magnitude * Time.deltaTime + skinWidth);
+        RaycastHit hitInfo = CastCollision(transform.position, velocity.normalized, velocity.magnitude * Time.fixedDeltaTime + skinWidth);
         if (hitInfo.collider && hitInfo.collider.isTrigger == false)
         {
             // Calculate the allowed distance to the collision point
@@ -183,6 +180,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     public void AddForce(Vector3 input)
     {
         velocity += input.magnitude < inputThreshold ? Vector3.zero : input * Time.fixedDeltaTime;
+        FixedUpdateTick();
     }
     public Vector3 GetXZMovement()
     {
