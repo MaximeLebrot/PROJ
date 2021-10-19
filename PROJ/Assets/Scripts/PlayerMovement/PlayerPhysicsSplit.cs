@@ -20,6 +20,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     public float SurfThreshold { get => surfThreshold; }
 
     //Public variables temporary for debugging via inspector
+    //pls dont judge
     public float maxSpeed = 12f;
     public float gravity = 9.81f;
 
@@ -41,30 +42,18 @@ public class PlayerPhysicsSplit : MonoBehaviour
         startPosition = transform.position;
         attachedCollider = GetComponent<CapsuleCollider>();
     }
+    private void Update()
+    {
+        MoveOutOfGeometry(velocity * Time.deltaTime);
+        Debug.DrawLine(transform.position, transform.position + velocity * Time.deltaTime, Color.red);
+    }
     private void FixedUpdateTick()
     {
         AddGravity();
         ClampSpeed();
-        //CheckForCollisions(0);
-        ApplyGlideSmoothing();
-       
+        CollisionCheck();
     }
-    private void Update()
-    {
-        Debug.DrawLine(transform.position, transform.position + velocity * Time.deltaTime, Color.red);
-        //MoveOutOfGeometry();
-        MoveOutOfGeometry(velocity * Time.deltaTime);
-    }
-    //Input methods called from player states, and stateMachine.RunUpdate is called from Update inside MetaPlayerController
-    public void GlideInput()
-    {
-      
-    }
-    public void WalkInput()
-    {
-
-    }
-    public void ApplyGlideSmoothing()
+    public void CollisionCheck()
     {
         if (isGliding)
             SplitCollisionCheck(0);
@@ -98,10 +87,8 @@ public class PlayerPhysicsSplit : MonoBehaviour
         Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, velocity.normalized, out RaycastHit smoothingCastHitInfo, castLength + smoothingMaxDistance, collisionMask);
         if (smoothingCastHitInfo.collider && smoothingCastHitInfo.collider.isTrigger == false)
         {
-            Vector3 smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, smoothingCastHitInfo.normal) * /* * Mathf.Pow((*/(1 - smoothingCastHitInfo.distance / smoothingMaxDistance)/*), powerOf)*/;
+            Vector3 smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, smoothingCastHitInfo.normal) * /*Mathf.Pow((*/(1 - smoothingCastHitInfo.distance / smoothingMaxDistance)/*), powerOf)*/;
             velocity += new Vector3(0, smoothingNormalForce.y, 0);
-
-            //Should this also be recursive?
         }
 
         RaycastHit hitInfo = CastCollision(transform.position, velocity.normalized, velocity.magnitude * Time.fixedDeltaTime + skinWidth);
@@ -120,10 +107,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
                 transform.position += velocity.normalized * allowedMovementDistance;
             }
 
-            //RaycastHit normalHitInfo = CastCollision(transform.position, -hitInfo.normal, hitInfo.distance);
             Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, hitInfo.normal);
-
-            //velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
             velocity += new Vector3(normalForce.x, 0, normalForce.z);
 
             ApplyFriction(normalForce);
@@ -166,7 +150,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     }
     private void MoveOutOfGeometry(Vector3 movement)
     {
-        
+        Vector3 cachedPosition = transform.position;
         transform.position += movement;    
        
         for (int i = 0; i < MOVE_OUT_ITERATIONS && velocity.magnitude > 0.001f; i++) {
@@ -179,9 +163,10 @@ public class PlayerPhysicsSplit : MonoBehaviour
             Vector3? separation = null;
             foreach (Collider currentCollider in colliders)
             {
-                if (currentCollider == attachedCollider || currentCollider.isTrigger)
+                if (currentCollider.isTrigger)
                     continue;
-                Physics.ComputePenetration(attachedCollider,
+                bool overlap = Physics.ComputePenetration(
+                                            attachedCollider,
                                             transform.position,
                                             transform.rotation,
                                             currentCollider,
@@ -189,6 +174,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
                                             currentCollider.transform.rotation,
                                             out Vector3 separationDirection,
                                                    out float distance);
+               //Debug.Assert(overlap);
 
                 if (distance < (separation?.magnitude ?? float.MaxValue))
                 {
@@ -196,14 +182,17 @@ public class PlayerPhysicsSplit : MonoBehaviour
                 }
 
                 //Move out of geometry and apply normalforce since this collision was missed by collisioncheck
-                if (separation.HasValue)
+                //Do we need the NaN-check? Ugly solution./**/
+                if (separation.HasValue && !float.IsNaN(separation.Value.x))
                 {
                     transform.position += separation.Value + separation.Value.normalized * skinWidth;
                     velocity += PhysicsFunctions.NormalForce3D(velocity, separationDirection);
                 }
             }
         }
-        Debug.Log("Didnt trigger exit condition");
+        //The move fails, or the character has no velocity
+        //Debug.Log("Didnt trigger exit condition");
+        //transform.position = cachedPosition;
     }
 
     #region Friction, Resistance and Gravity

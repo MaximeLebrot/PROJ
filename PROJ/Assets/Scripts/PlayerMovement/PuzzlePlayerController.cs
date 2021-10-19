@@ -79,7 +79,6 @@ public class PuzzlePlayerController : MonoBehaviour
 
         force = input * acceleration;
         force -= (((dot - 1) * turnRate * -physics.GetXZMovement().normalized) / 2);
-        //force += (((dot - 1) * turnRate * retainedSpeedWhenTurning * -inputXZ.normalized) / 2);
     }
 
     private void Decelerate()
