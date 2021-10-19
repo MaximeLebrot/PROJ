@@ -164,9 +164,8 @@ public class PlayerPhysicsSplit : MonoBehaviour
                 CheckForCollisions(i + 1);
         }
     }
-    private void MoveOutOfGeometry(Vector3 movement)
-    {
-        
+    private void MoveOutOfGeometry(Vector3 movement) {
+
         transform.position += movement;    
        
         for (int i = 0; i < MOVE_OUT_ITERATIONS && velocity.magnitude > 0.001f; i++) {

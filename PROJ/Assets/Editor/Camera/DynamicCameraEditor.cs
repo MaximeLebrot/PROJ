@@ -5,7 +5,7 @@ using EGL = UnityEditor.EditorGUILayout;
 [CustomEditor(typeof(DynamicCamera.DynamicCamera))]
 public class DynamicCameraEditor : Editor {
     
-    private SerializedObject serializedCameraBehaviour;
+    /*private SerializedObject serializedCameraBehaviour;
     private SerializedObject serializedCameraData;
     
     private SerializedProperty collisionLayerMaskProp;
@@ -18,9 +18,11 @@ public class DynamicCameraEditor : Editor {
 
     private void OnEnable() => UpdateInspectorValues();
 
-    public override void OnInspectorGUI() {
+    */public override void OnInspectorGUI() {
+
+        DrawDefaultInspector();
         
-        serializedCameraBehaviour.Update();
+        /*serializedCameraBehaviour.Update();
         bool success = UpdateInspectorValues();
 
 
@@ -48,8 +50,10 @@ public class DynamicCameraEditor : Editor {
         
         serializedCameraData.ApplyModifiedProperties();
         serializedCameraBehaviour.ApplyModifiedProperties();
+        */
     }
 
+    /*
     private bool UpdateInspectorValues() {
         serializedCameraBehaviour = new SerializedObject(target);
 
@@ -66,13 +70,13 @@ public class DynamicCameraEditor : Editor {
 
         serializedCameraData = new SerializedObject(cameraDataProperty.objectReferenceValue);
         
-        offsetProp = serializedCameraData.FindProperty("offset");
-        movementSpeedProp = serializedCameraData.FindProperty("movementSpeed");
-        rotationSpeedProp = serializedCameraData.FindProperty("rotationSpeed");
-        mouseSensitivityProp = serializedCameraData.FindProperty("mouseSensitivity");
+        offsetProp = serializedCameraData.FindProperty("Offset");
+        movementSpeedProp = serializedCameraData.FindProperty("MovementSpeed");
+        rotationSpeedProp = serializedCameraData.FindProperty("RotationSpeed");
+        mouseSensitivityProp = serializedCameraData.FindProperty("MouseSensitivity");
 
         serializedCameraBehaviour.ApplyModifiedProperties();
 
         return true;
-    }
+    }*/
 }

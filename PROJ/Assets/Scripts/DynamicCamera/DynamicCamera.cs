@@ -5,42 +5,56 @@ namespace DynamicCamera {
     public class DynamicCamera : MonoBehaviour {
         
         [SerializeField] private Transform target;
-        [SerializeField] private CameraBehaviour cameraBehaviour;
-        [SerializeField] private LayerMask layerMask;
+        [SerializeField] private LayerMask collisionMask;
+
+        [SerializeField] private Vector3 offset;
+        [SerializeField] private float movementSpeed;
+        [SerializeField] private float rotationSpeed;
+        [SerializeField] private float mouseSensitivity;
+       
+        private Vector2 input;
         
-        private Transform thisTransform;
-        private SphereCollider collider;
+        private const string XRotationInputName = "Mouse Y";
+        private const string YRotationInputName = "Mouse X";
+        private new SphereCollider collider;
         
         private void Awake() {
             Cursor.lockState = CursorLockMode.Locked;
-            thisTransform = transform;
             collider = GetComponent<SphereCollider>();
-
         }
         
-        private void LateUpdate() => cameraBehaviour.ExecuteBehaviour(thisTransform, target);
-
-        private void Collision() {
-            
-            Vector3 CalculateNormalForce(Vector3 direction, Vector3 hitNormal ) {
-                float dotProduct = Vector3.Dot(direction, hitNormal.normalized);
-
-                if (dotProduct > 0)
-                    dotProduct = 0;
+        private void LateUpdate() {
+            GetInput();
+            RotateCamera();
+            MoveCamera();
+        }
         
-                return -(dotProduct * hitNormal.normalized);
+        private void GetInput() {
+            input.x -= Input.GetAxis(XRotationInputName) * mouseSensitivity;
+            input.y += Input.GetAxis(YRotationInputName) * mouseSensitivity;
+
+            input.x = Mathf.Clamp(input.x, -80, 80);
+        }
+        
+        private void RotateCamera() {
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(input.x, input.y, 0), rotationSpeed * Time.time);
+        }
+
+        private void MoveCamera() {
+
+            Vector3 collisionOffset = transform.rotation * offset;
+            
+            if (Physics.SphereCast(target.position, collider.radius, collisionOffset.normalized, out RaycastHit hitInfo, collisionOffset.magnitude, collisionMask)) {
+
+                Vector3 projectOnPlane = Vector3.ProjectOnPlane(collisionOffset, hitInfo.normal);
+
+                collisionOffset = projectOnPlane;
+
             }
-            
-            
-            
-            Physics.SphereCast(target.position, collider.radius, cameraBehaviour.cameraData.offset.normalized, out var hit,cameraBehaviour.cameraData.offset.magnitude, layerMask);
 
-            if (!hit.collider) return;
+            Debug.DrawLine(target.position, target.position + collisionOffset, Color.red);
+            transform.position = Vector3.Slerp(transform.position, target.position + collisionOffset, movementSpeed * Time.deltaTime);    
 
-            Debug.DrawLine(transform.position, hit.point, Color.blue);
-            cameraBehaviour.cameraData.offset += CalculateNormalForce(cameraBehaviour.cameraData.offset, hit.normal);
-        
-            Collision();
         }
     }
     
