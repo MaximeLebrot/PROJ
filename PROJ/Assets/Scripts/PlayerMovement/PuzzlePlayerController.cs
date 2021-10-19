@@ -13,22 +13,17 @@ public class PuzzlePlayerController : MonoBehaviour
     [SerializeField] private float turnRate = 4f;
     [Tooltip("The speed at which the character model rotates when changing direction")]
     [SerializeField] private float turnSpeed;
-    [SerializeField] private float retainedSpeedWhenTurning = 0.33f;
 
 
     #endregion
 
+    [HideInInspector] public Vector3 force;
     //Component references
-    public PlayerPhysicsSplit physics;
+    public PlayerPhysicsSplit physics { get; private set; }
     public Animator animator { get; private set; }
     private Vector3 input;
-    private bool jump;
-    private Transform cameraTransform;
-    private RaycastHit groundHitInfo;
-
-    [HideInInspector] public Vector3 force;
     private float xMove, zMove;
-    private bool surf = false;
+    private RaycastHit groundHitInfo;
     private float groundCheckBoxSize = 0.25f;
     void Awake()
     {
@@ -48,7 +43,6 @@ public class PuzzlePlayerController : MonoBehaviour
         Vector3.forward * zMove;
   
         HandleInput(input);
-        physics.PuzzleControllerInput();
 
         //For testing only
         if (Input.GetKeyUp(KeyCode.G))
@@ -65,18 +59,18 @@ public class PuzzlePlayerController : MonoBehaviour
     public void HandleInput(Vector3 inp)
     {
         input = inp;
-        if (input.magnitude > 1f)
-        {
-            input.Normalize();
-        }
         RotateCharacterInsidePuzzle();
-
         if (input.magnitude < float.Epsilon)
         {
             Decelerate();
+            return;
         }
-        else
-            Accelerate();
+        else 
+        {
+            if (input.magnitude > 1f)
+                input.Normalize();
+        }
+        Accelerate();            
     }
     private void Accelerate()
     {
@@ -95,15 +89,7 @@ public class PuzzlePlayerController : MonoBehaviour
 
     private void RotateCharacterInsidePuzzle()
     {
-        /*Vector3 temp = transform.rotation.eulerAngles;
-        temp.x = 0;
-        Quaternion rotation = Quaternion.Euler(temp);
-        input = rotation * input;
-        input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;
-
-        transform.Rotate(0, xMove * turnSpeed, 0);*/
         transform.forward = Vector3.Lerp(transform.forward, input.normalized, turnSpeed * Time.deltaTime);
-
     }
 
     #endregion
