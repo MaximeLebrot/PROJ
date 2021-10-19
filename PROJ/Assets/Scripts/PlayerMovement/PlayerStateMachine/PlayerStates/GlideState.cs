@@ -13,12 +13,13 @@ public class GlideState : PlayerState
     public override void EnterState()
     {
         Debug.Log("Entered Glide State");
+        player.physics.SetGlide(true);
         base.EnterState();
     }
     public override void RunUpdate()
     {
-       player.physics.GlideInput();
-        //if (player.physics.velocity.magnitude < player.physics.SurfThreshold - 1)
+        player.physics.GlideInput();
+
         if (Input.GetKeyDown(KeyCode.H))
             stateMachine.ChangeState<WalkState>();
     }

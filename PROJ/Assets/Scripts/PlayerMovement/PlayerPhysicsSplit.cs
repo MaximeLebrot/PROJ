@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerPhysicsSplit : MonoBehaviour
 {
-    //modifierar .y-värdet på velocity, kan alltså inte vara en property
-   
+    const int MAX_ITER = 10;
+    const int MOVE_OUT_ITERATIONS = 5;
 
     public Vector3 velocity;
     public RaycastHit groundHitInfo { get; private set; }
@@ -34,6 +34,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     private CapsuleCollider attachedCollider;
     private Vector3 startPosition;
     private Vector3 colliderTopHalf, colliderBottomHalf;
+    private bool isGliding;
 
     private void OnEnable()
     {
@@ -44,18 +45,31 @@ public class PlayerPhysicsSplit : MonoBehaviour
     {
         AddGravity();
         ClampSpeed();
-        CheckForCollisions(0);
-        SplitCollisionCheck(0);    
-        MoveOutOfGeometry();
+        //CheckForCollisions(0);
+        ApplyGlideSmoothing();
+       
     }
+    private void Update()
+    {
+        Debug.DrawLine(transform.position, transform.position + velocity * Time.deltaTime, Color.red);
+        //MoveOutOfGeometry();
+        MoveOutOfGeometry(velocity * Time.deltaTime);
+    }
+    //Input methods called from player states, and stateMachine.RunUpdate is called from Update inside MetaPlayerController
     public void GlideInput()
     {
-        transform.position += velocity * Time.deltaTime;
+      
     }
     public void WalkInput()
     {
-        CheckForCollisions(0);
-        transform.position += velocity * Time.deltaTime;
+
+    }
+    public void ApplyGlideSmoothing()
+    {
+        if (isGliding)
+            SplitCollisionCheck(0);
+        else
+            CheckForCollisions(0);
     }
     public void SetValues(ControllerValues values)
     {
@@ -84,10 +98,38 @@ public class PlayerPhysicsSplit : MonoBehaviour
         Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, velocity.normalized, out RaycastHit smoothingCastHitInfo, castLength + smoothingMaxDistance, collisionMask);
         if (smoothingCastHitInfo.collider && smoothingCastHitInfo.collider.isTrigger == false)
         {
-            Vector3 smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, smoothingCastHitInfo.normal) * Mathf.Pow((1 + -(smoothingCastHitInfo.distance / smoothingMaxDistance)), powerOf);
+            Vector3 smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, smoothingCastHitInfo.normal) * /* * Mathf.Pow((*/(1 - smoothingCastHitInfo.distance / smoothingMaxDistance)/*), powerOf)*/;
             velocity += new Vector3(0, smoothingNormalForce.y, 0);
 
             //Should this also be recursive?
+        }
+
+        RaycastHit hitInfo = CastCollision(transform.position, velocity.normalized, velocity.magnitude * Time.fixedDeltaTime + skinWidth);
+        if (hitInfo.collider && hitInfo.collider.isTrigger == false)
+        {
+            float distanceToColliderNeg = skinWidth / Vector3.Dot(velocity.normalized, hitInfo.normal);
+            float allowedMovementDistance = hitInfo.distance + distanceToColliderNeg;
+
+            if (allowedMovementDistance > velocity.magnitude * Time.fixedDeltaTime)
+            {
+                return;
+            }
+
+            if (allowedMovementDistance > 0)
+            {
+                transform.position += velocity.normalized * allowedMovementDistance;
+            }
+
+            //RaycastHit normalHitInfo = CastCollision(transform.position, -hitInfo.normal, hitInfo.distance);
+            Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, hitInfo.normal);
+
+            //velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
+            velocity += new Vector3(normalForce.x, 0, normalForce.z);
+
+            ApplyFriction(normalForce);
+
+            if (i < MAX_ITER)
+                SplitCollisionCheck(i + 1);
         }
     }
     private void CheckForCollisions(int i)
@@ -100,7 +142,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
             float allowedMovementDistance = hitInfo.distance + distanceToColliderNeg;
 
             // Are we allowed to move further than we are able to this frame? 
-            if (allowedMovementDistance > velocity.magnitude * Time.deltaTime)
+            if (allowedMovementDistance > velocity.magnitude * Time.fixedDeltaTime)
             {
                 return;
             }
@@ -110,46 +152,58 @@ public class PlayerPhysicsSplit : MonoBehaviour
                 transform.position += velocity.normalized * allowedMovementDistance;
             }
 
-            RaycastHit normalHitInfo = CastCollision(transform.position, -hitInfo.normal, hitInfo.distance);
-            Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, normalHitInfo.normal);
+            //RaycastHit normalHitInfo = CastCollision(transform.position, -hitInfo.normal, hitInfo.distance);
+            Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, hitInfo.normal);
 
-            velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
+            //velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
             velocity += normalForce;
 
             ApplyFriction(normalForce);
 
-            if (i < 10)
+            if (i < MAX_ITER)
                 CheckForCollisions(i + 1);
         }
     }
-    private void MoveOutOfGeometry()
+    private void MoveOutOfGeometry(Vector3 movement)
     {
-       Collider[] colliders = OverlapCast(transform.position);
-        if (colliders.Length < 1)
-            return;   
+        
+        transform.position += movement;    
+       
+        for (int i = 0; i < MOVE_OUT_ITERATIONS && velocity.magnitude > 0.001f; i++) {
 
-        foreach (Collider currentCollider in colliders)
-        {
-            if (currentCollider == attachedCollider || currentCollider.isTrigger)
-                continue;
-            Physics.ComputePenetration( attachedCollider,
-                                        transform.position,
-                                        transform.rotation,
-                                        currentCollider,
-                                        currentCollider.transform.position,
-                                        currentCollider.transform.rotation,
-                                        out Vector3 separationVector,
-                                               out float distance);
+            Collider[] colliders = OverlapCast(transform.position);
 
-            Vector3? separationVectorDistance = separationVector.normalized * distance;
-            //Change position directly
-            if (separationVectorDistance.HasValue)
+            if (colliders.Length < 1)
+                return;
+           
+            Vector3? separation = null;
+            foreach (Collider currentCollider in colliders)
             {
-                transform.position += separationVectorDistance.Value + separationVectorDistance.Value.normalized * skinWidth;
-                //Add normalforce..?
-                velocity += PhysicsFunctions.NormalForce3D(velocity, separationVector);
+                if (currentCollider == attachedCollider || currentCollider.isTrigger)
+                    continue;
+                Physics.ComputePenetration(attachedCollider,
+                                            transform.position,
+                                            transform.rotation,
+                                            currentCollider,
+                                            currentCollider.transform.position,
+                                            currentCollider.transform.rotation,
+                                            out Vector3 separationDirection,
+                                                   out float distance);
+
+                if (distance < (separation?.magnitude ?? float.MaxValue))
+                {
+                    separation = separationDirection * distance;
+                }
+
+                //Move out of geometry and apply normalforce since this collision was missed by collisioncheck
+                if (separation.HasValue)
+                {
+                    transform.position += separation.Value + separation.Value.normalized * skinWidth;
+                    velocity += PhysicsFunctions.NormalForce3D(velocity, separationDirection);
+                }
             }
         }
+        Debug.Log("Didnt trigger exit condition");
     }
 
     #region Friction, Resistance and Gravity
@@ -189,6 +243,10 @@ public class PlayerPhysicsSplit : MonoBehaviour
     public void ResetPosition()
     {
         transform.position = startPosition;
+    }
+    public void SetGlide(bool gliding)
+    {
+        isGliding = gliding;
     }
     #region CollisionCast
 
