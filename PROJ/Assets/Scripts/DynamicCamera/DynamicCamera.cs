@@ -9,7 +9,7 @@ namespace DynamicCamera {
         [SerializeField] private LayerMask collisionMask;
 
         [SerializeField] private Vector3 offset;
-        [SerializeField] [Range(0, 10)] private float followSpeed;
+        [SerializeField] [Range(0, 20)] private float followSpeed;
         [SerializeField] [Range(0, 20)] private float rotationSpeed;
         [SerializeField] private float mouseSensitivity;
         
