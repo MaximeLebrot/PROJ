@@ -11,16 +11,40 @@ public abstract class Puzzle : MonoBehaviour
     [SerializeField] protected string solution;
     [SerializeField] private string playerInput = "";
 
-    protected PuzzleTranslator translator = new PuzzleTranslator();
+    protected PuzzleTranslator translator = new PuzzleTranslator(); 
+    
+    private InputMaster inputMaster;
+    private PuzzleGrid grid;
+
+    void Awake()
+    {
+        grid = GetComponentInChildren<PuzzleGrid>();
+        inputMaster = new InputMaster();
+    }
+
+    private void OnEnable()
+    {
+        inputMaster.Enable();
+        EventHandler<EvaluateSolutionEvent>.RegisterListener(EvaluateSolution);
+    }
+
+    private void OnDisable()
+    {
+        inputMaster.Disable();
+    }
+
+
+
     protected void Translate(List<PuzzleObject> objects) { solution = translator.CalculateSolution(puzzleObjects); }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        //SHOULD BE IN PLAYER FOR WHEN THEY WANT TO EVALUATE PUZZLE
+        if (inputMaster.PuzzleDEBUGGER.calculatesolution.triggered)
         {
-            solution = "";
-            Translate(puzzleObjects);
+            EventHandler<EvaluateSolutionEvent>.FireEvent(new EvaluateSolutionEvent());
         }
+        
     }
 
     public void AddInput(char c)
@@ -34,6 +58,20 @@ public abstract class Puzzle : MonoBehaviour
         {
             sb.Append(playerInput[i]);
         }
+    }
+
+    public void EvaluateSolution(EvaluateSolutionEvent eve)
+    {
+        //Should be in OnEnable
+        solution = "";
+        Translate(puzzleObjects);
+
+        if (solution.Equals(grid.GetSolution()))
+        {
+            Debug.Log("WIN");//Fire EndPuzzleEvent
+        }
+        else
+            Debug.Log("LOSER");//Fire ResetPuzzleEvent
     }
 
 }

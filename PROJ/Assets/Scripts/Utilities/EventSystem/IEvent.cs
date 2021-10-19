@@ -25,5 +25,7 @@ public class StartPuzzleEvent : IEvent
 }
 public class EndPuzzleEvent : IEvent { }
 
+public class EvaluateSolutionEvent : IEvent { }
+
 
 

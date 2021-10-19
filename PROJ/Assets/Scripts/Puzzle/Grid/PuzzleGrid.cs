@@ -13,6 +13,11 @@ public class PuzzleGrid : MonoBehaviour {
     private Stack<LineObject> lineRenderers = new Stack<LineObject>();
     private Node currentNode;
 
+    private string solution;
+
+    //Needs method for clearing the puzzle. FOR WINNERS AND FOR LOSERS
+
+    public string GetSolution() { return solution; }
     
     
     private void Awake() {
@@ -61,45 +66,53 @@ public class PuzzleGrid : MonoBehaviour {
     {
         LineObject newLine = new LineObject(node);
         
+        //THIS IS WEIRD
         if (lineRenderers.Count > 0 && lineRenderers.Peek().CompareLastLine(newLine))
         {
             //Checks if this was the last line that was drawn, if so delete that line (eraser)
             LineObject oldLine = lineRenderers.Pop();
-            foreach (Node n in currentNode._neighbours)
+            foreach (Node n in currentNode.EnabledNodes)
             {
                 n.gameObject.SetActive(false);
             }
+
+            currentNode.EnabledNodes.Clear();
+
+            //REMOVE LAST CHAR IN SOLUTION OR CALCULATE EVERYTHING AFTERWARDS
+            node.RemoveLineToNode(currentNode);
+            currentNode.RemoveLineToNode(node);
+            currentNode = node;
+            ActivateNode(node);
             Destroy(oldLine.line);
+            return;
         }
+
         else
         {
+            if (lineRenderers.Count > 1)
+            {
+                //Checks if there exists a line between these nodes already, if so it destroys the line that was created
+                if (node.HasLineToNode(currentNode))
+                {
+                    Debug.Log("This line already exists");
+                    return;
+                }
+            }
+
             LineRenderer newLineRenderer = Instantiate(lineRendererPrefab, transform);
             newLineRenderer.SetPosition(0, currentNode.transform.position);
             newLineRenderer.SetPosition(1, node.transform.position);
             LineObject line = new LineObject(currentNode, newLineRenderer);
 
-
-            if (lineRenderers.Count > 1)
-            {
-                //Checks if there exists a line between these nodes already, if so it destroys the line that was created
-                foreach (LineObject obj in lineRenderers)
-                {
-                    if (obj.CheckIfLineExists(line))
-                    {
-                        //Debug.Log("This line already exists");
-                        Destroy(newLineRenderer);
-                        return;
-                    }
-
-                }
-            }
-
+            //ADD LINE
+            node.AddLineToNode(currentNode);
+            currentNode.AddLineToNode(node);
             lineRenderers.Push(line);
         }
 
-        //This is the input in a comparable string. This needs to connect to the puzzles solution
+        //THIS SHOULD BE DONE IN GETSOLUTION()
         if (lineRenderers.Count > 1) 
-            Debug.Log(PuzzleHelper.TranslateInput(node, currentNode)); 
+            solution += PuzzleHelper.TranslateInput(node, currentNode); 
 
         currentNode = node;
         ActivateNode(node);
@@ -126,33 +139,37 @@ public class PuzzleGrid : MonoBehaviour {
                 closestNode.ClearSelectable();
         }
         
-        closestNodes = node._neighbours;
+        foreach(Node n in node.neighbours.Keys)
+        {
+            closestNodes.Add(n);
+        }
         
-        foreach (Node neighbour in node._neighbours) {
+        foreach (Node neighbour in node.neighbours.Keys) {
+
+            if (neighbour.gameObject.activeSelf == false)
+                node.EnabledNodes.Add(neighbour);
+
             neighbour.gameObject.SetActive(true);
             neighbour.OnNodeSelected += AddSelectedNode;
-        }
-            
+        } 
     }
-
-
 
 }
 
 public class LineObject
 {
     //Object that can compare lines between nodes, stored in a stack in the grid
-    public Node x;
+    public Node originNode;
     public LineRenderer line;
 
     public LineObject(Node a, LineRenderer lineRen)
     {
-        x = a;
+        originNode = a;
         line = lineRen;
     }
     public LineObject(Node a)
     {
-        x = a;
+        originNode = a;
     }
     public LineObject(LineRenderer lineRen)
     {
@@ -160,10 +177,12 @@ public class LineObject
     }
     public bool CompareLastLine(LineObject other)
     {
-        return x == other.x;
+        return originNode == other.originNode;
     }
     public bool CheckIfLineExists(LineObject other)
     {
+        //THIS IS NOT ACCURATE ENOUGH compare the nodes instead!
+        /*
         List<Vector3> thisPos = new List<Vector3>();
         for(int i = 0; i < 2; i++)
         {
@@ -180,6 +199,12 @@ public class LineObject
         {
             return true;
         }
+        */
+
+
+
+
+
 
         return false;
     }
