@@ -66,19 +66,23 @@ public class PuzzleGrid : MonoBehaviour {
     {
         LineObject newLine = new LineObject(node);
         
+        //THIS IS WEIRD
         if (lineRenderers.Count > 0 && lineRenderers.Peek().CompareLastLine(newLine))
         {
             //Checks if this was the last line that was drawn, if so delete that line (eraser)
             LineObject oldLine = lineRenderers.Pop();
-            foreach (Node n in currentNode.neighbours.Keys)
+            foreach (Node n in currentNode.EnabledNodes)
             {
                 n.gameObject.SetActive(false);
             }
 
+            currentNode.EnabledNodes.Clear();
+
             //REMOVE LAST CHAR IN SOLUTION OR CALCULATE EVERYTHING AFTERWARDS
             node.RemoveLineToNode(currentNode);
             currentNode.RemoveLineToNode(node);
-            currentNode = oldLine.originNode;
+            currentNode = node;
+            ActivateNode(node);
             Destroy(oldLine.line);
             return;
         }
@@ -106,7 +110,7 @@ public class PuzzleGrid : MonoBehaviour {
             lineRenderers.Push(line);
         }
 
-        //This is the input in a comparable string. This needs to connect to the puzzles solution
+        //THIS SHOULD BE DONE IN GETSOLUTION()
         if (lineRenderers.Count > 1) 
             solution += PuzzleHelper.TranslateInput(node, currentNode); 
 
@@ -141,6 +145,10 @@ public class PuzzleGrid : MonoBehaviour {
         }
         
         foreach (Node neighbour in node.neighbours.Keys) {
+
+            if (neighbour.gameObject.activeSelf == false)
+                node.EnabledNodes.Add(neighbour);
+
             neighbour.gameObject.SetActive(true);
             neighbour.OnNodeSelected += AddSelectedNode;
         } 

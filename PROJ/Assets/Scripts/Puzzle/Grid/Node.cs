@@ -10,6 +10,7 @@ public class Node : MonoBehaviour {
     public event OnSelected OnNodeSelected;
 
     public Dictionary<Node, bool> neighbours { get; private set; }
+    public List<Node> EnabledNodes = new List<Node>();
     
     public bool startNode;
     
