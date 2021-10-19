@@ -3,47 +3,48 @@ using UnityEngine;
 namespace DynamicCamera {
     
     public class DynamicCamera : MonoBehaviour {
-
-        [Header("Camera Follow Target")]
+        
         [SerializeField] private Transform target;
-        
-        [Header("Settings")]
-        [SerializeField] private Vector3 offset;
-        [SerializeField] private float mouseSensitivity;
-        [SerializeField][Range(0, 10)] private float speed;
-        [SerializeField][Range(0, 10)] private float transitionSpeed;
-        
-        private CameraBehaviour cameraBehaviour;
+        [SerializeField] private CameraBehaviour cameraBehaviour;
+        [SerializeField] private LayerMask layerMask;
         
         private Transform thisTransform;
+        private SphereCollider collider;
         
         private void Awake() {
-            cameraBehaviour = new FollowBehaviour(offset, mouseSensitivity, speed);
             Cursor.lockState = CursorLockMode.Locked;
             thisTransform = transform;
-
-            PuzzleCameraInfo.PuzzleInit += ChangeBehaviour;
-            
+            collider = GetComponent<SphereCollider>();
 
         }
         
-        private void LateUpdate() {
-            cameraBehaviour.Behave(thisTransform, target);
+        private void LateUpdate() => cameraBehaviour.ExecuteBehaviour(thisTransform, target);
 
-            if (Input.GetKeyDown(KeyCode.V)) {
-                target = FindObjectOfType<PlayerController>().transform;
-                cameraBehaviour = new FollowBehaviour(offset, mouseSensitivity, speed);
+        private void Collision() {
+            
+            Vector3 CalculateNormalForce(Vector3 direction, Vector3 hitNormal ) {
+                float dotProduct = Vector3.Dot(direction, hitNormal.normalized);
+
+                if (dotProduct > 0)
+                    dotProduct = 0;
+        
+                return -(dotProduct * hitNormal.normalized);
             }
             
-        }
+            
+            
+            Physics.SphereCast(target.position, collider.radius, cameraBehaviour.cameraData.offset.normalized, out var hit,cameraBehaviour.cameraData.offset.magnitude, layerMask);
 
+            if (!hit.collider) return;
+
+            Debug.DrawLine(transform.position, hit.point, Color.blue);
+            cameraBehaviour.cameraData.offset += CalculateNormalForce(cameraBehaviour.cameraData.offset, hit.normal);
         
-        private void ChangeBehaviour(Transform newTarget) {
-            target = newTarget;
-            cameraBehaviour = new PuzzleBehaviour(transitionSpeed);
+            Collision();
         }
-
     }
+    
+    
     
 }
 

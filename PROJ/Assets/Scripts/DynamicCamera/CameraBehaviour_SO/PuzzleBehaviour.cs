@@ -10,7 +10,7 @@ namespace DynamicCamera {
             this.speed = speed;
         }
     
-        public override void Behave(Transform cameraTransform, Transform target) {
+        public override void ExecuteBehaviour(Transform cameraTransform, Transform target) {
             RotateCamera(cameraTransform, target);
             MoveCamera(cameraTransform, target);
         }

@@ -72,7 +72,6 @@ public class PlayerController : MonoBehaviour
         input = inp;
         if (input.magnitude > 1f)
         {
-            Debug.Log("surf grounded input, magnitude > 1");
             input.Normalize();
         }
         RotateInDirectionOfMovement();
@@ -159,7 +158,8 @@ public class PlayerController : MonoBehaviour
     /// <returns></returns>
     public bool IsGrounded()
     {
-        Physics.BoxCast(transform.position + Vector3.up, Vector3.one * groundCheckBoxSize, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance, groundCheckMask);
+        if(Physics.BoxCast(transform.position, Vector3.one * groundCheckBoxSize, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance, groundCheckMask))
+            Debug.Log("Grounded!");
         return groundHitInfo.collider;
     }
 
