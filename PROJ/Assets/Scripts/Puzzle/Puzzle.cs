@@ -16,11 +16,13 @@ public abstract class Puzzle : MonoBehaviour
 
     private void Update()
     {
+        /*
         if (Input.GetKeyDown(KeyCode.Space))
         {
             solution = "";
             Translate(puzzleObjects);
         }
+        */
     }
 
     public void AddInput(char c)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PuzzlePlayerController : MonoBehaviour
 {
@@ -25,18 +26,26 @@ public class PuzzlePlayerController : MonoBehaviour
     private float xMove, zMove;
     private RaycastHit groundHitInfo;
     private float groundCheckBoxSize = 0.25f;
+
+    private InputMaster inputMaster;
+
     void Awake()
     {
         physics = GetComponent<PlayerPhysicsSplit>();
     }
     private void OnEnable()
     {
-       
+        inputMaster.Enable();
+    }
+    private void OnDisable()
+    {
+        inputMaster.Disable();
     }
     private void Update()
     {
-        xMove = Input.GetAxisRaw("Horizontal");
-        zMove = Input.GetAxisRaw("Vertical");
+
+        xMove = inputMaster.Player.Movement.ReadValue<Vector2>().x;
+        zMove = inputMaster.Player.Movement.ReadValue<Vector2>().y;
 
         Vector3 input =
         Vector3.right * xMove +

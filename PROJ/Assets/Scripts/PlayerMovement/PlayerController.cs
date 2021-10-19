@@ -33,31 +33,50 @@ public class PlayerController : MonoBehaviour
     private bool surfCamera = false;
     private float groundCheckBoxSize = 0.25f;
 
+    private InputMaster inputMaster;
+
     void Awake()
     {
+        inputMaster = new InputMaster();
+
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PlayerPhysicsSplit>();
         groundCheckBox = GetComponentInChildren<BoxCollider>();
     }
+
+    private void OnEnable()
+    {
+        inputMaster.Enable();
+    }
+    private void OnDisable()
+    {
+        inputMaster.Disable();
+    }
+
+
     private void Update()
     {
-        xMove = Input.GetAxisRaw("Horizontal");
-        zMove = Input.GetAxisRaw("Vertical");
+
+        xMove = inputMaster.Player.Movement.ReadValue<Vector2>().x;
+        zMove = inputMaster.Player.Movement.ReadValue<Vector2>().y;
+
 
         Vector3 input =
-        Vector3.right * xMove + 
+        Vector3.right * xMove +
         Vector3.forward * zMove;
 
-        if(surfCamera)
+        if (surfCamera)
             InputSurfGrounded(input);
         else
             InputGrounded(input);
 
         //For testing only
+        /*
         if (Input.GetKeyUp(KeyCode.G))
             physics.ResetPosition();
         if (Input.GetKeyUp(KeyCode.T))
             TransitionSurf();
+        */
     }
     private void FixedUpdate()
     {
