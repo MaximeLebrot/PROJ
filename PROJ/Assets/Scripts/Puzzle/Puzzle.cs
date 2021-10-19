@@ -14,30 +14,35 @@ public abstract class Puzzle : MonoBehaviour
     protected PuzzleTranslator translator = new PuzzleTranslator(); 
     
     private InputMaster inputMaster;
+    private PuzzleGrid grid;
 
     void Awake()
     {
+        grid = GetComponentInChildren<PuzzleGrid>();
         inputMaster = new InputMaster();
     }
 
     private void OnEnable()
     {
         inputMaster.Enable();
+        EventHandler<EvaluateSolutionEvent>.RegisterListener(EvaluateSolution);
     }
+
     private void OnDisable()
     {
         inputMaster.Disable();
     }
 
+
+
     protected void Translate(List<PuzzleObject> objects) { solution = translator.CalculateSolution(puzzleObjects); }
 
     private void Update()
     {
-        
+        //SHOULD BE IN PLAYER FOR WHEN THEY WANT TO EVALUATE PUZZLE
         if (inputMaster.PuzzleDEBUGGER.calculatesolution.triggered)
         {
-            solution = "";
-            Translate(puzzleObjects);
+            EventHandler<EvaluateSolutionEvent>.FireEvent(new EvaluateSolutionEvent());
         }
         
     }
@@ -53,6 +58,20 @@ public abstract class Puzzle : MonoBehaviour
         {
             sb.Append(playerInput[i]);
         }
+    }
+
+    public void EvaluateSolution(EvaluateSolutionEvent eve)
+    {
+        //Should be in OnEnable
+        solution = "";
+        Translate(puzzleObjects);
+
+        if (solution.Equals(grid.GetSolution()))
+        {
+            Debug.Log("WIN");//Fire EndPuzzleEvent
+        }
+        else
+            Debug.Log("LOSER");//Fire ResetPuzzleEvent
     }
 
 }

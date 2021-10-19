@@ -9,12 +9,12 @@ public class Node : MonoBehaviour {
     public delegate void OnSelected(Node node);
     public event OnSelected OnNodeSelected;
 
-    public List<Node> _neighbours { get; private set; }
+    public Dictionary<Node, bool> neighbours { get; private set; }
     
     public bool startNode;
     
     private void Awake() {
-        _neighbours = new List<Node>();
+        neighbours = new Dictionary<Node, bool>();
 
         FindNeighbours();
     }
@@ -37,11 +37,26 @@ public class Node : MonoBehaviour {
             Physics.Raycast(transform.position, direction, out var hit, 5, nodeLayer);
             
             if(hit.collider)
-                _neighbours.Add(hit.transform.GetComponent<Node>());
+                neighbours.Add(hit.transform.GetComponent<Node>(), false);
 
             angle += 45f;
             
         }
+    }
+
+    public void AddLineToNode(Node n)
+    {
+        neighbours[n] = true;
+    }
+
+    public void RemoveLineToNode(Node n)
+    {
+        neighbours[n] = false;
+    }
+
+    public bool HasLineToNode(Node n)
+    {
+        return neighbours[n];
     }
 
     public void ClearSelectable() => OnNodeSelected = null;
