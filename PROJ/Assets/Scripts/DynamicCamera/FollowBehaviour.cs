@@ -24,14 +24,13 @@ namespace DynamicCamera {
             RotateCamera(cameraTransform);
             MoveCamera(cameraTransform, target);
         }
-    
-    
+        
         private void GetInput() {
             input.x -= Input.GetAxis(XRotationInputName) * mouseSensitivity * Time.deltaTime;
             input.y += Input.GetAxis(YRotationInputName) * mouseSensitivity * Time.deltaTime;
         }
         
-        private void RotateCamera(Transform transform) => transform.rotation = Quaternion.Euler(input.x, input.y, 0);
+        private void RotateCamera(Transform transform) => transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(input.x, input.y, 0), speed* Time.deltaTime);
 
         private void MoveCamera(Transform transform, Transform target) {
             Vector3 offsetPosition = transform.rotation * offset;

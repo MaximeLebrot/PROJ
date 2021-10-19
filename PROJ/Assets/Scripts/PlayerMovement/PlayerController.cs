@@ -20,31 +20,25 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckDistance = 0.05f;
     private BoxCollider groundCheckBox;
 
-
     #endregion
-
-   
-
     //Component references
-    public PlayerPhysicsSplit physics;
+    public PlayerPhysicsSplit physics { get; private set; }
     public Animator animator { get; private set; }
-    private Vector3 input;
-    private bool jump;
     private Transform cameraTransform;
-    private RaycastHit groundHitInfo;
-    
+
+    private RaycastHit groundHitInfo;  
     [HideInInspector] public Vector3 force;
+    private Vector3 input;
     private float xMove, zMove;
-    private bool surf = false;
+    private bool surfCamera = false;
     private float groundCheckBoxSize = 0.25f;
+
     void Awake()
     {
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PlayerPhysicsSplit>();
         groundCheckBox = GetComponentInChildren<BoxCollider>();
     }
-
-
     private void Update()
     {
         xMove = Input.GetAxisRaw("Horizontal");
@@ -53,8 +47,8 @@ public class PlayerController : MonoBehaviour
         Vector3 input =
         Vector3.right * xMove + 
         Vector3.forward * zMove;
-        //InputGrounded(input);
-        if(surf)
+
+        if(surfCamera)
             InputSurfGrounded(input);
         else
             InputGrounded(input);
@@ -67,7 +61,7 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        Jump();
+        IsGrounded();
         physics.AddForce(force);
         force = Vector3.zero;
     }
@@ -78,6 +72,7 @@ public class PlayerController : MonoBehaviour
         input = inp;
         if (input.magnitude > 1f)
         {
+            Debug.Log("surf grounded input, magnitude > 1");
             input.Normalize();
         }
         RotateInDirectionOfMovement();
@@ -105,27 +100,17 @@ public class PlayerController : MonoBehaviour
         else
             Accelerate();
     }
-    public void InputAirborne(Vector3 inp, bool airborne)
-    {
-        input = inp.normalized * airControl;
-        //PlayerDirection();
-        RotateInDirectionOfMovement();
-        AccelerateAirborne();
-    }
+
     private void Accelerate()
     {
         Vector3 inputXZ = new Vector3(input.x, 0, input.z);
         float dot = Vector3.Dot(inputXZ.normalized, physics.GetXZMovement().normalized);
 
         force = input * acceleration;
-        force -= (((dot - 1) * turnRate *  -physics.GetXZMovement().normalized) / 2);
+        force -= (((dot - 1) * turnRate *  -physics.GetXZMovement().normalized));
         //addera * turnSpeed av kraften vi precis tog bort, till v�r nya riktning.
         //g�r i princip att man sv�nger snabbare
-        force += (((dot - 1) * turnRate * retainedSpeedWhenTurning * -inputXZ.normalized) / 2);
-    }
-    private void AccelerateAirborne()
-    {
-        force = input * acceleration;
+        force += (((dot - 1) * turnRate * retainedSpeedWhenTurning * -inputXZ.normalized));
     }
     private void Decelerate()
     {
@@ -159,20 +144,14 @@ public class PlayerController : MonoBehaviour
 
         transform.Rotate(0, xMove * turnSpeed, 0);
     }
-    private void Jump()
-    {
-        if (jump)
-        {
-            force.y += jumpHeight / Time.fixedDeltaTime; jump = false;
-        }
-    }
+
 
     #endregion
 
 
     private void TransitionSurf()
     {
-        surf = !surf;
+        surfCamera = !surfCamera;
     }
     /// <summary>
     /// Boxcast to get a little thickness to the groundcheck so as to not get stuck in crevasses or similar geometry. 
@@ -193,12 +172,4 @@ public class PlayerController : MonoBehaviour
         return maxSpeed;
     }
 
-    public void SetJump()
-    {
-        jump = true;
-    }
-    private void OnDrawGizmos()
-    {
-        //Debug.DrawLine(transform.position, transform.position + physics.velocity, Color.red);
-    }
 }
