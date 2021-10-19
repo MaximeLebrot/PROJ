@@ -33,5 +33,6 @@ namespace DynamicCamera {
             transform.position = Vector3.Slerp(transform.position, target.position + offsetPosition, cameraData.movementSpeed * Time.deltaTime);
             
         }
+        
     }
 }

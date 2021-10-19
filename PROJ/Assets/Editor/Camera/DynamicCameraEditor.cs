@@ -7,6 +7,8 @@ public class DynamicCameraEditor : Editor {
     
     private SerializedObject serializedCameraBehaviour;
     private SerializedObject serializedCameraData;
+    
+    private SerializedProperty collisionLayerMaskProp;
     private SerializedProperty cameraData;
     private SerializedProperty targetProp;
     private SerializedProperty offsetProp;
@@ -19,43 +21,47 @@ public class DynamicCameraEditor : Editor {
     public override void OnInspectorGUI() {
         
         serializedCameraBehaviour.Update();
-        serializedCameraData.Update();
+        bool success = UpdateInspectorValues();
 
-        if (cameraData.objectReferenceValue == null) {
+
+        if (success == false) {
             DrawDefaultInspector();
             return;
         }
-        
-        EditorGUI.BeginChangeCheck();
 
+        serializedCameraData.Update();
         EGL.PropertyField(cameraData);
 
-        if (EditorGUI.EndChangeCheck())
-            UpdateInspectorValues();
 
         GUILayout.Space(15);
         
         EGL.PropertyField(targetProp);
+        EGL.PropertyField(collisionLayerMaskProp);
+        
+        GUILayout.Space(15);
+        
         EGL.PropertyField(offsetProp);
         EGL.PropertyField(movementSpeedProp);
         EGL.PropertyField(rotationSpeedProp);
         EGL.PropertyField(mouseSensitivityProp);
         
-        serializedCameraBehaviour.ApplyModifiedProperties();
+        
         serializedCameraData.ApplyModifiedProperties();
+        serializedCameraBehaviour.ApplyModifiedProperties();
     }
 
-    private void UpdateInspectorValues() {
+    private bool UpdateInspectorValues() {
         serializedCameraBehaviour = new SerializedObject(target);
 
-        cameraData = serializedObject.FindProperty("cameraBehaviour");
-        targetProp = serializedObject.FindProperty("target");
+        cameraData = serializedCameraBehaviour.FindProperty("cameraBehaviour");
+        targetProp = serializedCameraBehaviour.FindProperty("target");
+        collisionLayerMaskProp = serializedCameraBehaviour.FindProperty("layerMask");
 
         if (cameraData.objectReferenceValue == null)
-            return;
+            return false;
         
         SerializedObject cameraBehaviourObject = new SerializedObject(cameraData.objectReferenceValue); //Camera Data
-
+        
         SerializedProperty cameraDataProperty = cameraBehaviourObject.FindProperty("cameraData");
 
         serializedCameraData = new SerializedObject(cameraDataProperty.objectReferenceValue);
@@ -64,5 +70,9 @@ public class DynamicCameraEditor : Editor {
         movementSpeedProp = serializedCameraData.FindProperty("movementSpeed");
         rotationSpeedProp = serializedCameraData.FindProperty("rotationSpeed");
         mouseSensitivityProp = serializedCameraData.FindProperty("mouseSensitivity");
+
+        serializedCameraBehaviour.ApplyModifiedProperties();
+
+        return true;
     }
 }
