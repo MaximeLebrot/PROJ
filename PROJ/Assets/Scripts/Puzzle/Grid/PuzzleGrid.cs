@@ -86,8 +86,9 @@ public class PuzzleGrid : MonoBehaviour {
                 {
                     if (obj.CheckIfLineExists(line))
                     {
-                        //Debug.Log("This line already exists");
-                        Destroy(newLineRenderer);
+                        Debug.Log("This line already exists");
+                        Destroy(newLineRenderer.gameObject);
+                        Destroy(line.line.gameObject);
                         return;
                     }
 
@@ -164,6 +165,7 @@ public class LineObject
     }
     public bool CheckIfLineExists(LineObject other)
     {
+        //THIS IS NOT ACCURATE ENOUGH compare the nodes instead!
         List<Vector3> thisPos = new List<Vector3>();
         for(int i = 0; i < 2; i++)
         {

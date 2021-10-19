@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace DynamicCamera {
     
@@ -9,7 +10,18 @@ namespace DynamicCamera {
         private const string YRotationInputName = "Mouse X";
     
         private Vector2 input;
-        
+        private InputMaster inputMaster;
+
+        private void OnEnable()
+        {
+            inputMaster = new InputMaster();
+            inputMaster.Enable();
+        }
+        private void OnDisable()
+        {
+            inputMaster.Disable();
+        }
+
         public override void ExecuteBehaviour(Transform cameraTransform, Transform target) {
             GetInput();
             RotateCamera(cameraTransform);
@@ -17,31 +29,22 @@ namespace DynamicCamera {
         }
         
         private void GetInput() {
-            input.x -= Input.GetAxis(XRotationInputName) * CameraData.MouseSensitivity;
-            input.y += Input.GetAxis(YRotationInputName) * CameraData.MouseSensitivity;
+            input.x -= inputMaster.Player.MoveCamera.ReadValue<Vector2>().y * cameraData.mouseSensitivity;
+            input.y += inputMaster.Player.MoveCamera.ReadValue<Vector2>().x * cameraData.mouseSensitivity;
 
             input.x = Mathf.Clamp(input.x, -80, 80);
         }
         
         private void RotateCamera(Transform transform) {
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(input.x, input.y, 0), CameraData.RotationSpeed * Time.time);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(input.x, input.y, 0), cameraData.rotationSpeed * Time.time);
         }
 
         private void MoveCamera(Transform transform, Transform target) {
+            Vector3 offsetPosition = transform.rotation * cameraData.offset;
 
-            Vector3 collisionOffset = transform.rotation * CameraData.Offset;
+            transform.position = Vector3.Slerp(transform.position, target.position + offsetPosition, cameraData.movementSpeed * Time.deltaTime);
             
-            if (Physics.SphereCast(target.position, CameraData.Collider.radius, collisionOffset.normalized, out RaycastHit hitInfo, collisionOffset.magnitude, CameraData.CollisionMask)) {
-
-                Vector3 projectOnPlane = Vector3.ProjectOnPlane(collisionOffset, hitInfo.normal);
-
-                collisionOffset = projectOnPlane;
-
-            }
-
-            Debug.DrawLine(target.position, target.position + collisionOffset, Color.red);
-            transform.position = Vector3.Slerp(transform.position, target.position + collisionOffset, CameraData.MovementSpeed * Time.deltaTime);    
-
         }
+        
     }
 }

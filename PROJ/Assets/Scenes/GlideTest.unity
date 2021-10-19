@@ -620,39 +620,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1478064848147924391, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
       propertyPath: states.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1478064848147924391, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: states.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 0d38e3e091434a548bf9edf9f4ce28d4, type: 2}
-    - target: {fileID: 1478064848147924391, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: states.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 8a2538c6844338c459f3063ce4b0af1c, type: 2}
-    - target: {fileID: 1478064848147924391, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: states.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: 8a2538c6844338c459f3063ce4b0af1c, type: 2}
-    - target: {fileID: 1478064848147924391, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: controllerValues.Array.size
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1478064848147924391, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: controllerValues.Array.data[0]
+      propertyPath: states.Array.data[2]
       value: 
-      objectReference: {fileID: 11400000, guid: ede1155289adbad459ea3f0f7bd44a5f, type: 2}
-    - target: {fileID: 1478064848147924391, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: controllerValues.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 1c86d9228b43e8c40a6a34963bc366f3, type: 2}
-    - target: {fileID: 1478064848147924391, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: controllerValues.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: b13653734636c2a438782ec4917610f9, type: 2}
-    - target: {fileID: 2677558544307140233, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: m_Layer
-      value: 6
+      objectReference: {fileID: 11400000, guid: e5df94585b9645644af99a94c203b460, type: 2}
+    - target: {fileID: 2677558544307140235, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2677558544405405541, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
       propertyPath: m_RootOrder
@@ -698,96 +674,24 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2677558544405405542, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2677558544405405542, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: skinWidth
-      value: 0.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 2677558544405405542, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: walkGravity
-      value: 9.81
-      objectReference: {fileID: 0}
-    - target: {fileID: 2677558544405405542, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: glideGravity
-      value: 18
-      objectReference: {fileID: 0}
-    - target: {fileID: 2677558544405405542, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: walkMaxSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2677558544405405542, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: glideMaxSpeed
-      value: 35
-      objectReference: {fileID: 0}
-    - target: {fileID: 2677558544405405542, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: surfThreshold
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2677558544405405542, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: walkAirResistance
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2677558544405405542, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: gravityWhenFalling
-      value: 9.81
-      objectReference: {fileID: 0}
-    - target: {fileID: 2677558544405405542, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: walkStaticFriction
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2677558544405405542, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: walkKineticFriction
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 2677558544405405545, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2677558544405405545, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
       propertyPath: turnSpeed
-      value: 1
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 2677558544405405545, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
       propertyPath: acceleration
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 2677558544405405545, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: deceleration
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2677558544405405545, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: groundCheckMask.m_Bits
-      value: 183
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 2677558544405405545, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
       propertyPath: retainedSpeedWhenTurning
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 2677558544405405546, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2677558544405405547, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 0c56e9d245e2f9941b704674d4a5583d, type: 2}
     - target: {fileID: 2677558544405405551, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
       propertyPath: m_Name
       value: Player (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 2677558544405405551, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2677558544405405551, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 0}
+    - {fileID: 2677558544307140235, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
 --- !u!1 &1524135095
 GameObject:
