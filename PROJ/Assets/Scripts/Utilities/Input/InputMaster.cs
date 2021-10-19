@@ -113,9 +113,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""125b7564-f804-44d0-aeb7-1768ea5c58d0"",
-                    ""path"": ""<Mouse>/position"",
+                    ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""NormalizeVector2"",
                     ""groups"": ""Stnd KBM"",
                     ""action"": ""MoveCamera"",
                     ""isComposite"": false,

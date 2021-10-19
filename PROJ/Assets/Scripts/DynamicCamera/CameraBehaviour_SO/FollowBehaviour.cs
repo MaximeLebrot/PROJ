@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace DynamicCamera {
     
@@ -9,7 +10,18 @@ namespace DynamicCamera {
         private const string YRotationInputName = "Mouse X";
     
         private Vector2 input;
-        
+        private InputMaster inputMaster;
+
+        private void OnEnable()
+        {
+            inputMaster = new InputMaster();
+            inputMaster.Enable();
+        }
+        private void OnDisable()
+        {
+            inputMaster.Disable();
+        }
+
         public override void ExecuteBehaviour(Transform cameraTransform, Transform target) {
             GetInput();
             RotateCamera(cameraTransform);
@@ -17,8 +29,8 @@ namespace DynamicCamera {
         }
         
         private void GetInput() {
-            input.x -= Input.GetAxis(XRotationInputName) * cameraData.mouseSensitivity;
-            input.y += Input.GetAxis(YRotationInputName) * cameraData.mouseSensitivity;
+            input.x -= inputMaster.Player.MoveCamera.ReadValue<Vector2>().y * cameraData.mouseSensitivity;
+            input.y += inputMaster.Player.MoveCamera.ReadValue<Vector2>().x * cameraData.mouseSensitivity;
 
             input.x = Mathf.Clamp(input.x, -80, 80);
         }

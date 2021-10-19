@@ -11,18 +11,35 @@ public abstract class Puzzle : MonoBehaviour
     [SerializeField] protected string solution;
     [SerializeField] private string playerInput = "";
 
-    protected PuzzleTranslator translator = new PuzzleTranslator();
+    protected PuzzleTranslator translator = new PuzzleTranslator(); 
+    
+    private InputMaster inputMaster;
+
+    void Awake()
+    {
+        inputMaster = new InputMaster();
+    }
+
+    private void OnEnable()
+    {
+        inputMaster.Enable();
+    }
+    private void OnDisable()
+    {
+        inputMaster.Disable();
+    }
+
     protected void Translate(List<PuzzleObject> objects) { solution = translator.CalculateSolution(puzzleObjects); }
 
     private void Update()
     {
-        /*
-        if (Input.GetKeyDown(KeyCode.Space))
+        
+        if (inputMaster.PuzzleDEBUGGER.calculatesolution.triggered)
         {
             solution = "";
             Translate(puzzleObjects);
         }
-        */
+        
     }
 
     public void AddInput(char c)
