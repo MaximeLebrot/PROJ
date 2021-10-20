@@ -1,9 +1,7 @@
-using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-[CreateAssetMenu(menuName = "Camera/Camera Behaviours/PuzzleBehaviour", fileName = "Puzzle Behaviour")]
-public class PuzzleBehaviour : CameraBehaviour {
+[CreateAssetMenu(menuName = "Camera/Camera Behaviours/World Behaviour", fileName = "World Behaviour")]
+public class WorldBehaviour : CameraBehaviour {
     
     [SerializeField] private Vector3 offset;
 

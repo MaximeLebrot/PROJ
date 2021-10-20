@@ -1,10 +1,8 @@
-using System;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Camera/Camera Behaviours/WorldBehaviour", fileName = "World Behaviour")]
-public class WorldBehaviour : CameraBehaviour {
+[CreateAssetMenu(menuName = "Camera/Camera Behaviours/Puzzle Behaviour (no rotation)", fileName = "Puzzle Behaviour")]
+public class PuzzleBehaviour : CameraBehaviour {
     
-    [SerializeField] private Transform target;
     [SerializeField] private Vector3 offset;
     [SerializeField] private Vector3 eulerRotation;
 
@@ -15,7 +13,7 @@ public class WorldBehaviour : CameraBehaviour {
     
     public override void Behave() {
                 
-        transform.position = Vector3.SmoothDamp(transform.position, target.position + offset, ref velocity, travelTime, maxSpeed);
+        transform.position = Vector3.SmoothDamp(transform.position, followTarget.position + offset, ref velocity, travelTime, maxSpeed);
         
         transform.eulerAngles = eulerRotation;
     }

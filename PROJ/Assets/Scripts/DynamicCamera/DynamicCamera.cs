@@ -10,27 +10,38 @@ namespace DynamicCamera {
         private Transform followTarget;
 
         [SerializeField] private Transform eyeTarget;
-        [SerializeField] private CameraBehaviour cameraBehaviour;
+        [SerializeField] private CameraBehaviour puzzleCamera;
+        [SerializeField] private CameraBehaviour worldBehaviourCamera;
+        
+        private CameraBehaviour currentCameraBehaviour;
+        
         
         private InputMaster inputMaster;
 
         private void Awake() {
             inputMaster = new InputMaster();
             inputMaster.Enable();
-            cameraBehaviour.Initialize(transform);
-            cameraBehaviour.AssignTarget(followTarget);
-            
+            currentCameraBehaviour = worldBehaviourCamera;
+            currentCameraBehaviour.Initialize(transform);
+            currentCameraBehaviour.AssignTarget(followTarget);
         }
 
         private void OnEnable() {
-            EventHandler<StartPuzzleEvent>.RegisterListener(puzzle => Debug.Log("hi"));
+            EventHandler<StartPuzzleEvent>.RegisterListener(ChangeToPuzzleCamera);
         }
 
-        private void LateUpdate() => cameraBehaviour.Behave();
 
+        private void ChangeToPuzzleCamera(StartPuzzleEvent startPuzzleEvent) {
+            currentCameraBehaviour = puzzleCamera;
+            currentCameraBehaviour.Initialize(transform);
+            currentCameraBehaviour.AssignTarget(followTarget);
+        }
+        
+        private void LateUpdate() => currentCameraBehaviour.Behave();
+        
         private CameraBehaviour ChangeBehaviour(CameraBehaviour newCameraBehaviour) {
-            cameraBehaviour = newCameraBehaviour;
-            return cameraBehaviour;
+            currentCameraBehaviour = newCameraBehaviour;
+            return currentCameraBehaviour;
         }
         
         
