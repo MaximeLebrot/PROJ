@@ -7,15 +7,7 @@ public class LanguagePuzzle : Puzzle
 {
     //Place the symbols at the puzzle locations
     private List<Transform> symbolPositions = new List<Transform>();
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            PlaceSymbols();
-            solution = "";
-            Translate(puzzleObjects);
-        }
-    }
+    
 
     private void PlaceSymbols()
     {
