@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace DynamicCamera {
     
@@ -44,7 +40,6 @@ namespace DynamicCamera {
             GetInput();
             RotateCamera();
             MoveCamera();
-            
             CheckForTerrainHeight();
         }
         
@@ -80,6 +75,19 @@ namespace DynamicCamera {
         }
 
         private void OnApplicationFocus(bool hasFocus) => Cursor.lockState = hasFocus ? CursorLockMode.Locked : CursorLockMode.None;
+
+        [ContextMenu("Auto-assign targets")]
+        public void AssignTargets() {
+            try {
+                followTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
+                eyeTarget = GameObject.FindWithTag("EyeTarget").transform;
+            } catch (NullReferenceException e) {
+
+                Debug.Log("Couldn't find one or all targets, check if they have the right tag");
+            }
+            
+            
+        }
         
     }
     
