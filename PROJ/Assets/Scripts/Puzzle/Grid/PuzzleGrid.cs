@@ -16,7 +16,6 @@ public class PuzzleGrid : MonoBehaviour {
     private string solution;
     private List<Node> allNodes = new List<Node>();
 
-    //Needs method for clearing the puzzle. FOR WINNERS AND FOR LOSERS
 
     public string GetSolution() { return solution; }
     
@@ -24,15 +23,15 @@ public class PuzzleGrid : MonoBehaviour {
     private void Awake() {
 
         StartGrid();
-        
     }
+
 
     private void StartGrid()
     {
 
         allNodes.AddRange(transform.GetComponentsInChildren<Node>());
 
-        Debug.Log(allNodes.Count);
+
         Node startNode = currentNode = FindStartNode(ref allNodes);
 
         width = CalculateWidth(ref allNodes);
@@ -171,9 +170,7 @@ public class PuzzleGrid : MonoBehaviour {
 
     public void ResetGrid()
     {
-        Debug.Log("Reset grid");
         solution = "";
-
         foreach (LineObject line in lineRenderers)
         {
             Destroy(line.line);
