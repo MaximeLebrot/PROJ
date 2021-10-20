@@ -91,18 +91,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49d29cb9dc82a7c48a512dc590d91014, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 1
-  offset: {x: 0, y: 2, z: -3}
-  xClamp: {x: -40, y: 40}
-  rotationSpeed: 13.55
-  highestSlopeThreshold: 0.952
-  maxYHeight: 0
-  lowestSlopeThreshold: 0.852
-  mouseSensitivity: 1
-  travelTime: 0.2
+  followTarget: {fileID: 0}
+  eyeTarget: {fileID: 0}
+  puzzleCamera: {fileID: 11400000, guid: a279b70b4cb03d5479c648d12227b34b, type: 2}
+  worldBehaviourCamera: {fileID: 11400000, guid: 6731b07f6d6646943a7b634c0f7cda58, type: 2}
 --- !u!81 &2184620921574008165
 AudioListener:
   m_ObjectHideFlags: 0
