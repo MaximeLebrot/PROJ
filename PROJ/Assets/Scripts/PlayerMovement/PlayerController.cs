@@ -5,20 +5,21 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     #region Parameters exposed in the inspector
-    [Header("Player Control")]
-    [SerializeField] private float jumpHeight = 5f;
+    [Header("Player Control")]  
     [SerializeField] private float acceleration = 5f;
     [SerializeField] private float deceleration = 2f;
-    [SerializeField] private float airControl = 0.2f;
+    
     [SerializeField] private float maxSpeed = 5f;
     [SerializeField] private float turnRate = 4f;
     [SerializeField] private float turnSpeed; 
     [SerializeField] private float retainedSpeedWhenTurning = 0.33f;
+    //[SerializeField] private float airControl = 0.2f;
+    //[SerializeField] private float jumpHeight = 5f;
 
     [Header("GroundCheck")]
     [SerializeField] private LayerMask groundCheckMask;
     [SerializeField] private float groundCheckDistance = 0.05f;
-    private BoxCollider groundCheckBox;
+
 
     #endregion
     //Component references
@@ -42,7 +43,6 @@ public class PlayerController : MonoBehaviour
 
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PlayerPhysicsSplit>();
-        groundCheckBox = GetComponentInChildren<BoxCollider>();
     }
 
     private void OnEnable()

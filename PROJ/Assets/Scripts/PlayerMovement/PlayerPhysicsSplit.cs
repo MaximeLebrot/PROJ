@@ -13,9 +13,9 @@ public class PlayerPhysicsSplit : MonoBehaviour
     [Header("Values")]    
     [SerializeField] protected float skinWidth = 0.05f;
     [SerializeField] private float inputThreshold = 0.1f;
-    [SerializeField] private float gravityWhenFalling = 10f;
     [SerializeField] private float currentGravity;
     [SerializeField] private LayerMask collisionMask;
+    //[SerializeField] private float gravityWhenFalling = 10f;
 
     public float SurfThreshold { get => surfThreshold; }
 

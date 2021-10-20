@@ -25,7 +25,6 @@ public class PuzzlePlayerController : MonoBehaviour
     private Vector3 input;
     private float xMove, zMove;
     private RaycastHit groundHitInfo;
-    private float groundCheckBoxSize = 0.25f;
 
     private InputMaster inputMaster;
     
