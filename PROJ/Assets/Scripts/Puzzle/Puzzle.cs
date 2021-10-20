@@ -59,7 +59,6 @@ public class Puzzle : MonoBehaviour
             sb.Append(playerInput[i]);
         }
     }
-
     public void EvaluateSolution(EvaluateSolutionEvent eve)
     {
         //Should be in OnEnable but is here for Development and debugging
@@ -80,6 +79,7 @@ public class Puzzle : MonoBehaviour
         }
             
     }
+    public int GetPuzzleID() { return puzzleID; }
 
 }
 

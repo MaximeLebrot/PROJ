@@ -22,16 +22,20 @@ public class MetaPlayerController : MonoBehaviour
         playerController3D = GetComponent<PlayerController>();
         puzzleController = GetComponent<PuzzlePlayerController>();
         stateMachine = new StateMachine(this, states);
-
     }
     private void OnEnable()
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
         EventHandler<ExitPuzzleEvent>.RegisterListener(EndPuzzle);
     }
+    private void OnDisable()
+    {
+        EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
+        EventHandler<EndPuzzleEvent>.UnregisterListener(EndPuzzle);
+    }
     private void StartPuzzle(StartPuzzleEvent spe)
     {
-        //pos puzzle id 
+        Debug.Log("MetaplayerController recieved StartPuzzleEvent");
         stateMachine.ChangeState<PuzzleState>();
     }
     private void EndPuzzle(ExitPuzzleEvent spe)
@@ -42,15 +46,5 @@ public class MetaPlayerController : MonoBehaviour
     private void Update()
     {
         stateMachine.RunUpdate();
-        /*
-        if (Input.GetKeyDown(KeyCode.P))
-            EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent());
-        if (Input.GetKeyDown(KeyCode.O))
-            EventHandler<EndPuzzleEvent>.FireEvent(new EndPuzzleEvent());
-        */
-    }
-    private void FixedUpdate()
-    {
-        
     }
 }
