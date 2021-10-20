@@ -5,10 +5,10 @@ using UnityEditor;
 using UnityEditorInternal;
 using EGL = UnityEditor.EditorGUILayout;
 
-[CustomEditor(typeof(WindPuzzle))]
-public class WindPuzzleEditor : Editor
+[CustomEditor(typeof(Puzzle))]
+public class PuzzleEditor : Editor
 {
-    WindPuzzle serObj;
+    Puzzle serObj;
     SerializedProperty puzzleObjects;
     SerializedProperty solution;
     string[] strings;
