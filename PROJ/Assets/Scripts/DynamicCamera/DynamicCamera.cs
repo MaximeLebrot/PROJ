@@ -7,69 +7,59 @@ namespace DynamicCamera {
         
         [SerializeField]
         [Tooltip("IF PLAYER IS TARGET: Assign an empty transform as a child to the player , not the actual player")] 
-        private Transform target;
-        
-        [SerializeField] private LayerMask layerMask;
+        private Transform followTarget;
 
-        [SerializeField] private Vector3 offset;
-        [SerializeField] private Vector2 xClamp;
-        [SerializeField] [Range(0, 20)] private float rotationSpeed;
-        [SerializeField] private float mouseSensitivity;
+        [SerializeField] private Transform eyeTarget;
+        [SerializeField] private CameraBehaviour puzzleCamera;
+        [SerializeField] private CameraBehaviour worldBehaviourCamera;
         
-        [SerializeField]
-        [Tooltip("The lower the value the faster the camera moves")] 
-        private float travelTime;
-
-        private Vector2 input;
-        private Vector3 velocity;
+        private CameraBehaviour currentCameraBehaviour;
+        
         
         private InputMaster inputMaster;
-
 
         private void Awake() {
             inputMaster = new InputMaster();
             inputMaster.Enable();
+            currentCameraBehaviour = worldBehaviourCamera;
+            currentCameraBehaviour.Initialize(transform);
+            currentCameraBehaviour.AssignTarget(followTarget);
+        }
+
+        private void OnEnable() {
+            EventHandler<StartPuzzleEvent>.RegisterListener(ChangeToPuzzleCamera);
+        }
+
+
+        private void ChangeToPuzzleCamera(StartPuzzleEvent startPuzzleEvent) {
+            currentCameraBehaviour = puzzleCamera;
+            currentCameraBehaviour.Initialize(transform);
+            currentCameraBehaviour.AssignTarget(followTarget);
         }
         
-        private void LateUpdate() {
-            GetInput();
-            RotateCamera();
-            MoveCamera();
+        private void LateUpdate() => currentCameraBehaviour.Behave();
+        
+        private CameraBehaviour ChangeBehaviour(CameraBehaviour newCameraBehaviour) {
+            currentCameraBehaviour = newCameraBehaviour;
+            return currentCameraBehaviour;
+        }
+        
+        
+        private void OnApplicationFocus(bool hasFocus) => Cursor.lockState = hasFocus ? CursorLockMode.Locked : CursorLockMode.None;
+
+        [ContextMenu("Auto-assign targets")]
+        public void AssignTargets() {
+            try {
+                followTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
+                eyeTarget = GameObject.FindWithTag("EyeTarget").transform;
+            } catch (NullReferenceException e) {
+
+                Debug.Log("Couldn't find one or all targets, check if they have the right tag");
+            }
             
-            CheckForTerrainHeight();
             
         }
         
-        private void GetInput() {
-
-            input.x -= inputMaster.Player.MoveCamera.ReadValue<Vector2>().y * mouseSensitivity;
-            input.y += inputMaster.Player.MoveCamera.ReadValue<Vector2>().x * mouseSensitivity;
-
-            input.x = Mathf.Clamp(input.x, xClamp.x, xClamp.y);
-        }
-        
-        private void RotateCamera() {
-            target.localRotation = Quaternion.Lerp(target.localRotation, Quaternion.Euler(input.x, input.y, 0), rotationSpeed * Time.deltaTime);
-            transform.rotation = target.localRotation;
-        }
-
-        private void MoveCamera() {
-
-            Vector3 collisionOffset = transform.rotation * offset;
-            
-            transform.position = Vector3.SmoothDamp(transform.position, target.position + collisionOffset, ref velocity, travelTime, 100, Time.deltaTime);
-
-        }
-
-        private void CheckForTerrainHeight() {
-            Physics.Raycast(target.position, target.forward + new Vector3(0, -1 ,0), out var hit, 10,  layerMask);
-            
-            Debug.DrawRay(target.position, target.forward + new Vector3(transform.forward.x, transform.forward.y -.5f, transform.forward.z), Color.red);
-        }
-
-        private void OnApplicationFocus(bool hasFocus) {
-            Cursor.lockState = hasFocus ? CursorLockMode.Locked : CursorLockMode.None;
-        }
     }
     
     
