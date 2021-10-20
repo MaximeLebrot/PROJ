@@ -31,7 +31,7 @@ public class MetaPlayerController : MonoBehaviour
     private void OnDisable()
     {
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
-        EventHandler<EndPuzzleEvent>.UnregisterListener(EndPuzzle);
+        EventHandler<ExitPuzzleEvent>.UnregisterListener(EndPuzzle);
     }
     private void StartPuzzle(StartPuzzleEvent spe)
     {
