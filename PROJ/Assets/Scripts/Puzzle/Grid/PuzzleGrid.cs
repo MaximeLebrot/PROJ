@@ -17,7 +17,7 @@ public class PuzzleGrid : MonoBehaviour {
     private List<Node> allNodes = new List<Node>();
 
 
-    public string GetSolution() { return solution; }
+    public string GetSolution() { return PuzzleHelper.SkipFirstChar(solution); }
     
     
     private void Awake() {
@@ -109,7 +109,7 @@ public class PuzzleGrid : MonoBehaviour {
         }
 
         //THIS SHOULD BE DONE IN GETSOLUTION()
-        if (lineRenderers.Count > 1) 
+        if (lineRenderers.Count > 0) 
             solution += PuzzleHelper.TranslateInput(node, currentNode); 
 
         currentNode = node;

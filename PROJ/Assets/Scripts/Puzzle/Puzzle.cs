@@ -70,6 +70,7 @@ public class Puzzle : MonoBehaviour
         solution = "";
         Translate(puzzleObjects);
 
+        Debug.Log("Solution: " + solution + " INPUT : " + grid.GetSolution());
         if (solution.Equals(grid.GetSolution()))
         {
             

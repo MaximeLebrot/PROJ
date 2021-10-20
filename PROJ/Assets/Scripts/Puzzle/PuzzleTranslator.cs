@@ -33,12 +33,12 @@ public class PuzzleTranslator
             switch (translations[i][0])
             {
                 case 'Q':
-                    newString = SkipFirstChar(oldString);
+                    newString = PuzzleHelper.SkipFirstChar(oldString);
                     translations[i] = PuzzleHelper.RotateSymbols(newString);
                     break;
 
                 case 'R':
-                    newString = SkipFirstChar(oldString);
+                    newString = PuzzleHelper.SkipFirstChar(oldString);
                     translations[i] = newString;
                     translations.Insert(i + 1, newString);
                     i++;
@@ -49,7 +49,7 @@ public class PuzzleTranslator
                     break;
 
                 case 'M':
-                    newString = SkipFirstChar(oldString);
+                    newString = PuzzleHelper.SkipFirstChar(oldString);
                     translations[i] = PuzzleHelper.MirrorSymbols(newString);
                     break;
 
@@ -101,15 +101,7 @@ public class PuzzleTranslator
         #endregion
     }
 
-    protected string SkipFirstChar(string s)
-    {
-        StringBuilder sb = new StringBuilder();
-        for (int j = 1; j < s.Length; j++)
-        {
-            sb.Append(s[j]);
-        }
-        return sb.ToString();
-    }
+    
 
     /*
     private void FindLoop(int index)
@@ -132,10 +124,18 @@ public class PuzzleTranslator
 
 public static class PuzzleHelper
 {
-
+    public static string SkipFirstChar(string s)
+    {
+        StringBuilder sb = new StringBuilder();
+        for (int j = 1; j < s.Length; j++)
+        {
+            sb.Append(s[j]);
+        }
+        return sb.ToString();
+    }
     public static char TranslateInput(Node aNode, Node bNode)
     {
-        char c = '0';
+        char c = '-';
         Vector3 a = aNode.transform.position;
         Vector3 b = bNode.transform.position;
 
