@@ -17,7 +17,10 @@ public class PuzzleGrid : MonoBehaviour {
     private List<Node> allNodes = new List<Node>();
 
 
-    public string GetSolution() { return PuzzleHelper.SkipFirstChar(solution); }
+    public string GetSolution() 
+    { 
+        return solution[0] == '-' ? PuzzleHelper.SkipFirstChar(solution) : solution;
+    }
     
     
     private void Awake() {
@@ -77,6 +80,10 @@ public class PuzzleGrid : MonoBehaviour {
             currentNode.EnabledNodes.Clear();
 
             //REMOVE LAST CHAR IN SOLUTION OR CALCULATE EVERYTHING AFTERWARDS
+            Debug.Log(solution);
+            solution = PuzzleHelper.RemoveLastChar(solution);
+            Debug.Log(solution);
+
             node.RemoveLineToNode(currentNode);
             currentNode.RemoveLineToNode(node);
             currentNode = node;

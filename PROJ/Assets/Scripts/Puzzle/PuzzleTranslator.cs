@@ -133,6 +133,16 @@ public static class PuzzleHelper
         }
         return sb.ToString();
     }
+
+    public static string RemoveLastChar(string s)
+    {
+        StringBuilder sb = new StringBuilder();
+        for (int j = 0; j < s.Length - 1; j++)
+        {
+            sb.Append(s[j]);
+        }
+        return sb.ToString();
+    }
     public static char TranslateInput(Node aNode, Node bNode)
     {
         char c = '-';
