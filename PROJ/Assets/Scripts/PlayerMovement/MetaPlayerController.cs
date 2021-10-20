@@ -9,6 +9,8 @@ public class MetaPlayerController : MonoBehaviour
     public PlayerController playerController3D { get; private set; }
     public PuzzlePlayerController puzzleController { get; private set; }
 
+
+
     //StateMachine
     private StateMachine stateMachine;
     [SerializeField] private PlayerState[] states;
@@ -35,7 +37,8 @@ public class MetaPlayerController : MonoBehaviour
     }
     private void StartPuzzle(StartPuzzleEvent spe)
     {
-        Debug.Log("MetaplayerController recieved StartPuzzleEvent");
+        puzzleController.CurrentPuzzleID = spe.info.ID;
+       
         stateMachine.ChangeState<PuzzleState>();
     }
     private void EndPuzzle(ExitPuzzleEvent spe)

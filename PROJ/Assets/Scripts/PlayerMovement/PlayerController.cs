@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
 
     private InputMaster inputMaster;
 
+    
     void Awake()
     {
         inputMaster = new InputMaster();
@@ -69,6 +70,8 @@ public class PlayerController : MonoBehaviour
             InputSurfGrounded(input);
         else
             InputGrounded(input);
+
+     
 
     }
     private void FixedUpdate()
