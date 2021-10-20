@@ -7,7 +7,9 @@ namespace DynamicCamera {
         
         [SerializeField]
         [Tooltip("IF PLAYER IS TARGET: Assign an empty transform as a child to the player , not the actual player")] 
-        private Transform target;
+        private Transform followTarget; 
+        
+        [SerializeField] private Transform eyeTarget;
         
         [SerializeField] private LayerMask layerMask;
 
@@ -49,22 +51,22 @@ namespace DynamicCamera {
         }
         
         private void RotateCamera() {
-            target.localRotation = Quaternion.Lerp(target.localRotation, Quaternion.Euler(input.x, input.y, 0), rotationSpeed * Time.deltaTime);
-            transform.rotation = target.localRotation;
+            followTarget.rotation = Quaternion.Lerp(followTarget.rotation, Quaternion.Euler(input.x, input.y, 0), rotationSpeed * Time.deltaTime);
+            transform.rotation = followTarget.localRotation;
         }
 
         private void MoveCamera() {
 
             Vector3 collisionOffset = transform.rotation * offset;
             
-            transform.position = Vector3.SmoothDamp(transform.position, target.position + collisionOffset, ref velocity, travelTime, 100, Time.deltaTime);
+            transform.position = Vector3.SmoothDamp(transform.position, followTarget.position + collisionOffset, ref velocity, travelTime, 100, Time.deltaTime);
 
         }
 
         private void CheckForTerrainHeight() {
-            Physics.Raycast(target.position, target.forward + new Vector3(0, -1 ,0), out var hit, 10,  layerMask);
+            Physics.Raycast(eyeTarget.position, eyeTarget.forward - eyeTarget.up, out var hit, 10,  layerMask);
             
-            Debug.DrawRay(target.position, target.forward + new Vector3(transform.forward.x, transform.forward.y -.5f, transform.forward.z), Color.red);
+            Debug.DrawRay(eyeTarget.position, eyeTarget.forward - eyeTarget.up, Color.red);
         }
 
         private void OnApplicationFocus(bool hasFocus) {
