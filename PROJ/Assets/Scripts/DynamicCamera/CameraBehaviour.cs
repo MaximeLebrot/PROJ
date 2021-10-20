@@ -2,9 +2,11 @@ using UnityEngine;
 
 public abstract class CameraBehaviour : ScriptableObject {
 
-    public Transform target;
+    protected Transform followTarget;
+    protected Transform transform;
+    public void AssignTarget(Transform newTarget) => followTarget = newTarget;
 
-    public void AssignTarget(Transform newTarget) => target = newTarget;
+    public void Initialize(Transform objectTransform) => transform = objectTransform;
     
     public abstract void Behave();
 
