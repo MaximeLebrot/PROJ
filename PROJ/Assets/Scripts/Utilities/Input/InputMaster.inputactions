@@ -92,7 +92,7 @@
                     "path": "<Gamepad>/leftStick",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "xboxcontroller",
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -172,6 +172,17 @@
                 },
                 {
                     "devicePath": "<VirtualMouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        },
+        {
+            "name": "xboxcontroller",
+            "bindingGroup": "xboxcontroller",
+            "devices": [
+                {
+                    "devicePath": "<XboxOneGampadiOS>",
                     "isOptional": false,
                     "isOR": false
                 }

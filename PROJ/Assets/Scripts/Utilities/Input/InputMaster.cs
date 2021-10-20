@@ -105,7 +105,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""xboxcontroller"",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -185,6 +185,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 },
                 {
                     ""devicePath"": ""<VirtualMouse>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""xboxcontroller"",
+            ""bindingGroup"": ""xboxcontroller"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<XboxOneGampadiOS>"",
                     ""isOptional"": false,
                     ""isOR"": false
                 }
@@ -334,6 +345,15 @@ public class @InputMaster : IInputActionCollection, IDisposable
         {
             if (m_StndKBMSchemeIndex == -1) m_StndKBMSchemeIndex = asset.FindControlSchemeIndex("Stnd KBM");
             return asset.controlSchemes[m_StndKBMSchemeIndex];
+        }
+    }
+    private int m_xboxcontrollerSchemeIndex = -1;
+    public InputControlScheme xboxcontrollerScheme
+    {
+        get
+        {
+            if (m_xboxcontrollerSchemeIndex == -1) m_xboxcontrollerSchemeIndex = asset.FindControlSchemeIndex("xboxcontroller");
+            return asset.controlSchemes[m_xboxcontrollerSchemeIndex];
         }
     }
     public interface IPlayerActions
