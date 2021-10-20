@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+
 public class PuzzleStarter : MonoBehaviour
 {
     private Puzzle puzzle;
@@ -12,10 +10,14 @@ public class PuzzleStarter : MonoBehaviour
         puzzleID = puzzle.GetPuzzleID();
     }
 
+    
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Start Puzzle");
         EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzleID)));
+        
+        //StartPuzzleEvent skickas även när pusslet är igång, fix plz.
+        
     }
 
 }

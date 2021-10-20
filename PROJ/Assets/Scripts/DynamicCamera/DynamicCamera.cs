@@ -17,7 +17,6 @@ namespace DynamicCamera {
         
         private CameraBehaviour currentCameraBehaviour;
         
-        
         private InputMaster inputMaster;
 
         private void Awake() {
@@ -45,16 +44,27 @@ namespace DynamicCamera {
             newCameraBehaviour.Initialize(transform);
             newCameraBehaviour.AssignTarget(followTarget);
             transition.AssignFromAndTo(transform, transform.position, newCameraBehaviour.GetTransitPosition());
+            Debug.LogWarning("Run transition");
             await transition.BehaveAsync();
+            Debug.LogWarning("Transition done");
             ChangeBehaviour(newCameraBehaviour);
         }
+        
         
         private void ChangeBehaviour(CameraBehaviour newCameraBehaviour) {
             currentCameraBehaviour = newCameraBehaviour;
             currentCameraBehaviour.Initialize(transform);
             currentCameraBehaviour.AssignTarget(followTarget);
+            
+            
+            
         }
-        
+
+        private void AssignBehaviour(CameraBehaviour newCameraBehaviour) {
+            currentCameraBehaviour = newCameraBehaviour;
+            currentCameraBehaviour.Initialize(transform);
+            currentCameraBehaviour.AssignTarget(followTarget);
+        }
         
         private void OnApplicationFocus(bool hasFocus) => Cursor.lockState = hasFocus ? CursorLockMode.Locked : CursorLockMode.None;
 
@@ -72,8 +82,6 @@ namespace DynamicCamera {
         }
         
     }
-    
-    
     
 }
 

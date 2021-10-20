@@ -14,6 +14,6 @@ public class PuzzleBehaviour : CameraBehaviour {
                 
         transform.position = Vector3.SmoothDamp(transform.position, followTarget.position + offset, ref velocity, travelTime, maxSpeed);
         
-        transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, eulerRotation, rotationSpeed * Time.deltaTime);
+        transform.eulerAngles = eulerRotation;
     }
 }
