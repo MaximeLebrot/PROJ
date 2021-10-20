@@ -3,15 +3,12 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Camera/Camera Behaviours/World Behaviour", fileName = "World Behaviour")]
 public class WorldBehaviour : CameraBehaviour {
     
-    [SerializeField] private Vector3 offset;
-
     [SerializeField] private float mouseSensitivity;
     [SerializeField] private Vector2 clampValues;
     [SerializeField] private float rotationSpeed;
-        
-    [SerializeField]
-    [Tooltip("The lower the value the faster the camera moves")] 
-    private float travelTime;
+
+    [SerializeField] [Tooltip("The lower the value the faster the camera moves")] private float travelTime;
+    
     private Vector2 input;
     private Vector3 velocity;
     

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace DynamicCamera {
@@ -12,6 +13,7 @@ namespace DynamicCamera {
         [SerializeField] private Transform eyeTarget;
         [SerializeField] private CameraBehaviour puzzleCamera;
         [SerializeField] private CameraBehaviour worldBehaviourCamera;
+        [SerializeField] private BehaviourTransition puzzleTransition;
         
         private CameraBehaviour currentCameraBehaviour;
         
@@ -33,10 +35,19 @@ namespace DynamicCamera {
         }
 
         private void ChangeToWorldCamera(CompletePuzzleEvent startPuzzleEvent) => ChangeBehaviour(worldBehaviourCamera);
-        private void ChangeToWorldCamera(ExitPuzzleEvent exitPuzzleEvent) => ChangeBehaviour(worldBehaviourCamera);
-        private void ChangeToPuzzleCamera(StartPuzzleEvent startPuzzleEvent) => ChangeBehaviour(puzzleCamera);
+        private void ChangeToWorldCamera(ExitPuzzleEvent exitPuzzleEvent) => ChangeBehaviour(worldBehaviourCamera, puzzleTransition);
+        private void ChangeToPuzzleCamera(StartPuzzleEvent startPuzzleEvent) => ChangeBehaviour(puzzleCamera, puzzleTransition);
         
-        private void LateUpdate() => currentCameraBehaviour.Behave();
+        private void LateUpdate() => currentCameraBehaviour?.Behave();
+        
+        private async void ChangeBehaviour(CameraBehaviour newCameraBehaviour, BehaviourTransition transition) {
+            currentCameraBehaviour = null;
+            newCameraBehaviour.Initialize(transform);
+            newCameraBehaviour.AssignTarget(followTarget);
+            transition.AssignFromAndTo(transform, transform.position, newCameraBehaviour.GetTransitPosition());
+            await transition.BehaveAsync();
+            ChangeBehaviour(newCameraBehaviour);
+        }
         
         private void ChangeBehaviour(CameraBehaviour newCameraBehaviour) {
             currentCameraBehaviour = newCameraBehaviour;
