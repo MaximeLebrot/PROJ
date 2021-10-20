@@ -18,7 +18,7 @@ public class PuzzleState : PlayerState
     }
     public override void RunUpdate()
     {
-
+        //When do we leave puzzle state, only controlled by EndPuzzleEvent? 
     }
     public override void ExitState()
     {

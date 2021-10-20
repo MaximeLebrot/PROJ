@@ -31,6 +31,7 @@ public class PuzzlePlayerController : MonoBehaviour
 
     void Awake()
     {
+        inputMaster = new InputMaster();
         physics = GetComponent<PlayerPhysicsSplit>();
     }
     private void OnEnable()
@@ -43,7 +44,6 @@ public class PuzzlePlayerController : MonoBehaviour
     }
     private void Update()
     {
-
         xMove = inputMaster.Player.Movement.ReadValue<Vector2>().x;
         zMove = inputMaster.Player.Movement.ReadValue<Vector2>().y;
 
@@ -52,11 +52,6 @@ public class PuzzlePlayerController : MonoBehaviour
         Vector3.forward * zMove;
   
         HandleInput(input);
-
-        //For testing only
-        if (Input.GetKeyUp(KeyCode.G))
-            physics.ResetPosition();
-
     }
     private void FixedUpdate()
     {

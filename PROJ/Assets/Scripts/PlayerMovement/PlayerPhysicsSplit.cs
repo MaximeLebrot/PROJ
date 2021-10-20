@@ -87,7 +87,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
         Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, velocity.normalized, out RaycastHit smoothingCastHitInfo, castLength + smoothingMaxDistance, collisionMask);
         if (smoothingCastHitInfo.collider && smoothingCastHitInfo.collider.isTrigger == false)
         {
-            Vector3 smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, smoothingCastHitInfo.normal) * /*Mathf.Pow((*/(1 - smoothingCastHitInfo.distance / smoothingMaxDistance)/*), powerOf)*/;
+            Vector3 smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, smoothingCastHitInfo.normal) * Mathf.Pow(((1 - smoothingCastHitInfo.distance / smoothingMaxDistance)), powerOf);
             velocity += new Vector3(0, smoothingNormalForce.y, 0);
         }
 
