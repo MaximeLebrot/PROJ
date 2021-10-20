@@ -27,14 +27,14 @@ public class MetaPlayerController : MonoBehaviour
     private void OnEnable()
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
-        EventHandler<EndPuzzleEvent>.RegisterListener(EndPuzzle);
+        EventHandler<ExitPuzzleEvent>.RegisterListener(EndPuzzle);
     }
     private void StartPuzzle(StartPuzzleEvent spe)
     {
         //pos puzzle id 
         stateMachine.ChangeState<PuzzleState>();
     }
-    private void EndPuzzle(EndPuzzleEvent spe)
+    private void EndPuzzle(ExitPuzzleEvent spe)
     {
         stateMachine.ChangeState<WalkState>();
     }
