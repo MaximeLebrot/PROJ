@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Text;
 
-public abstract class Puzzle : MonoBehaviour
+public class Puzzle : MonoBehaviour
 {
     [SerializeField] int puzzleID; //should be compared to solution on a EvaluatePuzzleEvent and fire a SUCCESS EVENT or FAIL EVENT
 
@@ -42,7 +42,7 @@ public abstract class Puzzle : MonoBehaviour
         //SHOULD BE IN PLAYER FOR WHEN THEY WANT TO EVALUATE PUZZLE
         if (inputMaster.PuzzleDEBUGGER.calculatesolution.triggered)
         {
-            EventHandler<EvaluateSolutionEvent>.FireEvent(new EvaluateSolutionEvent());
+            EventHandler<EvaluateSolutionEvent>.FireEvent(new EvaluateSolutionEvent(new PuzzleInfo(puzzleID)));
         }
         
     }
@@ -59,20 +59,27 @@ public abstract class Puzzle : MonoBehaviour
             sb.Append(playerInput[i]);
         }
     }
-
     public void EvaluateSolution(EvaluateSolutionEvent eve)
     {
-        //Should be in OnEnable
+        //Should be in OnEnable but is here for Development and debugging
         solution = "";
         Translate(puzzleObjects);
 
         if (solution.Equals(grid.GetSolution()))
         {
-            Debug.Log("WIN");//Fire EndPuzzleEvent
+            
+            EventHandler<CompletePuzzleEvent>.FireEvent(new CompletePuzzleEvent(new PuzzleInfo(puzzleID)));
+            grid.CompleteGrid();
         }
         else
-            Debug.Log("LOSER");//Fire ResetPuzzleEvent
+        {
+            
+            EventHandler<ResetPuzzleEvent>.FireEvent(new ResetPuzzleEvent(new PuzzleInfo(puzzleID)));
+            grid.ResetGrid();
+        }
+            
     }
+    public int GetPuzzleID() { return puzzleID; }
 
 }
 

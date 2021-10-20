@@ -49,7 +49,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""id"": ""0bf53775-7fbe-4d75-929b-e14a8457f91b"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""NormalizeVector2"",
                     ""groups"": """",
                     ""action"": ""Movement"",
                     ""isComposite"": true,
@@ -101,6 +101,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""39ed72fd-1f47-4b07-9178-73b1dd2d1e78"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""xboxcontroller"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""5300fa11-f126-4697-8ccb-5020722b0397"",
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
@@ -116,6 +127,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
                     ""processors"": ""NormalizeVector2"",
+                    ""groups"": ""Stnd KBM"",
+                    ""action"": ""MoveCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1362b017-5dac-4a05-b539-af7917f1d25b"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
                     ""groups"": ""Stnd KBM"",
                     ""action"": ""MoveCamera"",
                     ""isComposite"": false,
@@ -163,6 +185,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 },
                 {
                     ""devicePath"": ""<VirtualMouse>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""xboxcontroller"",
+            ""bindingGroup"": ""xboxcontroller"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<XboxOneGampadiOS>"",
                     ""isOptional"": false,
                     ""isOR"": false
                 }
@@ -312,6 +345,15 @@ public class @InputMaster : IInputActionCollection, IDisposable
         {
             if (m_StndKBMSchemeIndex == -1) m_StndKBMSchemeIndex = asset.FindControlSchemeIndex("Stnd KBM");
             return asset.controlSchemes[m_StndKBMSchemeIndex];
+        }
+    }
+    private int m_xboxcontrollerSchemeIndex = -1;
+    public InputControlScheme xboxcontrollerScheme
+    {
+        get
+        {
+            if (m_xboxcontrollerSchemeIndex == -1) m_xboxcontrollerSchemeIndex = asset.FindControlSchemeIndex("xboxcontroller");
+            return asset.controlSchemes[m_xboxcontrollerSchemeIndex];
         }
     }
     public interface IPlayerActions

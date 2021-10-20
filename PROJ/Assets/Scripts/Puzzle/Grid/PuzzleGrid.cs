@@ -14,6 +14,7 @@ public class PuzzleGrid : MonoBehaviour {
     private Node currentNode;
 
     private string solution;
+    private List<Node> allNodes = new List<Node>();
 
     //Needs method for clearing the puzzle. FOR WINNERS AND FOR LOSERS
 
@@ -28,8 +29,6 @@ public class PuzzleGrid : MonoBehaviour {
 
     private void StartGrid()
     {
-        List<Node> allNodes = new List<Node>();
-
 
         allNodes.AddRange(transform.GetComponentsInChildren<Node>());
 
@@ -152,6 +151,45 @@ public class PuzzleGrid : MonoBehaviour {
             neighbour.gameObject.SetActive(true);
             neighbour.OnNodeSelected += AddSelectedNode;
         } 
+    }
+
+    public void CompleteGrid()
+    {
+        List<Node> finalNodes = new List<Node>();
+        Debug.Log("Save grid");
+        foreach(Node n in allNodes)
+        {
+            if (n.gameObject.activeSelf)
+                finalNodes.Add(n);
+
+            n.TurnOffCollider();
+        }
+
+        //SEND finalNodes and lineRenderers to some Persistance that can store the completed puzzles
+
+    }
+
+    public void ResetGrid()
+    {
+        Debug.Log("Reset grid");
+        solution = "";
+
+        foreach (LineObject line in lineRenderers)
+        {
+            Destroy(line.line);
+        }
+
+        lineRenderers.Clear();
+
+        foreach(Node n in allNodes)
+        {
+            n.ResetNeighbours();
+            n.gameObject.SetActive(false);
+        }
+
+        currentNode = FindStartNode(ref allNodes);
+        
+        currentNode.gameObject.SetActive(true);
     }
 
 }
