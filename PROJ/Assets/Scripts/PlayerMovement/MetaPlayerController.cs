@@ -28,14 +28,12 @@ public class MetaPlayerController : MonoBehaviour
     private void OnEnable()
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
-        EventHandler<CompletePuzzleEvent>.RegisterListener(CompletePuzzle);
-        EventHandler<ExitPuzzleEvent>.RegisterListener(EndPuzzle);
+        EventHandler<ExitPuzzleEvent>.RegisterListener(ExitPuzzle);
     }
     private void OnDisable()
     {
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
-        EventHandler<CompletePuzzleEvent>.UnregisterListener(CompletePuzzle);
-        EventHandler<ExitPuzzleEvent>.UnregisterListener(EndPuzzle);
+        EventHandler<ExitPuzzleEvent>.UnregisterListener(ExitPuzzle);
     }
     private void StartPuzzle(StartPuzzleEvent spe)
     {
@@ -43,12 +41,8 @@ public class MetaPlayerController : MonoBehaviour
        
         stateMachine.ChangeState<PuzzleState>();
     }
-    private void EndPuzzle(ExitPuzzleEvent spe)
-    {
-        stateMachine.ChangeState<WalkState>();
-    }
 
-    public void CompletePuzzle(CompletePuzzleEvent eve)
+    public void ExitPuzzle(ExitPuzzleEvent eve)
     {
         stateMachine.ChangeState<WalkState>();
     }

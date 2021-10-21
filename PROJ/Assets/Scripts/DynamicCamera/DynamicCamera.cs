@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 namespace DynamicCamera {
@@ -13,9 +12,9 @@ namespace DynamicCamera {
         [SerializeField] private Transform eyeTarget;
         [SerializeField] private CameraBehaviour puzzleCamera;
         [SerializeField] private CameraBehaviour worldBehaviourCamera;
-        [SerializeField] private BehaviourTransition puzzleTransition;
         
         private CameraBehaviour currentCameraBehaviour;
+        
         
         private InputMaster inputMaster;
 
@@ -30,41 +29,19 @@ namespace DynamicCamera {
         private void OnEnable() {
             EventHandler<StartPuzzleEvent>.RegisterListener(ChangeToPuzzleCamera);
             EventHandler<ExitPuzzleEvent>.RegisterListener(ChangeToWorldCamera);
-            EventHandler<CompletePuzzleEvent>.RegisterListener(ChangeToWorldCamera);
         }
 
-        private void ChangeToWorldCamera(CompletePuzzleEvent startPuzzleEvent) => ChangeBehaviour(worldBehaviourCamera);
-        private void ChangeToWorldCamera(ExitPuzzleEvent exitPuzzleEvent) => ChangeBehaviour(worldBehaviourCamera, puzzleTransition);
-        private void ChangeToPuzzleCamera(StartPuzzleEvent startPuzzleEvent) => ChangeBehaviour(puzzleCamera, puzzleTransition);
+        private void ChangeToWorldCamera(ExitPuzzleEvent exitPuzzleEvent) => ChangeBehaviour(worldBehaviourCamera);
+        private void ChangeToPuzzleCamera(StartPuzzleEvent startPuzzleEvent) => ChangeBehaviour(puzzleCamera);
         
-        private void LateUpdate() => currentCameraBehaviour?.Behave();
-        
-        private async void ChangeBehaviour(CameraBehaviour newCameraBehaviour, BehaviourTransition transition) {
-            currentCameraBehaviour = null;
-            newCameraBehaviour.Initialize(transform);
-            newCameraBehaviour.AssignTarget(followTarget);
-            transition.AssignFromAndTo(transform, transform.position, newCameraBehaviour.GetTransitPosition());
-            Debug.LogWarning("Run transition");
-            await transition.BehaveAsync();
-            Debug.LogWarning("Transition done");
-            ChangeBehaviour(newCameraBehaviour);
-        }
-        
+        private void LateUpdate() => currentCameraBehaviour.Behave();
         
         private void ChangeBehaviour(CameraBehaviour newCameraBehaviour) {
             currentCameraBehaviour = newCameraBehaviour;
             currentCameraBehaviour.Initialize(transform);
             currentCameraBehaviour.AssignTarget(followTarget);
-            
-            
-            
         }
-
-        private void AssignBehaviour(CameraBehaviour newCameraBehaviour) {
-            currentCameraBehaviour = newCameraBehaviour;
-            currentCameraBehaviour.Initialize(transform);
-            currentCameraBehaviour.AssignTarget(followTarget);
-        }
+        
         
         private void OnApplicationFocus(bool hasFocus) => Cursor.lockState = hasFocus ? CursorLockMode.Locked : CursorLockMode.None;
 
@@ -82,6 +59,8 @@ namespace DynamicCamera {
         }
         
     }
+    
+    
     
 }
 

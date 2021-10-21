@@ -70,10 +70,11 @@ public class Puzzle : MonoBehaviour
         solution = "";
         Translate(puzzleObjects);
 
+        Debug.Log("Solution: " + solution + " INPUT : " + grid.GetSolution());
         if (solution.Equals(grid.GetSolution()))
         {
             
-            EventHandler<CompletePuzzleEvent>.FireEvent(new CompletePuzzleEvent(new PuzzleInfo(puzzleID)));
+            EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(puzzleID), true));
             grid.CompleteGrid();
         }
         else
@@ -88,15 +89,19 @@ public class Puzzle : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         PuzzleInfo info = new PuzzleInfo(puzzleID);
-        EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(info));
+        EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(info, false));
     }
 
     public void ExitPuzzle(ExitPuzzleEvent eve)
     {
-        if (eve.info.ID == puzzleID)
+        if(eve.success != true)
         {
-            grid.ResetGrid();
+            if (eve.info.ID == puzzleID)
+            {
+                grid.ResetGrid();
+            }
         }
+        
     }
 
     public int GetPuzzleID() { return puzzleID; }
