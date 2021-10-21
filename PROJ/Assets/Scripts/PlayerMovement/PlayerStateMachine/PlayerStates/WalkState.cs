@@ -17,9 +17,10 @@ public class WalkState : PlayerState
     }
     public override void RunUpdate()
     {
-       //player.physics.WalkInput();
+        if (!player.playerController3D.IsGrounded())
+            stateMachine.ChangeState<AirborneState>();
+
         if (player.physics.velocity.magnitude > player.physics.SurfThreshold + 1)
-       //if(Input.GetKeyDown(KeyCode.H))
             stateMachine.ChangeState<GlideState>();
     }
     public override void ExitState()

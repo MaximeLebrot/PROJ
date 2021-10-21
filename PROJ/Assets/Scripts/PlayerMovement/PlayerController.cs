@@ -30,7 +30,6 @@ public class PlayerController : MonoBehaviour
     private RaycastHit groundHitInfo;  
     [HideInInspector] public Vector3 force;
     private Vector3 input;
-    private float xMove, zMove;
     private bool surfCamera = false;
     private float groundCheckBoxSize = 0.25f;
 
@@ -57,22 +56,9 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        
 
-        xMove = inputMaster.Player.Movement.ReadValue<Vector2>().x;
-        zMove = inputMaster.Player.Movement.ReadValue<Vector2>().y;
-
-
-        Vector3 input =
-        Vector3.right * xMove +
-        Vector3.forward * zMove;
-
-        if (surfCamera)
-            InputSurfGrounded(input);
-        else
-            InputGrounded(input);
-
-     
-
+        SetInput(input);
     }
     private void FixedUpdate()
     {
@@ -82,30 +68,19 @@ public class PlayerController : MonoBehaviour
     }
 
     #region Movement
-    public void InputSurfGrounded(Vector3 inp)
-    {
-        input = inp;
-        if (input.magnitude > 1f)
-        {
-            input.Normalize();
-        }
-        RotateInDirectionOfMovement();
 
-        if (input.magnitude < float.Epsilon)
-        {
-            Decelerate();
-        }
-        else
-            Accelerate();
-    }
-    public void InputGrounded(Vector3 inp)
+    public void SetInput(Vector3 inp)
     {
         input = inp;
         if (input.magnitude > 1f)
         {
             input.Normalize();
         }
-        PlayerDirection();
+        
+        if (surfCamera)
+            RotateInDirectionOfMovement();
+        else
+            PlayerDirection();
 
         if (input.magnitude < float.Epsilon)
         {
@@ -130,6 +105,8 @@ public class PlayerController : MonoBehaviour
     {
         force = -deceleration * physics.GetXZMovement().normalized;
     }
+
+    //Rotation when using walk
     private void PlayerDirection()
     {
         Vector3 temp = cameraTransform.rotation.eulerAngles;
@@ -148,6 +125,8 @@ public class PlayerController : MonoBehaviour
         cameraTransform.transform.localEulerAngles.y,
         transform.localEulerAngles.z);
     }
+
+    //Rotation when using Glide
     private void RotateInDirectionOfMovement()
     {
         Vector3 temp = transform.rotation.eulerAngles;
@@ -156,7 +135,8 @@ public class PlayerController : MonoBehaviour
         input = rotation * input;
         input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;
 
-        transform.Rotate(0, xMove * turnSpeed, 0);
+        //!NOT TESTED with input.x, previously used xMove!
+        transform.Rotate(0, input.x * turnSpeed, 0);
     }
 
 
@@ -174,7 +154,7 @@ public class PlayerController : MonoBehaviour
     public bool IsGrounded()
     {
         if(Physics.BoxCast(transform.position, Vector3.one * groundCheckBoxSize, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance, groundCheckMask))
-            Debug.Log("Grounded!");
+            Debug.Log("Grounded!");            
         return groundHitInfo.collider;
     }
 

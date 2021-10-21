@@ -18,9 +18,16 @@ public class GlideState : PlayerState
     }
     public override void RunUpdate()
     {
-        //player.physics.GlideInput();
+        xMove = inputMaster.Player.Movement.ReadValue<Vector2>().x;
+        zMove = inputMaster.Player.Movement.ReadValue<Vector2>().y;
 
-        //if (Input.GetKeyDown(KeyCode.H))
+        Vector3 input =
+        Vector3.right * xMove +
+        Vector3.forward * zMove;
+
+        if (!player.playerController3D.IsGrounded())
+            stateMachine.ChangeState<AirborneState>();
+
         if (player.physics.velocity.magnitude < player.physics.SurfThreshold - 1)
             stateMachine.ChangeState<WalkState>();
     }
