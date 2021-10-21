@@ -41,6 +41,8 @@ public class Node : MonoBehaviour {
             if(hit.collider)
                 neighbours.Add(hit.transform.GetComponent<Node>(), false);
 
+
+
             angle += 45f;
             
         }

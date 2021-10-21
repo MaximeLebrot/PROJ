@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
 
     private InputMaster inputMaster;
 
+    
     void Awake()
     {
         inputMaster = new InputMaster();
@@ -70,13 +71,8 @@ public class PlayerController : MonoBehaviour
         else
             InputGrounded(input);
 
-        //For testing only
-        /*
-        if (Input.GetKeyUp(KeyCode.G))
-            physics.ResetPosition();
-        if (Input.GetKeyUp(KeyCode.T))
-            TransitionSurf();
-        */
+     
+
     }
     private void FixedUpdate()
     {

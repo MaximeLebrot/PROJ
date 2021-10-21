@@ -9,6 +9,8 @@ public class MetaPlayerController : MonoBehaviour
     public PlayerController playerController3D { get; private set; }
     public PuzzlePlayerController puzzleController { get; private set; }
 
+
+
     //StateMachine
     private StateMachine stateMachine;
     [SerializeField] private PlayerState[] states;
@@ -22,19 +24,25 @@ public class MetaPlayerController : MonoBehaviour
         playerController3D = GetComponent<PlayerController>();
         puzzleController = GetComponent<PuzzlePlayerController>();
         stateMachine = new StateMachine(this, states);
-
     }
     private void OnEnable()
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
-        EventHandler<EndPuzzleEvent>.RegisterListener(EndPuzzle);
+        EventHandler<ExitPuzzleEvent>.RegisterListener(ExitPuzzle);
+    }
+    private void OnDisable()
+    {
+        EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
+        EventHandler<ExitPuzzleEvent>.UnregisterListener(ExitPuzzle);
     }
     private void StartPuzzle(StartPuzzleEvent spe)
     {
-        //pos puzzle id 
+        puzzleController.CurrentPuzzleID = spe.info.ID;
+       
         stateMachine.ChangeState<PuzzleState>();
     }
-    private void EndPuzzle(EndPuzzleEvent spe)
+
+    public void ExitPuzzle(ExitPuzzleEvent eve)
     {
         stateMachine.ChangeState<WalkState>();
     }
@@ -42,15 +50,5 @@ public class MetaPlayerController : MonoBehaviour
     private void Update()
     {
         stateMachine.RunUpdate();
-        /*
-        if (Input.GetKeyDown(KeyCode.P))
-            EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent());
-        if (Input.GetKeyDown(KeyCode.O))
-            EventHandler<EndPuzzleEvent>.FireEvent(new EndPuzzleEvent());
-        */
-    }
-    private void FixedUpdate()
-    {
-        
     }
 }
