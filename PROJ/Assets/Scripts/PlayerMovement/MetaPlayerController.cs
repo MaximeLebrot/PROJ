@@ -9,6 +9,8 @@ public class MetaPlayerController : MonoBehaviour
     public PlayerController playerController3D { get; private set; }
     public PuzzlePlayerController puzzleController { get; private set; }
 
+
+
     //StateMachine
     private StateMachine stateMachine;
     [SerializeField] private PlayerState[] states;
@@ -26,19 +28,21 @@ public class MetaPlayerController : MonoBehaviour
     private void OnEnable()
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
-        EventHandler<EndPuzzleEvent>.RegisterListener(EndPuzzle);
+        EventHandler<ExitPuzzleEvent>.RegisterListener(ExitPuzzle);
     }
     private void OnDisable()
     {
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
-        EventHandler<EndPuzzleEvent>.UnregisterListener(EndPuzzle);
+        EventHandler<ExitPuzzleEvent>.UnregisterListener(ExitPuzzle);
     }
     private void StartPuzzle(StartPuzzleEvent spe)
     {
-        Debug.Log("MetaplayerController recieved StartPuzzleEvent");
+        puzzleController.CurrentPuzzleID = spe.info.ID;
+       
         stateMachine.ChangeState<PuzzleState>();
     }
-    private void EndPuzzle(EndPuzzleEvent spe)
+
+    public void ExitPuzzle(ExitPuzzleEvent eve)
     {
         stateMachine.ChangeState<WalkState>();
     }

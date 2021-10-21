@@ -16,23 +16,25 @@ public class PuzzleGrid : MonoBehaviour {
     private string solution;
     private List<Node> allNodes = new List<Node>();
 
-    //Needs method for clearing the puzzle. FOR WINNERS AND FOR LOSERS
 
-    public string GetSolution() { return solution; }
+    public string GetSolution() 
+    { 
+        return solution[0] == '-' ? PuzzleHelper.SkipFirstChar(solution) : solution;
+    }
     
     
     private void Awake() {
 
         StartGrid();
-        
     }
+
 
     private void StartGrid()
     {
 
         allNodes.AddRange(transform.GetComponentsInChildren<Node>());
 
-        Debug.Log(allNodes.Count);
+
         Node startNode = currentNode = FindStartNode(ref allNodes);
 
         width = CalculateWidth(ref allNodes);
@@ -78,6 +80,10 @@ public class PuzzleGrid : MonoBehaviour {
             currentNode.EnabledNodes.Clear();
 
             //REMOVE LAST CHAR IN SOLUTION OR CALCULATE EVERYTHING AFTERWARDS
+            Debug.Log(solution);
+            solution = PuzzleHelper.RemoveLastChar(solution);
+            Debug.Log(solution);
+
             node.RemoveLineToNode(currentNode);
             currentNode.RemoveLineToNode(node);
             currentNode = node;
@@ -110,7 +116,7 @@ public class PuzzleGrid : MonoBehaviour {
         }
 
         //THIS SHOULD BE DONE IN GETSOLUTION()
-        if (lineRenderers.Count > 1) 
+        if (lineRenderers.Count > 0) 
             solution += PuzzleHelper.TranslateInput(node, currentNode); 
 
         currentNode = node;
@@ -171,9 +177,7 @@ public class PuzzleGrid : MonoBehaviour {
 
     public void ResetGrid()
     {
-        Debug.Log("Reset grid");
         solution = "";
-
         foreach (LineObject line in lineRenderers)
         {
             Destroy(line.line);

@@ -28,6 +28,8 @@ public class PuzzlePlayerController : MonoBehaviour
     private float groundCheckBoxSize = 0.25f;
 
     private InputMaster inputMaster;
+    
+    public int CurrentPuzzleID { get; set; }
 
     void Awake()
     {
@@ -46,6 +48,11 @@ public class PuzzlePlayerController : MonoBehaviour
     {
         xMove = inputMaster.Player.Movement.ReadValue<Vector2>().x;
         zMove = inputMaster.Player.Movement.ReadValue<Vector2>().y;
+
+        if (inputMaster.Player.ExitPuzzle.triggered)
+        {
+            EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(CurrentPuzzleID), false));
+        }
 
         Vector3 input =
         Vector3.right * xMove +

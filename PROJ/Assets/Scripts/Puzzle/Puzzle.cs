@@ -16,6 +16,8 @@ public class Puzzle : MonoBehaviour
     private InputMaster inputMaster;
     private PuzzleGrid grid;
 
+
+
     void Awake()
     {
         grid = GetComponentInChildren<PuzzleGrid>();
@@ -26,11 +28,14 @@ public class Puzzle : MonoBehaviour
     {
         inputMaster.Enable();
         EventHandler<EvaluateSolutionEvent>.RegisterListener(EvaluateSolution);
+        EventHandler<ExitPuzzleEvent>.RegisterListener(ExitPuzzle);
     }
 
     private void OnDisable()
     {
         inputMaster.Disable();
+        EventHandler<EvaluateSolutionEvent>.UnregisterListener(EvaluateSolution);
+        EventHandler<ExitPuzzleEvent>.UnregisterListener(ExitPuzzle);
     }
 
 
@@ -65,10 +70,11 @@ public class Puzzle : MonoBehaviour
         solution = "";
         Translate(puzzleObjects);
 
+        Debug.Log("Solution: " + solution + " INPUT : " + grid.GetSolution());
         if (solution.Equals(grid.GetSolution()))
         {
             
-            EventHandler<CompletePuzzleEvent>.FireEvent(new CompletePuzzleEvent(new PuzzleInfo(puzzleID)));
+            EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(puzzleID), true));
             grid.CompleteGrid();
         }
         else
@@ -79,6 +85,25 @@ public class Puzzle : MonoBehaviour
         }
             
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        PuzzleInfo info = new PuzzleInfo(puzzleID);
+        EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(info, false));
+    }
+
+    public void ExitPuzzle(ExitPuzzleEvent eve)
+    {
+        if(eve.success != true)
+        {
+            if (eve.info.ID == puzzleID)
+            {
+                grid.ResetGrid();
+            }
+        }
+        
+    }
+
     public int GetPuzzleID() { return puzzleID; }
 
 }

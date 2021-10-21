@@ -26,11 +26,14 @@ public class StartPuzzleEvent : IEvent
     public StartPuzzleEvent(PuzzleInfo info) { this.info = info; }
     //Maybe this should hold puzzle id or position?
 }
-public class EndPuzzleEvent : IEvent 
+
+public class ExitPuzzleEvent : IEvent
 {
     public PuzzleInfo info;
-    public EndPuzzleEvent(PuzzleInfo info) { this.info = info; }
+    public bool success;
+    public ExitPuzzleEvent(PuzzleInfo info, bool state) { this.info = info; this.success = state; }
 }
+
 
 public class ResetPuzzleEvent : IEvent
 {
@@ -38,11 +41,7 @@ public class ResetPuzzleEvent : IEvent
     public ResetPuzzleEvent(PuzzleInfo info) { this.info = info; }
 }
 
-public class CompletePuzzleEvent : IEvent
-{
-    public PuzzleInfo info;
-    public CompletePuzzleEvent(PuzzleInfo info) { this.info = info; }
-}
+
 
 public class EvaluateSolutionEvent : IEvent 
 {
