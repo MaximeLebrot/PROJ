@@ -53,7 +53,17 @@ public class PlayerController : MonoBehaviour
     {
         inputMaster.Disable();
     }
+    private void Update()
+    {
+        xMove = inputMaster.Player.Movement.ReadValue<Vector2>().x;
+        zMove = inputMaster.Player.Movement.ReadValue<Vector2>().y;
 
+        Vector3 input =
+        Vector3.right * xMove +
+        Vector3.forward * zMove;
+
+        InputGrounded(input);
+    }
     private void FixedUpdate()
     {
         physics.AddForce(force);

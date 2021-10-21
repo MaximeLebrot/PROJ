@@ -49,13 +49,14 @@ public class PlayerPhysicsSplit : MonoBehaviour
     private void Update()
     {
         MoveOutOfGeometry(velocity * Time.deltaTime);
+        ClampSpeed();
         Debug.DrawLine(transform.position, transform.position + velocity * Time.deltaTime, Color.red);
     }
     private void FixedUpdateTick()
     {
         AddGravity();
-        ClampSpeed();
         CollisionCheck();
+       
     }
     public void CollisionCheck()
     {
@@ -154,15 +155,20 @@ public class PlayerPhysicsSplit : MonoBehaviour
     }
     private void MoveOutOfGeometry(Vector3 movement)
     {
+        int velocityApplication = 0;
         Vector3 cachedPosition = transform.position;
         transform.position += movement;    
        
         for (int i = 0; i < MOVE_OUT_ITERATIONS && velocity.magnitude > 0.001f; i++) {
-
             Collider[] colliders = OverlapCast(transform.position);
 
             if (colliders.Length < 1)
+            {
+                if(i > 0)
+                    Debug.Log("Exited AFTER first iteration");
                 return;
+            }
+
            
             Vector3? separation = null;
             foreach (Collider currentCollider in colliders)
@@ -178,24 +184,26 @@ public class PlayerPhysicsSplit : MonoBehaviour
                                             currentCollider.transform.rotation,
                                             out Vector3 separationDirection,
                                                    out float distance);
-               //Debug.Assert(overlap);
-
-                if (distance < (separation?.magnitude ?? float.MaxValue))
+                Debug.Assert(overlap);
+                Debug.Log("Detected collision with " + currentCollider.gameObject);
+                if (distance != 0 && distance < (separation?.magnitude ?? float.MaxValue))
                 {
                     separation = separationDirection * distance;
                 }
-
-                //Move out of geometry and apply normalforce since this collision was missed by collisioncheck
-                //Do we need the NaN-check? Ugly solution./**/
-                if (separation.HasValue && !float.IsNaN(separation.Value.x))
-                {
-                    transform.position += separation.Value + separation.Value.normalized * skinWidth;
-                    velocity += PhysicsFunctions.NormalForce3D(velocity, separationDirection);
-                }
+            }
+            //Move out of geometry and apply normalforce since this collision was missed by collisioncheck
+            //Do we need the NaN-check? Ugly solution./**/
+            if (separation.HasValue && !float.IsNaN(separation.Value.x))
+            {
+                velocityApplication++;
+                Debug.Log("caught collision, Applying velocity");
+                transform.position += separation.Value + separation.Value.normalized * skinWidth;
+                velocity += PhysicsFunctions.NormalForce3D(velocity, separation.Value.normalized);
             }
         }
         //The move fails, or the character has no velocity
-        //Debug.Log("Didnt trigger exit condition");
+        if(velocity.magnitude > 0.001f)
+            Debug.Log("Didnt trigger exit condition, velocity was applied " + velocityApplication + "times");
         //transform.position = cachedPosition;
     }
 

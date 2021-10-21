@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 290935235}
   m_Layer: 6
-  m_Name: CameraTarget (1)
+  m_Name: EyeTarget
   m_TagString: EyeTarget
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -260,6 +260,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0d38e3e091434a548bf9edf9f4ce28d4, type: 2}
   - {fileID: 11400000, guid: 8a2538c6844338c459f3063ce4b0af1c, type: 2}
   - {fileID: 11400000, guid: e5df94585b9645644af99a94c203b460, type: 2}
+  - {fileID: 11400000, guid: 53b10e6e9474fb14587934ca99484068, type: 2}
   controllerValues:
   - {fileID: 11400000, guid: ede1155289adbad459ea3f0f7bd44a5f, type: 2}
   - {fileID: 11400000, guid: 1c86d9228b43e8c40a6a34963bc366f3, type: 2}
@@ -276,10 +277,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2c07b08a6271f944b0a66db3ac5c700, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpHeight: 5
   acceleration: 16
   deceleration: 5
-  airControl: 1
   maxSpeed: 40
   turnRate: 10
   turnSpeed: 0.4
@@ -287,7 +286,7 @@ MonoBehaviour:
   groundCheckMask:
     serializedVersion: 2
     m_Bits: 183
-  groundCheckDistance: 0.05
+  groundCheckDistance: 1
   force: {x: 0, y: 0, z: 0}
 --- !u!114 &2677558544405405542
 MonoBehaviour:
@@ -304,8 +303,8 @@ MonoBehaviour:
   velocity: {x: 0, y: 0, z: 0}
   skinWidth: 0.08
   inputThreshold: 0.1
-  gravityWhenFalling: 9.81
   currentGravity: 0
+  airControl: 0.2
   collisionMask:
     serializedVersion: 2
     m_Bits: 59
