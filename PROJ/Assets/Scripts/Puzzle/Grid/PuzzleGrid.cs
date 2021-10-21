@@ -14,26 +14,27 @@ public class PuzzleGrid : MonoBehaviour {
     private Node currentNode;
 
     private string solution;
+    private List<Node> allNodes = new List<Node>();
 
-    //Needs method for clearing the puzzle. FOR WINNERS AND FOR LOSERS
 
-    public string GetSolution() { return solution; }
+    public string GetSolution() 
+    { 
+        return solution[0] == '-' ? PuzzleHelper.SkipFirstChar(solution) : solution;
+    }
     
     
     private void Awake() {
 
         StartGrid();
-        
     }
+
 
     private void StartGrid()
     {
-        List<Node> allNodes = new List<Node>();
-
 
         allNodes.AddRange(transform.GetComponentsInChildren<Node>());
 
-        Debug.Log(allNodes.Count);
+
         Node startNode = currentNode = FindStartNode(ref allNodes);
 
         width = CalculateWidth(ref allNodes);
@@ -79,6 +80,10 @@ public class PuzzleGrid : MonoBehaviour {
             currentNode.EnabledNodes.Clear();
 
             //REMOVE LAST CHAR IN SOLUTION OR CALCULATE EVERYTHING AFTERWARDS
+            Debug.Log(solution);
+            solution = PuzzleHelper.RemoveLastChar(solution);
+            Debug.Log(solution);
+
             node.RemoveLineToNode(currentNode);
             currentNode.RemoveLineToNode(node);
             currentNode = node;
@@ -111,7 +116,7 @@ public class PuzzleGrid : MonoBehaviour {
         }
 
         //THIS SHOULD BE DONE IN GETSOLUTION()
-        if (lineRenderers.Count > 1) 
+        if (lineRenderers.Count > 0) 
             solution += PuzzleHelper.TranslateInput(node, currentNode); 
 
         currentNode = node;
@@ -152,6 +157,43 @@ public class PuzzleGrid : MonoBehaviour {
             neighbour.gameObject.SetActive(true);
             neighbour.OnNodeSelected += AddSelectedNode;
         } 
+    }
+
+    public void CompleteGrid()
+    {
+        List<Node> finalNodes = new List<Node>();
+        Debug.Log("Save grid");
+        foreach(Node n in allNodes)
+        {
+            if (n.gameObject.activeSelf)
+                finalNodes.Add(n);
+
+            n.TurnOffCollider();
+        }
+
+        //SEND finalNodes and lineRenderers to some Persistance that can store the completed puzzles
+
+    }
+
+    public void ResetGrid()
+    {
+        solution = "";
+        foreach (LineObject line in lineRenderers)
+        {
+            Destroy(line.line);
+        }
+
+        lineRenderers.Clear();
+
+        foreach(Node n in allNodes)
+        {
+            n.ResetNeighbours();
+            n.gameObject.SetActive(false);
+        }
+
+        currentNode = FindStartNode(ref allNodes);
+        
+        currentNode.gameObject.SetActive(true);
     }
 
 }

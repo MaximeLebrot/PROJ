@@ -19,13 +19,42 @@ public class DebugEvent : IEvent
 }
 #endregion
 
+#region PUZZLE_EVENTS
 public class StartPuzzleEvent : IEvent 
 {
+    public PuzzleInfo info;
+    public StartPuzzleEvent(PuzzleInfo info) { this.info = info; }
     //Maybe this should hold puzzle id or position?
 }
-public class EndPuzzleEvent : IEvent { }
 
-public class EvaluateSolutionEvent : IEvent { }
+public class ExitPuzzleEvent : IEvent
+{
+    public PuzzleInfo info;
+    public bool success;
+    public ExitPuzzleEvent(PuzzleInfo info, bool state) { this.info = info; this.success = state; }
+}
+
+
+public class ResetPuzzleEvent : IEvent
+{
+    public PuzzleInfo info;
+    public ResetPuzzleEvent(PuzzleInfo info) { this.info = info; }
+}
 
 
 
+public class EvaluateSolutionEvent : IEvent 
+{
+    public PuzzleInfo info;
+    public EvaluateSolutionEvent(PuzzleInfo info) { this.info = info; }
+}
+
+public class PuzzleInfo
+{
+    public int ID;
+    //puzzle camera position
+
+    public PuzzleInfo(int id) { ID = id; }
+}
+
+#endregion

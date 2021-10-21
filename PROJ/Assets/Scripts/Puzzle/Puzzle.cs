@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Text;
 
-public abstract class Puzzle : MonoBehaviour
+public class Puzzle : MonoBehaviour
 {
     [SerializeField] int puzzleID; //should be compared to solution on a EvaluatePuzzleEvent and fire a SUCCESS EVENT or FAIL EVENT
 
@@ -16,6 +16,8 @@ public abstract class Puzzle : MonoBehaviour
     private InputMaster inputMaster;
     private PuzzleGrid grid;
 
+
+
     void Awake()
     {
         grid = GetComponentInChildren<PuzzleGrid>();
@@ -26,11 +28,14 @@ public abstract class Puzzle : MonoBehaviour
     {
         inputMaster.Enable();
         EventHandler<EvaluateSolutionEvent>.RegisterListener(EvaluateSolution);
+        EventHandler<ExitPuzzleEvent>.RegisterListener(ExitPuzzle);
     }
 
     private void OnDisable()
     {
         inputMaster.Disable();
+        EventHandler<EvaluateSolutionEvent>.UnregisterListener(EvaluateSolution);
+        EventHandler<ExitPuzzleEvent>.UnregisterListener(ExitPuzzle);
     }
 
 
@@ -42,7 +47,7 @@ public abstract class Puzzle : MonoBehaviour
         //SHOULD BE IN PLAYER FOR WHEN THEY WANT TO EVALUATE PUZZLE
         if (inputMaster.PuzzleDEBUGGER.calculatesolution.triggered)
         {
-            EventHandler<EvaluateSolutionEvent>.FireEvent(new EvaluateSolutionEvent());
+            EventHandler<EvaluateSolutionEvent>.FireEvent(new EvaluateSolutionEvent(new PuzzleInfo(puzzleID)));
         }
         
     }
@@ -59,20 +64,47 @@ public abstract class Puzzle : MonoBehaviour
             sb.Append(playerInput[i]);
         }
     }
-
     public void EvaluateSolution(EvaluateSolutionEvent eve)
     {
-        //Should be in OnEnable
+        //Should be in OnEnable but is here for Development and debugging
         solution = "";
         Translate(puzzleObjects);
 
+        Debug.Log("Solution: " + solution + " INPUT : " + grid.GetSolution());
         if (solution.Equals(grid.GetSolution()))
         {
-            Debug.Log("WIN");//Fire EndPuzzleEvent
+            
+            EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(puzzleID), true));
+            grid.CompleteGrid();
         }
         else
-            Debug.Log("LOSER");//Fire ResetPuzzleEvent
+        {
+            
+            EventHandler<ResetPuzzleEvent>.FireEvent(new ResetPuzzleEvent(new PuzzleInfo(puzzleID)));
+            grid.ResetGrid();
+        }
+            
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        PuzzleInfo info = new PuzzleInfo(puzzleID);
+        EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(info, false));
+    }
+
+    public void ExitPuzzle(ExitPuzzleEvent eve)
+    {
+        if(eve.success != true)
+        {
+            if (eve.info.ID == puzzleID)
+            {
+                grid.ResetGrid();
+            }
+        }
+        
+    }
+
+    public int GetPuzzleID() { return puzzleID; }
 
 }
 

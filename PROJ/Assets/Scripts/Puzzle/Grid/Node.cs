@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -40,6 +41,8 @@ public class Node : MonoBehaviour {
             if(hit.collider)
                 neighbours.Add(hit.transform.GetComponent<Node>(), false);
 
+
+
             angle += 45f;
             
         }
@@ -55,9 +58,22 @@ public class Node : MonoBehaviour {
         neighbours[n] = false;
     }
 
+    public void ResetNeighbours()
+    {
+        foreach (var key in neighbours.Keys.ToList())
+        {
+            neighbours[key] = false;
+        }
+    }
+
     public bool HasLineToNode(Node n)
     {
         return neighbours[n];
+    }
+
+    public void TurnOffCollider()
+    {
+        GetComponent<SphereCollider>().enabled = false;
     }
 
     public void ClearSelectable() => OnNodeSelected = null;

@@ -41,6 +41,14 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ExitPuzzle"",
+                    ""type"": ""Button"",
+                    ""id"": ""2a54affd-5f79-4bb0-b3bf-58e6880ec4b1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -105,7 +113,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""xboxcontroller"",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -140,6 +148,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Stnd KBM"",
                     ""action"": ""MoveCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""45eb080b-dbfe-4265-9a68-72645599fb2e"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Stnd KBM"",
+                    ""action"": ""ExitPuzzle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -189,6 +208,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""isOR"": false
                 }
             ]
+        },
+        {
+            ""name"": ""xboxcontroller"",
+            ""bindingGroup"": ""xboxcontroller"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<XboxOneGampadiOS>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
         }
     ]
 }");
@@ -197,6 +227,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_MoveCamera = m_Player.FindAction("MoveCamera", throwIfNotFound: true);
+        m_Player_ExitPuzzle = m_Player.FindAction("ExitPuzzle", throwIfNotFound: true);
         // PuzzleDEBUGGER
         m_PuzzleDEBUGGER = asset.FindActionMap("PuzzleDEBUGGER", throwIfNotFound: true);
         m_PuzzleDEBUGGER_calculatesolution = m_PuzzleDEBUGGER.FindAction("calculate solution", throwIfNotFound: true);
@@ -252,6 +283,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_MoveCamera;
+    private readonly InputAction m_Player_ExitPuzzle;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -259,6 +291,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @MoveCamera => m_Wrapper.m_Player_MoveCamera;
+        public InputAction @ExitPuzzle => m_Wrapper.m_Player_ExitPuzzle;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -277,6 +310,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @MoveCamera.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMoveCamera;
                 @MoveCamera.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMoveCamera;
                 @MoveCamera.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMoveCamera;
+                @ExitPuzzle.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExitPuzzle;
+                @ExitPuzzle.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExitPuzzle;
+                @ExitPuzzle.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExitPuzzle;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -290,6 +326,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @MoveCamera.started += instance.OnMoveCamera;
                 @MoveCamera.performed += instance.OnMoveCamera;
                 @MoveCamera.canceled += instance.OnMoveCamera;
+                @ExitPuzzle.started += instance.OnExitPuzzle;
+                @ExitPuzzle.performed += instance.OnExitPuzzle;
+                @ExitPuzzle.canceled += instance.OnExitPuzzle;
             }
         }
     }
@@ -336,11 +375,21 @@ public class @InputMaster : IInputActionCollection, IDisposable
             return asset.controlSchemes[m_StndKBMSchemeIndex];
         }
     }
+    private int m_xboxcontrollerSchemeIndex = -1;
+    public InputControlScheme xboxcontrollerScheme
+    {
+        get
+        {
+            if (m_xboxcontrollerSchemeIndex == -1) m_xboxcontrollerSchemeIndex = asset.FindControlSchemeIndex("xboxcontroller");
+            return asset.controlSchemes[m_xboxcontrollerSchemeIndex];
+        }
+    }
     public interface IPlayerActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnMoveCamera(InputAction.CallbackContext context);
+        void OnExitPuzzle(InputAction.CallbackContext context);
     }
     public interface IPuzzleDEBUGGERActions
     {
