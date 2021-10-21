@@ -11,7 +11,7 @@ public class Node : MonoBehaviour {
     public event OnSelected OnNodeSelected;
 
     public Dictionary<Node, bool> neighbours { get; private set; }
-    public List<Node> EnabledNodes = new List<Node>();
+    public List<Node> EnabledNodes = new List<Node>(); // this can be in LineObject instead so that a LINE knows what nodes it lit up
     
     public bool startNode;
     
