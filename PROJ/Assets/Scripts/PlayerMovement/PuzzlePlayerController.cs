@@ -50,7 +50,7 @@ public class PuzzlePlayerController : MonoBehaviour
 
         if (inputMaster.Player.ExitPuzzle.triggered)
         {
-            EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(CurrentPuzzleID)));
+            EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(CurrentPuzzleID), false));
         }
 
         Vector3 input =
