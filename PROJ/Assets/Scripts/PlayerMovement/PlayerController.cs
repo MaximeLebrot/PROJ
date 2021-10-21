@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     private RaycastHit groundHitInfo;  
     [HideInInspector] public Vector3 force;
     private Vector3 input;
+    private float xMove, zMove;
     private bool surfCamera = false;
     private float groundCheckBoxSize = 0.25f;
 
@@ -53,23 +54,15 @@ public class PlayerController : MonoBehaviour
         inputMaster.Disable();
     }
 
-
-    private void Update()
-    {
-        
-
-        SetInput(input);
-    }
     private void FixedUpdate()
     {
-        IsGrounded();
         physics.AddForce(force);
         force = Vector3.zero;
     }
 
     #region Movement
 
-    public void SetInput(Vector3 inp)
+    public void InputGrounded(Vector3 inp)
     {
         input = inp;
         if (input.magnitude > 1f)
@@ -135,8 +128,7 @@ public class PlayerController : MonoBehaviour
         input = rotation * input;
         input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;
 
-        //!NOT TESTED with input.x, previously used xMove!
-        transform.Rotate(0, input.x * turnSpeed, 0);
+        transform.Rotate(0, xMove * turnSpeed, 0);
     }
 
 
@@ -153,8 +145,9 @@ public class PlayerController : MonoBehaviour
     /// <returns></returns>
     public bool IsGrounded()
     {
-        if(Physics.BoxCast(transform.position, Vector3.one * groundCheckBoxSize, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance, groundCheckMask))
-            Debug.Log("Grounded!");            
+        if (Physics.BoxCast(transform.position, Vector3.one * groundCheckBoxSize, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance, groundCheckMask))
+            Debug.Log("Grounded!");
+
         return groundHitInfo.collider;
     }
 

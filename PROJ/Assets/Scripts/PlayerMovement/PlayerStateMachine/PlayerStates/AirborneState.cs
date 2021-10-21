@@ -16,13 +16,33 @@ public class AirborneState : PlayerState
         Debug.Log("Entered Airborne State");
     }
     public override void RunUpdate()
-    {   
-        stateMachine.ChangeState<WalkState>();
+    {
+       SetInput();
+
+        if (player.playerController3D.IsGrounded())
+            LeaveAirborneState();
     }
     public override void ExitState()
-    {
-         if (player.physics.velocity.magnitude < player.physics.SurfThreshold - 1)
+    {       
         base.ExitState();
     }
+    private void SetInput()
+    {
+        xMove = inputMaster.Player.Movement.ReadValue<Vector2>().x;
+        zMove = inputMaster.Player.Movement.ReadValue<Vector2>().y;
 
+        Vector3 input =
+        Vector3.right * xMove +
+        Vector3.forward * zMove;
+
+        player.playerController3D.InputGrounded(input * player.physics.AirControl);
+    }
+    private void LeaveAirborneState()
+    {
+        if (player.physics.velocity.magnitude < player.physics.SurfThreshold)
+            stateMachine.ChangeState<WalkState>();
+        else
+            stateMachine.ChangeState<GlideState>();
+
+    }
 }

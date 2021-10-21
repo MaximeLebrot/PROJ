@@ -14,13 +14,17 @@ public class PlayerPhysicsSplit : MonoBehaviour
     [SerializeField] protected float skinWidth = 0.05f;
     [SerializeField] private float inputThreshold = 0.1f;
     [SerializeField] private float currentGravity;
+    [SerializeField] private float airControl = 0.2f;
     [SerializeField] private LayerMask collisionMask;
     //[SerializeField] private float gravityWhenFalling = 10f;
 
+    //Properties
     public float SurfThreshold { get => surfThreshold; }
+    public float AirControl { get => airControl; }
 
     //Public variables temporary for debugging via inspector
     //pls dont judge
+    [Header("Values set by States")]
     public float maxSpeed = 12f;
     public float gravity = 9.81f;
 

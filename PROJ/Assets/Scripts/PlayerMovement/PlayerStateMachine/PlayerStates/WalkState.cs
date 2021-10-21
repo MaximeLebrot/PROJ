@@ -17,6 +17,8 @@ public class WalkState : PlayerState
     }
     public override void RunUpdate()
     {
+         SetInput();
+
         if (!player.playerController3D.IsGrounded())
             stateMachine.ChangeState<AirborneState>();
 
@@ -26,5 +28,16 @@ public class WalkState : PlayerState
     public override void ExitState()
     {
         base.ExitState();
+    }
+    private void SetInput()
+    {
+        xMove = inputMaster.Player.Movement.ReadValue<Vector2>().x;
+        zMove = inputMaster.Player.Movement.ReadValue<Vector2>().y;
+
+        Vector3 input =
+        Vector3.right * xMove +
+        Vector3.forward * zMove;
+
+        player.playerController3D.InputGrounded(input);
     }
 }

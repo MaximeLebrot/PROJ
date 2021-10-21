@@ -18,12 +18,7 @@ public class GlideState : PlayerState
     }
     public override void RunUpdate()
     {
-        xMove = inputMaster.Player.Movement.ReadValue<Vector2>().x;
-        zMove = inputMaster.Player.Movement.ReadValue<Vector2>().y;
-
-        Vector3 input =
-        Vector3.right * xMove +
-        Vector3.forward * zMove;
+        SetInput();
 
         if (!player.playerController3D.IsGrounded())
             stateMachine.ChangeState<AirborneState>();
@@ -33,7 +28,17 @@ public class GlideState : PlayerState
     }
     public override void ExitState()
     {
-        //Give some sort of lerp in friction/max speed transition
         base.ExitState();
+    }
+    private void SetInput()
+    {
+        xMove = inputMaster.Player.Movement.ReadValue<Vector2>().x;
+        zMove = inputMaster.Player.Movement.ReadValue<Vector2>().y;
+
+        Vector3 input =
+        Vector3.right * xMove +
+        Vector3.forward * zMove;
+
+        player.playerController3D.InputGrounded(input);
     }
 }
