@@ -17,7 +17,7 @@ public class AirborneState : PlayerState
     }
     public override void RunUpdate()
     {
-       //SetInput();
+       SetInput();
 
         if (player.playerController3D.IsGrounded())
             LeaveAirborneState();

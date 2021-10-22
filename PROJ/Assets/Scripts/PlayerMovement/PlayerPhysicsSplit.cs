@@ -36,6 +36,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     public float kineticFrictionCoefficient = 0.35f;
     public float airResistance = 0.35f;
 
+    public float glideHeight = 0.5f;
     private CapsuleCollider attachedCollider;
     private Vector3 startPosition;
     private Vector3 colliderTopHalf, colliderBottomHalf;
@@ -52,14 +53,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
         AddGravity();
         CollisionCheck();
         ClampSpeed();
-        MoveOutOfGeometry(velocity * Time.deltaTime);
         Debug.DrawLine(transform.position, transform.position + velocity * Time.deltaTime, Color.red);
-    }
-    private void FixedUpdateTick()
-    {
-        
-        
-       
     }
     public void CollisionCheck()
     {
@@ -70,7 +64,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
     }
     public void SetValues(ControllerValues values)
     {
-        Debug.Log("SetValues " + values.GetType());
         //Friction and air resistance
         staticFrictionCoefficient = values.staticFriction;
         kineticFrictionCoefficient = values.kineticFriction;
@@ -92,63 +85,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
     /// Divides the collision into XZ & Y-components, to be able to apply the smoothing to normalforce along only the y-axis
     /// </summary>
     /// <param name="i"></param>
-    /*private void SmoothingCollisionCheck(int i)
-    {
-        float yForce = SmoothingYForce();
-
-        RaycastHit hitInfo = CastCollision(transform.position, velocity.normalized, velocity.magnitude * Time.fixedDeltaTime + skinWidth);
-        if (hitInfo.collider && hitInfo.collider.isTrigger == false)
-        {
-            float distanceToColliderNeg = skinWidth / Vector3.Dot(velocity.normalized, hitInfo.normal);
-            float allowedMovementDistance = hitInfo.distance + distanceToColliderNeg;
-            Vector3 velocityXZ = new Vector3(velocity.x, 0, velocity.z);
-
-            if (allowedMovementDistance > velocity.magnitude * Time.fixedDeltaTime)
-            {
-                return;
-            }
-
-            if (allowedMovementDistance > 0)
-            {
-                transform.position += velocityXZ.normalized * allowedMovementDistance;
-            }
-
-            Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, hitInfo.normal);
-            velocity += new Vector3(normalForce.x, 0, normalForce.z);
-
-            ApplyFriction(normalForce);
-
-            if (i < MAX_ITER)
-                SmoothingCollisionCheck(i + 1);
-        }
-    }
-    private float SmoothingYForce()
-    {
-        Vector3 smoothingNormalForce;
-        float castLength = velocity.magnitude * Time.fixedDeltaTime + skinWidth;
-        Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, velocity.normalized, out RaycastHit smoothingCastHitInfo, castLength + smoothingMaxDistance, collisionMask);
-        if (smoothingCastHitInfo.collider && smoothingCastHitInfo.collider.isTrigger == false)
-        {
-            if (smoothingCastHitInfo.distance <= castLength)
-            {
-                smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, smoothingCastHitInfo.normal);
-                //Debug.Log("Distance is less than castLength, using full normal force, sepa");
-            }
-            //glideNormalForceMargin seems to alleviate the problem but not eliminate it,
-            //probably because not quite enough normalforce is applied in the y-direction without it,
-            //causing us to apply 99-something % of normalforce one frame, and intersecting the collider in the next (frame).
-            else
-            {
-                smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, smoothingCastHitInfo.normal)
-                                               * Mathf.Pow(((1 - smoothingCastHitInfo.distance / smoothingMaxDistance)), powerOf)
-                                               * glideNormalForceMargin;
-            }
-
-           return smoothingNormalForce.y;
-        }
-    //No collision, means 0 normal force
-    return 0;
-    }*/
     private void SmoothingCollisionCheck(int i)
     {
         float castLength = velocity.magnitude * Time.deltaTime + skinWidth;
@@ -169,7 +105,8 @@ public class PlayerPhysicsSplit : MonoBehaviour
             {
                 smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, smoothingCastHitInfo.normal)
                                                * Mathf.Pow(((1 - smoothingCastHitInfo.distance / smoothingMaxDistance)), powerOf)
-                                               * glideNormalForceMargin;
+                                               * glideNormalForceMargin
+                                               + glideHeight * Vector3.up;
             }
 
             velocity += new Vector3(0, smoothingNormalForce.y, 0);
@@ -180,12 +117,15 @@ public class PlayerPhysicsSplit : MonoBehaviour
         {
             float distanceToColliderNeg = skinWidth / Vector3.Dot(velocity.normalized, hitInfo.normal);
             float allowedMovementDistance = hitInfo.distance + distanceToColliderNeg;
-            Vector3 velocityXZ = new Vector3(velocity.x, 0, velocity.z);
             if (allowedMovementDistance > velocity.magnitude * Time.deltaTime)
             {
+                MoveOutOfGeometry(velocity * Time.deltaTime);
                 return;
             }
-
+            if(allowedMovementDistance > 0)
+            {
+                MoveOutOfGeometry(allowedMovementDistance * velocity.normalized);
+            }
             Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, hitInfo.normal);
             velocity += new Vector3(normalForce.x, 0, normalForce.z);
 
@@ -194,6 +134,8 @@ public class PlayerPhysicsSplit : MonoBehaviour
             if (i < MAX_ITER)
                 SmoothingCollisionCheck(i + 1);
         }
+        else 
+            MoveOutOfGeometry(velocity * Time.deltaTime);
     }
     private void CheckForCollisions(int i)
     {
@@ -207,12 +149,12 @@ public class PlayerPhysicsSplit : MonoBehaviour
             // Are we allowed to move further than we are able to this frame? 
             if (allowedMovementDistance > velocity.magnitude * Time.deltaTime)
             {
+                MoveOutOfGeometry(velocity * Time.deltaTime);
                 return;
             }
-            // Are we allowed to move forward?
             if (allowedMovementDistance > 0)
             {
-                transform.position += velocity.normalized * allowedMovementDistance;
+                MoveOutOfGeometry(allowedMovementDistance* velocity.normalized);
             }
 
             //RaycastHit normalHitInfo = CastCollision(transform.position, -hitInfo.normal, hitInfo.distance);
@@ -226,10 +168,11 @@ public class PlayerPhysicsSplit : MonoBehaviour
             if (i < MAX_ITER)
                 CheckForCollisions(i + 1);
         }
+        else 
+            MoveOutOfGeometry(velocity * Time.deltaTime);
     }
     private void MoveOutOfGeometry(Vector3 movement)
     {
-        int velocityApplication = 0;
         transform.position += movement;    
        
         for (int i = 0; i < MOVE_OUT_ITERATIONS && velocity.magnitude > 0.001f; i++) 
@@ -237,15 +180,12 @@ public class PlayerPhysicsSplit : MonoBehaviour
             Collider[] colliders = OverlapCast(transform.position);
 
             if (colliders.Length < 1)
-            {
-                if(i > 0)
-                    Debug.Log("Exited AFTER first iteration");
                 return;
-            }
+
 
            
             Vector3? separation = null;
-            float minDistance = 0f;
+            float maxDistance = 0f;
             foreach (Collider currentCollider in colliders)
             {
                 if (currentCollider == attachedCollider ||currentCollider.isTrigger)
@@ -266,31 +206,30 @@ public class PlayerPhysicsSplit : MonoBehaviour
                     continue;
 
                 if (distance < (separation?.magnitude ?? float.MaxValue))
-                {
-                    minDistance = distance;
+                {                   
                     separation = direction * distance;
                     //++Debug.Log("Separation was assigned with magnitude " + separation.Value.magnitude + " iteration #" + i);
                 }
+                else if (distance > separation?.magnitude)
+                    maxDistance = distance * 100;
             }
             
             //Move out of geometry and apply normalforce since this collision was missed by collisioncheck
             if (separation.HasValue)
             {
-                velocityApplication++;
                 transform.position += separation.Value + separation.Value.normalized * skinWidth;
                 Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, separation.Value.normalized);
                 velocity += normalForce;
             }
             else
             {              
-               //Debug.Log("Separation has no value!, colliders [] length is " + colliders.Length);
-                Debug.Log("Separation has no value!, minDistance is  " + minDistance);
+                Debug.Log("Separation has no value!, maxDistance x100 is  " + maxDistance);
                 return;
             }
         }
         //The move fails, or the character has no velocity
         if(velocity.magnitude > 0.001f)
-            Debug.Log("Didnt trigger exit condition, velocity was applied " + velocityApplication + "times");
+            Debug.Log("Didnt trigger exit condition");
         //transform.position = cachedPosition;
     }
 
@@ -322,7 +261,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
     public void AddForce(Vector3 input)
     {
         velocity += input.magnitude < inputThreshold ? Vector3.zero : input * Time.fixedDeltaTime;
-        FixedUpdateTick();
     }
     public Vector3 GetXZMovement()
     {
