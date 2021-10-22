@@ -39,31 +39,11 @@ public class PlayerController : MonoBehaviour
     
     void Awake()
     {
-        inputMaster = new InputMaster();
-
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PlayerPhysicsSplit>();
     }
 
-    private void OnEnable()
-    {
-        inputMaster.Enable();
-    }
-    private void OnDisable()
-    {
-        inputMaster.Disable();
-    }
-    private void Update()
-    {
-        xMove = inputMaster.Player.Movement.ReadValue<Vector2>().x;
-        zMove = inputMaster.Player.Movement.ReadValue<Vector2>().y;
 
-        Vector3 input =
-        Vector3.right * xMove +
-        Vector3.forward * zMove;
-
-        InputGrounded(input);
-    }
     private void FixedUpdate()
     {
         physics.AddForce(force);
