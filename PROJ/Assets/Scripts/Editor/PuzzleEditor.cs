@@ -11,6 +11,8 @@ public class PuzzleEditor : Editor
     Puzzle serObj;
     SerializedProperty puzzleObjects;
     SerializedProperty solution;
+    SerializedProperty symbolPos;
+    SerializedProperty symbolOffset;
     string[] strings;
     int[] index;
     Object[] modifiers;
@@ -21,6 +23,8 @@ public class PuzzleEditor : Editor
         //Get the list of puzzleobjects
         puzzleObjects = serializedObject.FindProperty("puzzleObjects");
         solution = serializedObject.FindProperty("solution");
+        symbolPos = serializedObject.FindProperty("symbolPos");
+        symbolOffset = serializedObject.FindProperty("symbolOffset");
 
         listRE = new ReorderableList(serializedObject, puzzleObjects, true, true, true, true);
 
@@ -100,7 +104,10 @@ public class PuzzleEditor : Editor
 
             listRE.DoLayoutList(); // Have the ReorderableList do its work
 
-            EGL.PropertyField(solution);
+            EGL.PropertyField(solution); 
+            EGL.PropertyField(symbolPos);
+            EGL.PropertyField(symbolOffset);
+
 
             // We need to call this so that changes on the Inspector are saved by Unity.
             serializedObject.ApplyModifiedProperties();
