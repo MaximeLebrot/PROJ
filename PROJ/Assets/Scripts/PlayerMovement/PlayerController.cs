@@ -5,20 +5,21 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     #region Parameters exposed in the inspector
-    [Header("Player Control")]
-    [SerializeField] private float jumpHeight = 5f;
+    [Header("Player Control")]  
     [SerializeField] private float acceleration = 5f;
     [SerializeField] private float deceleration = 2f;
-    [SerializeField] private float airControl = 0.2f;
+    
     [SerializeField] private float maxSpeed = 5f;
     [SerializeField] private float turnRate = 4f;
     [SerializeField] private float turnSpeed; 
     [SerializeField] private float retainedSpeedWhenTurning = 0.33f;
+    //[SerializeField] private float airControl = 0.2f;
+    //[SerializeField] private float jumpHeight = 5f;
 
     [Header("GroundCheck")]
     [SerializeField] private LayerMask groundCheckMask;
     [SerializeField] private float groundCheckDistance = 0.05f;
-    private BoxCollider groundCheckBox;
+
 
     #endregion
     //Component references
@@ -38,66 +39,19 @@ public class PlayerController : MonoBehaviour
     
     void Awake()
     {
-        inputMaster = new InputMaster();
-
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PlayerPhysicsSplit>();
-        groundCheckBox = GetComponentInChildren<BoxCollider>();
-    }
-
-    private void OnEnable()
-    {
-        inputMaster.Enable();
-    }
-    private void OnDisable()
-    {
-        inputMaster.Disable();
     }
 
 
-    private void Update()
-    {
-
-        xMove = inputMaster.Player.Movement.ReadValue<Vector2>().x;
-        zMove = inputMaster.Player.Movement.ReadValue<Vector2>().y;
-
-
-        Vector3 input =
-        Vector3.right * xMove +
-        Vector3.forward * zMove;
-
-        if (surfCamera)
-            InputSurfGrounded(input);
-        else
-            InputGrounded(input);
-
-     
-
-    }
     private void FixedUpdate()
     {
-        IsGrounded();
         physics.AddForce(force);
         force = Vector3.zero;
     }
 
     #region Movement
-    public void InputSurfGrounded(Vector3 inp)
-    {
-        input = inp;
-        if (input.magnitude > 1f)
-        {
-            input.Normalize();
-        }
-        RotateInDirectionOfMovement();
 
-        if (input.magnitude < float.Epsilon)
-        {
-            Decelerate();
-        }
-        else
-            Accelerate();
-    }
     public void InputGrounded(Vector3 inp)
     {
         input = inp;
@@ -105,7 +59,11 @@ public class PlayerController : MonoBehaviour
         {
             input.Normalize();
         }
-        PlayerDirection();
+        
+        if (surfCamera)
+            RotateInDirectionOfMovement();
+        else
+            PlayerDirection();
 
         if (input.magnitude < float.Epsilon)
         {
@@ -130,6 +88,8 @@ public class PlayerController : MonoBehaviour
     {
         force = -deceleration * physics.GetXZMovement().normalized;
     }
+
+    //Rotation when using walk
     private void PlayerDirection()
     {
         Vector3 temp = cameraTransform.rotation.eulerAngles;
@@ -148,6 +108,8 @@ public class PlayerController : MonoBehaviour
         cameraTransform.transform.localEulerAngles.y,
         transform.localEulerAngles.z);
     }
+
+    //Rotation when using Glide
     private void RotateInDirectionOfMovement()
     {
         Vector3 temp = transform.rotation.eulerAngles;
@@ -173,8 +135,9 @@ public class PlayerController : MonoBehaviour
     /// <returns></returns>
     public bool IsGrounded()
     {
-        if(Physics.BoxCast(transform.position, Vector3.one * groundCheckBoxSize, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance, groundCheckMask))
+        if (Physics.BoxCast(transform.position, Vector3.one * groundCheckBoxSize, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance, groundCheckMask))
             Debug.Log("Grounded!");
+
         return groundHitInfo.collider;
     }
 
