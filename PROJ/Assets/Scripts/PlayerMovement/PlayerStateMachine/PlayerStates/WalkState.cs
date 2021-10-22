@@ -30,13 +30,6 @@ public class WalkState : PlayerState
     }
     private void SetInput()
     {
-        xMove = inputMaster.Player.Movement.ReadValue<Vector2>().x;
-        zMove = inputMaster.Player.Movement.ReadValue<Vector2>().y;
-
-        Vector3 input =
-        Vector3.right * xMove +
-        Vector3.forward * zMove;
-
-        player.playerController3D.InputGrounded(input);
+        player.playerController3D.InputGrounded(inputMaster.Player.Movement.ReadValue<Vector2>());
     }
 }
