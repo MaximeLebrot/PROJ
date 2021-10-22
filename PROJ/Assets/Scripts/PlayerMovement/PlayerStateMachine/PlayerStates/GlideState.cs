@@ -28,6 +28,7 @@ public class GlideState : PlayerState
     }
     public override void ExitState()
     {
+        player.physics.SetGlide(false);
         base.ExitState();
     }
     private void SetInput()

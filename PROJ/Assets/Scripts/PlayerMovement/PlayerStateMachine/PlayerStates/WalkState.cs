@@ -12,7 +12,6 @@ public class WalkState : PlayerState
     public override void EnterState()
     {
         //Debug.Log("Entered Walk State");
-        player.physics.SetGlide(false);
         base.EnterState();
     }
     public override void RunUpdate()
