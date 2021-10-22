@@ -5,66 +5,95 @@ using System.Text;
 
 public class Puzzle : MonoBehaviour
 {
-    [SerializeField] int puzzleID; //should be compared to solution on a EvaluatePuzzleEvent and fire a SUCCESS EVENT or FAIL EVENT
-
-    [SerializeField] public List<PuzzleObject> puzzleObjects = new List<PuzzleObject>();
-    [SerializeField] public List<PuzzleObject> instatiatedSymbols = new List<PuzzleObject>();
-    [SerializeField] protected string solution;
-    [SerializeField] Transform symbolPos;
-    [SerializeField] int symbolOffset;
+    //[SerializeField] int puzzleID; //should be compared to solution on a EvaluatePuzzleEvent and fire a SUCCESS EVENT or FAIL EVENT
+    [SerializeField] private List<PuzzleInstance> puzzleInstances = new List<PuzzleInstance>();
     [SerializeField] private string playerInput = "";
+    [SerializeField] private string solution;
+    private PuzzleInstance currentPuzzleInstance;
 
-    protected PuzzleTranslator translator = new PuzzleTranslator(); 
-    
+    protected PuzzleTranslator translator = new PuzzleTranslator();
+
     private InputMaster inputMaster;
     private PuzzleGrid grid;
 
+    //Draw symbols
+    [SerializeField] public List<PuzzleObject> instantiatedSymbols = new List<PuzzleObject>();
+    [SerializeField] Transform symbolPos;
+    [SerializeField] int symbolOffset;
 
+
+    private int numOfPuzzles;
+    private int currentPuzzleNum = 0;
+    private int numOfFinishedPuzzles = 0;
+    
 
     void Awake()
     {
+        currentPuzzleInstance = puzzleInstances[0];
+        numOfPuzzles = puzzleInstances.Count;
         grid = GetComponentInChildren<PuzzleGrid>();
         inputMaster = new InputMaster();
     }
-
     private void OnEnable()
     {
         inputMaster.Enable();
-        EventHandler<EvaluateSolutionEvent>.RegisterListener(EvaluateSolution);
         EventHandler<ExitPuzzleEvent>.RegisterListener(ExitPuzzle);
     }
-
     private void OnDisable()
     {
         inputMaster.Disable();
-        EventHandler<EvaluateSolutionEvent>.UnregisterListener(EvaluateSolution);
         EventHandler<ExitPuzzleEvent>.UnregisterListener(ExitPuzzle);
     }
-
-
-
-    protected void Translate(List<PuzzleObject> objects)
+    private void Update()
     {
-        
+        //SHOULD BE IN PLAYER FOR WHEN THEY WANT TO EVALUATE PUZZLE
+        if (inputMaster.PuzzleDEBUGGER.calculatesolution.triggered)
+        {
+            EventHandler<EvaluateSolutionEvent>.FireEvent(new EvaluateSolutionEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID())));
+        }
 
-        solution = translator.CalculateSolution(puzzleObjects);
+        if (inputMaster.Player.Interact.triggered)
+            PlaceSymbols();
+    }
+   private void InitiatePuzzle()
+    {
+        Debug.Log("Initiate puzzle");
+        instantiatedSymbols = puzzleInstances[currentPuzzleNum].puzzleObjects;
+        grid.ResetGrid();
+        PlaceSymbols();
+    }
+    private void NextPuzzle()
+    {
+        Debug.Log("Next puzzle, #" + currentPuzzleNum);
+        if(currentPuzzleNum >= puzzleInstances.Count - 1)
+        {
+            //no more puzzle instances here
+            //Exit puzzle
+            Debug.Log("Last puzzle instance completed");
+            EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID()), true));
+            return;
+        }
+        //OnComplete instance
+        currentPuzzleNum++;
+        InitiatePuzzle();
     }
 
+    #region Place Symbols
     private void PlaceSymbols()
     {
-        foreach (PuzzleObject obj in instatiatedSymbols)
+        for(int i = 0; i <instantiatedSymbols.Count; i++)
         {
-            Destroy(obj.gameObject);
+            Destroy(instantiatedSymbols[i].gameObject);
         }
 
-        instatiatedSymbols.Clear();
-
-        foreach(PuzzleObject obj in puzzleObjects)
+        instantiatedSymbols.Clear();
+        //Is this the way we want to fetch the list??
+        foreach(PuzzleObject obj in currentPuzzleInstance.puzzleObjects)
         {
-            instatiatedSymbols.Add(Instantiate(obj));
+            instantiatedSymbols.Add(Instantiate(obj));
         }
 
-        if (instatiatedSymbols.Count % 2 == 0)
+        if (instantiatedSymbols.Count % 2 == 0)
             EvenPlaceSymbols();
         else
             UnevenPlaceSymbols();
@@ -73,22 +102,22 @@ public class Puzzle : MonoBehaviour
     private void UnevenPlaceSymbols()
     {
         
-        int mid = instatiatedSymbols.Count / 2;
-        instatiatedSymbols[mid].transform.position = symbolPos.position;
-        instatiatedSymbols[mid].transform.rotation = symbolPos.rotation;
+        int mid = instantiatedSymbols.Count / 2;
+        instantiatedSymbols[mid].transform.position = symbolPos.position;
+        instantiatedSymbols[mid].transform.rotation = symbolPos.rotation;
 
         for(int i = 1; i <= mid; i++)
         {
             Vector3 tempPos = symbolPos.position;
             tempPos.x -= i * symbolOffset;
-            instatiatedSymbols[mid - i].transform.position = tempPos;
-            instatiatedSymbols[mid - i].transform.rotation = symbolPos.rotation;
+            instantiatedSymbols[mid - i].transform.position = tempPos;
+            instantiatedSymbols[mid - i].transform.rotation = symbolPos.rotation;
 
             
             tempPos = symbolPos.position;
             tempPos.x += i * symbolOffset;
-            instatiatedSymbols[mid + i].transform.position = tempPos;
-            instatiatedSymbols[mid + i].transform.rotation = symbolPos.rotation;
+            instantiatedSymbols[mid + i].transform.position = tempPos;
+            instantiatedSymbols[mid + i].transform.rotation = symbolPos.rotation;
         }
     }
 
@@ -96,45 +125,33 @@ public class Puzzle : MonoBehaviour
     {
        
 
-        int midRight = instatiatedSymbols.Count / 2;
+        int midRight = instantiatedSymbols.Count / 2;
         int midLeft = midRight - 1;
 
         Vector3 midLeftPos = symbolPos.position - (Vector3.right * (symbolOffset / 2));
         Vector3 midRightPos = symbolPos.position + (Vector3.right * (symbolOffset / 2));
 
-        instatiatedSymbols[midLeft].transform.position = midLeftPos;
-        instatiatedSymbols[midLeft].transform.rotation = symbolPos.rotation;
+        instantiatedSymbols[midLeft].transform.position = midLeftPos;
+        instantiatedSymbols[midLeft].transform.rotation = symbolPos.rotation;
 
-        instatiatedSymbols[midRight].transform.position = midRightPos;
-        instatiatedSymbols[midRight].transform.rotation = symbolPos.rotation;
+        instantiatedSymbols[midRight].transform.position = midRightPos;
+        instantiatedSymbols[midRight].transform.rotation = symbolPos.rotation;
 
         for (int i = 1; i <= midLeft; i++)
         {
             Vector3 tempPos = midLeftPos;
             tempPos.x -= i * symbolOffset;
-            instatiatedSymbols[midLeft - i].transform.position = tempPos;
-            instatiatedSymbols[midLeft - i].transform.rotation = symbolPos.rotation;
+            instantiatedSymbols[midLeft - i].transform.position = tempPos;
+            instantiatedSymbols[midLeft - i].transform.rotation = symbolPos.rotation;
 
             Debug.Log("TEMPpos:  " + tempPos + "MIDLEFTpos:  " + midLeftPos);
             tempPos = midRightPos;
             tempPos.x += i * symbolOffset;
-            instatiatedSymbols[midRight + i].transform.position = tempPos;
-            instatiatedSymbols[midRight + i].transform.rotation = symbolPos.rotation;
+            instantiatedSymbols[midRight + i].transform.position = tempPos;
+            instantiatedSymbols[midRight + i].transform.rotation = symbolPos.rotation;
         }
     }
-
-    private void Update()
-    {
-        //SHOULD BE IN PLAYER FOR WHEN THEY WANT TO EVALUATE PUZZLE
-        if (inputMaster.PuzzleDEBUGGER.calculatesolution.triggered)
-        {
-            EventHandler<EvaluateSolutionEvent>.FireEvent(new EvaluateSolutionEvent(new PuzzleInfo(puzzleID)));
-        }
-
-        if(inputMaster.Player.Interact.triggered)
-            PlaceSymbols();
-
-    }
+    #endregion    
 
     public void AddInput(char c)
     {
@@ -148,31 +165,34 @@ public class Puzzle : MonoBehaviour
             sb.Append(playerInput[i]);
         }
     }
-    public void EvaluateSolution(EvaluateSolutionEvent eve)
+
+    private string Translate(List<PuzzleObject> objects)
     {
+        return translator.CalculateSolution(objects);
+    }
+    public void EvaluateSolution(List<PuzzleObject> objects)
+    {
+        Debug.Log("EvaluateSolution Called");
         //Should be in OnEnable but is here for Development and debugging
-        solution = "";
-        Translate(puzzleObjects);
+        solution = Translate(objects);
 
         Debug.Log("Solution: " + solution + " INPUT : " + grid.GetSolution());
         if (solution.Equals(grid.GetSolution()))
         {
-            
-            EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(puzzleID), true));
-            grid.CompleteGrid();
+            NextPuzzle();
+            //
+            //grid.CompleteGrid();
         }
         else
-        {
-            
-            EventHandler<ResetPuzzleEvent>.FireEvent(new ResetPuzzleEvent(new PuzzleInfo(puzzleID)));
+        {            
+            EventHandler<ResetPuzzleEvent>.FireEvent(new ResetPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID())));
             grid.ResetGrid();
-        }
-            
+        }          
     }
 
     private void OnTriggerExit(Collider other)
     {
-        PuzzleInfo info = new PuzzleInfo(puzzleID);
+        PuzzleInfo info = new PuzzleInfo(currentPuzzleInstance.GetPuzzleID());
         EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(info, false));
     }
 
@@ -180,7 +200,7 @@ public class Puzzle : MonoBehaviour
     {
         if(eve.success != true)
         {
-            if (eve.info.ID == puzzleID)
+            if (eve.info.ID == currentPuzzleInstance.GetPuzzleID())
             {
                 grid.ResetGrid();
             }
@@ -188,7 +208,9 @@ public class Puzzle : MonoBehaviour
         
     }
 
-    public int GetPuzzleID() { return puzzleID; }
+    //Maybe return ID from current PuzzleInstance instead
+    public int GetPuzzleID() { return currentPuzzleInstance.GetPuzzleID();}
+
 
 }
 
