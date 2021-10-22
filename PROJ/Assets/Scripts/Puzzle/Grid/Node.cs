@@ -48,6 +48,16 @@ public class Node : MonoBehaviour {
         }
     }
 
+    public Node FindSpecificNeighbour(Vector3 direction)
+    {
+        Physics.Raycast(transform.position, direction, out var hit, 5, nodeLayer);
+
+        if (hit.collider)
+            return hit.transform.GetComponent<Node>();
+
+        return null;
+    }
+
     public void AddLineToNode(Node n)
     {
         neighbours[n] = true;
