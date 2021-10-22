@@ -61,7 +61,7 @@ public static class PuzzleHelper
 
     public static Vector3 TranslateNumToDirection(char c)
     {
-        return null;
+        return Vector3.zero;
     }
 
     public static string RotateSymbols(string chars)
