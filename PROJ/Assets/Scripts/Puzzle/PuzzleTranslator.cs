@@ -19,7 +19,7 @@ public class PuzzleTranslator
 
         //bygg först en array med alla symbolers översättningar. så streck upp blir bara en 8 t.ex
         foreach(PuzzleObject obj in objects)
-        {
+        {          
             translations.Add(obj.GetTranslation());
         }
 

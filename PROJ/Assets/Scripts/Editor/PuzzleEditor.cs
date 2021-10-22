@@ -28,8 +28,7 @@ public class PuzzleEditor : Editor
 
         listRE = new ReorderableList(serializedObject, puzzleObjects, true, true, true, true);
 
-
-        if (listRE.count > 0)
+        if(listRE.list[0] != null && listRE.list.Count > 0)
         {
             listRE.drawElementCallback = DrawListItems;
             listRE.drawHeaderCallback = DrawHeader;
@@ -90,7 +89,7 @@ public class PuzzleEditor : Editor
 
 
     //This is the function that makes the custom editor work
-    public override void OnInspectorGUI()
+   /*public override void OnInspectorGUI()
     {
 
         
@@ -110,13 +109,13 @@ public class PuzzleEditor : Editor
 
 
             // We need to call this so that changes on the Inspector are saved by Unity.
-            serializedObject.ApplyModifiedProperties();
+           /* serializedObject.ApplyModifiedProperties();
         }
         
         
  
         
-    }
+    }*/
 
 
 

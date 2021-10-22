@@ -17,7 +17,7 @@ public class Puzzle : MonoBehaviour
     private PuzzleGrid grid;
 
     //Draw symbols
-    [SerializeField] public List<PuzzleObject> instantiatedSymbols = new List<PuzzleObject>();
+    [SerializeField] public List<GameObject> instantiatedSymbols = new List<GameObject>();
     [SerializeField] Transform symbolPos;
     [SerializeField] int symbolOffset;
 
@@ -58,23 +58,26 @@ public class Puzzle : MonoBehaviour
    private void InitiatePuzzle()
     {
         Debug.Log("Initiate puzzle");
-        instantiatedSymbols = puzzleInstances[currentPuzzleNum].puzzleObjects;
         grid.ResetGrid();
         PlaceSymbols();
     }
     private void NextPuzzle()
     {
+        currentPuzzleNum++;     
+
         Debug.Log("Next puzzle, #" + currentPuzzleNum);
-        if(currentPuzzleNum >= puzzleInstances.Count - 1)
+        if(currentPuzzleNum >= puzzleInstances.Count)
         {
             //no more puzzle instances here
             //Exit puzzle
             Debug.Log("Last puzzle instance completed");
             EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID()), true));
+            grid.CompleteGrid();
             return;
         }
-        //OnComplete instance
-        currentPuzzleNum++;
+
+        currentPuzzleInstance = puzzleInstances[currentPuzzleNum];
+        //OnComplete instance       
         InitiatePuzzle();
     }
 
@@ -83,14 +86,14 @@ public class Puzzle : MonoBehaviour
     {
         for(int i = 0; i <instantiatedSymbols.Count; i++)
         {
-            Destroy(instantiatedSymbols[i].gameObject);
+            Destroy(instantiatedSymbols[i]);
         }
 
         instantiatedSymbols.Clear();
         //Is this the way we want to fetch the list??
         foreach(PuzzleObject obj in currentPuzzleInstance.puzzleObjects)
         {
-            instantiatedSymbols.Add(Instantiate(obj));
+            instantiatedSymbols.Add(Instantiate(obj).gameObject);
         }
 
         if (instantiatedSymbols.Count % 2 == 0)
@@ -181,7 +184,7 @@ public class Puzzle : MonoBehaviour
         {
             NextPuzzle();
             //
-            //grid.CompleteGrid();
+            //
         }
         else
         {            
