@@ -7,11 +7,5 @@ public class LanguageSymbol : PuzzleObject
 {
 
     
-
-    public override void Activate()
-    {
-        //maybe blink?
-        throw new System.NotImplementedException();
-    }
 }
 
