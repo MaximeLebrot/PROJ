@@ -37,6 +37,8 @@ public class PlayerPhysicsSplit : MonoBehaviour
     public float airResistance = 0.35f;
 
     public float glideHeight = 0.5f;
+
+    private float groundFriction; 
     private CapsuleCollider attachedCollider;
     private Vector3 startPosition;
     private Vector3 colliderTopHalf, colliderBottomHalf;
@@ -246,9 +248,15 @@ public class PlayerPhysicsSplit : MonoBehaviour
             velocity = Vector3.zero;
         else
         {
-            velocity -= velocity.normalized * normalForce.magnitude * kineticFrictionCoefficient;
+            velocity -= velocity.normalized * normalForce.magnitude * (kineticFrictionCoefficient);
+            Debug.Log("total friction is" + kineticFrictionCoefficient + groundFriction);
         }
         ApplyAirResistance();
+    }
+    public void SetGroundFriction(float friction)
+    {
+        Debug.Log("Ground friction is " + friction);
+        groundFriction = friction;
     }
     private void ApplyAirResistance() { velocity *= Mathf.Pow(airResistance, Time.deltaTime); }
     #endregion
