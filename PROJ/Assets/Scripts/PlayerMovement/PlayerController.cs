@@ -33,9 +33,6 @@ public class PlayerController : MonoBehaviour
     private float xMove, zMove;
     private bool surfCamera = false;
     private float groundCheckBoxSize = 0.25f;
-
-    private InputMaster inputMaster;
-
     
     void Awake()
     {
@@ -54,14 +51,16 @@ public class PlayerController : MonoBehaviour
 
     public void InputGrounded(Vector3 inp)
     {
-        input = inp;
+        input = inp.x * Vector3.right + 
+                inp.y * Vector3.forward;
+
         if (input.magnitude > 1f)
         {
             input.Normalize();
         }
         
         if (surfCamera)
-            RotateInDirectionOfMovement();
+            RotateInDirectionOfMovement(inp);
         else
             PlayerDirection();
 
@@ -110,22 +109,26 @@ public class PlayerController : MonoBehaviour
     }
 
     //Rotation when using Glide
-    private void RotateInDirectionOfMovement()
+    private void RotateInDirectionOfMovement(Vector3 rawInput)
     {
+        //Create rotation
         Vector3 temp = transform.rotation.eulerAngles;
         temp.x = 0;
         Quaternion rotation = Quaternion.Euler(temp);
+
+        //Add rotation to input
         input = rotation * input;
         input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;
 
-        transform.Rotate(0, xMove * turnSpeed, 0);
+        transform.Rotate(0, rawInput.x * turnSpeed, 0);
+
     }
 
 
     #endregion
 
 
-    private void TransitionSurf()
+    public void TransitionSurf()
     {
         surfCamera = !surfCamera;
     }
@@ -135,14 +138,8 @@ public class PlayerController : MonoBehaviour
     /// <returns></returns>
     public bool IsGrounded()
     {
-        if (Physics.BoxCast(transform.position, Vector3.one * groundCheckBoxSize, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance, groundCheckMask))
-            Debug.Log("Grounded!");
-
-        return groundHitInfo.collider;
+        return Physics.BoxCast(transform.position, Vector3.one * groundCheckBoxSize, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance, groundCheckMask);
     }
-
-    //Ability System
-
 
     //Gets & Sets
     public float GetMaxSpeed()

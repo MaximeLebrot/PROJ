@@ -13,6 +13,7 @@ public class GlideState : PlayerState
     public override void EnterState()
     {
         //Debug.Log("Entered Glide State");
+        player.playerController3D.TransitionSurf();
         player.physics.SetGlide(true);
         base.EnterState();
     }
@@ -28,18 +29,12 @@ public class GlideState : PlayerState
     }
     public override void ExitState()
     {
+        player.playerController3D.TransitionSurf();
         player.physics.SetGlide(false);
         base.ExitState();
     }
     private void SetInput()
     {
-        xMove = inputMaster.Player.Movement.ReadValue<Vector2>().x;
-        zMove = inputMaster.Player.Movement.ReadValue<Vector2>().y;
-
-        Vector3 input =
-        Vector3.right * xMove +
-        Vector3.forward * zMove;
-
-        player.playerController3D.InputGrounded(input);
+        player.playerController3D.InputGrounded(inputMaster.Player.Movement.ReadValue<Vector2>());
     }
 }
