@@ -5,26 +5,26 @@ using UnityEditor;
 using UnityEditorInternal;
 using EGL = UnityEditor.EditorGUILayout;
 
-[CustomEditor(typeof(Puzzle))]
+[CustomEditor(typeof(PuzzleInstance))]
 public class PuzzleEditor : Editor
 {
     Puzzle serObj;
+    SerializedProperty puzzleID;
     SerializedProperty puzzleObjects;
-    SerializedProperty solution;
-    SerializedProperty symbolPos;
-    SerializedProperty symbolOffset;
-    string[] strings;
-    int[] index;
-    Object[] modifiers;
     ReorderableList listRE;
 
+    //SerializedProperty solution; 
+    /* SerializedProperty symbolPos;
+   SerializedProperty symbolOffset;*/
     private void OnEnable()
     {
         //Get the list of puzzleobjects
         puzzleObjects = serializedObject.FindProperty("puzzleObjects");
-        solution = serializedObject.FindProperty("solution");
-        symbolPos = serializedObject.FindProperty("symbolPos");
-        symbolOffset = serializedObject.FindProperty("symbolOffset");
+        puzzleID = serializedObject.FindProperty("puzzleID");
+
+        //solution = serializedObject.FindProperty("solution");       
+        //symbolPos = serializedObject.FindProperty("symbolPos");
+        //symbolOffset = serializedObject.FindProperty("symbolOffset");
 
         listRE = new ReorderableList(serializedObject, puzzleObjects, true, true, true, true);
 
@@ -104,9 +104,9 @@ public class PuzzleEditor : Editor
 
             listRE.DoLayoutList(); // Have the ReorderableList do its work
 
-            EGL.PropertyField(solution); 
-            EGL.PropertyField(symbolPos);
-            EGL.PropertyField(symbolOffset);
+            EGL.PropertyField(puzzleID); 
+            /*EGL.PropertyField(symbolPos);
+            EGL.PropertyField(symbolOffset);*/
 
 
             // We need to call this so that changes on the Inspector are saved by Unity.

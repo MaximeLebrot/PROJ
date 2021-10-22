@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class PuzzleInstance : MonoBehaviour
 {
-    [SerializeField] int puzzleID; //should be compared to solution on a EvaluatePuzzleEvent and fire a SUCCESS EVENT or FAIL EVENT
+    [SerializeField] private int puzzleID; //should be compared to solution on a EvaluatePuzzleEvent and fire a SUCCESS EVENT or FAIL EVENT
     [SerializeField] public List<PuzzleObject> puzzleObjects = new List<PuzzleObject>();
-    [SerializeField] protected string solution;
-
+    
     //How do we fetch the master puzzle object? 
     [SerializeField]private Puzzle puzzleObject;
 
@@ -23,7 +22,10 @@ public class PuzzleInstance : MonoBehaviour
 
     private void EvaluateSolution(EvaluateSolutionEvent evaluationEvent)
     {
-        puzzleObject.EvaluateSolution(puzzleObjects);
+        Debug.Log("Instance recieved eval event");
+        if(evaluationEvent.info.ID == puzzleID)
+            puzzleObject.EvaluateSolution(puzzleObjects);
     }
 
+    public int GetPuzzleID() { return puzzleID;  }
 }

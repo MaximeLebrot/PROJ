@@ -13,7 +13,7 @@ public class PuzzleGrid : MonoBehaviour {
     private Stack<LineObject> lineRenderers = new Stack<LineObject>();
     private Node currentNode;
 
-    private string solution;
+    [SerializeField]private string solution;
     private List<Node> allNodes = new List<Node>();
 
 

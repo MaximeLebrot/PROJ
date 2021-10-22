@@ -9,7 +9,7 @@ public class LanguagePuzzle : Puzzle
     private List<Transform> symbolPositions = new List<Transform>();
     
 
-    private void PlaceSymbols()
+    /*private void PlaceSymbols()
     {
         for(int i = 0; i < transform.childCount; i++)
         {
@@ -20,5 +20,5 @@ public class LanguagePuzzle : Puzzle
         {
             puzzleObjects[i].transform.position = symbolPositions[i].position;
         }
-    }
+    }*/
 }
