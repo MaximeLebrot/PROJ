@@ -97,6 +97,7 @@ public class Puzzle : MonoBehaviour
             
             PuzzleObject objectInstance = instance.GetComponent<PuzzleObject>();
             instantiatedSymbols.Add(objectInstance);
+            objectInstance.transform.parent = symbolPos;
             objectInstance.SetModifier(pair.modifier);
 
         }
@@ -107,6 +108,7 @@ public class Puzzle : MonoBehaviour
             UnevenPlaceSymbols();
     }
 
+    //DONT EVEN LOOK IN HERE
     private void UnevenPlaceSymbols()
     {
         
@@ -117,15 +119,20 @@ public class Puzzle : MonoBehaviour
         for(int i = 1; i <= mid; i++)
         {
             Vector3 tempPos = symbolPos.position;
-            tempPos.x -= i * symbolOffset;
+            tempPos -= i * (symbolOffset * Vector3.right);
             instantiatedSymbols[mid - i].transform.position = tempPos;
             instantiatedSymbols[mid - i].transform.rotation = symbolPos.rotation;
+            instantiatedSymbols[mid - i].transform.localPosition = 
+                new Vector3(instantiatedSymbols[mid - i].transform.localPosition.x, 0, 0);
 
-            
+
+
             tempPos = symbolPos.position;
-            tempPos.x += i * symbolOffset;
+            tempPos += i * (symbolOffset * Vector3.right);
             instantiatedSymbols[mid + i].transform.position = tempPos;
             instantiatedSymbols[mid + i].transform.rotation = symbolPos.rotation;
+            instantiatedSymbols[mid + i].transform.localPosition = 
+                new Vector3(instantiatedSymbols[mid + i].transform.localPosition.x, 0, 0);
         }
     }
 
@@ -148,13 +155,12 @@ public class Puzzle : MonoBehaviour
         for (int i = 1; i <= midLeft; i++)
         {
             Vector3 tempPos = midLeftPos;
-            tempPos.x -= i * symbolOffset;
+            tempPos -= i * (symbolOffset * Vector3.right);
             instantiatedSymbols[midLeft - i].transform.position = tempPos;
             instantiatedSymbols[midLeft - i].transform.rotation = symbolPos.rotation;
 
-            Debug.Log("TEMPpos:  " + tempPos + "MIDLEFTpos:  " + midLeftPos);
             tempPos = midRightPos;
-            tempPos.x += i * symbolOffset;
+            tempPos += i * (symbolOffset * Vector3.right);
             instantiatedSymbols[midRight + i].transform.position = tempPos;
             instantiatedSymbols[midRight + i].transform.rotation = symbolPos.rotation;
         }

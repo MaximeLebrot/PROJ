@@ -53,7 +53,7 @@ public class PuzzlePlayerController : MonoBehaviour
             EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(CurrentPuzzleID), false));
         }
 
-        Vector3 input =
+        Vector3 input = Camera.main.transform.forward +
         Vector3.right * xMove +
         Vector3.forward * zMove;
   
