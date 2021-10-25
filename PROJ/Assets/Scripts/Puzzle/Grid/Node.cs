@@ -11,7 +11,7 @@ public class Node : MonoBehaviour {
     public event OnSelected OnNodeSelected;
 
     public Dictionary<Node, bool> neighbours { get; private set; }
-    public List<Node> EnabledNodes = new List<Node>();
+    public List<Node> EnabledNodes = new List<Node>(); // this can be in LineObject instead so that a LINE knows what nodes it lit up
     
     public bool startNode;
     
@@ -46,6 +46,16 @@ public class Node : MonoBehaviour {
             angle += 45f;
             
         }
+    }
+
+    public Node FindSpecificNeighbour(Vector3 direction)
+    {
+        Physics.Raycast(transform.position, direction, out var hit, 5, nodeLayer);
+
+        if (hit.collider)
+            return hit.transform.GetComponent<Node>();
+
+        return null;
     }
 
     public void AddLineToNode(Node n)

@@ -11,19 +11,25 @@ public class WalkState : PlayerState
     }
     public override void EnterState()
     {
-        Debug.Log("Entered Walk State");
-        player.physics.SetGlide(false);
+        //Debug.Log("Entered Walk State");
         base.EnterState();
     }
     public override void RunUpdate()
     {
-       //player.physics.WalkInput();
+         SetInput();
+
+        if (!player.playerController3D.IsGrounded())
+            stateMachine.ChangeState<AirborneState>();
+
         if (player.physics.velocity.magnitude > player.physics.SurfThreshold + 1)
-       //if(Input.GetKeyDown(KeyCode.H))
             stateMachine.ChangeState<GlideState>();
     }
     public override void ExitState()
     {
         base.ExitState();
+    }
+    private void SetInput()
+    {
+        player.playerController3D.InputGrounded(inputMaster.Player.Movement.ReadValue<Vector2>());
     }
 }

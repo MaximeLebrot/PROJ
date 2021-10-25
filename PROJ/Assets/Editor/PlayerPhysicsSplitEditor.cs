@@ -44,7 +44,7 @@ public class PlayerPhysicsSplitEditor : Editor {
 
         showDefault = EGL.Toggle("Draw default", showDefault);
         
-        if (showDefault) {
+        if (true) {
             DrawDefaultInspector();
             return;
         }
