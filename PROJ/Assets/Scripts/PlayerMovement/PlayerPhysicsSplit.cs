@@ -38,16 +38,15 @@ public class PlayerPhysicsSplit : MonoBehaviour
     public float kineticFrictionCoefficient = 0.35f;
     public float airResistance = 0.35f;
 
-    private float groundFriction; 
+    //Collision
     private CapsuleCollider attachedCollider;
-    private Vector3 startPosition;
     private Vector3 colliderTopHalf, colliderBottomHalf;
+
     private bool isGliding;
     private float glideNormalForceMargin = 1.1f;
-
+    private float setValuesLerpSpeed = 2f;
     private void OnEnable()
     {
-        startPosition = transform.position;
         attachedCollider = GetComponent<CapsuleCollider>();
     }
     private void Update()
@@ -66,15 +65,13 @@ public class PlayerPhysicsSplit : MonoBehaviour
     }
     public void SetValues(ControllerValues values)
     {
-        //Friction and air resistance
-        staticFrictionCoefficient = values.staticFriction;
-        kineticFrictionCoefficient = values.kineticFriction;
-        airResistance = values.airResistance;
+        StartCoroutine("LerpValues", values);
+    }
+    private IEnumerator LerpValues(ControllerValues values)
+    {
+        float time = 0f;
 
-        maxSpeed = values.maxSpeed;
-        gravity = values.gravity;
-
-        //Glide
+        //Glide, remove this entirely?? 
         if (typeof(GlideValues) == values.GetType())
         {
             GlideValues glideValues = (GlideValues)values;
@@ -82,6 +79,19 @@ public class PlayerPhysicsSplit : MonoBehaviour
             powerOf = glideValues.powerOf;
             surfThreshold = glideValues.surfThreshold;
         }
+
+        while (time < setValuesLerpSpeed)
+        {
+            //Friction and air resistance
+            staticFrictionCoefficient = Mathf.Lerp(staticFrictionCoefficient, values.staticFriction, time * (1 / setValuesLerpSpeed));
+            kineticFrictionCoefficient = Mathf.Lerp(kineticFrictionCoefficient, values.kineticFriction, time * (1 / setValuesLerpSpeed));
+            airResistance = Mathf.Lerp(airResistance, values.airResistance, time * (1 / setValuesLerpSpeed));
+
+            maxSpeed = Mathf.Lerp(maxSpeed, values.maxSpeed, time * (1 / setValuesLerpSpeed));
+            gravity = Mathf.Lerp(gravity, values.gravity, time * (1 / setValuesLerpSpeed));          
+        }
+        time += Time.deltaTime;
+        yield return null;
     }
     /// <summary>
     /// Divides the collision into XZ & Y-components, to be able to apply the smoothing to normalforce along only the y-axis
