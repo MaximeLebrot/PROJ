@@ -18,7 +18,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     [SerializeField] private float airControl = 0.2f;
     [SerializeField] private float minimumPenetrationForPenalty = 0.01f;
     [SerializeField] private LayerMask collisionMask;
-    //[SerializeField] private float gravityWhenFalling = 10f;
+    [SerializeField] private float gravityWhenFalling = 10f;
 
     //Properties
     public float SurfThreshold { get => surfThreshold; }
@@ -37,8 +37,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
     public float staticFrictionCoefficient = 0.5f;
     public float kineticFrictionCoefficient = 0.35f;
     public float airResistance = 0.35f;
-
-
 
     private float groundFriction; 
     private CapsuleCollider attachedCollider;
@@ -255,14 +253,18 @@ public class PlayerPhysicsSplit : MonoBehaviour
             velocity -= velocity.normalized * normalForce.magnitude * (kineticFrictionCoefficient);            
         }
     }
-   public float kineticFrictionCombined = 0f;
-    public void SetGroundFriction(float friction)
+    public void SetFallingGravity()
     {
-        groundFriction = friction;
-        kineticFrictionCombined = kineticFrictionCoefficient + groundFriction; 
+        currentGravity = gravityWhenFalling;
     }
+    public void SetNormalGravity()
+    {
+        currentGravity = gravity;
+    }
+
     private void ApplyAirResistance() { velocity *= Mathf.Pow(airResistance, Time.deltaTime); }
     #endregion
+    #region Force and Speed
     private void ClampSpeed()
     {
         float temp = velocity.y;
@@ -277,10 +279,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     {
         return new Vector3(velocity.x, 0, velocity.z);
     }
-    public void ResetPosition()
-    {
-        transform.position = startPosition;
-    }
+    #endregion
     public void SetGlide(bool gliding)
     {
         isGliding = gliding;

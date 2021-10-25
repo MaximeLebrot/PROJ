@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -136,6 +137,8 @@ public class PuzzleInstanceEditor : Editor {
     }
     
     private void CreateInstance(Transform parent, int insertIndex) {
+        
+        
         
         SerializedProperty property = puzzleList.serializedProperty.GetArrayElementAtIndex(insertIndex);
             
