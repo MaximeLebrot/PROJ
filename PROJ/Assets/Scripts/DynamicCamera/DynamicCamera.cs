@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace DynamicCamera {
@@ -9,6 +10,10 @@ namespace DynamicCamera {
         [Tooltip("IF PLAYER IS TARGET: Assign an empty transform as a child to the player , not the actual player")] 
         private Transform followTarget;
 
+        [SerializeField] private List<CameraBehaviour> listOfBehaviourReferences;
+
+        private Dictionary<Type, CameraBehaviour> behaviours = new Dictionary<Type, CameraBehaviour>();
+        
         [SerializeField] private Transform eyeTarget;
         [SerializeField] private CameraBehaviour puzzleCamera;
         [SerializeField] private CameraBehaviour worldBehaviourCamera;
@@ -18,6 +23,10 @@ namespace DynamicCamera {
         private InputMaster inputMaster;
 
         private void Awake() {
+
+            foreach (CameraBehaviour cameraBehaviour in listOfBehaviourReferences)
+                behaviours[cameraBehaviour.GetType()] = cameraBehaviour;
+            
             inputMaster = new InputMaster();
             inputMaster.Enable();
             ChangeBehaviour(worldBehaviourCamera);
