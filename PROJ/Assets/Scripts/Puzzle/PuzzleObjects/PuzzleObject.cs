@@ -22,7 +22,7 @@ public abstract class PuzzleObject : MonoBehaviour
 
     private void OnEnable()
     {
-        SetModifier();
+        
     }
 
 
@@ -40,16 +40,17 @@ public abstract class PuzzleObject : MonoBehaviour
             modifiedString += modInfo.translation;
         }
 
+        Debug.Log(modifiedString + translation);
         //CANNOT COMBINE MODIFIERS RIGHT NOW
         return modifiedString + translation;
     }
 
 
-    public void SetModifier()
+    public void SetModifier(ModifierVariant modVar)
     {
         if (modifier != null)
             Destroy(modifier);
-        modInfo = modHolder.GetComponent<ModifierHolder>().GetModifier(modVariant);
+        modInfo = modHolder.GetComponent<ModifierHolder>().GetModifier(modVar);
         modifier = Instantiate(modInfo.modifier);
         modifier.transform.parent = transform;
         modifier.transform.localPosition = modifierPosition;
