@@ -34,10 +34,12 @@ public class Node : MonoBehaviour {
         
         for (int i = 0; i < 8; i++) {
 
-            Vector3 direction = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad),0 ,Mathf.Sin(angle * Mathf.Deg2Rad));
+            Vector3 direction = transform.parent.rotation * new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad),0);
             
             Physics.Raycast(transform.position, direction, out var hit, 5, nodeLayer);
-            
+
+            Debug.DrawRay(transform.position, direction * 5, Color.cyan, 10);
+
             if(hit.collider)
                 neighbours.Add(hit.transform.GetComponent<Node>(), false);
 
