@@ -29,11 +29,17 @@ public class Puzzle : MonoBehaviour
 
     void Awake()
     {
-        currentPuzzleInstance = puzzleInstances[0];
-        numOfPuzzles = puzzleInstances.Count;
-        grid = GetComponentInChildren<PuzzleGrid>();
-        inputMaster = new InputMaster();
-        PlaceSymbols();
+        if (puzzleInstances.Count > 0)
+        {
+            currentPuzzleInstance = puzzleInstances[0];
+            numOfPuzzles = puzzleInstances.Count;
+            grid = GetComponentInChildren<PuzzleGrid>();
+            inputMaster = new InputMaster();
+            PlaceSymbols();
+        }
+        else
+            Debug.LogWarning("NO PUZZLE INSTANCES IN PUZZLE");
+        
     }
     private void OnEnable()
     {
