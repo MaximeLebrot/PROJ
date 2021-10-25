@@ -33,7 +33,7 @@ public class Puzzle : MonoBehaviour
         numOfPuzzles = puzzleInstances.Count;
         grid = GetComponentInChildren<PuzzleGrid>();
         inputMaster = new InputMaster();
-        InitiatePuzzle();
+        PlaceSymbols();
     }
     private void OnEnable()
     {
