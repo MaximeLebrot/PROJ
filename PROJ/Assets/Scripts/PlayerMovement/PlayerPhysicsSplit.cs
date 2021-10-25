@@ -10,7 +10,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     public Vector3 velocity;
     public RaycastHit groundHitInfo { get; private set; }
 
-    [Header("Values")]
+    [Header("Character Modifiers")]
     [SerializeField] private float glideHeight = 0.5f;
     [SerializeField] protected float skinWidth = 0.05f;
     [SerializeField] private float inputThreshold = 0.1f;
@@ -18,7 +18,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     [SerializeField] private float minimumPenetrationForPenalty = 0.01f;
     [SerializeField] private LayerMask collisionMask;
     [SerializeField] private float currentGravity;
-    //[SerializeField] private float gravityWhenFalling = 10f;
+    [SerializeField] private float gravityWhenFalling = 16f;
 
     //Properties
     public float SurfThreshold { get => surfThreshold; }
@@ -38,19 +38,16 @@ public class PlayerPhysicsSplit : MonoBehaviour
     public float kineticFrictionCoefficient = 0.35f;
     public float airResistance = 0.35f;
 
-
-
-    private float groundFriction; 
+    //Collision
     private CapsuleCollider attachedCollider;
-    private Vector3 startPosition;
     private Vector3 colliderTopHalf, colliderBottomHalf;
+
     private bool isGliding;
     private float glideNormalForceMargin = 1.1f;
     private float setValuesLerpTime = 2f;
 
     private void OnEnable()
     {
-        startPosition = transform.position;
         attachedCollider = GetComponent<CapsuleCollider>();
     }
     private void Update()
@@ -92,12 +89,10 @@ public class PlayerPhysicsSplit : MonoBehaviour
         StartCoroutine("LerpValues", values);
     }
     private IEnumerator LerpValues(ControllerValues values)
-    {
-        
+    {      
         float time = 0f;
         while (time < setValuesLerpTime)
         {
-            Debug.Log("Coroutine running");
             //Friction and air resistance
             staticFrictionCoefficient = Mathf.Lerp(staticFrictionCoefficient, values.staticFriction, time * (1 / setValuesLerpTime));
             kineticFrictionCoefficient = Mathf.Lerp(kineticFrictionCoefficient, values.kineticFriction, time * (1 / setValuesLerpTime));
@@ -284,7 +279,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
     {
         Vector3 gravityMovement = currentGravity * Vector3.down * Time.deltaTime;
         velocity += gravityMovement;
-        currentGravity = gravity;
     }
     private void ApplyFriction(Vector3 normalForce)
     {
@@ -297,9 +291,13 @@ public class PlayerPhysicsSplit : MonoBehaviour
     }
     //Currently not used, will probably restrict gliding directly instead
     private void ApplyAirResistance() { velocity *= Mathf.Pow(airResistance, Time.deltaTime); }
-    public void SetGroundFriction(float friction)
+    public void SetFallingGravity()
     {
-        groundFriction = friction;
+        currentGravity = gravityWhenFalling;
+    }
+    public void SetNormalGravity()
+    {
+        currentGravity = gravity;
     }
     #endregion
 
