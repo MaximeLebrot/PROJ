@@ -5,7 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "PlayerStates/GlideState")]
 public class GlideState : PlayerState
 {
-
     public override void Initialize()
     {
         base.Initialize();

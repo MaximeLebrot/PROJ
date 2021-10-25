@@ -143,8 +143,6 @@ public class PlayerController : MonoBehaviour
         float groundFriction = 0f;        
         if (grounded)
             groundFriction = groundHitInfo.collider.material.dynamicFriction;
-
-        physics.SetGroundFriction(groundFriction);
         
         return grounded; 
     }
