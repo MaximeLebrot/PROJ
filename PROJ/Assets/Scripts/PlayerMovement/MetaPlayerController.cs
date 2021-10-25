@@ -40,7 +40,7 @@ public class MetaPlayerController : MonoBehaviour
     private void StartPuzzle(StartPuzzleEvent spe)
     {
         puzzleController.CurrentPuzzleID = spe.info.ID;
-       
+        puzzleController.PuzzleTransform = spe.info.puzzlePos;
         stateMachine.ChangeState<PuzzleState>();
     }
 

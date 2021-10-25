@@ -29,6 +29,7 @@ public class PuzzlePlayerController : MonoBehaviour
     private InputMaster inputMaster;
     
     public int CurrentPuzzleID { get; set; }
+    public Transform PuzzleTransform { get; set; }
 
     void Awake()
     {
@@ -53,9 +54,11 @@ public class PuzzlePlayerController : MonoBehaviour
             EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(CurrentPuzzleID), false));
         }
 
-        Vector3 input = Camera.main.transform.forward +
-        Vector3.right * xMove +
-        Vector3.forward * zMove;
+       
+
+        Vector3 input = 
+        PuzzleTransform.right * xMove +
+        PuzzleTransform.forward * zMove;
         
         HandleInput(input);
     }

@@ -38,7 +38,7 @@ public class Node : MonoBehaviour {
             
             Physics.Raycast(transform.position, direction, out var hit, 5, nodeLayer);
 
-            Debug.DrawRay(transform.position, direction * 5, Color.cyan, 10);
+            //Debug.DrawRay(transform.position, direction * 5, Color.cyan, 10);
 
             if(hit.collider)
                 neighbours.Add(hit.transform.GetComponent<Node>(), false);
