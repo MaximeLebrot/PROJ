@@ -52,7 +52,7 @@ public class EvaluateSolutionEvent : IEvent
 public class PuzzleInfo
 {
     public int ID;
-    Transform puzzlePos;
+    public Transform puzzlePos;
 
     public PuzzleInfo(int id) { ID = id; }
     public PuzzleInfo(int id, Transform pp) { ID = id; puzzlePos = pp; }
