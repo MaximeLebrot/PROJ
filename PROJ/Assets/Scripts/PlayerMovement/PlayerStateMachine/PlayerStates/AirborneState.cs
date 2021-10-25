@@ -14,7 +14,7 @@ public class AirborneState : PlayerState
     public override void EnterState() 
     {
         Debug.Log("Entered airborne state");
-        player.physics.SetFallingGravity();
+        //player.physics.SetFallingGravity();
     }
     public override void RunUpdate()
     {
@@ -33,7 +33,7 @@ public class AirborneState : PlayerState
     }
     private void LeaveAirborneState()
     {
-        player.physics.SetNormalGravity();
+        //player.physics.SetNormalGravity();
 
         if (player.physics.velocity.magnitude < player.physics.SurfThreshold)
             stateMachine.ChangeState<WalkState>();
