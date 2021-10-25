@@ -15,7 +15,7 @@ public class PuzzleInstanceEditor : Editor {
     private SerializedProperty puzzleListProperty; //PuzzleObject-list
     private SerializedProperty symbolPlacementObjectProp; //PuzzleObject-list
     
-    private void OnEnable() {
+    /*private void OnEnable() {
         drawDefault = true;
         serializedObject = new SerializedObject(target);
         puzzleListProperty = serializedObject.FindProperty("puzzleObjects");
@@ -30,7 +30,7 @@ public class PuzzleInstanceEditor : Editor {
             puzzleList.onAddCallback = Add;
         }
         
-    }
+    }*/
     
     private void SortHierarchy() {
         Transform parent = symbolPlacementObjectProp.objectReferenceValue as Transform;
@@ -153,7 +153,7 @@ public class PuzzleInstanceEditor : Editor {
         //newPuzzleReference.gameObject.hideFlags = HideFlags.HideInHierarchy;
     }
     
-    public override void OnInspectorGUI() {
+    /*public override void OnInspectorGUI() {
         
         if (drawDefault)
             DrawDefaultInspector();
@@ -169,7 +169,7 @@ public class PuzzleInstanceEditor : Editor {
         }
             
         
-    }
+    }*/
     
     void DrawListItems(Rect rect, int index, bool isActive, bool isFocused) {
 
