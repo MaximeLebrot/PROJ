@@ -12,7 +12,7 @@ public abstract class PuzzleObject : MonoBehaviour
     [SerializeField] private Vector3 modifierPosition;
     [SerializeField] private GameObject modHolder;
 
-    [HideInInspector]
+    //[HideInInspector]
     [SerializeField] private ModifierVariant modVariant;
     
 

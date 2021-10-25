@@ -8,9 +8,7 @@ public class PuzzleStarter : MonoBehaviour
     {
         puzzle = GetComponentInParent<Puzzle>();
         puzzleID = puzzle.GetPuzzleID();
-    }
-
-    
+    }   
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Start Puzzle");
