@@ -89,9 +89,11 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
             maxSpeed = Mathf.Lerp(maxSpeed, values.maxSpeed, time * (1 / setValuesLerpSpeed));
             gravity = Mathf.Lerp(gravity, values.gravity, time * (1 / setValuesLerpSpeed));          
+            
+            time += Time.deltaTime;
+            yield return null;
         }
-        time += Time.deltaTime;
-        yield return null;
+       
     }
     /// <summary>
     /// Divides the collision into XZ & Y-components, to be able to apply the smoothing to normalforce along only the y-axis
