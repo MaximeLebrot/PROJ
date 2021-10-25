@@ -5,13 +5,13 @@ using UnityEngine;
 public class PuzzleInstance : MonoBehaviour
 {
     [SerializeField] private int puzzleID; //should be compared to solution on a EvaluatePuzzleEvent and fire a SUCCESS EVENT or FAIL EVENT
-    [SerializeField] public List<PuzzleObject> puzzleObjects = new List<PuzzleObject>();
+    [SerializeField] public List<SymbolModPair> puzzleObjects = new List<SymbolModPair>();
     
-    //How do we fetch the master puzzle object? 
-    [SerializeField]private Puzzle puzzleObject;
+    private Puzzle masterPuzzle;
 
     private void OnEnable()
     {
+        masterPuzzle = GetComponentInParent<Puzzle>();
         EventHandler<EvaluateSolutionEvent>.RegisterListener(EvaluateSolution);
     }
 
@@ -24,8 +24,15 @@ public class PuzzleInstance : MonoBehaviour
     {
         Debug.Log("Instance recieved eval event");
         if(evaluationEvent.info.ID == puzzleID)
-            puzzleObject.EvaluateSolution(puzzleObjects);
+            masterPuzzle.EvaluateSolution();
     }
 
     public int GetPuzzleID() { return puzzleID;  }
+}
+
+[System.Serializable]
+public class SymbolModPair
+{
+    public PuzzleObject symbol;
+    public ModifierVariant modifier;
 }
