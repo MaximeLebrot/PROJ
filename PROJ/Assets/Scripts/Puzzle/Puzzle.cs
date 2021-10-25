@@ -57,7 +57,6 @@ public class Puzzle : MonoBehaviour
     }
    private void InitiatePuzzle()
     {
-        Debug.Log("Initiate puzzle");
         grid.ResetGrid();
         PlaceSymbols();
     }
