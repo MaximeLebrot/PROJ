@@ -17,7 +17,7 @@ public class Puzzle : MonoBehaviour
     private PuzzleGrid grid;
 
     //Draw symbols
-    [SerializeField] public List<GameObject> instantiatedSymbols = new List<GameObject>();
+    [SerializeField] public List<PuzzleObject> instantiatedSymbols = new List<PuzzleObject>();
     [SerializeField] Transform symbolPos;
     [SerializeField] int symbolOffset;
 
@@ -33,6 +33,7 @@ public class Puzzle : MonoBehaviour
         numOfPuzzles = puzzleInstances.Count;
         grid = GetComponentInChildren<PuzzleGrid>();
         inputMaster = new InputMaster();
+        InitiatePuzzle();
     }
     private void OnEnable()
     {
@@ -52,11 +53,11 @@ public class Puzzle : MonoBehaviour
             EventHandler<EvaluateSolutionEvent>.FireEvent(new EvaluateSolutionEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID())));
         }
 
-        if (inputMaster.Player.Interact.triggered)
-            PlaceSymbols();
+
     }
    private void InitiatePuzzle()
     {
+        //Debug.Log("Initiate puzzle");
         grid.ResetGrid();
         PlaceSymbols();
     }
@@ -85,14 +86,19 @@ public class Puzzle : MonoBehaviour
     {
         for(int i = 0; i <instantiatedSymbols.Count; i++)
         {
-            Destroy(instantiatedSymbols[i]);
+            Destroy(instantiatedSymbols[i].gameObject);
         }
 
         instantiatedSymbols.Clear();
         //Is this the way we want to fetch the list??
-        foreach(PuzzleObject obj in currentPuzzleInstance.puzzleObjects)
+        foreach(SymbolModPair pair in currentPuzzleInstance.puzzleObjects)
         {
-            instantiatedSymbols.Add(Instantiate(obj).gameObject);
+            GameObject instance = Instantiate(pair.symbol).gameObject;
+            
+            PuzzleObject objectInstance = instance.GetComponent<PuzzleObject>();
+            instantiatedSymbols.Add(objectInstance);
+            objectInstance.SetModifier(pair.modifier);
+
         }
 
         if (instantiatedSymbols.Count % 2 == 0)
@@ -168,15 +174,22 @@ public class Puzzle : MonoBehaviour
         }
     }
 
-    private string Translate(List<PuzzleObject> objects)
+    private string Translate()
     {
-        return translator.CalculateSolution(objects);
+        if (instantiatedSymbols.Count > 0)
+            return translator.CalculateSolution(instantiatedSymbols);
+        else
+        {
+            Debug.LogWarning("SOLUTION EMPTY, NO INSTANTIATED SYMBOLS");
+            return null;
+        }
+            
     }
-    public void EvaluateSolution(List<PuzzleObject> objects)
+    public void EvaluateSolution()
     {
         Debug.Log("EvaluateSolution Called");
         //Should be in OnEnable but is here for Development and debugging
-        solution = Translate(objects);
+        solution = Translate();
 
         Debug.Log("Solution: " + solution + " INPUT : " + grid.GetSolution());
         if (solution.Equals(grid.GetSolution()))

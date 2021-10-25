@@ -195,10 +195,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6887735673364505859, guid: 0b9b9e4a410992547b69d41ee5a2dcd2, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 13400000, guid: b58d02a6bff71ce4da61b4fdf90a1dcc, type: 2}
     - target: {fileID: 6887735673686400497, guid: 0b9b9e4a410992547b69d41ee5a2dcd2, type: 3}
       propertyPath: m_Name
       value: Terrain (1)
@@ -1015,7 +1011,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2677558544405405545, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
       propertyPath: groundCheckDistance
-      value: 1.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2677558544405405551, guid: 96e2d33ce4a98ef4dbd672078db7fa40, type: 3}
       propertyPath: m_Name
@@ -1378,6 +1374,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collisionMask:
+    serializedVersion: 2
     m_Bits: 0
   TargetOffset: {x: 0, y: 2, z: -5}
   PlayerTarget: {fileID: 448733151}
@@ -1385,11 +1382,6 @@ MonoBehaviour:
   cameraSpeed: 8
   minZoom: -5
   maxZoom: 5
-  Target: {fileID: 0}
-  ActiveCamera: {fileID: 0}
-  Collider: {fileID: 0}
-  collisionOffset: {x: 0, y: 0, z: 0}
-  rotation: {x: 0, y: 0}
 --- !u!20 &1687258584
 Camera:
   m_ObjectHideFlags: 0
