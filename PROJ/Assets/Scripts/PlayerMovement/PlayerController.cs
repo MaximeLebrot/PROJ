@@ -59,9 +59,9 @@ public class PlayerController : MonoBehaviour
             input.Normalize();
         }
         
-        if (surfCamera)
+        /*if (surfCamera)
             RotateInDirectionOfMovement(inp);
-        else
+        else*/
             PlayerDirection();
 
         if (input.magnitude < float.Epsilon)
@@ -140,8 +140,11 @@ public class PlayerController : MonoBehaviour
     {
         bool grounded = Physics.BoxCast(transform.position, Vector3.one * groundCheckBoxSize, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance, groundCheckMask);
         
-        if(grounded)
-            physics.SetGroundFriction(groundHitInfo.collider.material.dynamicFriction);
+        float groundFriction = 0f;        
+        if (grounded)
+            groundFriction = groundHitInfo.collider.material.dynamicFriction;
+
+        physics.SetGroundFriction(groundFriction);
         
         return grounded; 
     }

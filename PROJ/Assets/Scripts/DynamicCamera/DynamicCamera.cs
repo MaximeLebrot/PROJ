@@ -42,7 +42,7 @@ namespace DynamicCamera {
         
         private void OnApplicationFocus(bool hasFocus) => Cursor.lockState = hasFocus ? CursorLockMode.Locked : CursorLockMode.None;
         
-        [ContextMenu("Auto-assign targets")]
+        [ContextMenu("Auto-assign targets", false,0)]
         public void AssignTargets() {
             try {
                 followTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
