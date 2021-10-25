@@ -113,8 +113,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
             }
 
             ApplyFriction(smoothingNormalForce);
-            ApplyAirResistance();
-
             velocity += new Vector3(0, smoothingNormalForce.y, 0);
         }
 
@@ -145,6 +143,8 @@ public class PlayerPhysicsSplit : MonoBehaviour
         }
         else 
             MoveOutOfGeometry(velocity * Time.deltaTime);
+        
+        ApplyAirResistance();
     }
     private void CheckForCollisions(int i)
     {
