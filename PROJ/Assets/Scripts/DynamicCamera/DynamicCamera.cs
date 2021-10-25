@@ -6,14 +6,13 @@ namespace DynamicCamera {
     
     public class DynamicCamera : MonoBehaviour {
         
-        
         [Header("IF PLAYER IS TARGET: Assign an empty transform as a child to the player , not the actual player")] 
         [SerializeField] private Transform followTarget;
         [SerializeField] private Transform eyeTarget;
 
         [SerializeField] private List<CameraBehaviour> listOfBehaviourReferences;
 
-        private Dictionary<Type, CameraBehaviour> behaviours = new Dictionary<Type, CameraBehaviour>();
+        private readonly Dictionary<Type, CameraBehaviour> behaviours = new Dictionary<Type, CameraBehaviour>();
         
         private CameraBehaviour currentCameraBehaviour;
         

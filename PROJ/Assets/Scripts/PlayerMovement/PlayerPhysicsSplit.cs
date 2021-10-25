@@ -116,9 +116,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
             //causing us to apply 99-something % of normalforce one frame, and intersecting the collider in the next (frame).
             else
             {
-                smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, smoothingCastHitInfo.normal)
-                                               * Mathf.Pow(((1 - smoothingCastHitInfo.distance / smoothingMaxDistance)), powerOf)
-                                               * glideNormalForceMargin
+                smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, smoothingCastHitInfo.normal) * (Mathf.Pow(((1 - smoothingCastHitInfo.distance / smoothingMaxDistance)), powerOf) * glideNormalForceMargin)
                                                + glideHeight * Vector3.up;
             }
 

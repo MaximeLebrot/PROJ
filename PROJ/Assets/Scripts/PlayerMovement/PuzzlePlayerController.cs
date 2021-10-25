@@ -56,7 +56,7 @@ public class PuzzlePlayerController : MonoBehaviour
         Vector3 input = Camera.main.transform.forward +
         Vector3.right * xMove +
         Vector3.forward * zMove;
-  
+        
         HandleInput(input);
     }
     private void FixedUpdate()
