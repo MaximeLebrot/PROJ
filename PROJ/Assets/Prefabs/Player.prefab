@@ -278,7 +278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceleration: 16
-  deceleration: 5
+  deceleration: 12
   maxSpeed: 40
   turnRate: 10
   turnSpeed: 0.4
@@ -301,13 +301,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   velocity: {x: 0, y: 0, z: 0}
-  skinWidth: 0.08
+  glideHeight: 0.5
+  skinWidth: 0.1
   inputThreshold: 0.1
   currentGravity: 0
   airControl: 0.2
+  minimumPenetrationForPenalty: 0.01
   collisionMask:
     serializedVersion: 2
     m_Bits: 59
+  gravityWhenFalling: 10
   maxSpeed: 12
   gravity: 9.81
   smoothingMaxDistance: 3
