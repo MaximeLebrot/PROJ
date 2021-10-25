@@ -16,14 +16,12 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-     /*   float speed = Input.GetAxis("Vertical");
+        float speed = Input.GetAxis("Vertical");
         float direction = Input.GetAxis("Horizontal");
 
-          Debug.Log(speed + "" + direction);
-       anim.SetFloat("speed", speed);
+        Debug.Log(speed + "" + direction);
+        anim.SetFloat("speed", speed);
         anim.SetFloat("direction", direction);
-        */
-
     }
 
 }
