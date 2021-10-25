@@ -16,6 +16,7 @@ public class PuzzleGrid : MonoBehaviour {
     [SerializeField]private string solution;
     private List<Node> allNodes = new List<Node>();
 
+    private LineRenderer currentLine;
 
     public string GetSolution() 
     { 
@@ -26,6 +27,13 @@ public class PuzzleGrid : MonoBehaviour {
     private void Awake() {
 
         StartGrid();
+        //currentLine = Instantiate(lineRendererPrefab, transform);
+        //currentLine.SetPosition(0, currentNode.transform.position);
+    }
+
+    private void Update()
+    {
+        //currentLine.SetPosition(1, )
     }
 
 
