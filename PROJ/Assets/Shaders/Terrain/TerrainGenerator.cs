@@ -19,7 +19,8 @@ public class TerrainGenerator : MonoBehaviour
 {
     [Header("Generation Settings")]
     [SerializeField] [Range(1, 256)] private int chunkSize;
-    [SerializeField] private int scale = 1;
+    [SerializeField] private float scale = 1;
+    [SerializeField] private Vector2 offset;
     [SerializeField] private string seed;
     [SerializeField] private bool randomSeed;
 
@@ -75,7 +76,7 @@ public class TerrainGenerator : MonoBehaviour
     private float[] GenerateNoise(BiomeSetting biomeSetting)
     {
         FastNoiseLite noiseGenerator = new FastNoiseLite();
-
+        
         noiseGenerator.SetSeed(randomSeed ? Random.Range(-1000000, 1000000) : seed.GetHashCode());
         noiseGenerator.SetNoiseType(biomeSetting.noiseType);
         noiseGenerator.SetFrequency(biomeSetting.noiseFrequency);
@@ -91,7 +92,7 @@ public class TerrainGenerator : MonoBehaviour
         {
             for (float x = 0; x < chunkSize; x++)
             {
-                noise[i++] += noiseGenerator.GetNoise(x, y) * biomeSetting.maxHeight;
+                noise[i++] += noiseGenerator.GetNoise(x + offset.x, y + offset.y) * biomeSetting.maxHeight;
             }
         }
         return noise;
