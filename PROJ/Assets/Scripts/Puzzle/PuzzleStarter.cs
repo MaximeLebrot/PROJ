@@ -4,7 +4,8 @@ public class PuzzleStarter : MonoBehaviour
 {
     private Puzzle puzzle;
     private int puzzleID;
-    private void Awake()
+
+    private void Start()
     {
         puzzle = GetComponentInParent<Puzzle>();
         puzzleID = puzzle.GetPuzzleID();
@@ -15,6 +16,7 @@ public class PuzzleStarter : MonoBehaviour
     {
         Debug.Log("Start Puzzle");
         EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzleID)));
+        
         
         //StartPuzzleEvent skickas även när pusslet är igång, fix plz.
         
