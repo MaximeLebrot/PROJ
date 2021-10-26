@@ -14,12 +14,23 @@ public class HearCollision : MonoBehaviour
 
     void Start()
     {
-        
+        frontSource = GetComponent<AudioSource>();
+        leftSource = GetComponent<AudioSource>();
+        rightSource = GetComponent<AudioSource>();
+        backSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
         
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<Collider>().CompareTag("BlindWall"))
+        {
+            Debug.Log("womp");
+        }
     }
 
     private void PlayAlert(int place)
