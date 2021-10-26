@@ -61076,6 +61076,18 @@ PrefabInstance:
       propertyPath: worldBehaviourCamera
       value: 
       objectReference: {fileID: 11400000, guid: 6731b07f6d6646943a7b634c0f7cda58, type: 2}
+    - target: {fileID: 2184620921574008163, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
+      propertyPath: listOfBehaviourReferences.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2184620921574008163, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
+      propertyPath: listOfBehaviourReferences.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 6731b07f6d6646943a7b634c0f7cda58, type: 2}
+    - target: {fileID: 2184620921574008163, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
+      propertyPath: listOfBehaviourReferences.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: a279b70b4cb03d5479c648d12227b34b, type: 2}
     - target: {fileID: 2184620921574008166, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
       propertyPath: field of view
       value: 60
@@ -72150,6 +72162,7 @@ MonoBehaviour:
   collisionMask:
     serializedVersion: 2
     m_Bits: 59
+  gravityWhenFalling: 10
   maxSpeed: 12
   gravity: 9.81
   smoothingMaxDistance: 3
@@ -72158,7 +72171,6 @@ MonoBehaviour:
   staticFrictionCoefficient: 0.5
   kineticFrictionCoefficient: 0.35
   airResistance: 0.35
-  kineticFrictionCombined: 0
 --- !u!4 &2677558544799206686
 Transform:
   m_ObjectHideFlags: 0
