@@ -16,16 +16,14 @@ namespace DynamicCamera {
         
         private CameraBehaviour currentCameraBehaviour;
         
-        private InputMaster inputMaster;
+        private ControllerInputReference inputReference;
 
         private void Awake() {
 
             foreach (CameraBehaviour cameraBehaviour in listOfBehaviourReferences)
                 behaviours[cameraBehaviour.GetType()] = cameraBehaviour;
-            
-            inputMaster = new InputMaster();
-            inputMaster.Enable();
-            ChangeBehaviour(behaviours[typeof(WorldBehaviour)]);
+
+            ChangeBehaviour(behaviours[typeof(IdleBehaviour)]);
         }
 
         private void OnEnable() {
