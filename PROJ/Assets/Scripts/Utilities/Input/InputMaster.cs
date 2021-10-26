@@ -134,7 +134,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""id"": ""125b7564-f804-44d0-aeb7-1768ea5c58d0"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
-                    ""processors"": ""NormalizeVector2"",
+                    ""processors"": """",
                     ""groups"": ""Stnd KBM"",
                     ""action"": ""MoveCamera"",
                     ""isComposite"": false,

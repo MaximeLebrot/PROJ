@@ -29,12 +29,12 @@ namespace DynamicCamera {
         }
 
         private void OnEnable() {
-            EventHandler<StartPuzzleEvent>.RegisterListener(ChangeToPuzzleCamera);
-            EventHandler<ExitPuzzleEvent>.RegisterListener(ChangeToWorldCamera);
+            EventHandler<StartPuzzleEvent>.RegisterListener(OnPuzzleStart);
+            EventHandler<ExitPuzzleEvent>.RegisterListener(OnPuzzleExit);
         }
 
-        private void ChangeToWorldCamera(ExitPuzzleEvent exitPuzzleEvent) => ChangeBehaviour(behaviours[typeof(WorldBehaviour)]);
-        private void ChangeToPuzzleCamera(StartPuzzleEvent startPuzzleEvent) {
+        private void OnPuzzleExit(ExitPuzzleEvent exitPuzzleEvent) => ChangeBehaviour(behaviours[typeof(WorldBehaviour)]);
+        private void OnPuzzleStart(StartPuzzleEvent startPuzzleEvent) {
             
             ChangeBehaviour(behaviours[typeof(PuzzleBehaviour)]);
 
@@ -43,7 +43,7 @@ namespace DynamicCamera {
             puzzleBehaviour.AssignRotation(startPuzzleEvent.info.puzzlePos);
             
         }
-
+        
         private void LateUpdate() => currentCameraBehaviour.Behave();
         
         private void ChangeBehaviour(CameraBehaviour newCameraBehaviour) {
