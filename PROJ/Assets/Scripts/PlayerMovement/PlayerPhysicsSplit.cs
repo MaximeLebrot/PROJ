@@ -116,13 +116,14 @@ public class PlayerPhysicsSplit : MonoBehaviour
             //causing us to apply 99-something % of normalforce one frame, and intersecting the collider in the next (frame).
             else
             {
-                smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, smoothingCastHitInfo.normal) * (Mathf.Pow(((1 - smoothingCastHitInfo.distance / smoothingMaxDistance)), powerOf) * glideNormalForceMargin)
-                                               + glideHeight * Vector3.up;
+                smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, smoothingCastHitInfo.normal) 
+                                       * (1 - smoothingCastHitInfo.distance / smoothingMaxDistance)
+                                       * glideNormalForceMargin
+                                       + glideHeight * Vector3.up;
+                                       /* (Mathf.Pow(((1 - smoothingCastHitInfo.distance / smoothingMaxDistance)), powerOf) */
             }
 
             ApplyFriction(smoothingNormalForce);
-            ApplyAirResistance();
-
             velocity += new Vector3(0, smoothingNormalForce.y, 0);
         }
 
@@ -153,6 +154,8 @@ public class PlayerPhysicsSplit : MonoBehaviour
         }
         else 
             MoveOutOfGeometry(velocity * Time.deltaTime);
+
+        ApplyAirResistance();
     }
     private void CheckForCollisions(int i)
     {
@@ -179,7 +182,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
             //velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
             velocity += normalForce;
-
             ApplyFriction(normalForce);
 
             if (i < MAX_ITER)
@@ -187,6 +189,8 @@ public class PlayerPhysicsSplit : MonoBehaviour
         }
         else 
             MoveOutOfGeometry(velocity * Time.deltaTime);
+
+        ApplyAirResistance();
     }
     private void MoveOutOfGeometry(Vector3 movement)
     {
@@ -252,7 +256,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
     {
         Vector3 gravityMovement = currentGravity * Vector3.down * Time.deltaTime;
         velocity += gravityMovement;
-        currentGravity = gravity;
     }
     private void ApplyFriction(Vector3 normalForce)
     {

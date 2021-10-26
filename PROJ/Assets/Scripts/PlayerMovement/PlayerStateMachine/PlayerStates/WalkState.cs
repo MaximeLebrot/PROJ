@@ -11,7 +11,6 @@ public class WalkState : PlayerState
     }
     public override void EnterState()
     {
-        //Debug.Log("Entered Walk State");
         base.EnterState();
     }
     public override void RunUpdate()
