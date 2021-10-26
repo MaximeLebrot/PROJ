@@ -31,6 +31,7 @@ public class PuzzlePlayerController : MonoBehaviour
     public int CurrentPuzzleID { get; set; }
     public Transform PuzzleTransform { get; set; }
 
+
     void Awake()
     {
         inputMaster = new InputMaster();
@@ -49,12 +50,19 @@ public class PuzzlePlayerController : MonoBehaviour
         xMove = inputMaster.Player.Movement.ReadValue<Vector2>().x;
         zMove = inputMaster.Player.Movement.ReadValue<Vector2>().y;
 
+
         if (inputMaster.Player.ExitPuzzle.triggered)
         {
             EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(CurrentPuzzleID), false));
         }
 
-       
+        if (inputMaster.PuzzleDEBUGGER.calculatesolution.triggered)
+        {
+            PuzzleTransform.GetComponent<Puzzle>().EvaluateSolution();
+        }
+        
+
+        
 
         Vector3 input = 
         PuzzleTransform.right * xMove +

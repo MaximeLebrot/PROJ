@@ -39,7 +39,6 @@ public class Puzzle : MonoBehaviour
         }
         else
             Debug.LogWarning("NO PUZZLE INSTANCES IN PUZZLE");
-        
     }
     private void OnEnable()
     {
@@ -53,11 +52,8 @@ public class Puzzle : MonoBehaviour
     }
     private void Update()
     {
-        //SHOULD BE IN PLAYER FOR WHEN THEY WANT TO EVALUATE PUZZLE
-        if (inputMaster.PuzzleDEBUGGER.calculatesolution.triggered)
-        {
-            EventHandler<EvaluateSolutionEvent>.FireEvent(new EvaluateSolutionEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID())));
-        }
+
+        
 
 
     }
