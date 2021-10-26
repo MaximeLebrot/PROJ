@@ -29,25 +29,33 @@ public class PuzzleStarter : MonoBehaviour
     private void OnEnable()
     {
         EventHandler<ExitPuzzleEvent>.RegisterListener(OnExit);
+        EventHandler<ResetPuzzleEvent>.RegisterListener(OnReset);
     }
 
     private void OnDisable()
     {
         EventHandler<ExitPuzzleEvent>.UnregisterListener(OnExit);
+        EventHandler<ResetPuzzleEvent>.UnregisterListener(OnReset);
     }
 
     private void OnExit(ExitPuzzleEvent eve)
     {
-        if(eve.info.ID == puzzleID)
+        ResetStarter(eve.info.ID);
+    }
+
+    private void OnReset(ResetPuzzleEvent eve)
+    {
+        ResetStarter(eve.info.ID);
+    }
+
+    private void ResetStarter(int id)
+    {
+        if (id == puzzleID)
         {
             Debug.Log("Exited");
             particles.Play();
             enderText.SetActive(false);
 
-        } else
-        {
-            Debug.Log(eve.info.ID + " " + puzzleID);
         }
     }
-
 }
