@@ -23,30 +23,49 @@ namespace DynamicCamera {
             foreach (CameraBehaviour cameraBehaviour in listOfBehaviourReferences)
                 behaviours[cameraBehaviour.GetType()] = cameraBehaviour;
 
-            ChangeBehaviour(behaviours[typeof(IdleBehaviour)]);
+            ChangeBehaviour(behaviours[typeof(WorldBehaviour)], followTarget);
         }
 
         private void OnEnable() {
             EventHandler<StartPuzzleEvent>.RegisterListener(OnPuzzleStart);
             EventHandler<ExitPuzzleEvent>.RegisterListener(OnPuzzleExit);
+            EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
         }
 
-        private void OnPuzzleExit(ExitPuzzleEvent exitPuzzleEvent) => ChangeBehaviour(behaviours[typeof(WorldBehaviour)]);
+        private void OnPuzzleExit(ExitPuzzleEvent exitPuzzleEvent) {
+            EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
+            ChangeBehaviour(behaviours[typeof(WorldBehaviour)], followTarget);
+        }
+
         private void OnPuzzleStart(StartPuzzleEvent startPuzzleEvent) {
             
-            ChangeBehaviour(behaviours[typeof(PuzzleBehaviour)]);
+            EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
+            
+            ChangeBehaviour(behaviours[typeof(PuzzleBehaviour)], followTarget);
 
             PuzzleBehaviour puzzleBehaviour = currentCameraBehaviour as PuzzleBehaviour;
 
             puzzleBehaviour.AssignRotation(startPuzzleEvent.info.puzzlePos);
             
         }
-        
+
+        private void OnAwayFromKeyboard(AwayFromKeyboardEvent e) {
+            ChangeBehaviour(behaviours[typeof(IdleBehaviour)], eyeTarget);
+            EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
+            EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnReturnToKeyboard);
+        }
+
+        private void OnReturnToKeyboard(AwayFromKeyboardEvent e) {
+            ChangeBehaviour(behaviours[typeof(WorldBehaviour)], followTarget);
+            EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnReturnToKeyboard);
+            EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
+        }
+
         private void LateUpdate() => currentCameraBehaviour.Behave();
         
-        private void ChangeBehaviour(CameraBehaviour newCameraBehaviour) {
+        private void ChangeBehaviour(CameraBehaviour newCameraBehaviour, Transform target) {
             currentCameraBehaviour = newCameraBehaviour;
-            currentCameraBehaviour.Initialize(transform, followTarget);
+            currentCameraBehaviour.Initialize(transform, target);
         }
         
         
