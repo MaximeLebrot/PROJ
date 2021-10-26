@@ -58,4 +58,5 @@ public class PuzzleInfo
     public PuzzleInfo(int id, Transform pp) { ID = id; puzzlePos = pp; }
 }
 
+public class AwayFromKeyboardEvent : IEvent { }
 #endregion
