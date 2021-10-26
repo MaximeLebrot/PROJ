@@ -7,6 +7,7 @@ public class PuzzleStarter : MonoBehaviour
 
     [SerializeField] private AudioSource source;
     [SerializeField] private ParticleSystem particles;
+    [SerializeField] private GameObject enderText;
 
     private void Start()
     {
@@ -19,9 +20,10 @@ public class PuzzleStarter : MonoBehaviour
         EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzleID, GetComponentInParent<Puzzle>().transform)));
         source.Play();
         particles.Stop();
-       
+        enderText.SetActive(true);
+
         //StartPuzzleEvent skickas även när pusslet är igång, fix plz.
-        
+
     }
 
     private void OnEnable()
@@ -38,7 +40,13 @@ public class PuzzleStarter : MonoBehaviour
     {
         if(eve.info.ID == puzzleID)
         {
+            Debug.Log("Exited");
             particles.Play();
+            enderText.SetActive(false);
+
+        } else
+        {
+            Debug.Log(eve.info.ID + " " + puzzleID);
         }
     }
 
