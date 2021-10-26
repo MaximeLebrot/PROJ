@@ -13,7 +13,7 @@ public class PuzzleStarter : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Start Puzzle");
-        EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzleID, transform)));
+        EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzleID, GetComponentInParent<Puzzle>().transform)));
         
         
         //StartPuzzleEvent skickas även när pusslet är igång, fix plz.

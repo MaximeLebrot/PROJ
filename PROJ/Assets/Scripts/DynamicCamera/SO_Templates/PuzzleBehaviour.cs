@@ -1,19 +1,21 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Camera/Camera Behaviours/Puzzle Behaviour (no rotation)", fileName = "Puzzle Behaviour")]
-public class PuzzleBehaviour : CameraBehaviour {
+public class PuzzleBehaviour : OffsetCameraBehaviour {
     
     [SerializeField] private Vector3 eulerRotation;
     [SerializeField] private float travelTime;
     [SerializeField] private float maxSpeed;
     [SerializeField] private float rotationSpeed;
+
+    private Quaternion puzzleRotation;
     
-    private Vector3 velocity;
+    public void AssignRotation(Quaternion offsetRotation) => puzzleRotation = offsetRotation;
     
     public override void Behave() {
                 
-        transform.position = Vector3.SmoothDamp(transform.position, followTarget.position + offset, ref velocity, travelTime, maxSpeed);
+        Transform.position = Vector3.SmoothDamp(Transform.position, FollowTarget.position + Offset, ref Velocity, travelTime, maxSpeed);
         
-        transform.eulerAngles = eulerRotation;
+        Transform.eulerAngles = puzzleRotation * eulerRotation;
     }
 }

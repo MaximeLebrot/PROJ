@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Camera/Camera Behaviours/World Behaviour", fileName = "World Behaviour")]
-public class WorldBehaviour : CameraBehaviour {
+public class WorldBehaviour : OffsetCameraBehaviour {
 
     [SerializeField] private float mouseSensitivity;
     [SerializeField] private Vector2 clampValues;
@@ -13,8 +13,6 @@ public class WorldBehaviour : CameraBehaviour {
     private float travelTime;
 
     private Vector2 input;
-    private Vector3 velocity;
-
     private InputMaster inputMaster;
 
     private void OnEnable() {
@@ -39,23 +37,23 @@ public class WorldBehaviour : CameraBehaviour {
 
 
     private void RotateCamera() {
-        followTarget.rotation = Quaternion.Lerp(followTarget.rotation, Quaternion.Euler(input.x, input.y, 0), rotationSpeed * Time.deltaTime);
-        transform.rotation = followTarget.localRotation;
+        FollowTarget.rotation = Quaternion.Lerp(FollowTarget.rotation, Quaternion.Euler(input.x, input.y, 0), rotationSpeed * Time.deltaTime);
+        Transform.rotation = FollowTarget.localRotation;
     }
 
     private void MoveCamera() {
 
-        Vector3 collisionOffset = transform.rotation * offset;
+        Vector3 collisionOffset = Transform.rotation * Offset;
 
         collisionOffset = Collision(collisionOffset);
 
-        transform.position = Vector3.SmoothDamp(transform.position, followTarget.position + collisionOffset, ref velocity, travelTime, 100, Time.deltaTime);
+        Transform.position = Vector3.SmoothDamp(Transform.position, FollowTarget.position + collisionOffset, ref Velocity, travelTime, 100, Time.deltaTime);
 
     }
 
     private Vector3 Collision(Vector3 cameraOffset) {
 
-        if (Physics.SphereCast(followTarget.position, collisionRadius, cameraOffset.normalized, out var hitInfo, cameraOffset.magnitude, collisionMask))
+        if (Physics.SphereCast(FollowTarget.position, collisionRadius, cameraOffset.normalized, out var hitInfo, cameraOffset.magnitude, collisionMask))
             cameraOffset = cameraOffset.normalized * hitInfo.distance;
 
         return cameraOffset;
@@ -63,13 +61,13 @@ public class WorldBehaviour : CameraBehaviour {
 
     private void CastWhisker() {
 
-        Debug.DrawRay(followTarget.position, transform.position- followTarget.position, Color.green);
+        Debug.DrawRay(FollowTarget.position, Transform.position- FollowTarget.position, Color.green);
 
-        Vector3 direction1 = transform.rotation * new Vector3(Mathf.Cos(25 * Mathf.Deg2Rad), 0, Mathf.Sin(25 * Mathf.Deg2Rad));
-        Vector3 direction2 = transform.rotation * new Vector3(Mathf.Cos(45 * Mathf.Deg2Rad), 0, Mathf.Sin(45 * Mathf.Deg2Rad));
+        Vector3 direction1 = Transform.rotation * new Vector3(Mathf.Cos(25 * Mathf.Deg2Rad), 0, Mathf.Sin(25 * Mathf.Deg2Rad));
+        Vector3 direction2 = Transform.rotation * new Vector3(Mathf.Cos(45 * Mathf.Deg2Rad), 0, Mathf.Sin(45 * Mathf.Deg2Rad));
 
-        Debug.DrawRay(followTarget.position, (transform.position- followTarget.position) + direction1, Color.red);
-        Debug.DrawRay(followTarget.position, (transform.position- followTarget.position) + direction2, Color.yellow);
+        Debug.DrawRay(FollowTarget.position, (Transform.position- FollowTarget.position) + direction1, Color.red);
+        Debug.DrawRay(FollowTarget.position, (Transform.position- FollowTarget.position) + direction2, Color.yellow);
 
 
     }

@@ -18,7 +18,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     [SerializeField] private float airControl = 0.2f;
     [SerializeField] private float minimumPenetrationForPenalty = 0.01f;
     [SerializeField] private LayerMask collisionMask;
-    //[SerializeField] private float gravityWhenFalling = 10f;
+    [SerializeField] private float gravityWhenFalling = 10f;
 
     //Properties
     public float SurfThreshold { get => surfThreshold; }
@@ -38,18 +38,15 @@ public class PlayerPhysicsSplit : MonoBehaviour
     public float kineticFrictionCoefficient = 0.35f;
     public float airResistance = 0.35f;
 
-
-
-    private float groundFriction; 
+    //Collision
     private CapsuleCollider attachedCollider;
-    private Vector3 startPosition;
     private Vector3 colliderTopHalf, colliderBottomHalf;
+
     private bool isGliding;
     private float glideNormalForceMargin = 1.1f;
-
+    private float setValuesLerpSpeed = 2f;
     private void OnEnable()
     {
-        startPosition = transform.position;
         attachedCollider = GetComponent<CapsuleCollider>();
     }
     private void Update()
@@ -68,15 +65,13 @@ public class PlayerPhysicsSplit : MonoBehaviour
     }
     public void SetValues(ControllerValues values)
     {
-        //Friction and air resistance
-        staticFrictionCoefficient = values.staticFriction;
-        kineticFrictionCoefficient = values.kineticFriction;
-        airResistance = values.airResistance;
+        StartCoroutine("LerpValues", values);
+    }
+    private IEnumerator LerpValues(ControllerValues values)
+    {
+        float time = 0f;
 
-        maxSpeed = values.maxSpeed;
-        gravity = values.gravity;
-
-        //Glide
+        //Glide, remove this entirely?? 
         if (typeof(GlideValues) == values.GetType())
         {
             GlideValues glideValues = (GlideValues)values;
@@ -84,6 +79,21 @@ public class PlayerPhysicsSplit : MonoBehaviour
             powerOf = glideValues.powerOf;
             surfThreshold = glideValues.surfThreshold;
         }
+
+        while (time < setValuesLerpSpeed)
+        {
+            //Friction and air resistance
+            staticFrictionCoefficient = Mathf.Lerp(staticFrictionCoefficient, values.staticFriction, time * (1 / setValuesLerpSpeed));
+            kineticFrictionCoefficient = Mathf.Lerp(kineticFrictionCoefficient, values.kineticFriction, time * (1 / setValuesLerpSpeed));
+            airResistance = Mathf.Lerp(airResistance, values.airResistance, time * (1 / setValuesLerpSpeed));
+
+            maxSpeed = Mathf.Lerp(maxSpeed, values.maxSpeed, time * (1 / setValuesLerpSpeed));
+            gravity = Mathf.Lerp(gravity, values.gravity, time * (1 / setValuesLerpSpeed));          
+            
+            time += Time.deltaTime;
+            yield return null;
+        }
+       
     }
     /// <summary>
     /// Divides the collision into XZ & Y-components, to be able to apply the smoothing to normalforce along only the y-axis
@@ -106,9 +116,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
             //causing us to apply 99-something % of normalforce one frame, and intersecting the collider in the next (frame).
             else
             {
-                smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, smoothingCastHitInfo.normal)
-                                               * Mathf.Pow(((1 - smoothingCastHitInfo.distance / smoothingMaxDistance)), powerOf)
-                                               * glideNormalForceMargin
+                smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, smoothingCastHitInfo.normal) * (Mathf.Pow(((1 - smoothingCastHitInfo.distance / smoothingMaxDistance)), powerOf) * glideNormalForceMargin)
                                                + glideHeight * Vector3.up;
             }
 
@@ -255,14 +263,18 @@ public class PlayerPhysicsSplit : MonoBehaviour
             velocity -= velocity.normalized * normalForce.magnitude * (kineticFrictionCoefficient);            
         }
     }
-   public float kineticFrictionCombined = 0f;
-    public void SetGroundFriction(float friction)
+    public void SetFallingGravity()
     {
-        groundFriction = friction;
-        kineticFrictionCombined = kineticFrictionCoefficient + groundFriction; 
+        currentGravity = gravityWhenFalling;
     }
+    public void SetNormalGravity()
+    {
+        currentGravity = gravity;
+    }
+
     private void ApplyAirResistance() { velocity *= Mathf.Pow(airResistance, Time.deltaTime); }
     #endregion
+    #region Force and Speed
     private void ClampSpeed()
     {
         float temp = velocity.y;
@@ -277,10 +289,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     {
         return new Vector3(velocity.x, 0, velocity.z);
     }
-    public void ResetPosition()
-    {
-        transform.position = startPosition;
-    }
+    #endregion
     public void SetGlide(bool gliding)
     {
         isGliding = gliding;

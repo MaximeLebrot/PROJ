@@ -1,26 +1,31 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace DynamicCamera {
     
     public class DynamicCamera : MonoBehaviour {
         
-        [SerializeField]
-        [Tooltip("IF PLAYER IS TARGET: Assign an empty transform as a child to the player , not the actual player")] 
-        private Transform followTarget;
-
+        [Header("IF PLAYER IS TARGET: Assign an empty transform as a child to the player , not the actual player")] 
+        [SerializeField] private Transform followTarget;
         [SerializeField] private Transform eyeTarget;
-        [SerializeField] private CameraBehaviour puzzleCamera;
-        [SerializeField] private CameraBehaviour worldBehaviourCamera;
+
+        [SerializeField] private List<CameraBehaviour> listOfBehaviourReferences;
+
+        private readonly Dictionary<Type, CameraBehaviour> behaviours = new Dictionary<Type, CameraBehaviour>();
         
         private CameraBehaviour currentCameraBehaviour;
         
         private InputMaster inputMaster;
 
         private void Awake() {
+
+            foreach (CameraBehaviour cameraBehaviour in listOfBehaviourReferences)
+                behaviours[cameraBehaviour.GetType()] = cameraBehaviour;
+            
             inputMaster = new InputMaster();
             inputMaster.Enable();
-            ChangeBehaviour(worldBehaviourCamera);
+            ChangeBehaviour(behaviours[typeof(WorldBehaviour)]);
         }
 
         private void OnEnable() {
@@ -28,15 +33,22 @@ namespace DynamicCamera {
             EventHandler<ExitPuzzleEvent>.RegisterListener(ChangeToWorldCamera);
         }
 
-        private void ChangeToWorldCamera(ExitPuzzleEvent exitPuzzleEvent) => ChangeBehaviour(worldBehaviourCamera);
-        private void ChangeToPuzzleCamera(StartPuzzleEvent startPuzzleEvent) => ChangeBehaviour(puzzleCamera);
-        
+        private void ChangeToWorldCamera(ExitPuzzleEvent exitPuzzleEvent) => ChangeBehaviour(behaviours[typeof(WorldBehaviour)]);
+        private void ChangeToPuzzleCamera(StartPuzzleEvent startPuzzleEvent) {
+            
+            ChangeBehaviour(behaviours[typeof(PuzzleBehaviour)]);
+
+            PuzzleBehaviour puzzleBehaviour = currentCameraBehaviour as PuzzleBehaviour;
+
+            puzzleBehaviour.AssignRotation(startPuzzleEvent.info.puzzlePos.rotation);
+            
+        }
+
         private void LateUpdate() => currentCameraBehaviour.Behave();
         
         private void ChangeBehaviour(CameraBehaviour newCameraBehaviour) {
             currentCameraBehaviour = newCameraBehaviour;
-            currentCameraBehaviour.Initialize(transform);
-            currentCameraBehaviour.AssignTarget(followTarget);
+            currentCameraBehaviour.Initialize(transform, followTarget);
         }
         
         
