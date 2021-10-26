@@ -52,12 +52,9 @@ public class Puzzle : MonoBehaviour
         {
             EventHandler<EvaluateSolutionEvent>.FireEvent(new EvaluateSolutionEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID())));
         }
-
-
     }
    private void InitiatePuzzle()
     {
-        //Debug.Log("Initiate puzzle");
         grid.ResetGrid();
         PlaceSymbols();
     }
