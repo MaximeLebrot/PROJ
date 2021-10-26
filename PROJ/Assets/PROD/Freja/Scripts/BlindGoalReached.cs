@@ -8,6 +8,7 @@ public class BlindGoalReached : MonoBehaviour
     [SerializeField] private AudioClip winSound;
     [SerializeField] private AudioClip normalSound;
     [SerializeField] private AudioSource source;
+    [SerializeField] private float victoryVol = 0.1f;
 
     void Start()
     {
@@ -34,6 +35,7 @@ public class BlindGoalReached : MonoBehaviour
     void OnCollisionEnter(Collision other)
     {
         source.Stop();
+        source.volume = victoryVol;
         source.PlayOneShot(winSound);
         source.loop = false;
     }
