@@ -8,14 +8,14 @@ public class PuzzleBehaviour : OffsetCameraBehaviour {
     [SerializeField] private float maxSpeed;
     [SerializeField] private float rotationSpeed;
 
-    private Quaternion puzzleRotation;
-    
-    public void AssignRotation(Quaternion offsetRotation) => puzzleRotation = offsetRotation;
-    
+    private Transform puzzleTransform;
+
+    public void AssignRotation(Transform puzzleTransform) => this.puzzleTransform = puzzleTransform;
+
     public override void Behave() {
                 
-        Transform.position = Vector3.SmoothDamp(Transform.position, FollowTarget.position + Offset, ref Velocity, travelTime, maxSpeed);
-        
-        Transform.eulerAngles = puzzleRotation * eulerRotation;
+        Transform.position = Vector3.SmoothDamp(Transform.position, FollowTarget.position + puzzleTransform.localRotation * Offset, ref Velocity, travelTime, maxSpeed);
+
+        Transform.eulerAngles = puzzleTransform.localEulerAngles + eulerRotation;
     }
 }

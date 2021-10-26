@@ -40,7 +40,7 @@ namespace DynamicCamera {
 
             PuzzleBehaviour puzzleBehaviour = currentCameraBehaviour as PuzzleBehaviour;
 
-            puzzleBehaviour.AssignRotation(startPuzzleEvent.info.puzzlePos.rotation);
+            puzzleBehaviour.AssignRotation(startPuzzleEvent.info.puzzlePos);
             
         }
 
