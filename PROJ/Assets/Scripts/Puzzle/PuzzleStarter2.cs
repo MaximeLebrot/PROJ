@@ -5,8 +5,11 @@ public class PuzzleStarter2 : MonoBehaviour
     private Puzzle puzzle;
     private int puzzleID;
 
-    public GameObject starterText; //jag la till det här för min prototyp 
-    public GameObject enderText; //jag la till det här för min prototyp 
+    [SerializeField] private GameObject starterText; //jag la till det här för min prototyp 
+    [SerializeField] private GameObject enderText; //jag la till det här för min prototyp 
+    [SerializeField] private AudioSource source;
+    [SerializeField] private AudioSource source2;
+    [SerializeField] private GameObject particles; 
 
     private void Start()
     {
@@ -20,11 +23,17 @@ public class PuzzleStarter2 : MonoBehaviour
         if (Input.GetKeyDown("space"))
         {
             StartPussel();
+            source.Play();
+            particles.SetActive(true);
         }
 
         if (Input.GetKeyDown("c"))
         {
             enderText.SetActive(false);
+            source2.Play();
+            particles.SetActive(false);
+
+
         }
     }
     private void OnTriggerEnter(Collider other)
