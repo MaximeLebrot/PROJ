@@ -13,7 +13,8 @@ public class AirborneState : PlayerState
     //NOTE this state should NOT have any values, and therefore not call its superstate's EnterState()
     public override void EnterState() 
     {
-        player.physics.SetFallingGravity();
+        Debug.Log("Entered airborne state");
+        //player.physics.SetFallingGravity();
     }
     public override void RunUpdate()
     {
@@ -28,11 +29,11 @@ public class AirborneState : PlayerState
     }
     private void SetInput()
     {
-        player.playerController3D.InputGrounded(inputMaster.Player.Movement.ReadValue<Vector2>() * player.physics.AirControl);
+        player.playerController3D.InputGrounded(inputMaster.Player.Movement.ReadValue<Vector2>());
     }
     private void LeaveAirborneState()
     {
-        player.physics.SetNormalGravity();
+        //player.physics.SetNormalGravity();
 
         if (player.physics.velocity.magnitude < player.physics.SurfThreshold)
             stateMachine.ChangeState<WalkState>();
