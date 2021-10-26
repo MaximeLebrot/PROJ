@@ -9,21 +9,26 @@ public class BlindGoalReached : MonoBehaviour
     [SerializeField] private AudioClip normalSound;
     [SerializeField] private AudioSource source;
 
-    private SphereCollider collider;
-
     void Start()
     {
-        source = GetComponent<AudioSource>();
+        if (source == null)
+            source = GetComponent<AudioSource>();
         source.clip = normalSound;
         source.loop = true;
         source.Play();
-
-        collider = GetComponent<SphereCollider>();
     }
 
-    void Update()
+
+    private void OnTriggerEnter(Collider other)
     {
-        
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("positive womp");
+
+            source.Stop();
+            source.PlayOneShot(winSound);
+            source.loop = false;
+        }
     }
 
     void OnCollisionEnter(Collision other)
