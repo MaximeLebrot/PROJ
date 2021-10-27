@@ -14,19 +14,9 @@ public class Node : MonoBehaviour {
     public List<Node> EnabledNodes = new List<Node>(); // this can be in LineObject instead so that a LINE knows what nodes it lit up
     
     public bool startNode;
-
-    public CorrectLineHint clh;
-    public GameObject currentNode;
-    public GameObject correctNextNode;
     
     private void Awake() {
         neighbours = new Dictionary<Node, bool>();
-        if (clh == null)
-        {
-            GetComponentInParent<Transform>().gameObject.GetComponentInParent<CorrectLineHint>();
-        }
-        if (startNode)
-            clh.startNode = this;
         FindNeighbours();
     }
     
@@ -34,7 +24,6 @@ public class Node : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        clh.ShowHint(this);
         OnNodeSelected?.Invoke(this);
     }
 
@@ -101,27 +90,6 @@ public class Node : MonoBehaviour {
     {
         GetComponent<SphereCollider>().enabled = false;
     }
-
-    public void MarkCurrentNode()//debugging
-    {
-        currentNode.SetActive(true);
-    }
-    
-    public void UnmarkCurrentNode()//debugging
-    {
-        currentNode.SetActive(false);
-    }
-
-    public void HintCorrectNextNode()
-    {
-        correctNextNode.SetActive(true);
-    }
-
-    public void UnHintCorrectNextNode()
-    {
-        correctNextNode.SetActive(false);
-    }
-
 
     public void ClearSelectable() => OnNodeSelected = null;
 }

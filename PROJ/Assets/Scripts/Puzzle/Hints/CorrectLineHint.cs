@@ -115,11 +115,11 @@ public class CorrectLineHint : MonoBehaviour
     {
         foreach (Node node in allNodes)
         {
-            node.UnmarkCurrentNode();
-            node.UnHintCorrectNextNode();
+            //node.UnmarkCurrentNode();
+            //node.UnHintCorrectNextNode();
         }
-        currentNode.MarkCurrentNode();
-        correctNextNode.HintCorrectNextNode();
+        //currentNode.MarkCurrentNode();
+        //correctNextNode.HintCorrectNextNode();
     }
 
     private Node FindCorrectNextNode()
@@ -148,16 +148,16 @@ public class CorrectLineHint : MonoBehaviour
             correctNextNode = node;
         }
         else
-            correctNextNode.UnHintCorrectNextNode();
+            //correctNextNode.UnHintCorrectNextNode();
 
         correctNextNode = currentNode.FindSpecificNeighbour(PuzzleHelper.TranslateNumToDirection(solution[step]));
-        correctNextNode.HintCorrectNextNode();
+        //correctNextNode.HintCorrectNextNode();
     }
 
     private void UpdateCurrentNode(Node node)
     {
-        currentNode.UnmarkCurrentNode();
+        //currentNode.UnmarkCurrentNode();
         currentNode = node;
-        currentNode.MarkCurrentNode();
+        //currentNode.MarkCurrentNode();
     }
 }
