@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 public class ControllerInputReference : ScriptableObject {
     
     private InputMaster inputMaster;
-
     public InputMaster.PlayerActions InputMaster => inputMaster.Player;
 
     private void OnEnable() {
