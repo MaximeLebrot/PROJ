@@ -69,7 +69,7 @@ public class Node : MonoBehaviour {
             Debug.Log("hit " + hit.collider.gameObject.name);
             return hit.transform.GetComponent<Node>();
         }
-        Debug.Log("hit nothing?");
+        Debug.Log("hit nothing");
 
         return null;
     }

@@ -26,6 +26,12 @@ public class CorrectLineHint : MonoBehaviour
         solution = puzzle.GetSolution().ToCharArray();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+            Debug.Log(startNode.FindSpecificNeighbour(PuzzleHelper.TranslateNumToDirection('6')));
+    }
+
     public void ShowHint(Node node)
     {
         UpdateCorrectNextNode(node);
