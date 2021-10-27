@@ -7,6 +7,7 @@ public static class PuzzleHelper
 {
     public static string SkipFirstChar(string s)
     {
+        Debug.Log("Skip first char, string length is :" + s.Length);
         StringBuilder sb = new StringBuilder();
         for (int j = 1; j < s.Length; j++)
         {

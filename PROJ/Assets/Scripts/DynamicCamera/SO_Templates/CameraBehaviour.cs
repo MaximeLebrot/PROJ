@@ -2,11 +2,12 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 public abstract class CameraBehaviour : ScriptableObject {
-
+    
+    [SerializeField] protected ControllerInputReference inputReference;
     protected Transform FollowTarget;
     protected Transform Transform;
     protected Vector3 Velocity;
-    
+
     public void Initialize(Transform objectTransform, Transform target) {
         Transform = objectTransform;
         FollowTarget = target;
