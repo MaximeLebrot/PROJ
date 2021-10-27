@@ -175,6 +175,14 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""BlindMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""af6e766f-c22d-4e95-a955-9e2b1681e5d8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -186,6 +194,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Stnd KBM"",
                     ""action"": ""calculate solution"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b230820a-112e-4252-b9cb-25475847a2de"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Stnd KBM"",
+                    ""action"": ""BlindMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -231,6 +250,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         // PuzzleDEBUGGER
         m_PuzzleDEBUGGER = asset.FindActionMap("PuzzleDEBUGGER", throwIfNotFound: true);
         m_PuzzleDEBUGGER_calculatesolution = m_PuzzleDEBUGGER.FindAction("calculate solution", throwIfNotFound: true);
+        m_PuzzleDEBUGGER_BlindMode = m_PuzzleDEBUGGER.FindAction("BlindMode", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -338,11 +358,13 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputActionMap m_PuzzleDEBUGGER;
     private IPuzzleDEBUGGERActions m_PuzzleDEBUGGERActionsCallbackInterface;
     private readonly InputAction m_PuzzleDEBUGGER_calculatesolution;
+    private readonly InputAction m_PuzzleDEBUGGER_BlindMode;
     public struct PuzzleDEBUGGERActions
     {
         private @InputMaster m_Wrapper;
         public PuzzleDEBUGGERActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
         public InputAction @calculatesolution => m_Wrapper.m_PuzzleDEBUGGER_calculatesolution;
+        public InputAction @BlindMode => m_Wrapper.m_PuzzleDEBUGGER_BlindMode;
         public InputActionMap Get() { return m_Wrapper.m_PuzzleDEBUGGER; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -355,6 +377,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @calculatesolution.started -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnCalculatesolution;
                 @calculatesolution.performed -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnCalculatesolution;
                 @calculatesolution.canceled -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnCalculatesolution;
+                @BlindMode.started -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnBlindMode;
+                @BlindMode.performed -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnBlindMode;
+                @BlindMode.canceled -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnBlindMode;
             }
             m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface = instance;
             if (instance != null)
@@ -362,6 +387,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @calculatesolution.started += instance.OnCalculatesolution;
                 @calculatesolution.performed += instance.OnCalculatesolution;
                 @calculatesolution.canceled += instance.OnCalculatesolution;
+                @BlindMode.started += instance.OnBlindMode;
+                @BlindMode.performed += instance.OnBlindMode;
+                @BlindMode.canceled += instance.OnBlindMode;
             }
         }
     }
@@ -394,5 +422,6 @@ public class @InputMaster : IInputActionCollection, IDisposable
     public interface IPuzzleDEBUGGERActions
     {
         void OnCalculatesolution(InputAction.CallbackContext context);
+        void OnBlindMode(InputAction.CallbackContext context);
     }
 }
