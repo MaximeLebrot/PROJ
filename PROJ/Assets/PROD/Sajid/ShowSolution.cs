@@ -34,13 +34,20 @@ public class ShowSolution : MonoBehaviour
     {
         if (inputMaster.PuzzleDEBUGGER.ShowSolution.triggered)
         {
-            if (i < 3)
+            if (i < objects.Length)
             {
                 Debug.Log(i);
 
                 objects[i].SetActive(true);
                 i = i + 1;
+                
 
+            } else if (i==objects.Length)
+            {
+               foreach(GameObject obj in objects) {
+                    obj.SetActive(false);
+                }
+                i = 0;
             }
         }
     }
