@@ -29,6 +29,8 @@ public class PuzzlePlayerController : MonoBehaviour
     private InputMaster inputMaster;
     
     public int CurrentPuzzleID { get; set; }
+    public Transform PuzzleTransform { get; set; }
+
 
     void Awake()
     {
@@ -48,15 +50,24 @@ public class PuzzlePlayerController : MonoBehaviour
         xMove = inputMaster.Player.Movement.ReadValue<Vector2>().x;
         zMove = inputMaster.Player.Movement.ReadValue<Vector2>().y;
 
+
         if (inputMaster.Player.ExitPuzzle.triggered)
         {
             EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(CurrentPuzzleID), false));
         }
 
-        Vector3 input =
-        Vector3.right * xMove +
-        Vector3.forward * zMove;
-  
+        if (inputMaster.PuzzleDEBUGGER.calculatesolution.triggered)
+        {
+            PuzzleTransform.GetComponent<Puzzle>().EvaluateSolution();
+        }
+        
+
+        
+
+        Vector3 input = 
+        PuzzleTransform.right * xMove +
+        PuzzleTransform.forward * zMove;
+        
         HandleInput(input);
     }
     private void FixedUpdate()

@@ -109,7 +109,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
             if (smoothingCastHitInfo.distance <= castLength)
             {
                 smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, smoothingCastHitInfo.normal);
-                Debug.Log("Distance is less than castLength, using full normal force, sepa");
             }
             //glideNormalForceMargin seems to alleviate the problem but not eliminate it,
             //probably because not quite enough normalforce is applied in the y-direction without it,
@@ -117,14 +116,13 @@ public class PlayerPhysicsSplit : MonoBehaviour
             else
             {
                 smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, smoothingCastHitInfo.normal)
-                                               * Mathf.Pow(((1 - smoothingCastHitInfo.distance / smoothingMaxDistance)), powerOf)
-                                               * glideNormalForceMargin
-                                               + glideHeight * Vector3.up;
+                                        * ((1 - smoothingCastHitInfo.distance / smoothingMaxDistance)
+                                        * glideNormalForceMargin)
+                                        + glideHeight * Vector3.up;
+                                        //* (Mathf.Pow(((1 - smoothingCastHitInfo.distance / smoothingMaxDistance)), powerOf)
             }
 
             ApplyFriction(smoothingNormalForce);
-            ApplyAirResistance();
-
             velocity += new Vector3(0, smoothingNormalForce.y, 0);
         }
 
@@ -155,6 +153,8 @@ public class PlayerPhysicsSplit : MonoBehaviour
         }
         else 
             MoveOutOfGeometry(velocity * Time.deltaTime);
+
+     ApplyAirResistance();
     }
     private void CheckForCollisions(int i)
     {
@@ -189,6 +189,8 @@ public class PlayerPhysicsSplit : MonoBehaviour
         }
         else 
             MoveOutOfGeometry(velocity * Time.deltaTime);
+        
+     ApplyAirResistance();
     }
     private void MoveOutOfGeometry(Vector3 movement)
     {
@@ -254,7 +256,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
     {
         Vector3 gravityMovement = currentGravity * Vector3.down * Time.deltaTime;
         velocity += gravityMovement;
-        currentGravity = gravity;
     }
     private void ApplyFriction(Vector3 normalForce)
     {
