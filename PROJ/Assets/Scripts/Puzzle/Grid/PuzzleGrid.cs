@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class PuzzleGrid : MonoBehaviour {
 
     [SerializeField] private LineRenderer lineRendererPrefab;
+    [SerializeField] private GameObject linePrefab;
 
     private int width;
     private int height;
@@ -16,7 +18,11 @@ public class PuzzleGrid : MonoBehaviour {
     [SerializeField]private string solution;
     private List<Node> allNodes = new List<Node>();
 
-    private LineRenderer currentLine;
+
+    private PuzzleLine currentLine;
+    private GameObject currentLineObject;
+
+    public Transform Player { get; set; }
 
     public string GetSolution() 
     { 
@@ -27,15 +33,47 @@ public class PuzzleGrid : MonoBehaviour {
     private void Awake() {
 
         StartGrid();
-        //currentLine = Instantiate(lineRendererPrefab, transform);
-        //currentLine.SetPosition(0, currentNode.transform.position);
+        
     }
 
     private void Update()
     {
-        //currentLine.SetPosition(1, )
+        if(lineRenderers.Count > 0 && currentLine == null)
+        {
+            currentLineObject = Instantiate(linePrefab, transform);
+            currentLine = currentLineObject.GetComponent<PuzzleLine>();
+            //currentLineObject.transform.eulerAngles = new Vector3(-45,0,0);
+            
+        }
+
+        if(currentLine != null)
+        {
+            currentLine.transform.position = currentNode.transform.position;
+
+            currentLine.SetPosition(new Vector3(Player.position.x,currentLine.transform.position.y ,Player.position.z) - currentLine.transform.position);
+
+            /*
+            //Check which input comes closest to angle
+            float angle = Vector3.Angle(currentLine.transform.up, Player.position - currentLine.transform.position);
+
+            char c = SnapDirection(angle);
+
+            Debug.Log(Vector3.Angle(currentLine.transform.up, Player.position - currentLine.transform.position));
+            Debug.DrawRay(currentLine.transform.position, currentLine.transform.up * 5, Color.green, Mathf.Infinity);
+            Debug.DrawRay(currentLine.transform.position, Player.position - currentLine.transform.position * 1, Color.blue);
+            */
+        }
+           
     }
 
+    private char SnapDirection(float angle)
+    {
+        float distance;
+        char c = '0';
+
+
+        throw new NotImplementedException();
+    }
 
     private void StartGrid()
     {
@@ -112,9 +150,9 @@ public class PuzzleGrid : MonoBehaviour {
                 }
             }
 
-            LineRenderer newLineRenderer = Instantiate(lineRendererPrefab, transform);
-            newLineRenderer.SetPosition(0, currentNode.transform.position);
-            newLineRenderer.SetPosition(1, node.transform.position);
+            GameObject newLineRenderer = Instantiate(linePrefab, transform);
+            newLineRenderer.transform.position = currentNode.transform.position;
+            newLineRenderer.GetComponent<PuzzleLine>().SetPosition(PuzzleHelper.TranslateNumToDirection(PuzzleHelper.TranslateInput(node, currentNode)) * 3);
             LineObject line = new LineObject(currentNode, newLineRenderer);
 
             //ADD LINE
@@ -188,7 +226,8 @@ public class PuzzleGrid : MonoBehaviour {
         solution = "";
         foreach (LineObject line in lineRenderers)
         {
-            Destroy(line.line);
+            line.line.GetComponent<PuzzleLine>().Stop();
+            Destroy(line.line, 2);
         }
 
         lineRenderers.Clear();
@@ -209,10 +248,11 @@ public class PuzzleGrid : MonoBehaviour {
 public class LineObject
 {
     //Object that can compare lines between nodes, stored in a stack in the grid
+    //THIS LINE OBJECT SHOULD HOLD THE NODES THAT WERE ENABLED
     public Node originNode;
-    public LineRenderer line;
+    public GameObject line;
 
-    public LineObject(Node a, LineRenderer lineRen)
+    public LineObject(Node a, GameObject lineRen)
     {
         originNode = a;
         line = lineRen;
@@ -221,7 +261,7 @@ public class LineObject
     {
         originNode = a;
     }
-    public LineObject(LineRenderer lineRen)
+    public LineObject(GameObject lineRen)
     {
         line = lineRen;
     }

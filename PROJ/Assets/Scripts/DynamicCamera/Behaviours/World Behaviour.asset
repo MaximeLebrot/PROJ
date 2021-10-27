@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f4a43d576ea7c241a614162ffc4e7c5, type: 3}
   m_Name: World Behaviour
   m_EditorClassIdentifier: 
-  offset: {x: 0, y: 1.5, z: -7}
-  mouseSensitivity: 1
+  inputReference: {fileID: 11400000, guid: 54398b8fed501aa41813fa11036bc179, type: 2}
+  offset: {x: 0, y: 1.5, z: -5}
+  mouseSensitivity: 0.1
   clampValues: {x: -40, y: 60}
-  rotationSpeed: 30
+  rotationSpeed: 50
   collisionRadius: 0.5
   collisionMask:
     serializedVersion: 2
-    m_Bits: 0
-  travelTime: 0.1
+    m_Bits: 1
+  targetFollowSpeed: 0.1
