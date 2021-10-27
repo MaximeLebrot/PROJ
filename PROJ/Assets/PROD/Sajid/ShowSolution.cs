@@ -8,6 +8,8 @@ public class ShowSolution : MonoBehaviour
     private Animator anim;
     public GameObject[] objects;
     private int i;
+    public int puzzleID;
+
     void Awake()
     {
        anim = GetComponent<Animator>();
@@ -17,14 +19,18 @@ public class ShowSolution : MonoBehaviour
     private void OnEnable()
     {
         inputMaster.Enable();
+        EventHandler<ExitPuzzleEvent>.RegisterListener(PlayAnimation);
     }
     private void OnDisable()
     {
         inputMaster.Disable();
+        EventHandler<ExitPuzzleEvent>.UnregisterListener(PlayAnimation);
+
     }
-    
-    private void PlayAnimation()
+
+    private void PlayAnimation(ExitPuzzleEvent eve) 
     {
+        if(eve.info.ID == puzzleID && eve.success)
         anim.SetBool("Solved", true);
 
     }
