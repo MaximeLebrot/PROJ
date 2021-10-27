@@ -5,17 +5,23 @@ using UnityEngine;
 public class PlayerAnimation : MonoBehaviour
 {
     //references
-    ControllerInputReference inputReference;
-    Animator anim; 
-    //
-    public Vector2 input;
+    [SerializeField] private ControllerInputReference inputReference;
+    private Animator anim; 
+    
+    private Vector2 input;
+    private int x, y;
     private void Awake()
     {
+        x = Animator.StringToHash("speed");
+        y = Animator.StringToHash("direction");
         anim = GetComponent<Animator>(); 
     }
 
     private void Update()
     {
         inputReference.InputMaster.Movement.ReadValue<Vector2>();
+        
+        anim.SetFloat(x, input.x);
+        anim.SetFloat(y, input.y);
     }
 }
