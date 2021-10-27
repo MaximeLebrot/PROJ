@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class ShowSolution : MonoBehaviour
 {
-    private InputMaster inputMaster;
+   // private InputMaster inputMaster;
     private Animator anim;
     void Awake()
     {
         anim = GetComponent<Animator>();
-        inputMaster = new InputMaster();
+    //    inputMaster = new InputMaster();
     }
+    /*
     private void OnEnable()
     {
         inputMaster.Enable();
@@ -19,6 +20,13 @@ public class ShowSolution : MonoBehaviour
     {
         inputMaster.Disable();
     }
+    */
+    private void PlayAnimation()
+    {
+        anim.SetBool("Solved", true);
+
+    }
+    /*
     // Update is called once per frame
     void Update()
     {
@@ -27,4 +35,5 @@ public class ShowSolution : MonoBehaviour
             anim.SetBool("Solved", true);
         }
     }
+    */
 }
