@@ -25,7 +25,10 @@ public class Puzzle : MonoBehaviour
     private int numOfPuzzles;
     private int currentPuzzleNum = 0;
     private int numOfFinishedPuzzles = 0;
-    
+
+    private Transform player;
+
+    public void SetPlayer(Transform t) { player = t; grid.Player = player; }
 
     void Awake()
     {
