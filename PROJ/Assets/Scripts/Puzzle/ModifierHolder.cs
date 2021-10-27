@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CreateAssetMenu(menuName = "Puzzle/ObjectModifierHolder")]
-public class ModifierHolder : ScriptableObject
+//[CreateAssetMenu(menuName = "Puzzle/ObjectModifierHolder")]
+public class ModifierHolder : MonoBehaviour
 {
 
-    [SerializeField] private List<KeyValuePair> modifiers = new List<KeyValuePair>();
+    [SerializeField] private List<ModInfo> modifiers = new List<ModInfo>();
 
-    public ModifierInfo GetModifier(ModifierVariant var) 
+    public ModInfo GetModifier(ModifierVariant var) 
     { 
-        foreach(KeyValuePair kv in modifiers)
+        foreach(ModInfo kv in modifiers)
         {
             if (kv.variant == var)
-                return kv.info;
+                return kv;
         }
 
         return null;
@@ -23,10 +23,11 @@ public class ModifierHolder : ScriptableObject
 }
 
 [System.Serializable]
-public class KeyValuePair
+public class ModInfo
 {
     public ModifierVariant variant;
-    public ModifierInfo info;
+    public string translation;
+    public GameObject modifier;
 }
 
 

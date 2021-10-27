@@ -1,21 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+
 public class PuzzleStarter : MonoBehaviour
 {
     private Puzzle puzzle;
     private int puzzleID;
-    private void Awake()
+
+
+
+    private void Start()
     {
         puzzle = GetComponentInParent<Puzzle>();
         puzzleID = puzzle.GetPuzzleID();
-    }
-
+    }   
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Start Puzzle");
-        EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzleID)));
+        EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzleID, GetComponentInParent<Puzzle>().transform)));
+  
+
+        //StartPuzzleEvent skickas även när pusslet är igång, fix plz.
+
     }
+
+    
 
 }

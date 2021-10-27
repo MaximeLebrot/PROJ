@@ -10,24 +10,21 @@ public abstract class PuzzleObject : MonoBehaviour
 {
     [SerializeField] protected string translation;
     [SerializeField] private Vector3 modifierPosition;
-    [SerializeField] private ModifierHolder modifier;
+    [SerializeField] private GameObject modHolder;
 
-    [HideInInspector]
+    //[HideInInspector]
     [SerializeField] private ModifierVariant modVariant;
     
 
-    private ModifierInfo modInfo;
+    private ModInfo modInfo;
     private Image modifierImage; //dekal som ska visas någonstans!?!? HUR GÖR MAN
+    private GameObject modifier;
 
-    private void Start()
+    private void OnEnable()
     {
         
     }
 
-    private void PlaceModifier()
-    {
-        //modifier.transform.position = modifierPosition.position;
-    }
 
     public string GetTranslation()
     {
@@ -36,20 +33,29 @@ public abstract class PuzzleObject : MonoBehaviour
 
     protected string AdjustForModifiers()
     {
-        modInfo = modifier.GetModifier(modVariant);
-
         string modifiedString = "";
         
         if(modInfo != null)
         {
-            modifiedString += modInfo.ModifierTranslation;
+            modifiedString += modInfo.translation;
         }
 
+        Debug.Log(modifiedString + translation);
         //CANNOT COMBINE MODIFIERS RIGHT NOW
         return modifiedString + translation;
     }
 
-    public abstract void Activate();
+
+    public void SetModifier(ModifierVariant modVar)
+    {
+        if (modifier != null)
+            Destroy(modifier);
+        modInfo = modHolder.GetComponent<ModifierHolder>().GetModifier(modVar);
+        modifier = Instantiate(modInfo.modifier);
+        modifier.transform.parent = transform;
+        modifier.transform.localPosition = modifierPosition;
+        modifier.transform.rotation = transform.rotation;
+    }
 
 }
 
@@ -59,5 +65,5 @@ public enum ModifierVariant
     Rotate,
     Repeat, 
     Mirrored, 
-    Ignore
+    Double
 }

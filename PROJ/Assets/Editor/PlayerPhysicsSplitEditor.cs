@@ -44,16 +44,6 @@ public class PlayerPhysicsSplitEditor : Editor {
 
         showDefault = EGL.Toggle("Draw default", showDefault);
         
-        if (showDefault) {
-            DrawDefaultInspector();
-            return;
-        }
-            
-        
-        showTarget = EGL.Foldout(showTarget, "Variables");
-        
-        /*if(showTarget)
-            foreach(SerializedProperty property in variablesProperties)
-                EGL.PropertyField(property);*/
+        DrawDefaultInspector();
     }
 }

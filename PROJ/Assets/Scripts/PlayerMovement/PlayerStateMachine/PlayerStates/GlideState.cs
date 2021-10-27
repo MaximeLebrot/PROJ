@@ -12,21 +12,29 @@ public class GlideState : PlayerState
     }
     public override void EnterState()
     {
-        Debug.Log("Entered Glide State");
+        //Debug.Log("Entered Glide State");
+        player.playerController3D.TransitionSurf();
         player.physics.SetGlide(true);
         base.EnterState();
     }
     public override void RunUpdate()
     {
-        //player.physics.GlideInput();
+        SetInput();
 
-        //if (Input.GetKeyDown(KeyCode.H))
+        if (!player.playerController3D.IsGrounded())
+            stateMachine.ChangeState<AirborneState>();
+
         if (player.physics.velocity.magnitude < player.physics.SurfThreshold - 1)
             stateMachine.ChangeState<WalkState>();
     }
     public override void ExitState()
     {
-        //Give some sort of lerp in friction/max speed transition
+        player.playerController3D.TransitionSurf();
+        player.physics.SetGlide(false);
         base.ExitState();
+    }
+    private void SetInput()
+    {
+        player.playerController3D.InputGrounded(inputMaster.Player.Movement.ReadValue<Vector2>());
     }
 }

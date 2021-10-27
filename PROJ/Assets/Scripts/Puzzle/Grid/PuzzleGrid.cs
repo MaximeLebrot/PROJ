@@ -13,9 +13,10 @@ public class PuzzleGrid : MonoBehaviour {
     private Stack<LineObject> lineRenderers = new Stack<LineObject>();
     private Node currentNode;
 
-    private string solution;
+    [SerializeField]private string solution;
     private List<Node> allNodes = new List<Node>();
 
+    private LineRenderer currentLine;
 
     public string GetSolution() 
     { 
@@ -26,6 +27,13 @@ public class PuzzleGrid : MonoBehaviour {
     private void Awake() {
 
         StartGrid();
+        //currentLine = Instantiate(lineRendererPrefab, transform);
+        //currentLine.SetPosition(0, currentNode.transform.position);
+    }
+
+    private void Update()
+    {
+        //currentLine.SetPosition(1, )
     }
 
 
@@ -221,34 +229,6 @@ public class LineObject
     {
         return originNode == other.originNode;
     }
-    public bool CheckIfLineExists(LineObject other)
-    {
-        //THIS IS NOT ACCURATE ENOUGH compare the nodes instead!
-        /*
-        List<Vector3> thisPos = new List<Vector3>();
-        for(int i = 0; i < 2; i++)
-        {
-            thisPos.Add(line.GetPosition(i));
-        }
-
-        List<Vector3> otherPos = new List<Vector3>();
-        for (int i = 0; i < 2; i++)
-        {
-            otherPos.Add(other.line.GetPosition(i));
-        }
-
-        if(thisPos.Contains(otherPos[0]) && thisPos.Contains(otherPos[1]))
-        {
-            return true;
-        }
-        */
-
-
-
-
-
-
-        return false;
-    }
+    
 
 }

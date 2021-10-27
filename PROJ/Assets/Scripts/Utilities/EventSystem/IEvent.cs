@@ -52,9 +52,10 @@ public class EvaluateSolutionEvent : IEvent
 public class PuzzleInfo
 {
     public int ID;
-    //puzzle camera position
+    public Transform puzzlePos;
 
     public PuzzleInfo(int id) { ID = id; }
+    public PuzzleInfo(int id, Transform pp) { ID = id; puzzlePos = pp; }
 }
 
 #endregion

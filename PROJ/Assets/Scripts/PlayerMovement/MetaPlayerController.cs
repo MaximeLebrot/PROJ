@@ -14,12 +14,14 @@ public class MetaPlayerController : MonoBehaviour
     //StateMachine
     private StateMachine stateMachine;
     [SerializeField] private PlayerState[] states;
-
     [SerializeField] public List<ControllerValues> controllerValues = new List<ControllerValues>();
+    
+    public InputMaster inputMaster;
 
 
     private void Awake()
     {
+        inputMaster = new InputMaster();
         physics = GetComponent<PlayerPhysicsSplit>();
         playerController3D = GetComponent<PlayerController>();
         puzzleController = GetComponent<PuzzlePlayerController>();
@@ -38,7 +40,7 @@ public class MetaPlayerController : MonoBehaviour
     private void StartPuzzle(StartPuzzleEvent spe)
     {
         puzzleController.CurrentPuzzleID = spe.info.ID;
-       
+        puzzleController.PuzzleTransform = spe.info.puzzlePos;
         stateMachine.ChangeState<PuzzleState>();
     }
 
