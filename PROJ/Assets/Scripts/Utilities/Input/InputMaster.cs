@@ -175,6 +175,14 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Hint"",
+                    ""type"": ""Button"",
+                    ""id"": ""606a1696-e66e-4513-b4e3-66364532a44c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -186,6 +194,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Stnd KBM"",
                     ""action"": ""calculate solution"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a6ccd20a-ae47-4caa-96ac-7cdeac10b670"",
+                    ""path"": ""<Keyboard>/h"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Stnd KBM"",
+                    ""action"": ""Hint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -231,6 +250,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         // PuzzleDEBUGGER
         m_PuzzleDEBUGGER = asset.FindActionMap("PuzzleDEBUGGER", throwIfNotFound: true);
         m_PuzzleDEBUGGER_calculatesolution = m_PuzzleDEBUGGER.FindAction("calculate solution", throwIfNotFound: true);
+        m_PuzzleDEBUGGER_Hint = m_PuzzleDEBUGGER.FindAction("Hint", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -338,11 +358,13 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputActionMap m_PuzzleDEBUGGER;
     private IPuzzleDEBUGGERActions m_PuzzleDEBUGGERActionsCallbackInterface;
     private readonly InputAction m_PuzzleDEBUGGER_calculatesolution;
+    private readonly InputAction m_PuzzleDEBUGGER_Hint;
     public struct PuzzleDEBUGGERActions
     {
         private @InputMaster m_Wrapper;
         public PuzzleDEBUGGERActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
         public InputAction @calculatesolution => m_Wrapper.m_PuzzleDEBUGGER_calculatesolution;
+        public InputAction @Hint => m_Wrapper.m_PuzzleDEBUGGER_Hint;
         public InputActionMap Get() { return m_Wrapper.m_PuzzleDEBUGGER; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -355,6 +377,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @calculatesolution.started -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnCalculatesolution;
                 @calculatesolution.performed -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnCalculatesolution;
                 @calculatesolution.canceled -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnCalculatesolution;
+                @Hint.started -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnHint;
+                @Hint.performed -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnHint;
+                @Hint.canceled -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnHint;
             }
             m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface = instance;
             if (instance != null)
@@ -362,6 +387,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @calculatesolution.started += instance.OnCalculatesolution;
                 @calculatesolution.performed += instance.OnCalculatesolution;
                 @calculatesolution.canceled += instance.OnCalculatesolution;
+                @Hint.started += instance.OnHint;
+                @Hint.performed += instance.OnHint;
+                @Hint.canceled += instance.OnHint;
             }
         }
     }
@@ -394,5 +422,6 @@ public class @InputMaster : IInputActionCollection, IDisposable
     public interface IPuzzleDEBUGGERActions
     {
         void OnCalculatesolution(InputAction.CallbackContext context);
+        void OnHint(InputAction.CallbackContext context);
     }
 }
