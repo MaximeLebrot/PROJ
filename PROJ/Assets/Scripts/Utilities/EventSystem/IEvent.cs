@@ -58,5 +58,11 @@ public class PuzzleInfo
     public PuzzleInfo(int id, Transform pp) { ID = id; puzzlePos = pp; }
 }
 
+public readonly struct PlayerStateChangeEvent : IEvent {
+
+    public readonly PlayerState newState;
+    public PlayerStateChangeEvent(PlayerState state) => newState = state;
+}
+
 public class AwayFromKeyboardEvent : IEvent { }
 #endregion

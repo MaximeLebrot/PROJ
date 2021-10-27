@@ -35,6 +35,7 @@ public class StateMachine
             currentState?.ExitState();
             currentState = instance;
             currentState.EnterState();
+            EventHandler<PlayerStateChangeEvent>.FireEvent(new PlayerStateChangeEvent(currentState));
         }
         else
             Debug.Log(typeof(T) + "not found");
