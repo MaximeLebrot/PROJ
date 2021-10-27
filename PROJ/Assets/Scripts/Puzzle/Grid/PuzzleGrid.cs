@@ -209,6 +209,7 @@ public class PuzzleGrid : MonoBehaviour {
 public class LineObject
 {
     //Object that can compare lines between nodes, stored in a stack in the grid
+    //THIS LINE OBJECT SHOULD HOLD THE NODES THAT WERE ENABLED
     public Node originNode;
     public LineRenderer line;
 
