@@ -16,39 +16,56 @@ namespace DynamicCamera {
         
         private CameraBehaviour currentCameraBehaviour;
         
-        private InputMaster inputMaster;
+        private ControllerInputReference inputReference;
 
         private void Awake() {
 
             foreach (CameraBehaviour cameraBehaviour in listOfBehaviourReferences)
                 behaviours[cameraBehaviour.GetType()] = cameraBehaviour;
-            
-            inputMaster = new InputMaster();
-            inputMaster.Enable();
-            ChangeBehaviour(behaviours[typeof(WorldBehaviour)]);
+
+            ChangeBehaviour(behaviours[typeof(WorldBehaviour)], followTarget);
         }
 
         private void OnEnable() {
-            EventHandler<StartPuzzleEvent>.RegisterListener(ChangeToPuzzleCamera);
-            EventHandler<ExitPuzzleEvent>.RegisterListener(ChangeToWorldCamera);
+            EventHandler<StartPuzzleEvent>.RegisterListener(OnPuzzleStart);
+            EventHandler<ExitPuzzleEvent>.RegisterListener(OnPuzzleExit);
+            EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
         }
 
-        private void ChangeToWorldCamera(ExitPuzzleEvent exitPuzzleEvent) => ChangeBehaviour(behaviours[typeof(WorldBehaviour)]);
-        private void ChangeToPuzzleCamera(StartPuzzleEvent startPuzzleEvent) {
+        private void OnPuzzleExit(ExitPuzzleEvent exitPuzzleEvent) {
+            EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
+            ChangeBehaviour(behaviours[typeof(WorldBehaviour)], followTarget);
+        }
+
+        private void OnPuzzleStart(StartPuzzleEvent startPuzzleEvent) {
             
-            ChangeBehaviour(behaviours[typeof(PuzzleBehaviour)]);
+            EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
+            
+            ChangeBehaviour(behaviours[typeof(PuzzleBehaviour)], followTarget);
 
             PuzzleBehaviour puzzleBehaviour = currentCameraBehaviour as PuzzleBehaviour;
 
-            puzzleBehaviour.AssignRotation(startPuzzleEvent.info.puzzlePos.rotation);
+            puzzleBehaviour.AssignRotation(startPuzzleEvent.info.puzzlePos);
             
+        }
+
+        private void OnAwayFromKeyboard(AwayFromKeyboardEvent e) {
+            ChangeBehaviour(behaviours[typeof(IdleBehaviour)], eyeTarget);
+            EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
+            EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnReturnToKeyboard);
+        }
+
+        private void OnReturnToKeyboard(AwayFromKeyboardEvent e) {
+            ChangeBehaviour(behaviours[typeof(WorldBehaviour)], followTarget);
+            EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnReturnToKeyboard);
+            EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
         }
 
         private void LateUpdate() => currentCameraBehaviour.Behave();
         
-        private void ChangeBehaviour(CameraBehaviour newCameraBehaviour) {
+        private void ChangeBehaviour(CameraBehaviour newCameraBehaviour, Transform target) {
             currentCameraBehaviour = newCameraBehaviour;
-            currentCameraBehaviour.Initialize(transform, followTarget);
+            currentCameraBehaviour.Initialize(transform, target);
         }
         
         

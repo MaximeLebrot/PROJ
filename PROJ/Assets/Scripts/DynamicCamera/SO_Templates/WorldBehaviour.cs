@@ -10,29 +10,30 @@ public class WorldBehaviour : OffsetCameraBehaviour {
     [SerializeField] private LayerMask collisionMask;
 
     [SerializeField] [Tooltip("The lower the value the faster the camera moves")]
-    private float travelTime;
+    private float targetFollowSpeed;
 
     private Vector2 input;
-    private InputMaster inputMaster;
-
-    private void OnEnable() {
-        inputMaster = new InputMaster();
-        inputMaster.Enable();
-    }
-
     public override void Behave() {
-        GetInput();
-        MoveCamera();
-        RotateCamera();
         
-        CastWhisker();
+        ReadInput();
+        RotateCamera();
+        MoveCamera();
+
+        Debug.Log(Transform);
+        Debug.Log(FollowTarget);
+
     }
-
-    private void GetInput() {
-        input.x -= inputMaster.Player.MoveCamera.ReadValue<Vector2>().y * mouseSensitivity;
-        input.y += inputMaster.Player.MoveCamera.ReadValue<Vector2>().x * mouseSensitivity;
-
+    
+    private void ReadInput() {
+        Vector2 cameraInputThisFrame = inputReference.InputMaster.MoveCamera.ReadValue<Vector2>();
+        
+        input.x -= cameraInputThisFrame.y * mouseSensitivity;
+        input.y += cameraInputThisFrame.x * mouseSensitivity;
+        
         input.x = Mathf.Clamp(input.x, clampValues.x, clampValues.y);
+        
+        
+        
     }
 
 
@@ -47,7 +48,7 @@ public class WorldBehaviour : OffsetCameraBehaviour {
 
         collisionOffset = Collision(collisionOffset);
 
-        Transform.position = Vector3.SmoothDamp(Transform.position, FollowTarget.position + collisionOffset, ref Velocity, travelTime, 100, Time.deltaTime);
+        Transform.position = Vector3.SmoothDamp(Transform.position, FollowTarget.position + collisionOffset, ref Velocity, targetFollowSpeed, 300, Time.deltaTime);
 
     }
 
@@ -68,7 +69,5 @@ public class WorldBehaviour : OffsetCameraBehaviour {
 
         Debug.DrawRay(FollowTarget.position, (Transform.position- FollowTarget.position) + direction1, Color.red);
         Debug.DrawRay(FollowTarget.position, (Transform.position- FollowTarget.position) + direction2, Color.yellow);
-
-
     }
 }
