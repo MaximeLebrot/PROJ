@@ -27,10 +27,8 @@ public class WalkBehaviour : OffsetCameraBehaviour {
         input.y += cameraInputThisFrame.x * mouseSensitivity;
         
         input.x = Mathf.Clamp(input.x, clampValues.x, clampValues.y);
-        
     }
-
-
+    
     private void RotateCamera() {
         FollowTarget.rotation = Quaternion.Lerp(FollowTarget.rotation, Quaternion.Euler(input.x, input.y, 0), rotationSpeed * Time.deltaTime);
         Transform.rotation = FollowTarget.localRotation;
@@ -42,8 +40,7 @@ public class WalkBehaviour : OffsetCameraBehaviour {
 
         collisionOffset = Collision(collisionOffset);
 
-        Transform.position = Vector3.SmoothDamp(Transform.position, FollowTarget.position + collisionOffset, ref Velocity, targetFollowSpeed, 300, Time.deltaTime);
-
+        Transform.position = Vector3.SmoothDamp(Transform.position, FollowTarget.position + collisionOffset, ref Velocity, FollowSpeed, 300, Time.deltaTime);
     }
 
     private Vector3 Collision(Vector3 cameraOffset) {
