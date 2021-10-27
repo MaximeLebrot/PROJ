@@ -175,6 +175,14 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""PressAnyButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""5a8ea15a-7a94-4647-b788-7aadfa9ce0a7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -186,6 +194,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Stnd KBM"",
                     ""action"": ""calculate solution"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9e9ff052-eb3e-4533-a13b-dd6533ab3ec3"",
+                    ""path"": ""<Keyboard>/anyKey"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Stnd KBM"",
+                    ""action"": ""PressAnyButton"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -231,6 +250,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         // PuzzleDEBUGGER
         m_PuzzleDEBUGGER = asset.FindActionMap("PuzzleDEBUGGER", throwIfNotFound: true);
         m_PuzzleDEBUGGER_calculatesolution = m_PuzzleDEBUGGER.FindAction("calculate solution", throwIfNotFound: true);
+        m_PuzzleDEBUGGER_PressAnyButton = m_PuzzleDEBUGGER.FindAction("PressAnyButton", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -338,11 +358,13 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputActionMap m_PuzzleDEBUGGER;
     private IPuzzleDEBUGGERActions m_PuzzleDEBUGGERActionsCallbackInterface;
     private readonly InputAction m_PuzzleDEBUGGER_calculatesolution;
+    private readonly InputAction m_PuzzleDEBUGGER_PressAnyButton;
     public struct PuzzleDEBUGGERActions
     {
         private @InputMaster m_Wrapper;
         public PuzzleDEBUGGERActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
         public InputAction @calculatesolution => m_Wrapper.m_PuzzleDEBUGGER_calculatesolution;
+        public InputAction @PressAnyButton => m_Wrapper.m_PuzzleDEBUGGER_PressAnyButton;
         public InputActionMap Get() { return m_Wrapper.m_PuzzleDEBUGGER; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -355,6 +377,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @calculatesolution.started -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnCalculatesolution;
                 @calculatesolution.performed -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnCalculatesolution;
                 @calculatesolution.canceled -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnCalculatesolution;
+                @PressAnyButton.started -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnPressAnyButton;
+                @PressAnyButton.performed -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnPressAnyButton;
+                @PressAnyButton.canceled -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnPressAnyButton;
             }
             m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface = instance;
             if (instance != null)
@@ -362,6 +387,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @calculatesolution.started += instance.OnCalculatesolution;
                 @calculatesolution.performed += instance.OnCalculatesolution;
                 @calculatesolution.canceled += instance.OnCalculatesolution;
+                @PressAnyButton.started += instance.OnPressAnyButton;
+                @PressAnyButton.performed += instance.OnPressAnyButton;
+                @PressAnyButton.canceled += instance.OnPressAnyButton;
             }
         }
     }
@@ -394,5 +422,6 @@ public class @InputMaster : IInputActionCollection, IDisposable
     public interface IPuzzleDEBUGGERActions
     {
         void OnCalculatesolution(InputAction.CallbackContext context);
+        void OnPressAnyButton(InputAction.CallbackContext context);
     }
 }
