@@ -23,7 +23,7 @@ namespace DynamicCamera {
             foreach (CameraBehaviour cameraBehaviour in listOfBehaviourReferences)
                 behaviours[cameraBehaviour.GetType()] = cameraBehaviour;
 
-            ChangeBehaviour(behaviours[typeof(WorldBehaviour)], followTarget);
+            ChangeBehaviour(behaviours[typeof(WalkBehaviour)], followTarget);
         }
 
         private void OnEnable() {
@@ -34,7 +34,7 @@ namespace DynamicCamera {
 
         private void OnPuzzleExit(ExitPuzzleEvent exitPuzzleEvent) {
             EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
-            ChangeBehaviour(behaviours[typeof(WorldBehaviour)], followTarget);
+            ChangeBehaviour(behaviours[typeof(WalkBehaviour)], followTarget);
         }
 
         private void OnPuzzleStart(StartPuzzleEvent startPuzzleEvent) {
@@ -56,7 +56,7 @@ namespace DynamicCamera {
         }
 
         private void OnReturnToKeyboard(AwayFromKeyboardEvent e) {
-            ChangeBehaviour(behaviours[typeof(WorldBehaviour)], followTarget);
+            ChangeBehaviour(behaviours[typeof(WalkBehaviour)], followTarget);
             EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnReturnToKeyboard);
             EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
         }

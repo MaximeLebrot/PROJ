@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Camera/Camera Behaviours/World Behaviour", fileName = "World Behaviour")]
-public class WorldBehaviour : OffsetCameraBehaviour {
+[CreateAssetMenu(menuName = "Camera/Camera Behaviours/Walk Behaviour", fileName = "Walk Behaviour")]
+public class WalkBehaviour : OffsetCameraBehaviour {
 
     [SerializeField] private float mouseSensitivity;
     [SerializeField] private Vector2 clampValues;
@@ -13,15 +13,11 @@ public class WorldBehaviour : OffsetCameraBehaviour {
     private float targetFollowSpeed;
 
     private Vector2 input;
+    
     public override void Behave() {
-        
         ReadInput();
         RotateCamera();
         MoveCamera();
-
-        Debug.Log(Transform);
-        Debug.Log(FollowTarget);
-
     }
     
     private void ReadInput() {
@@ -31,8 +27,6 @@ public class WorldBehaviour : OffsetCameraBehaviour {
         input.y += cameraInputThisFrame.x * mouseSensitivity;
         
         input.x = Mathf.Clamp(input.x, clampValues.x, clampValues.y);
-        
-        
         
     }
 
