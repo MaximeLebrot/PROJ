@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Camera/Camera Behaviours/World Behaviour", fileName = "World Behaviour")]
-public class WorldBehaviour : OffsetCameraBehaviour {
+[CreateAssetMenu(menuName = "Camera/Camera Behaviours/Walk Behaviour", fileName = "Walk Behaviour")]
+public class WalkBehaviour : OffsetCameraBehaviour {
 
     [SerializeField] private float mouseSensitivity;
     [SerializeField] private Vector2 clampValues;
@@ -13,15 +13,11 @@ public class WorldBehaviour : OffsetCameraBehaviour {
     private float targetFollowSpeed;
 
     private Vector2 input;
+    
     public override void Behave() {
-        
         ReadInput();
         RotateCamera();
         MoveCamera();
-
-        Debug.Log(Transform);
-        Debug.Log(FollowTarget);
-
     }
     
     private void ReadInput() {
@@ -31,12 +27,8 @@ public class WorldBehaviour : OffsetCameraBehaviour {
         input.y += cameraInputThisFrame.x * mouseSensitivity;
         
         input.x = Mathf.Clamp(input.x, clampValues.x, clampValues.y);
-        
-        
-        
     }
-
-
+    
     private void RotateCamera() {
         FollowTarget.rotation = Quaternion.Lerp(FollowTarget.rotation, Quaternion.Euler(input.x, input.y, 0), rotationSpeed * Time.deltaTime);
         Transform.rotation = FollowTarget.localRotation;
@@ -48,8 +40,7 @@ public class WorldBehaviour : OffsetCameraBehaviour {
 
         collisionOffset = Collision(collisionOffset);
 
-        Transform.position = Vector3.SmoothDamp(Transform.position, FollowTarget.position + collisionOffset, ref Velocity, targetFollowSpeed, 300, Time.deltaTime);
-
+        Transform.position = Vector3.SmoothDamp(Transform.position, FollowTarget.position + collisionOffset, ref Velocity, FollowSpeed, 300, Time.deltaTime);
     }
 
     private Vector3 Collision(Vector3 cameraOffset) {
