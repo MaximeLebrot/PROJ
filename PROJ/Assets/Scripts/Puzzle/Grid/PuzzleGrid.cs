@@ -38,33 +38,21 @@ public class PuzzleGrid : MonoBehaviour {
 
     private void Update()
     {
-        /*
+        
         if(lineRenderers.Count > 0 && currentLine == null)
         {
-            currentLineObject = Instantiate(linePrefab, transform);
+            Debug.Log("STARTED drawing");
+            currentLineObject = Instantiate(linePrefab, transform.parent);
             currentLine = currentLineObject.GetComponent<PuzzleLine>();
-            //currentLineObject.transform.eulerAngles = new Vector3(-45,0,0);
             
         }
 
         if(currentLine != null)
         {
             currentLine.transform.position = currentNode.transform.position;
-
-            //currentLine.SetPosition(new Vector3(Player.position.x,currentLine.transform.position.y ,Player.position.z) - currentLine.transform.position);
-
-            /*
-            //Check which input comes closest to angle
-            float angle = Vector3.Angle(currentLine.transform.up, Player.position - currentLine.transform.position);
-
-            char c = SnapDirection(angle);
-
-            Debug.Log(Vector3.Angle(currentLine.transform.up, Player.position - currentLine.transform.position));
-            Debug.DrawRay(currentLine.transform.position, currentLine.transform.up * 5, Color.green, Mathf.Infinity);
-            Debug.DrawRay(currentLine.transform.position, Player.position - currentLine.transform.position * 1, Color.blue);
-            
+            currentLine.SetPosition(new Vector3(Player.position.x,currentLine.transform.position.y ,Player.position.z) - currentLine.transform.position);
         }
-        */
+        
 
     }
 
