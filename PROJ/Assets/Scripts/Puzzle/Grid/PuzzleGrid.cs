@@ -38,6 +38,7 @@ public class PuzzleGrid : MonoBehaviour {
 
     private void Update()
     {
+        /*
         if(lineRenderers.Count > 0 && currentLine == null)
         {
             currentLineObject = Instantiate(linePrefab, transform);
@@ -50,7 +51,7 @@ public class PuzzleGrid : MonoBehaviour {
         {
             currentLine.transform.position = currentNode.transform.position;
 
-            currentLine.SetPosition(new Vector3(Player.position.x,currentLine.transform.position.y ,Player.position.z) - currentLine.transform.position);
+            //currentLine.SetPosition(new Vector3(Player.position.x,currentLine.transform.position.y ,Player.position.z) - currentLine.transform.position);
 
             /*
             //Check which input comes closest to angle
@@ -61,9 +62,10 @@ public class PuzzleGrid : MonoBehaviour {
             Debug.Log(Vector3.Angle(currentLine.transform.up, Player.position - currentLine.transform.position));
             Debug.DrawRay(currentLine.transform.position, currentLine.transform.up * 5, Color.green, Mathf.Infinity);
             Debug.DrawRay(currentLine.transform.position, Player.position - currentLine.transform.position * 1, Color.blue);
-            */
+            
         }
-           
+        */
+
     }
 
     private char SnapDirection(float angle)
