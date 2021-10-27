@@ -28,8 +28,8 @@ public class CorrectLineHint : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-            Debug.Log(startNode.FindSpecificNeighbour(PuzzleHelper.TranslateNumToDirection('6')));
+        //if (Input.GetKeyDown(KeyCode.E))
+            //Debug.Log(startNode.FindSpecificNeighbour(PuzzleHelper.TranslateNumToDirection('6')));
     }
 
     public void ShowHint(Node node)

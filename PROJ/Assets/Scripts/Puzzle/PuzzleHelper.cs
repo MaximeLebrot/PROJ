@@ -61,6 +61,26 @@ public static class PuzzleHelper
 
     public static Vector3 TranslateNumToDirection(char c)
     {
+        switch (c)
+        {
+            case '1':
+                return Vector3.back + Vector3.left;
+            case '2':
+                return Vector3.back;
+            case '3':
+                return Vector3.back + Vector3.right;
+            case '4':
+                return Vector3.left;
+            case '6':
+                return Vector3.right;
+            case '7':
+                return Vector3.forward + Vector3.left;
+            case '8':
+                return Vector3.forward;
+            case '9':
+                return Vector3.forward + Vector3.right;
+        }
+
         return Vector3.zero;
     }
 

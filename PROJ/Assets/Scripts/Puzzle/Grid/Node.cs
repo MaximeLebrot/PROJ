@@ -34,7 +34,7 @@ public class Node : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        clh.Hint(this);
+        clh.ShowHint(this);
         OnNodeSelected?.Invoke(this);
     }
 
