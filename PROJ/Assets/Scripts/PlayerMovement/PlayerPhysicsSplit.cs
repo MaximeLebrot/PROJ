@@ -54,7 +54,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
         AddGravity();
         CollisionCheck();
         ClampSpeed();
-        Debug.DrawLine(transform.position, transform.position + velocity * Time.deltaTime, Color.red);
+        Debug.DrawLine(transform.position, transform.position + velocity, Color.red);
     }
     public void CollisionCheck()
     {
