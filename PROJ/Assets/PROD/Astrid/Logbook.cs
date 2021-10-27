@@ -12,7 +12,7 @@ public class Logbook : MonoBehaviour
     public GameObject page4; //Thicker
     public GameObject page5; //Refined
 
-    public GameObject[] tabs;
+    public GameObject[] tabs; // An array with all the tabs (currently theres 5)
 
     public void OpenFirstTab()
     {
@@ -90,6 +90,7 @@ public class Logbook : MonoBehaviour
             page5.SetActive(false);
     }
 
+    // At the moment the values need to be 1830 and 90 because of stuff. Trust.
     public void MoveTab(int i)
     {
         Transform tabsTransform = tabs[i].GetComponent<Transform>();
