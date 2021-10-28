@@ -24,6 +24,8 @@ public class PuzzleGrid : MonoBehaviour {
 
     public Transform Player { get; set; }
 
+   
+
     public string GetSolution() 
     { 
         return solution[0] == '-' ? PuzzleHelper.SkipFirstChar(solution) : solution;
@@ -39,16 +41,11 @@ public class PuzzleGrid : MonoBehaviour {
     private void Update()
     {
         
-        if(lineRenderers.Count > 0 && currentLine == null)
-        {
-            Debug.Log("STARTED drawing");
-            currentLineObject = Instantiate(linePrefab, transform.parent);
-            currentLine = currentLineObject.GetComponent<PuzzleLine>();
-            
-        }
+        
 
         if(currentLine != null)
         {
+            currentLine.Play();
             currentLine.transform.position = currentNode.transform.position;
             currentLine.SetPosition(new Vector3(Player.position.x,currentLine.transform.position.y ,Player.position.z) - currentLine.transform.position);
         }
@@ -101,6 +98,9 @@ public class PuzzleGrid : MonoBehaviour {
     
     private void AddSelectedNode(Node node) 
     {
+
+        
+
         LineObject newLine = new LineObject(node);
         
         //THIS IS WEIRD
@@ -149,6 +149,14 @@ public class PuzzleGrid : MonoBehaviour {
             node.AddLineToNode(currentNode);
             currentNode.AddLineToNode(node);
             lineRenderers.Push(line);
+
+            if (lineRenderers.Count > 0 && currentLine == null)
+            {
+                Debug.Log("STARTED drawing");
+                currentLineObject = Instantiate(linePrefab, transform.parent);
+                currentLine = currentLineObject.GetComponent<PuzzleLine>();
+
+            }
         }
 
         //THIS SHOULD BE DONE IN GETSOLUTION()
@@ -207,6 +215,8 @@ public class PuzzleGrid : MonoBehaviour {
             n.TurnOffCollider();
         }
 
+        currentLine.Stop();
+
         //SEND finalNodes and lineRenderers to some Persistance that can store the completed puzzles
 
     }
@@ -228,8 +238,11 @@ public class PuzzleGrid : MonoBehaviour {
             n.gameObject.SetActive(false);
         }
 
+        //sätt currentLine position
         currentNode = FindStartNode(ref allNodes);
+        currentLine.Stop();
         
+        Destroy(currentLineObject, 2);
         currentNode.gameObject.SetActive(true);
     }
 

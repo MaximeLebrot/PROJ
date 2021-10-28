@@ -202,6 +202,7 @@ public class Puzzle : MonoBehaviour
         //Should be in OnEnable but is here for Development and debugging
         solution = Translate();
 
+
         Debug.Log("Solution: " + solution + " INPUT : " + grid.GetSolution());
         if (solution.Equals(grid.GetSolution()))
         {

@@ -5,7 +5,7 @@ public class PuzzleStarter : MonoBehaviour
     private Puzzle puzzle;
     private int puzzleID;
 
-
+    public bool Active { get; set; }
 
     private void Start()
     {
@@ -14,9 +14,14 @@ public class PuzzleStarter : MonoBehaviour
     }   
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Start Puzzle");
-        EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzleID, GetComponentInParent<Puzzle>().transform)));
-        puzzle.SetPlayer(other.transform);
+        if(Active == false)
+        {
+            //Debug.Log("Start Puzzle");
+            EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzleID, GetComponentInParent<Puzzle>().transform)));
+            puzzle.SetPlayer(other.transform);
+            Active = true;
+        }
+        
 
         //StartPuzzleEvent skickas även när pusslet är igång, fix plz.
 
