@@ -46,8 +46,8 @@ public class PuzzleStarter : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("PuzzleStarter Trigger entered");
-        
-        if(Active == false)
+
+        if (Active == false)
         {
             Debug.Log("Start Puzzle");
             EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzle.GetPuzzleID(), GetComponentInParent<Puzzle>().transform)));
@@ -57,7 +57,7 @@ public class PuzzleStarter : MonoBehaviour
             source.Play(); //S
             enderText.SetActive(true); //S
         }
-        
+
 
         //StartPuzzleEvent skickas även när pusslet är igång, fix plz.
 
@@ -67,10 +67,10 @@ public class PuzzleStarter : MonoBehaviour
     {
         Debug.Log("ResetStarter called with reset event");
         //if (eve.info.ID == puzzle.GetPuzzleID())
-            Active = false;
+        Active = false;
         ResetStarter(eve.info.ID);
     }
 
-    
+
 
 }
