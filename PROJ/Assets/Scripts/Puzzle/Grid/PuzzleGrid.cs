@@ -82,6 +82,7 @@ public class PuzzleGrid : MonoBehaviour {
         foreach(Node node in nodes)
             if (node.startNode)
             {
+                Debug.Log("START NODE");
                 //node.OnNodeSelected += AddSelectedNode;
                 return node;
             }
@@ -246,12 +247,13 @@ public class PuzzleGrid : MonoBehaviour {
 
         //sätt currentLine position
         currentNode = FindStartNode(ref allNodes);
-        if(currentLine != null)
+        currentNode.gameObject.SetActive(true);
+
+        if (currentLine != null)
         {
             currentLine.Stop();
             Destroy(currentLineObject, 2);
             currentLine = null;
-            currentNode.gameObject.SetActive(true);
         }
 
     }

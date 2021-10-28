@@ -7,8 +7,7 @@ public abstract class MovementBehaviour : OffsetCameraBehaviour
     [SerializeField] protected float rotationSpeed;
     [SerializeField] protected float collisionRadius;
     [SerializeField] private LayerMask collisionMask;
-    
-    protected Vector2 input;
+
     
     public override void Behave() {
         ReadInput();
@@ -20,16 +19,21 @@ public abstract class MovementBehaviour : OffsetCameraBehaviour
 
     protected virtual void ClampInput() => input.x = Mathf.Clamp(input.x, clampValues.x, clampValues.y);
 
-    private void ReadInput() {
+    protected virtual void ReadInput() {
         Vector2 cameraInputThisFrame = inputReference.InputMaster.MoveCamera.ReadValue<Vector2>();
-        
-        input.x -= cameraInputThisFrame.y * mouseSensitivity;
-        input.y += cameraInputThisFrame.x * mouseSensitivity;
+
+        input.x = -cameraInputThisFrame.y * mouseSensitivity;
+        input.y = cameraInputThisFrame.x * mouseSensitivity;
     }
-    
+ //musdelta varje frame för att generera en LITEN ro
     protected virtual void RotateCamera() {
-        followTarget.rotation = Quaternion.Lerp(followTarget.rotation, Quaternion.Euler(input.x, input.y, 0), rotationSpeed * Time.deltaTime);
-        transform.rotation = followTarget.localRotation;
+
+        Vector3 temp = transform.rotation.eulerAngles;
+        temp.z = 0;
+        Quaternion targetRotation = Quaternion.Euler(temp);
+
+        followTarget.rotation = Quaternion.Lerp(transform.rotation, targetRotation * Quaternion.Euler(input.x, input.y, 0), rotationSpeed * Time.deltaTime);
+        transform.rotation = followTarget.rotation;
     }
 
     protected virtual void MoveCamera() {

@@ -28,20 +28,17 @@ public class PuzzleStarter : MonoBehaviour
         EventHandler<ResetPuzzleEvent>.UnregisterListener(ResetStarter);
     }
 
-    private void ResetStarter(int id)
-    {
-        if (id == puzzleID)
-        {
-            Debug.Log("Exited");
-            if(enderText != null)
-                enderText.SetActive(false);
-
-        }
-    }
-
+    
     private void OnExit(ExitPuzzleEvent eve)
     {
-        ResetStarter(eve.info.ID);
+        ResetStarter();
+    }
+
+    public void ResetStarter(ResetPuzzleEvent eve)
+    {
+        //Debug.Log("ResetStarter called with reset event");
+        //if (eve.info.ID == puzzle.GetPuzzleID())
+        ResetStarter();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -65,14 +62,16 @@ public class PuzzleStarter : MonoBehaviour
 
     }
 
-    public void ResetStarter(ResetPuzzleEvent eve)
-    {
-        Debug.Log("ResetStarter called with reset event");
-        //if (eve.info.ID == puzzle.GetPuzzleID())
-        Active = false;
-        ResetStarter(eve.info.ID);
-    }
 
+    public void ResetStarter()
+    {
+
+            Debug.Log("Exited");
+            Active = false;
+            if (enderText != null)
+                enderText.SetActive(false);
+
+    }
 
 
 }
