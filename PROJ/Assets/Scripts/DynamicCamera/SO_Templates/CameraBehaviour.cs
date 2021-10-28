@@ -8,7 +8,7 @@ public abstract class CameraBehaviour : ScriptableObject {
     protected Transform transform;
     protected Vector3 velocity;
 
-    public void Initialize(Transform objectTransform, Transform target) {
+    public virtual void Initialize(Transform objectTransform, Transform target) {
         transform = objectTransform;
         followTarget = target;
     }

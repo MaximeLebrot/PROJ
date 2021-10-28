@@ -59,9 +59,9 @@ public class PlayerController : MonoBehaviour
             input.Normalize();
         }
         
-        /*if (surfCamera)
+        if (surfCamera)
             RotateInDirectionOfMovement(inp);
-        else*/
+        else
             PlayerDirection();
 
         if (input.magnitude < float.Epsilon)
