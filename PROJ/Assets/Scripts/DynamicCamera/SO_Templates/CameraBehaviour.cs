@@ -4,13 +4,13 @@ using UnityEngine;
 public abstract class CameraBehaviour : ScriptableObject {
     
     [SerializeField] protected ControllerInputReference inputReference;
-    protected Transform followTarget;
-    protected Transform transform;
-    protected Vector3 velocity;
+    protected Transform FollowTarget;
+    protected Transform Transform;
+    protected Vector3 Velocity;
 
     public void Initialize(Transform objectTransform, Transform target) {
-        transform = objectTransform;
-        followTarget = target;
+        Transform = objectTransform;
+        FollowTarget = target;
     }
 
     public virtual void Behave() {}
