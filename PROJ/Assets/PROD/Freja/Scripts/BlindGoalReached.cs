@@ -9,6 +9,7 @@ public class BlindGoalReached : MonoBehaviour
     [SerializeField] private AudioClip normalSound;
     [SerializeField] private AudioSource source;
     [SerializeField] private float victoryVol = 0.1f;
+    private bool hasWon;
 
     void Start()
     {
@@ -24,12 +25,13 @@ public class BlindGoalReached : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("positive womp");
-            if (source.clip != winSound)
+            if (hasWon != true)
             {
                 source.Stop();
                 source.volume = victoryVol;
                 source.PlayOneShot(winSound);
                 source.loop = false;
+                hasWon = true;
             }
         }
     }
