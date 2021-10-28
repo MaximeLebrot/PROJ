@@ -27,7 +27,7 @@ public class EnableBlindMode : MonoBehaviour
         ExitBlindMode();
     }
 
-   /* void Update()
+    void Update()
     {
         if (inputMaster.PuzzleDEBUGGER.BlindMode.triggered)
         {
@@ -39,7 +39,7 @@ public class EnableBlindMode : MonoBehaviour
                 EnterBlindMode();
             }
         }
-    }*/
+    }
 
     private void EnterBlindMode()
     {

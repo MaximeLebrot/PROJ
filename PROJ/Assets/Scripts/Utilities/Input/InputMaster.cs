@@ -202,6 +202,14 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""BlindMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""0138de2d-e3ea-4925-93cf-c16dd65d3f07"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -235,6 +243,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""PressAnyButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6322b77d-980c-47e7-b9e8-609edab09bd1"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BlindMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -309,6 +328,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_PuzzleDEBUGGER_calculatesolution = m_PuzzleDEBUGGER.FindAction("calculate solution", throwIfNotFound: true);
         m_PuzzleDEBUGGER_ShowSolution = m_PuzzleDEBUGGER.FindAction("ShowSolution", throwIfNotFound: true);
         m_PuzzleDEBUGGER_PressAnyButton = m_PuzzleDEBUGGER.FindAction("PressAnyButton", throwIfNotFound: true);
+        m_PuzzleDEBUGGER_BlindMode = m_PuzzleDEBUGGER.FindAction("BlindMode", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_BackToMain = m_UI.FindAction("BackToMain", throwIfNotFound: true);
@@ -421,6 +441,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_PuzzleDEBUGGER_calculatesolution;
     private readonly InputAction m_PuzzleDEBUGGER_ShowSolution;
     private readonly InputAction m_PuzzleDEBUGGER_PressAnyButton;
+    private readonly InputAction m_PuzzleDEBUGGER_BlindMode;
     public struct PuzzleDEBUGGERActions
     {
         private @InputMaster m_Wrapper;
@@ -428,6 +449,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @calculatesolution => m_Wrapper.m_PuzzleDEBUGGER_calculatesolution;
         public InputAction @ShowSolution => m_Wrapper.m_PuzzleDEBUGGER_ShowSolution;
         public InputAction @PressAnyButton => m_Wrapper.m_PuzzleDEBUGGER_PressAnyButton;
+        public InputAction @BlindMode => m_Wrapper.m_PuzzleDEBUGGER_BlindMode;
         public InputActionMap Get() { return m_Wrapper.m_PuzzleDEBUGGER; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -446,6 +468,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @PressAnyButton.started -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnPressAnyButton;
                 @PressAnyButton.performed -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnPressAnyButton;
                 @PressAnyButton.canceled -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnPressAnyButton;
+                @BlindMode.started -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnBlindMode;
+                @BlindMode.performed -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnBlindMode;
+                @BlindMode.canceled -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnBlindMode;
             }
             m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface = instance;
             if (instance != null)
@@ -459,6 +484,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @PressAnyButton.started += instance.OnPressAnyButton;
                 @PressAnyButton.performed += instance.OnPressAnyButton;
                 @PressAnyButton.canceled += instance.OnPressAnyButton;
+                @BlindMode.started += instance.OnBlindMode;
+                @BlindMode.performed += instance.OnBlindMode;
+                @BlindMode.canceled += instance.OnBlindMode;
             }
         }
     }
@@ -526,6 +554,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnCalculatesolution(InputAction.CallbackContext context);
         void OnShowSolution(InputAction.CallbackContext context);
         void OnPressAnyButton(InputAction.CallbackContext context);
+        void OnBlindMode(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
