@@ -66,12 +66,12 @@ public class Puzzle : MonoBehaviour
     {
         currentPuzzleNum++;     
 
-        Debug.Log("Next puzzle, #" + currentPuzzleNum);
+        //Debug.Log("Next puzzle, #" + currentPuzzleNum);
         if(currentPuzzleNum >= puzzleInstances.Count)
         {
             //no more puzzle instances here
             //Exit puzzle
-            Debug.Log("Last puzzle instance completed");
+            //Debug.Log("Last puzzle instance completed");
             EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID()), true));
             grid.CompleteGrid();
             return;
@@ -194,11 +194,11 @@ public class Puzzle : MonoBehaviour
     }
     public void EvaluateSolution()
     {
-        Debug.Log("EvaluateSolution Called");
+        //Debug.Log("EvaluateSolution Called");
         //Should be in OnEnable but is here for Development and debugging
         solution = Translate();
 
-        Debug.Log("Solution: " + solution + " INPUT : " + grid.GetSolution());
+        //Debug.Log("Solution: " + solution + " INPUT : " + grid.GetSolution());
         //  was the solution correct? 
         if (solution.Equals(grid.GetSolution()))
         {
@@ -234,10 +234,10 @@ public class Puzzle : MonoBehaviour
     public void StartPuzzle(StartPuzzleEvent eve)
     {
         //Maybe this is dumb, ID comes from PuzzleInstance, but should technically be able to identify itself like this
-        Debug.Log("Start puzzle event, id is :" + GetPuzzleID());
+        //Debug.Log("Start puzzle event, id is :" + GetPuzzleID());
         if (eve.info.ID == GetPuzzleID())
         {
-            Debug.Log("id match" + GetPuzzleID());
+            //Debug.Log("id match" + GetPuzzleID());
             grid.StartPuzzle();
         }
     }

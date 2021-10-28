@@ -122,9 +122,7 @@ public class PuzzleGrid : MonoBehaviour {
             currentNode.enabledNodes.Clear();
 
             //REMOVE LAST CHAR IN SOLUTION OR CALCULATE EVERYTHING AFTERWARDS
-            Debug.Log(solution);
             solution = PuzzleHelper.RemoveLastChar(solution);
-            Debug.Log(solution);
 
             node.RemoveLineToNode(currentNode);
             currentNode.RemoveLineToNode(node);
@@ -210,7 +208,7 @@ public class PuzzleGrid : MonoBehaviour {
     public void CompleteGrid()
     {
         List<Node> finalNodes = new List<Node>();
-        Debug.Log("Save grid");
+        //Debug.Log("Save grid");
         foreach(Node n in allNodes)
         {
             if (n.gameObject.activeSelf)
