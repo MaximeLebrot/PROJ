@@ -213,7 +213,8 @@ public class Puzzle : MonoBehaviour
         }
         
         EventHandler<ResetPuzzleEvent>.FireEvent(new ResetPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID())));
-          
+        GetComponentInChildren<PuzzleStarter>().ResetStarter();
+
     }
 
     private void OnTriggerExit(Collider other)
@@ -222,6 +223,7 @@ public class Puzzle : MonoBehaviour
         //PuzzleInfo info = new PuzzleInfo(currentPuzzleInstance.GetPuzzleID());
         //EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(info, false));
         grid.ResetGrid();
+        GetComponentInChildren<PuzzleStarter>().ResetStarter();
 
     }
 

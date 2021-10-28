@@ -31,14 +31,14 @@ public class PuzzleStarter : MonoBehaviour
     
     private void OnExit(ExitPuzzleEvent eve)
     {
-        ResetStarter(eve.info.ID);
+        ResetStarter();
     }
 
     public void ResetStarter(ResetPuzzleEvent eve)
     {
         //Debug.Log("ResetStarter called with reset event");
         //if (eve.info.ID == puzzle.GetPuzzleID())
-        ResetStarter(eve.info.ID);
+        ResetStarter();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -63,16 +63,14 @@ public class PuzzleStarter : MonoBehaviour
     }
 
 
-    private void ResetStarter(int id)
+    public void ResetStarter()
     {
-        if (id == puzzleID)
-        {
+
             Debug.Log("Exited");
             Active = false;
             if (enderText != null)
                 enderText.SetActive(false);
 
-        }
     }
 
 
