@@ -75,6 +75,7 @@ public class Puzzle : MonoBehaviour
             //Debug.Log("Last puzzle instance completed");
             EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID()), true));
             grid.CompleteGrid();
+            GetComponent<Collider>().enabled = false;
             return;
         }
 
@@ -217,8 +218,11 @@ public class Puzzle : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        PuzzleInfo info = new PuzzleInfo(currentPuzzleInstance.GetPuzzleID());
-        EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(info, false));
+
+        //PuzzleInfo info = new PuzzleInfo(currentPuzzleInstance.GetPuzzleID());
+        //EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(info, false));
+        grid.ResetGrid();
+
     }
 
     public void ExitPuzzle(ExitPuzzleEvent eve)
