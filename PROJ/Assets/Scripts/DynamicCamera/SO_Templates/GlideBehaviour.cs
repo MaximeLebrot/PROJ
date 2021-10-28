@@ -1,17 +1,13 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Camera/Camera Behaviours/Glide Behaviour", fileName = "Glide Behaviour")]
-public class GlideBehaviour : OffsetCameraBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+public class GlideBehaviour : MovementBehaviour {
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    [SerializeField] private Vector2 horizontalClamp;
+    
+    protected override void ClampInput() {
+        base.ClampInput();
+
+        input.y = Mathf.Clamp(input.y, horizontalClamp.x, horizontalClamp.y);
     }
 }

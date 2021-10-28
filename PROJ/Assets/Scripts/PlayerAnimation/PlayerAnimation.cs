@@ -16,9 +16,10 @@ public class PlayerAnimation : MonoBehaviour
         y = Animator.StringToHash("direction");
         anim = GetComponent<Animator>(); 
     }
+
     private void Update()
     {
-        input = inputReference.InputMaster.Movement.ReadValue<Vector2>();
+        inputReference.InputMaster.Movement.ReadValue<Vector2>();
         
         anim.SetFloat(x, input.x);
         anim.SetFloat(y, input.y);

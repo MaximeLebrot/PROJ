@@ -17,4 +17,9 @@ public class PuzzleLine : MonoBehaviour
     {
         lineParticle.Stop();
     }
+
+    public void Play()
+    {
+        lineParticle.Play();
+    }
 }

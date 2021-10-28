@@ -13,8 +13,8 @@ public class PuzzleBehaviour : OffsetCameraBehaviour {
 
     public override void Behave() {
                 
-        Transform.position = Vector3.SmoothDamp(Transform.position, FollowTarget.position + puzzleTransform.localRotation * Offset, ref Velocity, travelTime, maxSpeed);
+        transform.position = Vector3.SmoothDamp(transform.position, followTarget.position + puzzleTransform.localRotation * offset, ref velocity, travelTime, maxSpeed);
 
-        Transform.eulerAngles = puzzleTransform.localEulerAngles + eulerRotation;
+        transform.eulerAngles = puzzleTransform.localEulerAngles + eulerRotation;
     }
 }

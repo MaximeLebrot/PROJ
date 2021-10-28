@@ -47,19 +47,15 @@ public class Puzzle : MonoBehaviour
     {
         inputMaster.Enable();
         EventHandler<ExitPuzzleEvent>.RegisterListener(ExitPuzzle);
+        EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
     }
     private void OnDisable()
     {
         inputMaster.Disable();
         EventHandler<ExitPuzzleEvent>.UnregisterListener(ExitPuzzle);
+        EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
     }
-    private void Update()
-    {
 
-        
-
-
-    }
    private void InitiatePuzzle()
     {
         //Debug.Log("Initiate puzzle");
@@ -70,12 +66,12 @@ public class Puzzle : MonoBehaviour
     {
         currentPuzzleNum++;     
 
-        Debug.Log("Next puzzle, #" + currentPuzzleNum);
+        //Debug.Log("Next puzzle, #" + currentPuzzleNum);
         if(currentPuzzleNum >= puzzleInstances.Count)
         {
             //no more puzzle instances here
             //Exit puzzle
-            Debug.Log("Last puzzle instance completed");
+            //Debug.Log("Last puzzle instance completed");
             EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID()), true));
             grid.CompleteGrid();
             return;
@@ -198,22 +194,24 @@ public class Puzzle : MonoBehaviour
     }
     public void EvaluateSolution()
     {
-        Debug.Log("EvaluateSolution Called");
+        //Debug.Log("EvaluateSolution Called");
         //Should be in OnEnable but is here for Development and debugging
         solution = Translate();
 
-        Debug.Log("Solution: " + solution + " INPUT : " + grid.GetSolution());
+        //Debug.Log("Solution: " + solution + " INPUT : " + grid.GetSolution());
+        //  was the solution correct? 
         if (solution.Equals(grid.GetSolution()))
         {
+            //uppdaterar curr puzzle
             NextPuzzle();
-            //
-            //
         }
         else
-        {            
-            EventHandler<ResetPuzzleEvent>.FireEvent(new ResetPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID())));
+        {
             grid.ResetGrid();
-        }          
+        }
+        
+        EventHandler<ResetPuzzleEvent>.FireEvent(new ResetPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID())));
+          
     }
 
     private void OnTriggerExit(Collider other)
@@ -232,6 +230,16 @@ public class Puzzle : MonoBehaviour
             }
         }
         
+    }
+    public void StartPuzzle(StartPuzzleEvent eve)
+    {
+        //Maybe this is dumb, ID comes from PuzzleInstance, but should technically be able to identify itself like this
+        //Debug.Log("Start puzzle event, id is :" + GetPuzzleID());
+        if (eve.info.ID == GetPuzzleID())
+        {
+            //Debug.Log("id match" + GetPuzzleID());
+            grid.StartPuzzle();
+        }
     }
 
     //Maybe return ID from current PuzzleInstance instead
