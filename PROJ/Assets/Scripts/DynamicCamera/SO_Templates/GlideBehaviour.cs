@@ -11,9 +11,7 @@ public class GlideBehaviour : MovementBehaviour {
     }
 
     protected override void RotateCamera() {
-
-        followTarget.rotation = followTarget.parent.rotation;
-        transform.rotation = Quaternion.Slerp(transform.rotation, followTarget.rotation, rotationSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, followTarget.parent.rotation, rotationSpeed * Time.deltaTime);
     }
     
 }

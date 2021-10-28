@@ -17,8 +17,11 @@ namespace DynamicCamera {
         
         private CameraBehaviour currentCameraBehaviour;
         
+        //input
         private ControllerInputReference inputReference;
-        
+        public Vector2 input;
+
+
         private void Awake() {
             foreach (CameraBehaviour cameraBehaviour in listOfBehaviourReferences)
                 behaviours[cameraBehaviour.GetType()] = cameraBehaviour;
@@ -65,8 +68,13 @@ namespace DynamicCamera {
         private void LateUpdate() => currentCameraBehaviour.Behave();
         
         private void ChangeBehaviour(CameraBehaviour newCameraBehaviour, Transform target) {
+            Vector2 tempInput = Vector3.zero;
+               if(currentCameraBehaviour)
+                tempInput = currentCameraBehaviour.GetInput();
+
             currentCameraBehaviour = newCameraBehaviour;
             currentCameraBehaviour.Initialize(transform, target);
+            currentCameraBehaviour.SetInput(tempInput);
         }
         
         private void OnEnable() {
