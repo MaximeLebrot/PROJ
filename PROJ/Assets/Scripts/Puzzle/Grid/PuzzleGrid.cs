@@ -28,8 +28,11 @@ public class PuzzleGrid : MonoBehaviour {
    
 
     public string GetSolution() 
-    { 
-        return solution[0] == '-' ? PuzzleHelper.SkipFirstChar(solution) : solution;
+    {
+        if (solution.Length > 0)
+            return solution[0] == '-' ? PuzzleHelper.SkipFirstChar(solution) : solution;
+        else
+            return "";
     }
     
     
@@ -79,6 +82,7 @@ public class PuzzleGrid : MonoBehaviour {
         foreach(Node node in nodes)
             if (node.startNode)
             {
+                Debug.Log("START NODE");
                 //node.OnNodeSelected += AddSelectedNode;
                 return node;
             }
@@ -122,9 +126,7 @@ public class PuzzleGrid : MonoBehaviour {
             currentNode.enabledNodes.Clear();
 
             //REMOVE LAST CHAR IN SOLUTION OR CALCULATE EVERYTHING AFTERWARDS
-            Debug.Log(solution);
             solution = PuzzleHelper.RemoveLastChar(solution);
-            Debug.Log(solution);
 
             node.RemoveLineToNode(currentNode);
             currentNode.RemoveLineToNode(node);
@@ -210,7 +212,7 @@ public class PuzzleGrid : MonoBehaviour {
     public void CompleteGrid()
     {
         List<Node> finalNodes = new List<Node>();
-        Debug.Log("Save grid");
+        //Debug.Log("Save grid");
         foreach(Node n in allNodes)
         {
             if (n.gameObject.activeSelf)
@@ -245,10 +247,15 @@ public class PuzzleGrid : MonoBehaviour {
 
         //sätt currentLine position
         currentNode = FindStartNode(ref allNodes);
-        currentLine.Stop();
-        Destroy(currentLineObject, 2);
-        currentLine = null;
         currentNode.gameObject.SetActive(true);
+
+        if (currentLine != null)
+        {
+            currentLine.Stop();
+            Destroy(currentLineObject, 2);
+            currentLine = null;
+        }
+
     }
 
 }

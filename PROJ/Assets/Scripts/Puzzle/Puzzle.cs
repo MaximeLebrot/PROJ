@@ -39,6 +39,7 @@ public class Puzzle : MonoBehaviour
             grid = GetComponentInChildren<PuzzleGrid>();
             inputMaster = new InputMaster();
             PlaceSymbols();
+            solution = Translate();
         }
         else
             Debug.LogWarning("NO PUZZLE INSTANCES IN PUZZLE");
@@ -66,14 +67,15 @@ public class Puzzle : MonoBehaviour
     {
         currentPuzzleNum++;     
 
-        Debug.Log("Next puzzle, #" + currentPuzzleNum);
+        //Debug.Log("Next puzzle, #" + currentPuzzleNum);
         if(currentPuzzleNum >= puzzleInstances.Count)
         {
             //no more puzzle instances here
             //Exit puzzle
-            Debug.Log("Last puzzle instance completed");
+            //Debug.Log("Last puzzle instance completed");
             EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID()), true));
             grid.CompleteGrid();
+            GetComponent<Collider>().enabled = false;
             return;
         }
 
@@ -194,11 +196,11 @@ public class Puzzle : MonoBehaviour
     }
     public void EvaluateSolution()
     {
-        Debug.Log("EvaluateSolution Called");
+        //Debug.Log("EvaluateSolution Called");
         //Should be in OnEnable but is here for Development and debugging
         solution = Translate();
 
-        Debug.Log("Solution: " + solution + " INPUT : " + grid.GetSolution());
+        //Debug.Log("Solution: " + solution + " INPUT : " + grid.GetSolution());
         //  was the solution correct? 
         if (solution.Equals(grid.GetSolution()))
         {
@@ -211,13 +213,18 @@ public class Puzzle : MonoBehaviour
         }
         
         EventHandler<ResetPuzzleEvent>.FireEvent(new ResetPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID())));
-          
+        GetComponentInChildren<PuzzleStarter>().ResetStarter();
+
     }
 
     private void OnTriggerExit(Collider other)
     {
-        PuzzleInfo info = new PuzzleInfo(currentPuzzleInstance.GetPuzzleID());
-        EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(info, false));
+
+        //PuzzleInfo info = new PuzzleInfo(currentPuzzleInstance.GetPuzzleID());
+        //EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(info, false));
+        grid.ResetGrid();
+        GetComponentInChildren<PuzzleStarter>().ResetStarter();
+
     }
 
     public void ExitPuzzle(ExitPuzzleEvent eve)
@@ -234,12 +241,17 @@ public class Puzzle : MonoBehaviour
     public void StartPuzzle(StartPuzzleEvent eve)
     {
         //Maybe this is dumb, ID comes from PuzzleInstance, but should technically be able to identify itself like this
-        Debug.Log("Start puzzle event, id is :" + GetPuzzleID());
+        //Debug.Log("Start puzzle event, id is :" + GetPuzzleID());
         if (eve.info.ID == GetPuzzleID())
         {
-            Debug.Log("id match" + GetPuzzleID());
+            //Debug.Log("id match" + GetPuzzleID());
             grid.StartPuzzle();
         }
+    }
+
+    public string GetSolution()
+    {
+        return solution;
     }
 
     //Maybe return ID from current PuzzleInstance instead
