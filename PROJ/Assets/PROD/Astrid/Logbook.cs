@@ -6,13 +6,23 @@ public class Logbook : MonoBehaviour
 {
     // For the time being it just flips between tabs
 
+    public GameObject page0; //The welcome page
     public GameObject page1; //Base
     public GameObject page2; //Minimalist
     public GameObject page3; //Titles
     public GameObject page4; //Thicker
     public GameObject page5; //Refined
 
-    public GameObject[] tabs; // An array with all the tabs (currently theres 5)
+    public GameObject[] tabs; // An array with all the tabs (currently theres 6)
+
+    public void OpenWelcomeTab()
+    {
+        for (int i = 0; i < tabs.Length; i++)
+            MoveBackTab(i);
+        CloseEverything();
+        if (page0.activeInHierarchy != true)
+            page0.SetActive(true);
+    }
 
     public void OpenFirstTab()
     {
@@ -78,6 +88,8 @@ public class Logbook : MonoBehaviour
 
     public void CloseEverything()
     {
+        if (page0.activeInHierarchy != false)
+            page0.SetActive(false);
         if (page1.activeInHierarchy != false)
             page1.SetActive(false);
         if (page2.activeInHierarchy != false)
