@@ -97,6 +97,7 @@ public class Logbook : MonoBehaviour
         if (tabsTransform.transform.position.x == 1830f)
         {
             tabsTransform.transform.position = new Vector3(tabsTransform.transform.position.x - 1740, tabsTransform.transform.position.y, 0);
+            //tabsTransform.transform.rotation = Quaternion.Euler(0, 180, 0);
         }
     }
 
