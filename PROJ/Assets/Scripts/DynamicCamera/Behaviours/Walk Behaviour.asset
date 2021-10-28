@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: Walk Behaviour
   m_EditorClassIdentifier: 
   inputReference: {fileID: 11400000, guid: 54398b8fed501aa41813fa11036bc179, type: 2}
+  thisCamera: {fileID: 0}
+  input: {x: 0, y: 0}
   offset: {x: 0, y: 1.5, z: -5}
   followSpeed: 0.2
   clampValues: {x: -40, y: 60}
-  mouseSensitivity: 0.1
-  rotationSpeed: 10
+  mouseSensitivity: 0.05
+  rotationSpeed: 0.5
   collisionRadius: 0.5
   collisionMask:
     serializedVersion: 2
