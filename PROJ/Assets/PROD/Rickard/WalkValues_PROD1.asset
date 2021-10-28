@@ -9,9 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0515d759b289f0d49be01214408b1ad2, type: 3}
-  m_Name: Behaviour Callbacks
+  m_Script: {fileID: 11500000, guid: 4926ad2a8428bde40971cb7c40807bae, type: 3}
+  m_Name: WalkValues_PROD1
   m_EditorClassIdentifier: 
-  pairs:
-  - playerState: {fileID: 11400000, guid: 5cd048ba969ca9b4a961089a5248b03e, type: 2}
-    cameraBehaviour: {fileID: 11400000, guid: 6731b07f6d6646943a7b634c0f7cda58, type: 2}
+  staticFriction: 0.4
+  kineticFriction: 0.3
+  airResistance: 0.8
+  maxSpeed: 4
+  gravity: 9.81

@@ -11,7 +11,17 @@ public class PuzzleStarter : MonoBehaviour
     {
         puzzle = GetComponentInParent<Puzzle>();
         puzzleID = puzzle.GetPuzzleID();
-    }   
+    }
+
+    private void OnEnable()
+    {
+        EventHandler<ExitPuzzleEvent>.RegisterListener(ResetStarter);
+    }
+
+    private void OnDisable()
+    {
+        EventHandler<ExitPuzzleEvent>.UnregisterListener(ResetStarter);
+    }
     private void OnTriggerEnter(Collider other)
     {
         if(Active == false)
@@ -25,6 +35,12 @@ public class PuzzleStarter : MonoBehaviour
 
         //StartPuzzleEvent skickas även när pusslet är igång, fix plz.
 
+    }
+
+    public void ResetStarter(ExitPuzzleEvent eve)
+    {
+        if (eve.info.ID == puzzle.GetPuzzleID() && eve.success != true)
+            Active = false;
     }
 
     
