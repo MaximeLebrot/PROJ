@@ -173,6 +173,30 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "ShowSolution",
+                    "type": "Button",
+                    "id": "476d96cc-4f16-4a60-ad17-b3c6a7baaee2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "PressAnyButton",
+                    "type": "Button",
+                    "id": "4cee70df-5b01-4643-b4a7-07b5940c8d1f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "BlindMode",
+                    "type": "Button",
+                    "id": "0138de2d-e3ea-4925-93cf-c16dd65d3f07",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -184,6 +208,66 @@
                     "processors": "",
                     "groups": "Stnd KBM",
                     "action": "calculate solution",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3d27998a-7002-42fa-b7ef-974c6a33875e",
+                    "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ShowSolution",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "155990f9-3485-4830-8b4c-04a80baf5ed8",
+                    "path": "<Keyboard>/anyKey",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PressAnyButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6322b77d-980c-47e7-b9e8-609edab09bd1",
+                    "path": "<Keyboard>/b",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BlindMode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UI",
+            "id": "96df4aaa-4b8b-4edb-843e-d362b8f1da9f",
+            "actions": [
+                {
+                    "name": "BackToMain",
+                    "type": "Button",
+                    "id": "5f8c38ae-35dd-43b1-89c0-ca5b8464fe39",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1cc9bc13-ef3d-4191-8a52-669d97249e5d",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BackToMain",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
