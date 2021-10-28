@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject prototypeMenu;
     [SerializeField] private GameObject settingsMenu;
     [SerializeField] private GameObject mainMenu;
+    [SerializeField] private Slider fovSlider;
     private Animator anim;
     private InputMaster inputMaster;
 
@@ -16,8 +18,11 @@ public class MainMenu : MonoBehaviour
         inputMaster = new InputMaster();
      //   Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-
+        
+        fovSlider.onValueChanged.AddListener((e) => Settings.FieldOfView = (int)fovSlider.value);
+        
     }
+    
     private void OnEnable()
     {
         inputMaster.Enable();
