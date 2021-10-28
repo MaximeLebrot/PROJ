@@ -19,8 +19,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private void Update()
     {
-        inputReference.InputMaster.Movement.ReadValue<Vector2>();
-        
+        input = inputReference.InputMaster.Movement.ReadValue<Vector2>();
         anim.SetFloat(x, input.x);
         anim.SetFloat(y, input.y);
     }

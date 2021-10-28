@@ -17,7 +17,6 @@ public class Node : MonoBehaviour {
     
     private void Awake() {
         neighbours = new Dictionary<Node, bool>();
-
         FindNeighbours();
     }
     
@@ -55,7 +54,11 @@ public class Node : MonoBehaviour {
         Physics.Raycast(transform.position, direction, out var hit, 5, nodeLayer);
 
         if (hit.collider)
+        {
+            Debug.Log("hit " + hit.collider.gameObject.name);
             return hit.transform.GetComponent<Node>();
+        }
+        Debug.Log("hit nothing");
 
         return null;
     }
