@@ -270,6 +270,14 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""RestartScene"",
+                    ""type"": ""Button"",
+                    ""id"": ""ebe1deb2-5145-4161-8cf2-597a196a11c9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -281,6 +289,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""BackToMain"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c988f0bb-2ac0-4809-8cf9-b515e48b9b97"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RestartScene"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -332,6 +351,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_BackToMain = m_UI.FindAction("BackToMain", throwIfNotFound: true);
+        m_UI_RestartScene = m_UI.FindAction("RestartScene", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -496,11 +516,13 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputActionMap m_UI;
     private IUIActions m_UIActionsCallbackInterface;
     private readonly InputAction m_UI_BackToMain;
+    private readonly InputAction m_UI_RestartScene;
     public struct UIActions
     {
         private @InputMaster m_Wrapper;
         public UIActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
         public InputAction @BackToMain => m_Wrapper.m_UI_BackToMain;
+        public InputAction @RestartScene => m_Wrapper.m_UI_RestartScene;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -513,6 +535,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @BackToMain.started -= m_Wrapper.m_UIActionsCallbackInterface.OnBackToMain;
                 @BackToMain.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnBackToMain;
                 @BackToMain.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnBackToMain;
+                @RestartScene.started -= m_Wrapper.m_UIActionsCallbackInterface.OnRestartScene;
+                @RestartScene.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnRestartScene;
+                @RestartScene.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnRestartScene;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -520,6 +545,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @BackToMain.started += instance.OnBackToMain;
                 @BackToMain.performed += instance.OnBackToMain;
                 @BackToMain.canceled += instance.OnBackToMain;
+                @RestartScene.started += instance.OnRestartScene;
+                @RestartScene.performed += instance.OnRestartScene;
+                @RestartScene.canceled += instance.OnRestartScene;
             }
         }
     }
@@ -559,5 +587,6 @@ public class @InputMaster : IInputActionCollection, IDisposable
     public interface IUIActions
     {
         void OnBackToMain(InputAction.CallbackContext context);
+        void OnRestartScene(InputAction.CallbackContext context);
     }
 }
