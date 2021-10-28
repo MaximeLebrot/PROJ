@@ -16,7 +16,7 @@ public class PuzzleStarter : MonoBehaviour
     {
         Debug.Log("Start Puzzle");
         EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzleID, GetComponentInParent<Puzzle>().transform)));
-  
+        puzzle.SetPlayer(other.transform);
 
         //StartPuzzleEvent skickas även när pusslet är igång, fix plz.
 

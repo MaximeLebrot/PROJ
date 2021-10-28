@@ -7,6 +7,7 @@ public static class PuzzleHelper
 {
     public static string SkipFirstChar(string s)
     {
+        Debug.Log("Skip first char, string length is :" + s.Length);
         StringBuilder sb = new StringBuilder();
         for (int j = 1; j < s.Length; j++)
         {
@@ -61,6 +62,26 @@ public static class PuzzleHelper
 
     public static Vector3 TranslateNumToDirection(char c)
     {
+        switch (c)
+        {
+            case '1':
+                return Vector3.down + Vector3.left;
+            case '2':
+                return Vector3.down;
+            case '3':
+                return Vector3.down + Vector3.right;
+            case '4':
+                return Vector3.left;
+            case '6':
+                return Vector3.right;
+            case '7':
+                return Vector3.up + Vector3.left;
+            case '8':
+                return Vector3.up;
+            case '9':
+                return Vector3.up + Vector3.right;
+        }
+
         return Vector3.zero;
     }
 
