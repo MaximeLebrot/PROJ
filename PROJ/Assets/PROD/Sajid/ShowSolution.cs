@@ -9,6 +9,7 @@ public class ShowSolution : MonoBehaviour
     public GameObject[] objects;
     private int i;
     public int puzzleID;
+    [SerializeField] private AudioSource source;
 
     void Awake()
     {
@@ -30,11 +31,13 @@ public class ShowSolution : MonoBehaviour
 
     private void PlayAnimation(ExitPuzzleEvent eve) 
     {
-        if(eve.info.ID == puzzleID && eve.success)
-        anim.SetBool("Solved", true);
-
+        if (eve.info.ID == puzzleID && eve.success)
+        {
+            anim.SetBool("Solved", true);
+            source.Play();
+        }
     }
-    
+
     // Update is called once per frame
     void Update()
     {
