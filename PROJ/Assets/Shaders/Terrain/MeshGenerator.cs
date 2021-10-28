@@ -38,7 +38,7 @@ public static class MeshGenerator {
         }
     }
 
-    public static MeshData GenerateTerrainMesh(int chunkSize, int scale, float[] heightMap)
+    public static MeshData GenerateTerrainMesh(int chunkSize, float scale, float[] heightMap)
     {
         MeshData meshData = new MeshData(chunkSize, chunkSize);
         for (int i = 0, y = 0; y < chunkSize; y++)
