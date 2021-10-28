@@ -16,19 +16,19 @@ namespace DynamicCamera {
         private readonly Dictionary<Type, CameraBehaviour> behaviours = new Dictionary<Type, CameraBehaviour>();
         
         private CameraBehaviour currentCameraBehaviour;
-        
-        //input
-        private ControllerInputReference inputReference;
+
         public Vector2 input;
 
-
         private void Awake() {
+
+            Camera.main.fieldOfView = Settings.FieldOfView;
+            
             foreach (CameraBehaviour cameraBehaviour in listOfBehaviourReferences)
                 behaviours[cameraBehaviour.GetType()] = cameraBehaviour;
             
             ChangeBehaviour(behaviours[typeof(WalkBehaviour)], followTarget);
         }
-
+        
         private void OnPuzzleExit(ExitPuzzleEvent exitPuzzleEvent) {
             EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
             ChangeBehaviour(behaviours[typeof(WalkBehaviour)], followTarget);
@@ -65,8 +65,11 @@ namespace DynamicCamera {
             EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
         }
         
-        private void LateUpdate() => currentCameraBehaviour.Behave();
-        
+        private void LateUpdate() {
+            Camera.main.fieldOfView = Settings.FieldOfView;
+            currentCameraBehaviour.Behave();
+        }
+
         private void ChangeBehaviour(CameraBehaviour newCameraBehaviour, Transform target) {
             Vector2 tempInput = Vector3.zero;
                if(currentCameraBehaviour)
