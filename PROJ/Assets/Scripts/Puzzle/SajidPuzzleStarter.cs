@@ -8,7 +8,6 @@ public class SajidPuzzleStarter : MonoBehaviour
     private int puzzleID;
 
     [SerializeField] private AudioSource source;
-    [SerializeField] private ParticleSystem particles;
     [SerializeField] private GameObject enderText;
 
     private void Start()
@@ -21,10 +20,8 @@ public class SajidPuzzleStarter : MonoBehaviour
         Debug.Log("Start Puzzle");
         EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzleID, GetComponentInParent<Puzzle>().transform)));
         source.Play();
-        particles.Stop();
         enderText.SetActive(true);
 
-        //StartPuzzleEvent skickas även när pusslet är igång, fix plz.
 
     }
 
@@ -55,7 +52,6 @@ public class SajidPuzzleStarter : MonoBehaviour
         if (id == puzzleID)
         {
             Debug.Log("Exited");
-            particles.Play();
             enderText.SetActive(false);
 
         }
