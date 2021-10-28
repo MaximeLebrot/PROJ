@@ -7,12 +7,17 @@ public class ShowSolution : MonoBehaviour
     private InputMaster inputMaster;
     private Animator anim;
     public GameObject[] objects;
+  //  private float time, timer;
+
     private int i;
+
     public int puzzleID;
+
     [SerializeField] private AudioSource source;
 
     void Awake()
     {
+  //     time = 0;
        anim = GetComponent<Animator>();
        inputMaster = new InputMaster();
     }
@@ -29,6 +34,49 @@ public class ShowSolution : MonoBehaviour
 
     }
 
+    /*
+    public void OnTriggerStay(Collider collision)
+    {
+        if(collision.CompareTag("Player"))
+        {
+            if(timer <= time)
+            {
+                if(i>=objects.Length)
+                {
+                    Debug.Log("Finished");
+                    return;
+                }
+                else
+                {
+                    objects[i].SetActive(true);
+                    i++;
+                    timer = 1;
+                }
+        
+            } else
+            {
+                timer -= Time.deltaTime;
+                Debug.Log(timer);
+            }
+        } 
+    }
+*/
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            if (i >= objects.Length)
+            {
+                Debug.Log("Finished");
+                return;
+            }
+
+            objects[i].SetActive(true);
+            i++;
+        }
+    }
+
     private void PlayAnimation(ExitPuzzleEvent eve) 
     {
         if (eve.info.ID == puzzleID && eve.success)
@@ -36,6 +84,7 @@ public class ShowSolution : MonoBehaviour
             anim.SetBool("Solved", true);
             source.Play();
         }
+
     }
 
     // Update is called once per frame
