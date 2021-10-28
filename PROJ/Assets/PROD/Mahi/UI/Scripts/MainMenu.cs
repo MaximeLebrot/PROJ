@@ -14,6 +14,9 @@ public class MainMenu : MonoBehaviour
     void Awake()
     {
         inputMaster = new InputMaster();
+     //   Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
     }
     private void OnEnable()
     {
