@@ -5,7 +5,7 @@ public class PuzzleStarter : MonoBehaviour
     private Puzzle puzzle;
     private int puzzleID;
 
-    public bool Active { get; set; }
+    public bool Active;
 
     private void Start()
     {
@@ -15,19 +15,21 @@ public class PuzzleStarter : MonoBehaviour
 
     private void OnEnable()
     {
-        EventHandler<ExitPuzzleEvent>.RegisterListener(ResetStarter);
+        EventHandler<ResetPuzzleEvent>.RegisterListener(ResetStarter);
     }
 
     private void OnDisable()
     {
-        EventHandler<ExitPuzzleEvent>.UnregisterListener(ResetStarter);
+        EventHandler<ResetPuzzleEvent>.UnregisterListener(ResetStarter);
     }
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("PuzzleStarter Trigger entered");
+        
         if(Active == false)
         {
-            //Debug.Log("Start Puzzle");
-            EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzleID, GetComponentInParent<Puzzle>().transform)));
+            Debug.Log("Start Puzzle");
+            EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzle.GetPuzzleID(), GetComponentInParent<Puzzle>().transform)));
             puzzle.SetPlayer(other.transform);
             Active = true;
         }
@@ -37,9 +39,10 @@ public class PuzzleStarter : MonoBehaviour
 
     }
 
-    public void ResetStarter(ExitPuzzleEvent eve)
+    public void ResetStarter(ResetPuzzleEvent eve)
     {
-        if (eve.info.ID == puzzle.GetPuzzleID() && eve.success != true)
+        Debug.Log("ResetStarter called with reset event");
+        //if (eve.info.ID == puzzle.GetPuzzleID())
             Active = false;
     }
 
