@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: Glide Behaviour
   m_EditorClassIdentifier: 
   inputReference: {fileID: 11400000, guid: 54398b8fed501aa41813fa11036bc179, type: 2}
-  offset: {x: 0, y: 3, z: -5}
+  thisCamera: {fileID: 0}
+  input: {x: -0, y: 0}
+  offset: {x: 0, y: 2.3, z: -5}
   followSpeed: 0.15
   clampValues: {x: -40, y: 60}
-  mouseSensitivity: 0.42
-  rotationSpeed: 3
+  mouseSensitivity: 0.1
+  rotationSpeed: 1
   collisionRadius: 0
   collisionMask:
     serializedVersion: 2
-    m_Bits: 0
-  horizontalClamp: {x: -60, y: 60}
+    m_Bits: 1
+  horizontalClamp: {x: -45, y: 45}
