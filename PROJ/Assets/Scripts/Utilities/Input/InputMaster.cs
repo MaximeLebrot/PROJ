@@ -194,6 +194,14 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""PressAnyButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""4cee70df-5b01-4643-b4a7-07b5940c8d1f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -216,6 +224,44 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""ShowSolution"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""155990f9-3485-4830-8b4c-04a80baf5ed8"",
+                    ""path"": ""<Keyboard>/anyKey"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PressAnyButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""UI"",
+            ""id"": ""96df4aaa-4b8b-4edb-843e-d362b8f1da9f"",
+            ""actions"": [
+                {
+                    ""name"": ""BackToMain"",
+                    ""type"": ""Button"",
+                    ""id"": ""5f8c38ae-35dd-43b1-89c0-ca5b8464fe39"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""1cc9bc13-ef3d-4191-8a52-669d97249e5d"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BackToMain"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -262,6 +308,10 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_PuzzleDEBUGGER = asset.FindActionMap("PuzzleDEBUGGER", throwIfNotFound: true);
         m_PuzzleDEBUGGER_calculatesolution = m_PuzzleDEBUGGER.FindAction("calculate solution", throwIfNotFound: true);
         m_PuzzleDEBUGGER_ShowSolution = m_PuzzleDEBUGGER.FindAction("ShowSolution", throwIfNotFound: true);
+        m_PuzzleDEBUGGER_PressAnyButton = m_PuzzleDEBUGGER.FindAction("PressAnyButton", throwIfNotFound: true);
+        // UI
+        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        m_UI_BackToMain = m_UI.FindAction("BackToMain", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -370,12 +420,14 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private IPuzzleDEBUGGERActions m_PuzzleDEBUGGERActionsCallbackInterface;
     private readonly InputAction m_PuzzleDEBUGGER_calculatesolution;
     private readonly InputAction m_PuzzleDEBUGGER_ShowSolution;
+    private readonly InputAction m_PuzzleDEBUGGER_PressAnyButton;
     public struct PuzzleDEBUGGERActions
     {
         private @InputMaster m_Wrapper;
         public PuzzleDEBUGGERActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
         public InputAction @calculatesolution => m_Wrapper.m_PuzzleDEBUGGER_calculatesolution;
         public InputAction @ShowSolution => m_Wrapper.m_PuzzleDEBUGGER_ShowSolution;
+        public InputAction @PressAnyButton => m_Wrapper.m_PuzzleDEBUGGER_PressAnyButton;
         public InputActionMap Get() { return m_Wrapper.m_PuzzleDEBUGGER; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -391,6 +443,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @ShowSolution.started -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnShowSolution;
                 @ShowSolution.performed -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnShowSolution;
                 @ShowSolution.canceled -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnShowSolution;
+                @PressAnyButton.started -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnPressAnyButton;
+                @PressAnyButton.performed -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnPressAnyButton;
+                @PressAnyButton.canceled -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnPressAnyButton;
             }
             m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface = instance;
             if (instance != null)
@@ -401,10 +456,46 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @ShowSolution.started += instance.OnShowSolution;
                 @ShowSolution.performed += instance.OnShowSolution;
                 @ShowSolution.canceled += instance.OnShowSolution;
+                @PressAnyButton.started += instance.OnPressAnyButton;
+                @PressAnyButton.performed += instance.OnPressAnyButton;
+                @PressAnyButton.canceled += instance.OnPressAnyButton;
             }
         }
     }
     public PuzzleDEBUGGERActions @PuzzleDEBUGGER => new PuzzleDEBUGGERActions(this);
+
+    // UI
+    private readonly InputActionMap m_UI;
+    private IUIActions m_UIActionsCallbackInterface;
+    private readonly InputAction m_UI_BackToMain;
+    public struct UIActions
+    {
+        private @InputMaster m_Wrapper;
+        public UIActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
+        public InputAction @BackToMain => m_Wrapper.m_UI_BackToMain;
+        public InputActionMap Get() { return m_Wrapper.m_UI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+        public void SetCallbacks(IUIActions instance)
+        {
+            if (m_Wrapper.m_UIActionsCallbackInterface != null)
+            {
+                @BackToMain.started -= m_Wrapper.m_UIActionsCallbackInterface.OnBackToMain;
+                @BackToMain.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnBackToMain;
+                @BackToMain.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnBackToMain;
+            }
+            m_Wrapper.m_UIActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @BackToMain.started += instance.OnBackToMain;
+                @BackToMain.performed += instance.OnBackToMain;
+                @BackToMain.canceled += instance.OnBackToMain;
+            }
+        }
+    }
+    public UIActions @UI => new UIActions(this);
     private int m_StndKBMSchemeIndex = -1;
     public InputControlScheme StndKBMScheme
     {
@@ -434,5 +525,10 @@ public class @InputMaster : IInputActionCollection, IDisposable
     {
         void OnCalculatesolution(InputAction.CallbackContext context);
         void OnShowSolution(InputAction.CallbackContext context);
+        void OnPressAnyButton(InputAction.CallbackContext context);
+    }
+    public interface IUIActions
+    {
+        void OnBackToMain(InputAction.CallbackContext context);
     }
 }
