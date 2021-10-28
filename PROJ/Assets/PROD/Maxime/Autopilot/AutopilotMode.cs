@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class AutopilotMode : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private GameObject player;
+    [SerializeField] private GameObject checkMark;
     [SerializeField] private List<Node> correctNodeLine = new List<Node>();
 
+    [Header("Autopilot")]
     [SerializeField] private bool fullAutopilot;
-    [SerializeField] private int step;
     [SerializeField] float speed = 5;
-    [SerializeField, Range(0, 1)] float distanceFromNode = 0.6f;
+    [SerializeField, Range(0, 1)] float distanceFromNode = 0.1f;
 
+    [SerializeField] private bool inPuzzleZone;
+
+    int step;
     float maxDistanceDelta;
     bool moveToNode;
     bool finishedPuzzle;
@@ -21,7 +26,26 @@ public class AutopilotMode : MonoBehaviour
     void Awake()
     {
         inputMaster = new InputMaster();
+        if (player == null)
+            player = GameObject.FindGameObjectWithTag("Player");
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            inPuzzleZone = true;
+        }    
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            inPuzzleZone = false;
+        }
+    }
+
 
     private void OnEnable()
     {
@@ -35,33 +59,56 @@ public class AutopilotMode : MonoBehaviour
 
     void Update()
     {
-        maxDistanceDelta = speed * Time.deltaTime;
-        if (moveToNode)
+        if (inputMaster.PuzzleDEBUGGER.ToggleFullAutopilot.triggered)
+            ToggleFullAutopilot();
+
+        if (inPuzzleZone)
         {
-            if (step >= correctNodeLine.Count)
+            maxDistanceDelta = speed * Time.deltaTime;
+            if (inputMaster.PuzzleDEBUGGER.AutoPilotPuzzle.triggered)
             {
-                step = 0;
-                finishedPuzzle = true;
-                moveToNode = false;
-                return;
+                if (!finishedPuzzle)
+                {
+                    if (fullAutopilot)
+                        moveToNode = true;
+                    else
+                        moveToNode = !moveToNode;
+                }
             }
-            if (CheckDistance(correctNodeLine[step]))
+            if (!moveToNode)
             {
-                player.transform.position = Vector3.MoveTowards(player.transform.position, GetOffsetVector(correctNodeLine[step]), maxDistanceDelta); //yoffset på player vs node | y + playerY-nodeY
+                if (fullAutopilot)
+                    step = 0;
+                return;
             }
             else
             {
-                if (!fullAutopilot)
+                if (step >= correctNodeLine.Count)
+                {
+                    step = 0;
+                    finishedPuzzle = true;
                     moveToNode = false;
-                step++;
-                return;
+                    return;
+                }
+                if (CheckDistance(correctNodeLine[step]))
+                {
+                    player.transform.position = Vector3.MoveTowards(player.transform.position, GetOffsetVector(correctNodeLine[step]), maxDistanceDelta);
+                }
+                else
+                {
+                    if (!fullAutopilot)
+                        moveToNode = false;
+                    step++;
+                    return;
+                }
             }
         }
-        if (inputMaster.PuzzleDEBUGGER.AutoPilotPuzzle.triggered)
-        {
-            if (!finishedPuzzle)
-                moveToNode = !moveToNode;
-        }
+    }
+
+    private void ToggleFullAutopilot()
+    {
+        checkMark.SetActive(!checkMark.activeInHierarchy);
+        fullAutopilot = !fullAutopilot;
     }
 
     private bool CheckDistance(Node node)
