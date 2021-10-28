@@ -39,6 +39,7 @@ public class Puzzle : MonoBehaviour
             grid = GetComponentInChildren<PuzzleGrid>();
             inputMaster = new InputMaster();
             PlaceSymbols();
+            solution = Translate();
         }
         else
             Debug.LogWarning("NO PUZZLE INSTANCES IN PUZZLE");
@@ -240,6 +241,11 @@ public class Puzzle : MonoBehaviour
             //Debug.Log("id match" + GetPuzzleID());
             grid.StartPuzzle();
         }
+    }
+
+    public string GetSolution()
+    {
+        return solution;
     }
 
     //Maybe return ID from current PuzzleInstance instead

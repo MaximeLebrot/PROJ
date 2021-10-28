@@ -210,6 +210,22 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""AutoPilotPuzzle"",
+                    ""type"": ""Button"",
+                    ""id"": ""648b08b0-9ce0-4edf-af91-51b979ec98d3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""ToggleFullAutopilot"",
+                    ""type"": ""Button"",
+                    ""id"": ""b43aed17-b847-4357-877b-702de380e37c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -254,6 +270,28 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""BlindMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""182fe015-1281-4589-8258-eaae32a5c0dd"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Stnd KBM"",
+                    ""action"": ""AutoPilotPuzzle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""30075741-e858-4240-945d-1ab19523366a"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Stnd KBM"",
+                    ""action"": ""ToggleFullAutopilot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -348,6 +386,8 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_PuzzleDEBUGGER_ShowSolution = m_PuzzleDEBUGGER.FindAction("ShowSolution", throwIfNotFound: true);
         m_PuzzleDEBUGGER_PressAnyButton = m_PuzzleDEBUGGER.FindAction("PressAnyButton", throwIfNotFound: true);
         m_PuzzleDEBUGGER_BlindMode = m_PuzzleDEBUGGER.FindAction("BlindMode", throwIfNotFound: true);
+        m_PuzzleDEBUGGER_AutoPilotPuzzle = m_PuzzleDEBUGGER.FindAction("AutoPilotPuzzle", throwIfNotFound: true);
+        m_PuzzleDEBUGGER_ToggleFullAutopilot = m_PuzzleDEBUGGER.FindAction("ToggleFullAutopilot", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_BackToMain = m_UI.FindAction("BackToMain", throwIfNotFound: true);
@@ -462,6 +502,8 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_PuzzleDEBUGGER_ShowSolution;
     private readonly InputAction m_PuzzleDEBUGGER_PressAnyButton;
     private readonly InputAction m_PuzzleDEBUGGER_BlindMode;
+    private readonly InputAction m_PuzzleDEBUGGER_AutoPilotPuzzle;
+    private readonly InputAction m_PuzzleDEBUGGER_ToggleFullAutopilot;
     public struct PuzzleDEBUGGERActions
     {
         private @InputMaster m_Wrapper;
@@ -470,6 +512,8 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @ShowSolution => m_Wrapper.m_PuzzleDEBUGGER_ShowSolution;
         public InputAction @PressAnyButton => m_Wrapper.m_PuzzleDEBUGGER_PressAnyButton;
         public InputAction @BlindMode => m_Wrapper.m_PuzzleDEBUGGER_BlindMode;
+        public InputAction @AutoPilotPuzzle => m_Wrapper.m_PuzzleDEBUGGER_AutoPilotPuzzle;
+        public InputAction @ToggleFullAutopilot => m_Wrapper.m_PuzzleDEBUGGER_ToggleFullAutopilot;
         public InputActionMap Get() { return m_Wrapper.m_PuzzleDEBUGGER; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -491,6 +535,12 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @BlindMode.started -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnBlindMode;
                 @BlindMode.performed -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnBlindMode;
                 @BlindMode.canceled -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnBlindMode;
+                @AutoPilotPuzzle.started -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnAutoPilotPuzzle;
+                @AutoPilotPuzzle.performed -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnAutoPilotPuzzle;
+                @AutoPilotPuzzle.canceled -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnAutoPilotPuzzle;
+                @ToggleFullAutopilot.started -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnToggleFullAutopilot;
+                @ToggleFullAutopilot.performed -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnToggleFullAutopilot;
+                @ToggleFullAutopilot.canceled -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnToggleFullAutopilot;
             }
             m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface = instance;
             if (instance != null)
@@ -507,6 +557,12 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @BlindMode.started += instance.OnBlindMode;
                 @BlindMode.performed += instance.OnBlindMode;
                 @BlindMode.canceled += instance.OnBlindMode;
+                @AutoPilotPuzzle.started += instance.OnAutoPilotPuzzle;
+                @AutoPilotPuzzle.performed += instance.OnAutoPilotPuzzle;
+                @AutoPilotPuzzle.canceled += instance.OnAutoPilotPuzzle;
+                @ToggleFullAutopilot.started += instance.OnToggleFullAutopilot;
+                @ToggleFullAutopilot.performed += instance.OnToggleFullAutopilot;
+                @ToggleFullAutopilot.canceled += instance.OnToggleFullAutopilot;
             }
         }
     }
@@ -583,6 +639,8 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnShowSolution(InputAction.CallbackContext context);
         void OnPressAnyButton(InputAction.CallbackContext context);
         void OnBlindMode(InputAction.CallbackContext context);
+        void OnAutoPilotPuzzle(InputAction.CallbackContext context);
+        void OnToggleFullAutopilot(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
