@@ -28,8 +28,11 @@ public class PuzzleGrid : MonoBehaviour {
    
 
     public string GetSolution() 
-    { 
-        return solution[0] == '-' ? PuzzleHelper.SkipFirstChar(solution) : solution;
+    {
+        if (solution.Length > 0)
+            return solution[0] == '-' ? PuzzleHelper.SkipFirstChar(solution) : solution;
+        else
+            return "";
     }
     
     
