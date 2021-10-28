@@ -7,6 +7,7 @@ public class AutopilotMode : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject checkMark;
+    [SerializeField] private GameObject pilotText;
     [SerializeField] private List<Node> correctNodeLine = new List<Node>();
 
     [Header("Autopilot")]
@@ -35,6 +36,7 @@ public class AutopilotMode : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             inPuzzleZone = true;
+            pilotText.SetActive(true);
         }    
     }
 
@@ -43,6 +45,7 @@ public class AutopilotMode : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             inPuzzleZone = false;
+            pilotText.SetActive(false);
         }
     }
 
