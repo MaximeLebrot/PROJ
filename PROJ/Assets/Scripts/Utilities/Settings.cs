@@ -1,6 +1,6 @@
 
 public static class Settings {
-    
-    public static int FieldOfView;
+
+    public static float FieldOfView;
 
 }
