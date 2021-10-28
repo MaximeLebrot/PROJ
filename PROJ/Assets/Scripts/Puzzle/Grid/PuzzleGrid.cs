@@ -14,6 +14,7 @@ public class PuzzleGrid : MonoBehaviour {
     private List<Node> closestNodes = new List<Node>();
     private Stack<LineObject> lineRenderers = new Stack<LineObject>();
     private Node currentNode;
+    private Node startNode;
 
     [SerializeField]private string solution;
     private List<Node> allNodes = new List<Node>();
@@ -23,6 +24,8 @@ public class PuzzleGrid : MonoBehaviour {
     private GameObject currentLineObject;
 
     public Transform Player { get; set; }
+
+   
 
     public string GetSolution() 
     { 
@@ -38,34 +41,12 @@ public class PuzzleGrid : MonoBehaviour {
 
     private void Update()
     {
-        /*
-        if(lineRenderers.Count > 0 && currentLine == null)
-        {
-            currentLineObject = Instantiate(linePrefab, transform);
-            currentLine = currentLineObject.GetComponent<PuzzleLine>();
-            //currentLineObject.transform.eulerAngles = new Vector3(-45,0,0);
-            
-        }
-
         if(currentLine != null)
         {
+            currentLine.Play();
             currentLine.transform.position = currentNode.transform.position;
-
-            //currentLine.SetPosition(new Vector3(Player.position.x,currentLine.transform.position.y ,Player.position.z) - currentLine.transform.position);
-
-            /*
-            //Check which input comes closest to angle
-            float angle = Vector3.Angle(currentLine.transform.up, Player.position - currentLine.transform.position);
-
-            char c = SnapDirection(angle);
-
-            Debug.Log(Vector3.Angle(currentLine.transform.up, Player.position - currentLine.transform.position));
-            Debug.DrawRay(currentLine.transform.position, currentLine.transform.up * 5, Color.green, Mathf.Infinity);
-            Debug.DrawRay(currentLine.transform.position, Player.position - currentLine.transform.position * 1, Color.blue);
-            
+            currentLine.SetPosition(new Vector3(Player.position.x,currentLine.transform.position.y ,Player.position.z) - currentLine.transform.position);
         }
-        */
-
     }
 
     private char SnapDirection(float angle)
@@ -77,13 +58,12 @@ public class PuzzleGrid : MonoBehaviour {
         throw new NotImplementedException();
     }
 
+    //Setup puzzle from Awake()
     private void StartGrid()
     {
-
         allNodes.AddRange(transform.GetComponentsInChildren<Node>());
 
-
-        Node startNode = currentNode = FindStartNode(ref allNodes);
+        startNode = currentNode = FindStartNode(ref allNodes);
 
         width = CalculateWidth(ref allNodes);
         height = allNodes.Count / width;
@@ -92,45 +72,57 @@ public class PuzzleGrid : MonoBehaviour {
             node.gameObject.SetActive(false);
 
         startNode.gameObject.SetActive(true);
-
-
         //AddSelectedNode(startNode);
     }
-
-    private Node FindStartNode(ref List<Node> nodes) {
+    private Node FindStartNode(ref List<Node> nodes) 
+    {
         foreach(Node node in nodes)
             if (node.startNode)
             {
-                node.OnNodeSelected += AddSelectedNode;
+                //node.OnNodeSelected += AddSelectedNode;
                 return node;
             }
-                
-
-        
+      
         Debug.LogError("No start node selected");
         return null;
     }
-    
+
+    public void StartPuzzle()
+    {
+        ActivateNode(startNode);
+        InstantiateFirstLine();
+    }
+    private void InstantiateFirstLine()
+    {
+        //instansiera linje
+        //rita linje från startnod till spelare
+        currentLineObject = Instantiate(linePrefab, transform.parent);
+        currentLine = currentLineObject.GetComponent<PuzzleLine>();      
+    }
+
     private void AddSelectedNode(Node node) 
     {
+        if (node == currentNode)
+            return;
+
         LineObject newLine = new LineObject(node);
         
         //THIS IS WEIRD
+
+        //Om vi har en linje...
         if (lineRenderers.Count > 0 && lineRenderers.Peek().CompareLastLine(newLine))
         {
             //Checks if this was the last line that was drawn, if so delete that line (eraser)
             LineObject oldLine = lineRenderers.Pop();
-            foreach (Node n in currentNode.EnabledNodes)
+            foreach (Node n in currentNode.enabledNodes)
             {
                 n.gameObject.SetActive(false);
             }
 
-            currentNode.EnabledNodes.Clear();
+            currentNode.enabledNodes.Clear();
 
             //REMOVE LAST CHAR IN SOLUTION OR CALCULATE EVERYTHING AFTERWARDS
-            Debug.Log(solution);
             solution = PuzzleHelper.RemoveLastChar(solution);
-            Debug.Log(solution);
 
             node.RemoveLineToNode(currentNode);
             currentNode.RemoveLineToNode(node);
@@ -140,8 +132,10 @@ public class PuzzleGrid : MonoBehaviour {
             return;
         }
 
+        //Annars..
         else
         {
+            //Har vi VERKLIGEN INTE EN LINJE? 
             if (lineRenderers.Count > 1)
             {
                 //Checks if there exists a line between these nodes already, if so it destroys the line that was created
@@ -152,6 +146,7 @@ public class PuzzleGrid : MonoBehaviour {
                 }
             }
 
+            //Line Instantiation
             GameObject newLineRenderer = Instantiate(linePrefab, transform);
             newLineRenderer.transform.position = currentNode.transform.position;
             newLineRenderer.GetComponent<PuzzleLine>().SetPosition(PuzzleHelper.TranslateNumToDirection(PuzzleHelper.TranslateInput(node, currentNode)) * 3);
@@ -161,16 +156,17 @@ public class PuzzleGrid : MonoBehaviour {
             node.AddLineToNode(currentNode);
             currentNode.AddLineToNode(node);
             lineRenderers.Push(line);
+
         }
 
         //THIS SHOULD BE DONE IN GETSOLUTION()
-        if (lineRenderers.Count > 0) 
-            solution += PuzzleHelper.TranslateInput(node, currentNode); 
+        solution += PuzzleHelper.TranslateInput(node, currentNode); 
 
         currentNode = node;
         ActivateNode(node);
     }
-
+   
+    
     private int CalculateWidth(ref List<Node> nodes) {
         
         float currentHeight = nodes[0].transform.position.y;
@@ -184,7 +180,9 @@ public class PuzzleGrid : MonoBehaviour {
         return width;
     }
 
-    private void ActivateNode(Node node) {
+    //Show and activate neighbours
+    private void ActivateNode(Node node) 
+    {
         node.gameObject.SetActive(true);
 
         if (closestNodes.Count > 0) {
@@ -200,7 +198,7 @@ public class PuzzleGrid : MonoBehaviour {
         foreach (Node neighbour in node.neighbours.Keys) {
 
             if (neighbour.gameObject.activeSelf == false)
-                node.EnabledNodes.Add(neighbour);
+                node.enabledNodes.Add(neighbour);
 
             neighbour.gameObject.SetActive(true);
             neighbour.OnNodeSelected += AddSelectedNode;
@@ -210,7 +208,7 @@ public class PuzzleGrid : MonoBehaviour {
     public void CompleteGrid()
     {
         List<Node> finalNodes = new List<Node>();
-        Debug.Log("Save grid");
+        //Debug.Log("Save grid");
         foreach(Node n in allNodes)
         {
             if (n.gameObject.activeSelf)
@@ -219,6 +217,9 @@ public class PuzzleGrid : MonoBehaviour {
             n.TurnOffCollider();
         }
 
+        currentLine.Stop();
+        Destroy(currentLine, 2);
+        currentLine = null;
         //SEND finalNodes and lineRenderers to some Persistance that can store the completed puzzles
 
     }
@@ -240,8 +241,11 @@ public class PuzzleGrid : MonoBehaviour {
             n.gameObject.SetActive(false);
         }
 
+        //sätt currentLine position
         currentNode = FindStartNode(ref allNodes);
-        
+        currentLine.Stop();
+        Destroy(currentLineObject, 2);
+        currentLine = null;
         currentNode.gameObject.SetActive(true);
     }
 
