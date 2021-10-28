@@ -24,8 +24,13 @@ public class ReturnToMain : MonoBehaviour
     {
         if (inputMaster.UI.BackToMain.triggered)
         {
-            SceneManager.LoadScene("Mahi_MainMenu_Prototyp");
+            ReturnToMainMenu();
         }
+    }
+
+    public void ReturnToMainMenu()
+    {
+        SceneManager.LoadScene("Mahi_MainMenu_Prototyp");
     }
       
 }

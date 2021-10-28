@@ -33,7 +33,8 @@ public class PuzzleStarter : MonoBehaviour
         if (id == puzzleID)
         {
             Debug.Log("Exited");
-            enderText.SetActive(false);
+            if(enderText != null)
+                enderText.SetActive(false);
 
         }
     }
@@ -55,7 +56,8 @@ public class PuzzleStarter : MonoBehaviour
             Active = true;
 
             source.Play(); //S
-            enderText.SetActive(true); //S
+            if (enderText != null)
+                enderText.SetActive(true); //S
         }
 
 
