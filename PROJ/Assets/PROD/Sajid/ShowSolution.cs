@@ -7,7 +7,6 @@ public class ShowSolution : MonoBehaviour
     private InputMaster inputMaster;
     private Animator anim;
     public GameObject[] objects;
-    public GameObject Solution;
   //  private float time, timer;
 
     private int i;
@@ -84,8 +83,6 @@ public class ShowSolution : MonoBehaviour
         {
             anim.SetBool("Solved", true);
             source.Play();
-            if(Solution!=null)
-            Solution.SetActive(true);
         }
 
     }
