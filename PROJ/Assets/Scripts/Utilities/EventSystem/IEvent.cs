@@ -65,4 +65,5 @@ public readonly struct PlayerStateChangeEvent : IEvent {
 }
 
 public class AwayFromKeyboardEvent : IEvent { }
+public class SaveEvent : IEvent { }
 #endregion

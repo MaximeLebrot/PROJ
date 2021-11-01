@@ -32,6 +32,7 @@ public class Puzzle : MonoBehaviour
 
     void Awake()
     {
+        
         if (puzzleInstances.Count > 0)
         {
             currentPuzzleInstance = puzzleInstances[0];
@@ -43,7 +44,28 @@ public class Puzzle : MonoBehaviour
         }
         else
             Debug.LogWarning("NO PUZZLE INSTANCES IN PUZZLE");
+
+        
     }
+
+    public void Load()
+    {
+        CheckSolvedPuzzles();
+    }
+
+    private void CheckSolvedPuzzles()
+    {
+        /*
+         * kolla min puzzleinstance och gör NextPuzzle() om dom e solved
+         * WHILE LOOP KRASCHADE ALLT. hur gör man då? för detta fungerar
+         */
+        if (currentPuzzleInstance.IsSolved())
+        {
+            Debug.Log("Den första var löst");
+            NextPuzzle();
+        }
+    }
+
     private void OnEnable()
     {
         inputMaster.Enable();
@@ -65,12 +87,15 @@ public class Puzzle : MonoBehaviour
     }
     private void NextPuzzle()
     {
+        
+
         currentPuzzleNum++;     
 
         //Debug.Log("Next puzzle, #" + currentPuzzleNum);
         if(currentPuzzleNum >= puzzleInstances.Count)
         {
             //no more puzzle instances here
+            //NÅTT SKA HÄNDA HÄR? nån effekt och feedback på att man klarat det här pusslet. Inte spara griden utan stänga av griden typ
             //Exit puzzle
             //Debug.Log("Last puzzle instance completed");
             EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID()), true));
@@ -205,6 +230,8 @@ public class Puzzle : MonoBehaviour
         if (solution.Equals(grid.GetSolution()))
         {
             //uppdaterar curr puzzle
+            currentPuzzleInstance.Solve();
+            EventHandler<SaveEvent>.FireEvent(new SaveEvent());
             NextPuzzle();
         }
         else

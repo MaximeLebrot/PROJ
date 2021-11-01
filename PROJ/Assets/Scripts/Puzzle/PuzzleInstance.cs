@@ -8,6 +8,14 @@ public class PuzzleInstance : MonoBehaviour
     [SerializeField] public List<SymbolModPair> puzzleObjects = new List<SymbolModPair>();
     
     private Puzzle masterPuzzle;
+    private bool currentState;
+
+    public bool IsSolved() => currentState;
+
+    private void Awake()
+    {
+        PuzzleDictionary.AddPuzzle(puzzleID);
+    }
 
     private void OnEnable()
     {
@@ -28,6 +36,18 @@ public class PuzzleInstance : MonoBehaviour
     }
 
     public int GetPuzzleID() { return puzzleID;  }
+
+    public void Solve() 
+    { 
+        currentState = true; 
+        PuzzleDictionary.SetState(puzzleID, currentState); 
+    }
+    
+    public void Load()
+    {
+        currentState = PuzzleDictionary.GetState(puzzleID);
+        Debug.Log(puzzleID + " load ");
+    }
 }
 
 [System.Serializable]

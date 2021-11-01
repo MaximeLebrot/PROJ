@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MetaPlayerController : MonoBehaviour
+public class MetaPlayerController : MonoBehaviour, IPersist
 {
     //Component references
     public PlayerPhysicsSplit physics { get; private set; }
@@ -52,5 +52,16 @@ public class MetaPlayerController : MonoBehaviour
     private void Update()
     {
         stateMachine.RunUpdate();
+    }
+
+
+    public void Save(string gameName)
+    {
+        
+    }
+
+    public void Load(string gameName)
+    {
+        
     }
 }

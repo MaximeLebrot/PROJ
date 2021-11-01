@@ -94,7 +94,7 @@ namespace DynamicCamera {
             EventHandler<PlayerStateChangeEvent>.UnregisterListener(OnPlayerStateChange);
         }
         
-        private void OnApplicationFocus(bool hasFocus) => Cursor.lockState = hasFocus ? CursorLockMode.Locked : CursorLockMode.None;
+        //private void OnApplicationFocus(bool hasFocus) => Cursor.lockState = hasFocus ? CursorLockMode.Locked : CursorLockMode.None;
         
         [ContextMenu("Auto-assign targets", false,0)]
         public void AssignTargets() {

@@ -220,9 +220,13 @@ public class PuzzleGrid : MonoBehaviour {
             n.TurnOffCollider();
         }
 
-        currentLine.Stop();
-        Destroy(currentLine, 2);
-        currentLine = null;
+        if(currentLine != null)
+        {
+            currentLine.Stop();
+            Destroy(currentLine, 2);
+            currentLine = null;
+        }
+        
         //SEND finalNodes and lineRenderers to some Persistance that can store the completed puzzles
 
     }

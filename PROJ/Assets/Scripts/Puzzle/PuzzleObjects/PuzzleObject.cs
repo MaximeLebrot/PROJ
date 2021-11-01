@@ -40,7 +40,6 @@ public abstract class PuzzleObject : MonoBehaviour
             modifiedString += modInfo.translation;
         }
 
-        Debug.Log(modifiedString + translation);
         //CANNOT COMBINE MODIFIERS RIGHT NOW
         return modifiedString + translation;
     }

@@ -47,7 +47,6 @@ public class PuzzleStarter : MonoBehaviour
 
         if (Active == false)
         {
-            Debug.Log("Start Puzzle");
             EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzle.GetPuzzleID(), GetComponentInParent<Puzzle>().transform)));
             puzzle.SetPlayer(other.transform);
             Active = true;
@@ -66,7 +65,6 @@ public class PuzzleStarter : MonoBehaviour
     public void ResetStarter()
     {
 
-            Debug.Log("Exited");
             Active = false;
             if (enderText != null)
                 enderText.SetActive(false);
