@@ -147,18 +147,23 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(0, rawInput.x * turnSpeed, 0);
 
     }
-    public float climbMaxAngle = 140;
+    public float slopeMaxAngle = 140;
+    public float decelerationSlopeAngle = 110f;
     private void ProjectMovement()
     {
         float angle = groundHitInfo.collider == null ? 90 : Vector3.Angle(input, groundHitInfo.normal);
-
-        if (angle < climbMaxAngle)
-            input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;
-        
+        float slopeDecelerationFactor = 0f;
+        if (angle > decelerationSlopeAngle)
+        {
+            slopeDecelerationFactor = deceleration * ((angle - decelerationSlopeAngle) / (slopeMaxAngle - decelerationSlopeAngle));
+           // input += //And the other part shouldnt? Or should we simply project some of it, and ignore the remainder
+        }
+        if (angle < slopeMaxAngle)
+            input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized * slopeDecelerationFactor;        
         else
         {
             //Slide state? 
-
+            //Some disruption to movement, possibly another PlayerState, or timed value tweaks
             input = Vector3.zero;
         }
         Debug.Log("Angle is : " + angle);
