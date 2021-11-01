@@ -40,8 +40,7 @@ public class PlayerController : MonoBehaviour
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PlayerPhysicsSplit>();
     }
-
-
+    
     private void FixedUpdate()
     {
         physics.AddForce(force);
