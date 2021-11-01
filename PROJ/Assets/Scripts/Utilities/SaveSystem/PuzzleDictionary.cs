@@ -13,7 +13,18 @@ public static class PuzzleDictionary
     public static void SetPuzzles(DictionaryOfIntAndBool puzzles) {  allPuzzles = puzzles; }
 
 
-    public static bool GetState(int id) { return allPuzzles[id]; }
+    public static bool GetState(int id) 
+    {
+        if (allPuzzles.ContainsKey(id))
+        {
+            return allPuzzles[id];
+        }
+        else
+        {
+            allPuzzles.Add(id, false);
+            return allPuzzles[id];
+        }
+    }
     public static void AddPuzzle(int id)
     {
         if(allPuzzles.ContainsKey(id) == false)

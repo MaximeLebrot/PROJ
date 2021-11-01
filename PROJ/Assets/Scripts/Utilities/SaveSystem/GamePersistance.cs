@@ -26,23 +26,26 @@ public class GamePersistance : MonoBehaviour
         Save(currentSaveName);
     }
 
-    public void Save(string gameName)
+    public void Save(string saveName)
     {
-        
+        if (saveName != currentSaveName)
+            currentSaveName = saveName;
 
         gameData.allPuzzles = PuzzleDictionary.GetPuzzles();
         gameData.PlayerPos = FindObjectOfType<MetaPlayerController>().transform.position;
         gameData.PlayerRot = FindObjectOfType<MetaPlayerController>().transform.rotation;
 
         var json = JsonUtility.ToJson(gameData);
-        PlayerPrefs.SetString("GameData" + gameName, json);
+        PlayerPrefs.SetString("GameData" + saveName, json);
 
         
     }
-    public void Load(string gameName)
+    public void Load(string saveName)
     {
+        //Update the current save file
+        currentSaveName = saveName;
 
-        string json = PlayerPrefs.GetString("GameData" + gameName);
+        string json = PlayerPrefs.GetString("GameData" + saveName);
         gameData = JsonUtility.FromJson<GameData>(json);
 
         PuzzleDictionary.SetPuzzles(gameData.allPuzzles);
