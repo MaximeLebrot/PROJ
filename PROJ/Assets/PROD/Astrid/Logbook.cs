@@ -79,7 +79,7 @@ public class Logbook : MonoBehaviour
             pages[5].SetActive(true);
     }
 
-    public void CloseEverything()
+    private void CloseEverything()
     {
         for (int i = 0; i < pages.Length; i++)
         {
@@ -89,7 +89,7 @@ public class Logbook : MonoBehaviour
     }
 
     // Needs to deactivate the tab on the left and active the tab on the right side.
-    public void OpenTab(int i)
+    private void OpenTab(int i)
     {
         if (tabsRight[i].activeInHierarchy != false)
             tabsRight[i].SetActive(false);
@@ -98,7 +98,7 @@ public class Logbook : MonoBehaviour
     }
 
     // Needs to deactivate the tab on the right and active the tab on the left side.
-    public void CloseTab(int i)
+    private void CloseTab(int i)
     {
         if (tabsLeft[i].activeInHierarchy != false)
             tabsLeft[i].SetActive(false);
