@@ -5,7 +5,6 @@ using UnityEngine.VFX;
 
 public class PuzzleGrid : MonoBehaviour {
 
-    [SerializeField] private LineRenderer lineRendererPrefab;
     [SerializeField] private GameObject linePrefab;
 
     private int width;
