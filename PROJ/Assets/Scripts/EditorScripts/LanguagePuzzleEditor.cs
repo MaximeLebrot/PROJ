@@ -5,10 +5,9 @@ using UnityEditor;
 using UnityEditorInternal;
 using EGL = UnityEditor.EditorGUILayout;
 
-[CustomEditor(typeof(LanguagePuzzle))]
+
 public class LanguagePuzzleEditor : Editor
 {
-    WindPuzzle serObj;
     SerializedProperty puzzleObjects;
     SerializedProperty solution;
     string[] strings;

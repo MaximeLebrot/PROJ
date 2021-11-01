@@ -11,18 +11,18 @@ public class PlayerPhysicsSplit : MonoBehaviour
     public RaycastHit groundHitInfo { get; private set; }
 
     [Header("Values")]
-    [SerializeField] private float glideHeight = 0.5f;
+
     [SerializeField] protected float skinWidth = 0.05f;
     [SerializeField] private float inputThreshold = 0.1f;
     [SerializeField] private float currentGravity;
-    [SerializeField] private float airControl = 0.2f;
     [SerializeField] private float minimumPenetrationForPenalty = 0.01f;
     [SerializeField] private LayerMask collisionMask;
     [SerializeField] private float gravityWhenFalling = 10f;
 
     //Properties
+    public float GlideHeight { get; private set; }
     public float SurfThreshold { get => surfThreshold; }
-    public float AirControl { get => airControl; }
+
 
     //Public variables temporary for debugging via inspector
     //pls dont judge
@@ -49,12 +49,17 @@ public class PlayerPhysicsSplit : MonoBehaviour
     {
         attachedCollider = GetComponent<CapsuleCollider>();
     }
+    public float glideHeight;
     private void Update()
     {
         AddGravity();
         CollisionCheck();
         ClampSpeed();
+        
+        //Debug
         Debug.DrawLine(transform.position, transform.position + velocity, Color.red);
+        glideHeight = GlideHeight;
+        
     }
     public void CollisionCheck()
     {
@@ -87,6 +92,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
             kineticFrictionCoefficient = Mathf.Lerp(kineticFrictionCoefficient, values.kineticFriction, time * (1 / setValuesLerpSpeed));
             airResistance = Mathf.Lerp(airResistance, values.airResistance, time * (1 / setValuesLerpSpeed));
 
+            GlideHeight = Mathf.Lerp(GlideHeight, values.glideHeight, time * (1 / setValuesLerpSpeed));
             maxSpeed = Mathf.Lerp(maxSpeed, values.maxSpeed, time * (1 / setValuesLerpSpeed));
             gravity = Mathf.Lerp(gravity, values.gravity, time * (1 / setValuesLerpSpeed));          
             
@@ -118,7 +124,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
                 smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, smoothingCastHitInfo.normal)
                                         * ((1 - smoothingCastHitInfo.distance / smoothingMaxDistance)
                                         * glideNormalForceMargin)
-                                        + glideHeight * Vector3.up;
+                                        + GlideHeight * Vector3.up;
                                         //* (Mathf.Pow(((1 - smoothingCastHitInfo.distance / smoothingMaxDistance)), powerOf)
             }
 
@@ -143,9 +149,10 @@ public class PlayerPhysicsSplit : MonoBehaviour
                 MoveOutOfGeometry(allowedMovementDistance * velocity.normalized);
             }
 
-            Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, hitInfo.normal);
-            ApplyFriction(normalForce);
 
+            Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, hitInfo.normal);
+                            
+            ApplyFriction(normalForce);
             velocity += new Vector3(normalForce.x, 0, normalForce.z);
 
             if (i < MAX_ITER)
@@ -156,6 +163,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
      ApplyAirResistance();
     }
+    //Walk collision
     private void CheckForCollisions(int i)
     {
         RaycastHit hitInfo = CastCollision(transform.position, velocity.normalized, velocity.magnitude * Time.deltaTime + skinWidth);
@@ -176,8 +184,9 @@ public class PlayerPhysicsSplit : MonoBehaviour
                 MoveOutOfGeometry(allowedMovementDistance* velocity.normalized);
             }
 
-            //RaycastHit normalHitInfo = CastCollision(transform.position, -hitInfo.normal, hitInfo.distance);
-            Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, hitInfo.normal);
+            //GlideHeight should be zero when walking, but needs to be added here to get a smooth transition along with the lerp in SetValues
+            Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, hitInfo.normal)
+                                    + GlideHeight * Vector3.up;
 
             //velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
             velocity += normalForce;
