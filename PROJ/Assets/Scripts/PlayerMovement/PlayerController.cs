@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour
         }
 
         CalcDirection(inp);
-        //input *= airControl;
+        input *= airControl;
         AccelerateDecelerate();
     }
     private void CalcDirection(Vector3 inp)
@@ -114,7 +114,8 @@ public class PlayerController : MonoBehaviour
 
         input = camRotation * input;
         input.y = 0;
-        input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;
+        //input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;
+        ProjectMovement();
         RotateTowardsCameraDirection();
     }
     private void RotateTowardsCameraDirection()
@@ -135,19 +136,33 @@ public class PlayerController : MonoBehaviour
 
         //Add rotation to input
         input = rotation * input;
-        
+
         //steepClimbMaxAngle
         //Do we want a percentage of the input to be projected on plane? 
         //Flat ground would have the same movement, but inclines would not
         //Would probably result in running away from the ground on declines though, 
         //unless the gravity keeps it in check, but it wont be certain to do so.
         //the alternative then would be a full projection on declines, but this requires another split of the logic
-        input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;
+        ProjectMovement();
         transform.Rotate(0, rawInput.x * turnSpeed, 0);
 
     }
+    public float climbMaxAngle = 140;
+    private void ProjectMovement()
+    {
+        float angle = groundHitInfo.collider == null ? 90 : Vector3.Angle(input, groundHitInfo.normal);
 
+        if (angle < climbMaxAngle)
+            input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;
+        
+        else
+        {
+            //Slide state? 
 
+            input = Vector3.zero;
+        }
+        Debug.Log("Angle is : " + angle);
+    }
     #endregion
 
 
