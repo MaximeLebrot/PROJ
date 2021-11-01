@@ -66,7 +66,7 @@ namespace DynamicCamera {
         }
         
         private void LateUpdate() {
-            Camera.main.fieldOfView = Settings.FieldOfView;
+            //Camera.main.fieldOfView = Settings.FieldOfView;
             currentCameraBehaviour.Behave();
         }
 
