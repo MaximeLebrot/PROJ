@@ -5,7 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "PlayerStates/GlideState")]
 public class GlideState : PlayerState
 {
-
     public override void Initialize()
     {
         base.Initialize();
@@ -38,6 +37,6 @@ public class GlideState : PlayerState
     }
     private void SetInput()
     {
-        player.playerController3D.InputGrounded(inputMaster.Player.Movement.ReadValue<Vector2>());
+        player.playerController3D.InputGlide(inputMaster.Player.Movement.ReadValue<Vector2>());
     }
 }

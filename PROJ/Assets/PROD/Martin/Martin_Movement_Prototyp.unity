@@ -390,13 +390,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1720033823}
     - target: {fileID: 2184620921574008163, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
-      propertyPath: inputReference
-      value: 
-      objectReference: {fileID: 11400000, guid: 54398b8fed501aa41813fa11036bc179, type: 2}
+      propertyPath: listOfBehaviourReferences.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2184620921574008163, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
-      propertyPath: behaviourCallback
+      propertyPath: listOfBehaviourReferences.Array.data[3]
       value: 
-      objectReference: {fileID: 11400000, guid: eb42a6b590cdc394cb43a60c1ce17190, type: 2}
+      objectReference: {fileID: 11400000, guid: feed287929b2efd47b6c993e41b2ea04, type: 2}
     - target: {fileID: 2184620921574008167, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -463,12 +463,24 @@ PrefabInstance:
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4825141586785071585, guid: 984c9d8385417e64aa0706fb1d5c3507, type: 3}
+      propertyPath: acceleration
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4825141586785071585, guid: 984c9d8385417e64aa0706fb1d5c3507, type: 3}
       propertyPath: groundCheckDistance
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4825141586785071585, guid: 984c9d8385417e64aa0706fb1d5c3507, type: 3}
+      propertyPath: decelerationSlopeAngle
+      value: 110
+      objectReference: {fileID: 0}
+    - target: {fileID: 4825141586785071585, guid: 984c9d8385417e64aa0706fb1d5c3507, type: 3}
       propertyPath: retainedSpeedWhenTurning
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4825141586785071585, guid: 984c9d8385417e64aa0706fb1d5c3507, type: 3}
+      propertyPath: slopeDecelerationMultiplier
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4825141586785071586, guid: 984c9d8385417e64aa0706fb1d5c3507, type: 3}
       propertyPath: m_Name

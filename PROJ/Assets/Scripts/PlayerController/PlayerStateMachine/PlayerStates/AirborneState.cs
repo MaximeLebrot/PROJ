@@ -28,7 +28,7 @@ public class AirborneState : PlayerState
     }
     private void SetInput()
     {
-        player.playerController3D.InputGrounded(inputMaster.Player.Movement.ReadValue<Vector2>());
+        player.playerController3D.InputWalk(inputMaster.Player.Movement.ReadValue<Vector2>());
     }
     private void LeaveAirborneState()
     {
