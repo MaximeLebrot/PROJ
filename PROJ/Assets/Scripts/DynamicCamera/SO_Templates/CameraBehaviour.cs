@@ -18,6 +18,7 @@ public abstract class CameraBehaviour : ScriptableObject {
     public virtual void Initialize(Transform objectTransform, Transform target) {
         transform = objectTransform;
         followTarget = target;
+        
     }
     
     public void ExecuteBehaviour() {

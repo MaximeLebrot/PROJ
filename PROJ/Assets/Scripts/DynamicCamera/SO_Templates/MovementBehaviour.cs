@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class MovementBehaviour : OffsetCameraBehaviour
+public abstract class MovementBehaviour : CameraBehaviour
 {
     [SerializeField] protected Vector2 clampValues;
     [SerializeField] protected float mouseSensitivity;
@@ -13,9 +13,7 @@ public abstract class MovementBehaviour : OffsetCameraBehaviour
     }
 
     protected virtual void ClampInput() => input.x = Mathf.Clamp(input.x, clampValues.x, clampValues.y);
-
-
- //musdelta varje frame f�r att generera en LITEN ro
+    
     protected virtual void RotateCamera() {
 
         Vector3 temp = transform.rotation.eulerAngles;
