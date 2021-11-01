@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Camera/Camera Behaviours/Puzzle Behaviour (no free movement)", fileName = "Puzzle Behaviour")]
-public class PuzzleBehaviour : OffsetCameraBehaviour {
+public class PuzzleBehaviour : CameraBehaviour {
     
     [SerializeField] private Vector3 eulerRotation;
     [SerializeField] private float maxSpeed;

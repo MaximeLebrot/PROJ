@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Camera/Camera Behaviours/Idle Behaviour", fileName = "Idle Behaviour")]
-public class IdleBehaviour : OffsetCameraBehaviour {
+public class IdleBehaviour : CameraBehaviour {
 
     [SerializeField] private float smoothTime;
     [SerializeField] private float maxSpeed;
