@@ -4,33 +4,52 @@ using UnityEngine;
 public abstract class CameraBehaviour : ScriptableObject {
     
     [SerializeField] protected ControllerInputReference inputReference;
+    [SerializeField] protected CameraBehaviourData cameraBehaviourData;
+    
     protected Transform followTarget;
     protected Transform transform;
     protected Vector3 velocity;
-    [SerializeField]protected DynamicCamera.DynamicCamera thisCamera;
+    protected Vector3 offset;
+    
+    protected float cameraMovementSpeed;
 
+    protected Vector2 input;
+    
     public virtual void Initialize(Transform objectTransform, Transform target) {
         transform = objectTransform;
         followTarget = target;
-        followTarget.localRotation = Quaternion.Euler(Vector3.zero);
-
+    }
+    
+    public void ExecuteBehaviour() {
+        ReadInput();
+        Behave();
     }
 
-    public virtual void Behave() {}
+    protected virtual void Behave() {}
 
-    public virtual async Task BehaveAsync() => await Task.Yield();
+    protected virtual async Task BehaveAsync() => await Task.Yield();
 
+    protected void SmoothCollisionMovement() {
 
+        Vector3 collisionOffset = transform.rotation * offset;
 
+        collisionOffset = Collision(collisionOffset);
 
-    public Vector2 input;
-    public Vector2 GetInput()
-    {
-        return input;
-    }
-    public virtual void SetInput(Vector2 input)
-    {
-        this.input = input;
+        transform.position = Vector3.SmoothDamp(transform.position, followTarget.position + collisionOffset, ref velocity, cameraMovementSpeed, 300, Time.deltaTime);
     }
 
+    protected virtual Vector3 Collision(Vector3 cameraOffset) {
+
+        if (Physics.SphereCast(followTarget.position, cameraBehaviourData.CollisionRadius, cameraOffset.normalized, out var hitInfo, cameraOffset.magnitude, cameraBehaviourData.CollisionMask))
+            cameraOffset = cameraOffset.normalized * hitInfo.distance;
+
+        return cameraOffset;
+    }
+    
+    private void ReadInput() {
+        Vector2 cameraInputThisFrame = inputReference.InputMaster.MoveCamera.ReadValue<Vector2>();
+
+        input.x = -cameraInputThisFrame.y * cameraBehaviourData.MouseSensitivity;
+        input.y = cameraInputThisFrame.x * cameraBehaviourData.MouseSensitivity;
+    }
 }
