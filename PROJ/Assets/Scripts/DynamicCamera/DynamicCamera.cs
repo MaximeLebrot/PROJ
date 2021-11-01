@@ -26,7 +26,7 @@ namespace DynamicCamera {
             foreach (CameraBehaviour cameraBehaviour in listOfBehaviourReferences)
                 behaviours[cameraBehaviour.GetType()] = cameraBehaviour;
             
-            ChangeBehaviour(behaviours[typeof(WalkBehaviour)], followTarget);
+            ChangeBehaviour(behaviours[typeof(StationaryBehaviour)], followTarget);
         }
         
         private void OnPuzzleExit(ExitPuzzleEvent exitPuzzleEvent) {
@@ -65,19 +65,11 @@ namespace DynamicCamera {
             EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
         }
         
-        private void LateUpdate() {
-            //Camera.main.fieldOfView = Settings.FieldOfView;
-            currentCameraBehaviour.Behave();
-        }
+        private void LateUpdate() => currentCameraBehaviour.ExecuteBehaviour();
 
         private void ChangeBehaviour(CameraBehaviour newCameraBehaviour, Transform target) {
-            Vector2 tempInput = Vector3.zero;
-               if(currentCameraBehaviour)
-                tempInput = currentCameraBehaviour.GetInput();
-
             currentCameraBehaviour = newCameraBehaviour;
             currentCameraBehaviour.Initialize(transform, target);
-            currentCameraBehaviour.SetInput(tempInput);
         }
         
         private void OnEnable() {
