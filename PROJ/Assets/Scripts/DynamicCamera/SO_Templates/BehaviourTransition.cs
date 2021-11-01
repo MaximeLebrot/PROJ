@@ -16,7 +16,7 @@ public class BehaviourTransition : CameraBehaviour {
         toPosition = to;
     }
     
-    public override async Task BehaveAsync() {
+    protected override async Task BehaveAsync() {
 
         float currentDistance = Vector3.Distance(fromPosition, toPosition);
 

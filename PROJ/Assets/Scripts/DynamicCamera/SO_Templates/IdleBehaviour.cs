@@ -7,11 +7,9 @@ public class IdleBehaviour : OffsetCameraBehaviour {
     [SerializeField] private float maxSpeed;
     [SerializeField] private float xRotation;
     
-   
-    public override void Behave() {
+    protected override void Behave() {
         transform.position = Vector3.SmoothDamp(transform.position, followTarget.position + followTarget.rotation * offset, ref velocity, smoothTime, maxSpeed);
         transform.rotation = Quaternion.Lerp(transform.rotation, followTarget.rotation * Quaternion.Euler(xRotation, 0, 0), Time.deltaTime);
-
     }
 }
 
