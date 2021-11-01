@@ -13,6 +13,8 @@ public class WalkState : PlayerState
     {
         //Debug.Log("Entered Walk State");
         base.EnterState();
+        player.playerController3D.TransitionSurf(false);
+        player.physics.SetGlide(false);
     }
     public override void RunUpdate()
     {

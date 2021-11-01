@@ -29,9 +29,6 @@ public class PhysicsComponent : MonoBehaviour
     {
         attachedCollider = GetComponent<CapsuleCollider>();
 
-        if (GetComponent<PlayerController>())
-            maxSpeed = GetComponent<PlayerController>().GetMaxSpeed();
-
       /*  if (attachedCollider is BoxCollider)
             collisionCaster = new BoxCaster(attachedCollider, collisionMask);
 
