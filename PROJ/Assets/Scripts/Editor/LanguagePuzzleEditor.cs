@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEditorInternal;
 using EGL = UnityEditor.EditorGUILayout;
 
+
 public class LanguagePuzzleEditor : Editor
 {
     SerializedProperty puzzleObjects;
