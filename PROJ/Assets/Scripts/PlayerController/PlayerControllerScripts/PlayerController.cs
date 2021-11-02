@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float slopeDecelerationMultiplier = 2f;
     [SerializeField] private float glideMinAngle = 80f;
 
-[Header("GroundCheck")]
+    [Header("GroundCheck")]
     [SerializeField] private LayerMask groundCheckMask;
     [SerializeField] private float groundCheckDistance = 0.05f;
 
@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 input;
     private bool surfCamera = false;
     private float groundCheckBoxSize = 0.25f;
+    private float inputThreshold = 0.1f;
     public float groundHitAngle { get; private set; }
     public float GlideMinAngle => glideMinAngle;
 
@@ -68,24 +69,25 @@ public class PlayerController : MonoBehaviour
     public void InputWalk(Vector3 inp)
     {
         input = inp.x * Vector3.right + 
-                inp.y * Vector3.forward;
+                inp.y * Vector3.forward;   
 
-        if (input.magnitude > 1f)
+        //to stop character rotation when input is 0
+        if (input.magnitude < inputThreshold)
+            Decelerate();
+        else
         {
-            input.Normalize();
+            if (input.magnitude > 1f)
+            {
+                input.Normalize();
+            }
+            CalcDirection(inp);
+            Accelerate();
         }
-
-        //Maybe this to stop character rotation when input is 0
-        //if(input.magnitude < inputThreshold)
-        //  Decelerate();
-        //else
-        CalcDirection(inp);
-        AccelerateDecelerate();
     }
     public void InputAirborne(Vector3 inp)
     {
-        input = inp.x * Vector3.right +
-                inp.y * Vector3.forward;
+        input = inp.x * cameraTransform.right +
+                inp.y * cameraTransform.forward;
 
         if (input.magnitude > 1f)
         {
@@ -108,21 +110,10 @@ public class PlayerController : MonoBehaviour
         }
         else
             PlayerDirection(inp);
-
-
     }
-    private void AccelerateDecelerate() 
+    private void Decelerate()
     {
-        //Decelerate
-        if (input.magnitude < float.Epsilon)
-        {
-            force += -deceleration * physics.GetXZMovement().normalized;
-        }
-        //Accelerate
-        else
-        {
-            Accelerate();           
-        }
+        force += -deceleration * physics.GetXZMovement().normalized;
     }
     private void Accelerate()
     {
@@ -136,8 +127,6 @@ public class PlayerController : MonoBehaviour
         force += (((dot - 1) * turnRate * retainedSpeedWhenTurning * -inputXZ.normalized));
     }
     
-    //Do we not want the camera to rotate when the character is standing still? Exit the rotate method if input is below a certain treshold.
-    //Rotation when using walk
     private void PlayerDirection(Vector3 rawInput)
     {
         Vector3 temp = cameraTransform.rotation.eulerAngles;
@@ -145,15 +134,19 @@ public class PlayerController : MonoBehaviour
         Quaternion camRotation = Quaternion.Euler(temp);
 
         input = camRotation * input;
-        //input.y = 0;
+        input.y = 0;
+        RotateInVelocityDirection();
         ProjectMovement();
-        RotateTowardsCameraDirection(rawInput);
+    }
+    private void RotateInVelocityDirection()
+    {
+        transform.rotation = Quaternion.LookRotation(physics.GetXZMovement().normalized, Vector3.up);
     }
     private void RotateTowardsCameraDirection(Vector3 rawInput)
     {
         /*transform.localEulerAngles = new Vector3(
         transform.localEulerAngles.x,
-        transform.transform.localEulerAngles.y,
+        cameraTransform.localEulerAngles.y,
         transform.localEulerAngles.z);*/
 
         //rotation from input
@@ -162,8 +155,13 @@ public class PlayerController : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(temp);
 
         //Add rotation to input
-        input += rotation * input;
-        transform.Rotate(0, rawInput.x, 0);
+        //input += rotation * input;
+        /*transform.localEulerAngles = new Vector3(transform.localEulerAngles.x,
+                                                 input.x,
+                                                 transform.localEulerAngles.z);*/
+        transform.rotation = Quaternion.LookRotation(physics.GetXZMovement().normalized, Vector3.up);
+        //transform.Rotate(0, rawInput.x, 0);
+        //transform.forward = Vector3.Lerp(transform.forward, new Vector3(transform.forward.x, input.y, transform.forward.z), turnSpeed * Time.deltaTime);
 
         /*
          * vad är y-värdet vi vill åt. Ska spelarens rotation röra sig mot kamerans?
@@ -211,6 +209,7 @@ public class PlayerController : MonoBehaviour
     private void ProjectMovement()
     {
         groundHitAngle = groundHitInfo.collider == null ? 90 : Vector3.Angle(input, groundHitInfo.normal);
+        
         if (groundHitAngle < slopeMaxAngle)
             input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;        
         else
