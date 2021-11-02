@@ -40,10 +40,7 @@ public abstract class CameraBehaviour : ScriptableObject {
     protected virtual async Task BehaveAsync() => await Task.Yield();
 
     protected void SmoothCollisionMovement() {
-        
-        transform.position = Vector3.SmoothDamp(transform.position, followTarget.position + calculatedOffset, ref velocity, cameraMovementSpeed, Mathf.Infinity, Time.deltaTime);
-        
-        Debug.DrawRay(transform.position, followTarget.position - transform.position, Color.green);
+        transform.position = Vector3.SmoothDamp(transform.position, followTarget.position + calculatedOffset, ref velocity, cameraMovementSpeed);
     }
 
     protected virtual void Collision() {
@@ -61,7 +58,7 @@ public abstract class CameraBehaviour : ScriptableObject {
     protected virtual void RotateCamera() {
 
         Vector3 direction = (followTarget.position - transform.position).normalized;
-        
+
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), rotationSpeed);
     }
     
