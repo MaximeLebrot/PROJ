@@ -16,9 +16,7 @@ namespace DynamicCamera {
         private readonly Dictionary<Type, CameraBehaviour> behaviours = new Dictionary<Type, CameraBehaviour>();
         
         private CameraBehaviour currentCameraBehaviour;
-
-        public Vector2 input;
-
+        
         private void Awake() {
             foreach (CameraBehaviour cameraBehaviour in listOfBehaviourReferences)
                 behaviours[cameraBehaviour.GetType()] = cameraBehaviour;
@@ -28,7 +26,7 @@ namespace DynamicCamera {
         
         private void OnPuzzleExit(ExitPuzzleEvent exitPuzzleEvent) {
             EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
-            ChangeBehaviour(behaviours[typeof(WalkBehaviour)], followTarget);
+            ChangeBehaviour(behaviours[typeof(StationaryBehaviour)], followTarget);
         }
 
         private void OnPuzzleStart(StartPuzzleEvent startPuzzleEvent) {
@@ -68,6 +66,8 @@ namespace DynamicCamera {
             currentCameraBehaviour = newCameraBehaviour;
             currentCameraBehaviour.Initialize(transform, target);
         }
+
+        #region OnEnable/OnDisable
         
         private void OnEnable() {
             EventHandler<StartPuzzleEvent>.RegisterListener(OnPuzzleStart);
@@ -82,6 +82,9 @@ namespace DynamicCamera {
             EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
             EventHandler<PlayerStateChangeEvent>.UnregisterListener(OnPlayerStateChange);
         }
+        
+
+        #endregion
         
         private void OnApplicationFocus(bool hasFocus) => Cursor.lockState = hasFocus ? CursorLockMode.Locked : CursorLockMode.None;
         

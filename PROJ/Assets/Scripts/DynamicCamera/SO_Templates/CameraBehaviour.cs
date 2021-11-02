@@ -22,7 +22,6 @@ public abstract class CameraBehaviour : ScriptableObject {
     public virtual void Initialize(Transform objectTransform, Transform target) {
         transform = objectTransform;
         followTarget = target;
-        
     }
     
     public void ExecuteBehaviour() {
@@ -44,7 +43,7 @@ public abstract class CameraBehaviour : ScriptableObject {
         
         transform.position = Vector3.SmoothDamp(transform.position, followTarget.position + calculatedOffset, ref velocity, cameraMovementSpeed, Mathf.Infinity, Time.deltaTime);
         
-        Debug.DrawRay(transform.position, followTarget.position - transform.position, Color.red);
+        Debug.DrawRay(transform.position, followTarget.position - transform.position, Color.green);
     }
 
     protected virtual void Collision() {
