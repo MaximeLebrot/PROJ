@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
     }
     public void InputWalk(Vector3 inp)
     {
-        input = inp.x * Vector3.right + 
+        input = inp.x * turnSpeed * Vector3.right + 
                 inp.y * Vector3.forward;   
 
         //to stop character rotation when input is 0
@@ -142,6 +142,7 @@ public class PlayerController : MonoBehaviour
     {
         transform.rotation = Quaternion.LookRotation(physics.GetXZMovement().normalized, Vector3.up);
     }
+    //Obsolete
     private void RotateTowardsCameraDirection(Vector3 rawInput)
     {
         /*transform.localEulerAngles = new Vector3(
@@ -194,16 +195,10 @@ public class PlayerController : MonoBehaviour
     private void SlopeDeceleration()
     {
         float slopeDecelerationFactor = ((groundHitAngle - decelerationSlopeAngle) / (slopeMaxAngle - decelerationSlopeAngle));
-        Debug.Log("Ground hit angle is : " + groundHitAngle);
         if (groundHitAngle > decelerationSlopeAngle)
         {
-            //Not high enough to properly stop the glide, but feels like absolute garbage when walking
-            //Which means, this kind of deceleration needs to be done either only in glidestate, or based
-            //off of some momentum factor, if we add Mass as a variable
-
             //force = slopeDecelerationFactor * -physics.velocity * slopeDecelerationMultiplier;
             force = slopeDecelerationFactor * slopeDecelerationMultiplier * -physics.velocity.normalized;
-            Debug.Log("slope decel factor: " + slopeDecelerationFactor + "angle is : " + groundHitAngle);
         }
     }
     private void ProjectMovement()
@@ -218,7 +213,6 @@ public class PlayerController : MonoBehaviour
             //Some disruption to movement, possibly another PlayerState, or timed value tweaks
             input = Vector3.zero;
         }
-        //Debug.Log("Angle is : " + angle);
     }
     #endregion
 
