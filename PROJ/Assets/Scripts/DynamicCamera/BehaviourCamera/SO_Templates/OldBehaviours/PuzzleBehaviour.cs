@@ -1,19 +1,22 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Camera/Camera Behaviours/Puzzle Behaviour (no free movement)", fileName = "Puzzle Behaviour")]
-public class PuzzleBehaviour : CameraBehaviour {
-    
-    [SerializeField] private Vector3 eulerRotation;
-    [SerializeField] private float maxSpeed;
-    
-    private Transform puzzleTransform;
+namespace CameraBehaviours {
 
-    public void AssignRotation(Transform puzzleTransform) => this.puzzleTransform = puzzleTransform;
+    [CreateAssetMenu(menuName = "Camera/Camera Behaviours/Puzzle Behaviour (no free movement)", fileName = "Puzzle Behaviour")]
+    public class PuzzleBehaviour : CameraBehaviour {
 
-    protected override void Behave() {
-                
-        transform.position = Vector3.SmoothDamp(transform.position, followTarget.position + puzzleTransform.localRotation * offset, ref velocity, cameraMovementSpeed, maxSpeed);
+        [SerializeField] private Vector3 eulerRotation;
+        [SerializeField] private float maxSpeed;
 
-        transform.eulerAngles = puzzleTransform.localEulerAngles + eulerRotation;
+        private Transform puzzleTransform;
+
+        public void AssignRotation(Transform puzzleTransform) => this.puzzleTransform = puzzleTransform;
+
+        protected override void Behave() {
+
+            transform.position = Vector3.SmoothDamp(transform.position, followTarget.position + puzzleTransform.localRotation * offset, ref velocity, cameraMovementSpeed, maxSpeed);
+
+            transform.eulerAngles = puzzleTransform.localEulerAngles + eulerRotation;
+        }
     }
 }

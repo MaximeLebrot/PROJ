@@ -1,11 +1,14 @@
 using UnityEditor;
 using UnityEngine;
 
+
+
 public class GameCamera : MonoBehaviour {
     
     [SerializeField] private ControllerInputReference inputReference;
     [SerializeField] private CameraBehaviourData cameraBehaviourData;
-    
+
+    private CameraBehaviour cameraBehaviour;
     
     [SerializeField] private Transform followTarget;
     [SerializeField] private float cameraFollowSpeed;
@@ -15,42 +18,27 @@ public class GameCamera : MonoBehaviour {
     private Vector3 cameraVelocity;
 
     private Vector2 input;
+    private Transform thisTransform;
+
+    private void Awake() {
+        cameraBehaviour = new CameraBehaviour(transform, followTarget);
+        thisTransform = transform;
+    }
     
     private void LateUpdate() {
 
         ReadInput();
 
         input.x = Mathf.Clamp(input.x, xClamp.x, xClamp.y);
+
         
-        Vector3 calculatedOffset = Collision();
+        Vector3 calculatedOffset = cameraBehaviour.ExecuteCollision(input, offset, cameraBehaviourData);
         
-        Move(calculatedOffset);
-        Rotate();
+        thisTransform.position = cameraBehaviour.ExecuteMove(offset, cameraFollowSpeed);
+        thisTransform.rotation = cameraBehaviour.ExecuteRotate();
     }
+    
 
-    private void Move(Vector3 calculatedOffset) {
-        transform.position = Vector3.SmoothDamp(transform.position, followTarget.position + calculatedOffset, ref cameraVelocity, cameraFollowSpeed);
-    }
-
-    private void Rotate() {
-
-        Vector3 direction = followTarget.position - transform.position;
-        
-        transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
-    }
-
-
-    private Vector3 Collision() {
-
-        followTarget.rotation = Quaternion.Euler(input.x, input.y, 0);
-        
-        Vector3 collisionOffset = followTarget.rotation * offset;
-        
-        if (Physics.SphereCast(followTarget.position, cameraBehaviourData.CollisionRadius, collisionOffset.normalized, out var hitInfo, collisionOffset.magnitude, cameraBehaviourData.CollisionMask))
-            collisionOffset = collisionOffset.normalized * hitInfo.distance;
-
-        return collisionOffset;
-    }
 
     private void ReadInput() {
         Vector2 inputDirection = inputReference.InputMaster.MoveCamera.ReadValue<Vector2>();

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CameraBehaviours;
 using UnityEngine;
 
 namespace DynamicCamera {
@@ -35,17 +36,17 @@ namespace DynamicCamera {
             
             ChangeBehaviour(behaviours[typeof(PuzzleBehaviour)], followTarget);
 
-            PuzzleBehaviour puzzleBehaviour = currentCameraBehaviour as PuzzleBehaviour;
+          //  PuzzleBehaviour puzzleBehaviour = currentCameraBehaviour as PuzzleBehaviour;
 
-            puzzleBehaviour.AssignRotation(startPuzzleEvent.info.puzzlePos);
+           // puzzleBehaviour.AssignRotation(startPuzzleEvent.info.puzzlePos);
             
         }
 
         private void OnPlayerStateChange(PlayerStateChangeEvent stateChangeEvent) {
-            CameraBehaviour newBehaviour = behaviourCallback.GetCameraBehaviourCallback(stateChangeEvent.newState);
+           // CameraBehaviour newBehaviour = behaviourCallback.GetCameraBehaviourCallback(stateChangeEvent.newState);
 
-            if (newBehaviour != null)
-                ChangeBehaviour(newBehaviour, followTarget);
+            /*if (newBehaviour != null)
+                ChangeBehaviour(newBehaviour, followTarget);*/
         }
         
         private void OnAwayFromKeyboard(AwayFromKeyboardEvent e) {
@@ -60,11 +61,11 @@ namespace DynamicCamera {
             EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
         }
         
-        private void LateUpdate() => currentCameraBehaviour.ExecuteBehaviour();
+     //   private void LateUpdate() => currentCameraBehaviour.ExecuteBehaviour();
 
         private void ChangeBehaviour(CameraBehaviour newCameraBehaviour, Transform target) {
             currentCameraBehaviour = newCameraBehaviour;
-            currentCameraBehaviour.Initialize(transform, target);
+            //currentCameraBehaviour.Initialize(transform, target);
         }
 
         #region OnEnable/OnDisable
