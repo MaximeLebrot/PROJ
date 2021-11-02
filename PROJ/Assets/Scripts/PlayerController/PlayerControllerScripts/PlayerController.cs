@@ -181,7 +181,8 @@ public class PlayerController : MonoBehaviour
             //Which means, this kind of deceleration needs to be done either only in glidestate, or based
             //off of some momentum factor, if we add Mass as a variable
 
-            force = slopeDecelerationFactor * -physics.velocity * slopeDecelerationMultiplier;
+            //force = slopeDecelerationFactor * -physics.velocity * slopeDecelerationMultiplier;
+            force = slopeDecelerationFactor * slopeDecelerationMultiplier * -physics.velocity.normalized;
             Debug.Log("slope decel factor: " + slopeDecelerationFactor + "angle is : " + groundHitAngle);
         }
     }
