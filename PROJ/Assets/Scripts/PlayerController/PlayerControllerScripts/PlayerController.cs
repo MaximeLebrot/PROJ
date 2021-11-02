@@ -93,11 +93,11 @@ public class PlayerController : MonoBehaviour
     }
     private void CalcDirection(Vector3 inp)
     {
-        /* if (surfCamera)
+         if (surfCamera)
              RotateInDirectionOfMovement(inp);
          else
-             PlayerDirection();*/
-        RotateInDirectionOfMovement(inp);
+             PlayerDirection();
+       
     }
     private void AccelerateDecelerate() 
     {
