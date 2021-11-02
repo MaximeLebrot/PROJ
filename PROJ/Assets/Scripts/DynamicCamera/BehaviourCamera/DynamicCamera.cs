@@ -49,13 +49,13 @@ namespace DynamicCamera {
         }
         
         private void OnAwayFromKeyboard(AwayFromKeyboardEvent e) {
-            ChangeBehaviour(behaviours[typeof(IdleBehaviour)], eyeTarget);
+            ChangeBehaviour(behaviours[typeof(RecenterBehaviour)], eyeTarget);
             EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
             EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnReturnToKeyboard);
         }
 
         private void OnReturnToKeyboard(AwayFromKeyboardEvent e) {
-            ChangeBehaviour(behaviours[typeof(WalkBehaviour)], followTarget);
+            ChangeBehaviour(behaviours[typeof(StationaryBehaviour)], followTarget);
             EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnReturnToKeyboard);
             EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
         }

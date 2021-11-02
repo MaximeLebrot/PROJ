@@ -1,8 +1,9 @@
 using System.Threading.Tasks;
-using Unity.Mathematics;
+using UnityEditor;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
+
+[CanEditMultipleObjects]
 public abstract class CameraBehaviour : ScriptableObject {
     
     [SerializeField] protected ControllerInputReference inputReference;
@@ -22,6 +23,10 @@ public abstract class CameraBehaviour : ScriptableObject {
     public virtual void Initialize(Transform objectTransform, Transform target) {
         transform = objectTransform;
         followTarget = target;
+        
+        
+        Debug.Log("Init");
+        
     }
     
     public void ExecuteBehaviour() {
@@ -37,9 +42,10 @@ public abstract class CameraBehaviour : ScriptableObject {
         RotateCamera();
     }
     
+    
     protected virtual async Task BehaveAsync() => await Task.Yield();
 
-    protected void SmoothCollisionMovement() {
+    protected virtual void SmoothCollisionMovement() {
         transform.position = Vector3.SmoothDamp(transform.position, followTarget.position + calculatedOffset, ref velocity, cameraMovementSpeed);
     }
 
