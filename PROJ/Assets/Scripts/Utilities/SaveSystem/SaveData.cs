@@ -14,7 +14,7 @@ public class SaveData
 
 
     //Screenshot. Time. 
-
+    //SCENER
     
 
 }
@@ -22,9 +22,10 @@ public class SaveData
 [Serializable]
 public class SaveDataHolder
 {
-    public DictionaryOfStringAndSaveData saves = new DictionaryOfStringAndSaveData();
 
+    public DictionaryOfStringAndSaveData saves = new DictionaryOfStringAndSaveData();
     public int currentNrOfSaves;
+
 }
 
 

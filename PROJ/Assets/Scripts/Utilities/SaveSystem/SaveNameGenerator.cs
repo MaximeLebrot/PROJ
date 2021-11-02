@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class SaveNameGenerator
 {
-    static int currentNrOfSaves;
+    static int currentNrOfSaves = 0;
 
     static string saveName = "save ";
 
@@ -18,6 +18,5 @@ public static class SaveNameGenerator
     {
         return saveName + currentNrOfSaves;
     }
-
 
 }
