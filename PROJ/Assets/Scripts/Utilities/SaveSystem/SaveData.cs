@@ -15,7 +15,7 @@ public class SaveData
 
     //Screenshot. Time. 
 
-    public int currentNrOfSaves;
+    
 
 }
 
@@ -23,6 +23,8 @@ public class SaveData
 public class SaveDataHolder
 {
     public DictionaryOfStringAndSaveData saves = new DictionaryOfStringAndSaveData();
+
+    public int currentNrOfSaves;
 }
 
 

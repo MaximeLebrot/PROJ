@@ -51,8 +51,8 @@ public class GamePersistence : MonoBehaviour
             savesHolder.saves[currentSaveName] = saveData;
         }
 
-        
 
+        savesHolder.currentNrOfSaves++;
 
         var json = JsonUtility.ToJson(savesHolder);
         Debug.Log(saveName);
@@ -93,6 +93,8 @@ public class GamePersistence : MonoBehaviour
 
         FindObjectOfType<MetaPlayerController>().transform.position = saveData.PlayerPos;
         FindObjectOfType<MetaPlayerController>().transform.rotation =  saveData.PlayerRot;
+
+        //WHAT HAPPENS if we were inside a puzzle when we loaded or saved? always load outside puzzle state?
 
     }
 }
