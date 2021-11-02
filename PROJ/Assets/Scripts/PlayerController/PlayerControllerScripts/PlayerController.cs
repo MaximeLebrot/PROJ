@@ -43,7 +43,9 @@ public class PlayerController : MonoBehaviour
     public float groundHitAngle { get; private set; }
     public float GlideMinAngle => glideMinAngle;
 
-    
+    //Camera Test/Debug
+    public bool dualCameraBehaviour = true;
+
     void Awake()
     {
         cameraTransform = Camera.main.transform;
@@ -93,11 +95,16 @@ public class PlayerController : MonoBehaviour
     }
     private void CalcDirection(Vector3 inp)
     {
-         if (surfCamera)
-             RotateInDirectionOfMovement(inp);
-         else
-             PlayerDirection();
-       
+        if (dualCameraBehaviour)
+        {
+            if (surfCamera)
+                RotateInDirectionOfMovement(inp);
+            else
+                PlayerDirection();
+        }
+        else
+            RotateInDirectionOfMovement(inp);
+
     }
     private void AccelerateDecelerate() 
     {
