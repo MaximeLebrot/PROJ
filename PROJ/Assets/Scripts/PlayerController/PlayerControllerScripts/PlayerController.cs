@@ -75,6 +75,10 @@ public class PlayerController : MonoBehaviour
             input.Normalize();
         }
 
+        //Maybe this to stop character rotation when input is 0
+        //if(input.magnitude < inputThreshold)
+        //  Decelerate();
+        //else
         CalcDirection(inp);
         AccelerateDecelerate();
     }
@@ -100,10 +104,11 @@ public class PlayerController : MonoBehaviour
             if (surfCamera)
                 RotateInDirectionOfMovement(inp);
             else
-                PlayerDirection();
+                PlayerDirection(inp);
         }
         else
-            RotateInDirectionOfMovement(inp);
+            PlayerDirection(inp);
+
 
     }
     private void AccelerateDecelerate() 
@@ -130,24 +135,41 @@ public class PlayerController : MonoBehaviour
         //Makes turning less punishing
         force += (((dot - 1) * turnRate * retainedSpeedWhenTurning * -inputXZ.normalized));
     }
+    
+    //Do we not want the camera to rotate when the character is standing still? Exit the rotate method if input is below a certain treshold.
     //Rotation when using walk
-    private void PlayerDirection()
+    private void PlayerDirection(Vector3 rawInput)
     {
         Vector3 temp = cameraTransform.rotation.eulerAngles;
         temp.x = 0;
         Quaternion camRotation = Quaternion.Euler(temp);
 
         input = camRotation * input;
-        input.y = 0;
+        //input.y = 0;
         ProjectMovement();
-        RotateTowardsCameraDirection();
+        RotateTowardsCameraDirection(rawInput);
     }
-    private void RotateTowardsCameraDirection()
+    private void RotateTowardsCameraDirection(Vector3 rawInput)
     {
-        transform.localEulerAngles = new Vector3(
+        /*transform.localEulerAngles = new Vector3(
         transform.localEulerAngles.x,
-        cameraTransform.transform.localEulerAngles.y,
-        transform.localEulerAngles.z);
+        transform.transform.localEulerAngles.y,
+        transform.localEulerAngles.z);*/
+
+        //rotation from input
+        Vector3 temp = transform.rotation.eulerAngles;
+        temp.x = 0;
+        Quaternion rotation = Quaternion.Euler(temp);
+
+        //Add rotation to input
+        input += rotation * input;
+        transform.Rotate(0, rawInput.x, 0);
+
+        /*
+         * vad är y-värdet vi vill åt. Ska spelarens rotation röra sig mot kamerans?
+         * 
+         */
+
     }
 
     //Rotation when using Glide
