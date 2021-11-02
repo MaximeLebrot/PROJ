@@ -94,10 +94,11 @@ public class PlayerController : MonoBehaviour
     }
     private void CalcDirection(Vector3 inp)
     {
-        if (surfCamera)
-            RotateInDirectionOfMovement(inp);
-        else
-            PlayerDirection();
+        /* if (surfCamera)
+             RotateInDirectionOfMovement(inp);
+         else
+             PlayerDirection();*/
+        RotateInDirectionOfMovement(inp);
     }
     private void AccelerateDecelerate() 
     {
@@ -132,7 +133,6 @@ public class PlayerController : MonoBehaviour
 
         input = camRotation * input;
         input.y = 0;
-        //input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;
         ProjectMovement();
         RotateTowardsCameraDirection();
     }
