@@ -35,8 +35,11 @@ public class GamePersistance : MonoBehaviour
         gameData.PlayerPos = FindObjectOfType<MetaPlayerController>().transform.position;
         gameData.PlayerRot = FindObjectOfType<MetaPlayerController>().transform.rotation;
 
+        
+
         var json = JsonUtility.ToJson(gameData);
-        PlayerPrefs.SetString("GameData" + saveName, json);
+        Debug.Log(json);
+        PlayerPrefs.SetString("GameData" + currentSaveName, json);
 
         
     }
@@ -45,8 +48,12 @@ public class GamePersistance : MonoBehaviour
         //Update the current save file
         currentSaveName = saveName;
 
-        string json = PlayerPrefs.GetString("GameData" + saveName);
+        string json = PlayerPrefs.GetString("GameData" + currentSaveName);
+
+        Debug.Log(json);
         gameData = JsonUtility.FromJson<GameData>(json);
+
+        Debug.Log(gameData.allPuzzles.Count);
 
         PuzzleDictionary.SetPuzzles(gameData.allPuzzles);
 

@@ -55,11 +55,9 @@ public class Puzzle : MonoBehaviour
 
     private void CheckSolvedPuzzles()
     {
-        /*
-         * kolla min puzzleinstance och gör NextPuzzle() om dom e solved
-         * WHILE LOOP KRASCHADE ALLT. hur gör man då? för detta fungerar
-         */
-        if (currentPuzzleInstance.IsSolved())
+        while(currentPuzzleInstance.IsSolved() && 
+            currentPuzzleNum + 1 < puzzleInstances.Count && 
+            puzzleInstances[currentPuzzleNum + 1].IsSolved() == false)
         {
             Debug.Log("Den första var löst");
             NextPuzzle();
