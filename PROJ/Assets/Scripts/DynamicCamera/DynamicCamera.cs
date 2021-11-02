@@ -20,9 +20,6 @@ namespace DynamicCamera {
         public Vector2 input;
 
         private void Awake() {
-
-            //Camera.main.fieldOfView = Settings.FieldOfView;
-            
             foreach (CameraBehaviour cameraBehaviour in listOfBehaviourReferences)
                 behaviours[cameraBehaviour.GetType()] = cameraBehaviour;
             

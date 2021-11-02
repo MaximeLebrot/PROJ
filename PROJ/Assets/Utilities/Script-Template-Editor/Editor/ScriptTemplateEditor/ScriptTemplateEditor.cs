@@ -92,8 +92,7 @@ namespace ScriptTemplateEditor {
             
             }
 
-            if(_serializedObject != null)
-                _serializedObject.ApplyModifiedProperties();
+            _serializedObject.ApplyModifiedProperties();
 
         }
     

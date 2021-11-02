@@ -6,8 +6,8 @@ public class CameraBehaviourData : ScriptableObject {
     [SerializeField] private float mouseSensitivity;
     [SerializeField] private float collisionRadius;
     [SerializeField] private LayerMask collisionMask;
-    
-    public float MouseSensitivity { get; }
-    public float CollisionRadius { get; }
-    public LayerMask CollisionMask { get; }
+
+    public float MouseSensitivity => mouseSensitivity;
+    public float CollisionRadius => collisionRadius;
+    public LayerMask CollisionMask => collisionMask;
 }

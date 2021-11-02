@@ -15,8 +15,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float retainedSpeedWhenTurning = 0.33f;
     [SerializeField] private float airControl = 0.2f;
     //[SerializeField] private float jumpHeight = 5f;
+    
+    [Header("Slopes")]
+    [SerializeField] private float slopeMaxAngle = 140;
+    [SerializeField] private float decelerationSlopeAngle = 110f;
+    [SerializeField] private float slopeDecelerationMultiplier = 2f;
+    [SerializeField] private float glideMinAngle = 80f;
 
-    [Header("GroundCheck")]
+[Header("GroundCheck")]
     [SerializeField] private LayerMask groundCheckMask;
     [SerializeField] private float groundCheckDistance = 0.05f;
 
@@ -32,16 +38,18 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public Vector3 force;
     private RaycastHit groundHitInfo;  
     private Vector3 input;
-    public bool surfCamera = false;
+    private bool surfCamera = false;
     private float groundCheckBoxSize = 0.25f;
+    public float groundHitAngle { get; private set; }
+    public float GlideMinAngle => glideMinAngle;
+
     
     void Awake()
     {
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PlayerPhysicsSplit>();
     }
-
-
+    
     private void FixedUpdate()
     {
         physics.AddForce(force);
@@ -50,7 +58,12 @@ public class PlayerController : MonoBehaviour
 
     #region Movement
 
-    public void InputGrounded(Vector3 inp)
+    public void InputGlide(Vector3 inp)
+    {
+        SlopeDeceleration();
+        InputWalk(inp);
+    }
+    public void InputWalk(Vector3 inp)
     {
         input = inp.x * Vector3.right + 
                 inp.y * Vector3.forward;
@@ -75,36 +88,41 @@ public class PlayerController : MonoBehaviour
 
         CalcDirection(inp);
         input *= airControl;
-        AccelerateDecelerate();
+        //Cannot decelerate when airborne
+        Accelerate();
     }
     private void CalcDirection(Vector3 inp)
     {
-        if (surfCamera)
-            RotateInDirectionOfMovement(inp);
-        else
-            PlayerDirection();
+         if (surfCamera)
+             RotateInDirectionOfMovement(inp);
+         else
+             PlayerDirection();
+       
     }
     private void AccelerateDecelerate() 
     {
         //Decelerate
         if (input.magnitude < float.Epsilon)
         {
-            force = -deceleration * physics.GetXZMovement().normalized;
+            force += -deceleration * physics.GetXZMovement().normalized;
         }
         //Accelerate
         else
         {
-            Vector3 inputXZ = new Vector3(input.x, 0, input.z);
-            float dot = Vector3.Dot(inputXZ.normalized, physics.GetXZMovement().normalized);
-
-            force = input * acceleration;
-            force -= (((dot - 1) * turnRate * -physics.GetXZMovement().normalized));          
-            //Add "retainedSpeedWhenTurning" amount of previously existing momentum to our new direction
-            //Makes turning less punishing
-            force += (((dot - 1) * turnRate * retainedSpeedWhenTurning * -inputXZ.normalized));
+            Accelerate();           
         }
     }
+    private void Accelerate()
+    {
+        Vector3 inputXZ = new Vector3(input.x, 0, input.z);
+        float dot = Vector3.Dot(inputXZ.normalized, physics.GetXZMovement().normalized);
 
+        force += input * acceleration;
+        force -= (((dot - 1) * turnRate * -physics.GetXZMovement().normalized));
+        //Add "retainedSpeedWhenTurning" amount of previously existing momentum to our new direction
+        //Makes turning less punishing
+        force += (((dot - 1) * turnRate * retainedSpeedWhenTurning * -inputXZ.normalized));
+    }
     //Rotation when using walk
     private void PlayerDirection()
     {
@@ -114,7 +132,6 @@ public class PlayerController : MonoBehaviour
 
         input = camRotation * input;
         input.y = 0;
-        //input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;
         ProjectMovement();
         RotateTowardsCameraDirection();
     }
@@ -147,21 +164,32 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(0, rawInput.x * turnSpeed, 0);
 
     }
-    public float climbMaxAngle = 140;
+    private void SlopeDeceleration()
+    {
+        float slopeDecelerationFactor = ((groundHitAngle - decelerationSlopeAngle) / (slopeMaxAngle - decelerationSlopeAngle));
+        Debug.Log("Ground hit angle is : " + groundHitAngle);
+        if (groundHitAngle > decelerationSlopeAngle)
+        {
+            //Not high enough to properly stop the glide, but feels like absolute garbage when walking
+            //Which means, this kind of deceleration needs to be done either only in glidestate, or based
+            //off of some momentum factor, if we add Mass as a variable
+
+            force = slopeDecelerationFactor * -physics.velocity * slopeDecelerationMultiplier;
+            Debug.Log("slope decel factor: " + slopeDecelerationFactor + "angle is : " + groundHitAngle);
+        }
+    }
     private void ProjectMovement()
     {
-        float angle = groundHitInfo.collider == null ? 90 : Vector3.Angle(input, groundHitInfo.normal);
-
-        if (angle < climbMaxAngle)
-            input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;
-        
+        groundHitAngle = groundHitInfo.collider == null ? 90 : Vector3.Angle(input, groundHitInfo.normal);
+        if (groundHitAngle < slopeMaxAngle)
+            input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;        
         else
         {
             //Slide state? 
-
+            //Some disruption to movement, possibly another PlayerState, or timed value tweaks
             input = Vector3.zero;
         }
-        Debug.Log("Angle is : " + angle);
+        //Debug.Log("Angle is : " + angle);
     }
     #endregion
 
@@ -177,10 +205,6 @@ public class PlayerController : MonoBehaviour
     public bool IsGrounded()
     {
         bool grounded = Physics.BoxCast(transform.position, Vector3.one * groundCheckBoxSize, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance + physics.GlideHeight, groundCheckMask);
-        
-        float groundFriction = 0f;        
-        if (grounded)
-            groundFriction = groundHitInfo.collider.material.dynamicFriction;
         
         return grounded; 
     }
