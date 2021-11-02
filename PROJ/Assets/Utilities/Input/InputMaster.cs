@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/Scripts/Utilities/Input/InputMaster.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/Utilities/Input/InputMaster.inputactions'
 
 using System;
 using System.Collections;
@@ -165,6 +165,167 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""45eb080b-dbfe-4265-9a68-72645599fb2e"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Stnd KBM"",
+                    ""action"": ""ExitPuzzle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Player1"",
+            ""id"": ""01e92129-e0ad-4d8e-9250-d8faa462bcdf"",
+            ""actions"": [
+                {
+                    ""name"": ""Movement"",
+                    ""type"": ""Value"",
+                    ""id"": ""b7a1dc8b-c5f4-4120-945f-6d0ce6855555"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""4267683d-2182-4d0e-89ef-d4237d011d0f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""MoveCamera"",
+                    ""type"": ""Value"",
+                    ""id"": ""26289481-ed94-4c67-b3b9-b36dca1ef56e"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""ExitPuzzle"",
+                    ""type"": ""Button"",
+                    ""id"": ""8d068efd-996d-4180-befa-811d8fc206b1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""Axis"",
+                    ""id"": ""b59c9e16-8a74-4f47-8fd5-3ac420fbdec0"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": ""NormalizeVector2"",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""17ca5b45-37da-4fed-9238-37b8e423e1ad"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Stnd KBM"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""c18f2e53-98b3-41c5-91bb-f50f4c3e1a80"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Stnd KBM"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""e3f156b9-d6ee-4d33-bef5-5eeb2ac5a433"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Stnd KBM"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""46346d77-6e49-483b-9822-5bfaff91e57b"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Stnd KBM"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3d894cc7-e226-4af6-8f01-d4332ffc8c74"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""xboxcontroller"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""035eb24a-bbda-4067-a0bc-df726e59ae9e"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Stnd KBM"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f5f4e264-3112-4e1f-89a3-8cf9926a833d"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Stnd KBM"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""83c54067-7dc9-4349-96f0-cd33f8fc04ca"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Stnd KBM"",
+                    ""action"": ""MoveCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0d04a7de-9ed1-4b96-9fc5-1af888a84f9e"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Stnd KBM"",
+                    ""action"": ""MoveCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bb181a63-3901-437c-bc69-35fd67898be0"",
                     ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -380,6 +541,12 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_MoveCamera = m_Player.FindAction("MoveCamera", throwIfNotFound: true);
         m_Player_ExitPuzzle = m_Player.FindAction("ExitPuzzle", throwIfNotFound: true);
+        // Player1
+        m_Player1 = asset.FindActionMap("Player1", throwIfNotFound: true);
+        m_Player1_Movement = m_Player1.FindAction("Movement", throwIfNotFound: true);
+        m_Player1_Interact = m_Player1.FindAction("Interact", throwIfNotFound: true);
+        m_Player1_MoveCamera = m_Player1.FindAction("MoveCamera", throwIfNotFound: true);
+        m_Player1_ExitPuzzle = m_Player1.FindAction("ExitPuzzle", throwIfNotFound: true);
         // PuzzleDEBUGGER
         m_PuzzleDEBUGGER = asset.FindActionMap("PuzzleDEBUGGER", throwIfNotFound: true);
         m_PuzzleDEBUGGER_calculatesolution = m_PuzzleDEBUGGER.FindAction("calculate solution", throwIfNotFound: true);
@@ -494,6 +661,63 @@ public class @InputMaster : IInputActionCollection, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // Player1
+    private readonly InputActionMap m_Player1;
+    private IPlayer1Actions m_Player1ActionsCallbackInterface;
+    private readonly InputAction m_Player1_Movement;
+    private readonly InputAction m_Player1_Interact;
+    private readonly InputAction m_Player1_MoveCamera;
+    private readonly InputAction m_Player1_ExitPuzzle;
+    public struct Player1Actions
+    {
+        private @InputMaster m_Wrapper;
+        public Player1Actions(@InputMaster wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Movement => m_Wrapper.m_Player1_Movement;
+        public InputAction @Interact => m_Wrapper.m_Player1_Interact;
+        public InputAction @MoveCamera => m_Wrapper.m_Player1_MoveCamera;
+        public InputAction @ExitPuzzle => m_Wrapper.m_Player1_ExitPuzzle;
+        public InputActionMap Get() { return m_Wrapper.m_Player1; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(Player1Actions set) { return set.Get(); }
+        public void SetCallbacks(IPlayer1Actions instance)
+        {
+            if (m_Wrapper.m_Player1ActionsCallbackInterface != null)
+            {
+                @Movement.started -= m_Wrapper.m_Player1ActionsCallbackInterface.OnMovement;
+                @Movement.performed -= m_Wrapper.m_Player1ActionsCallbackInterface.OnMovement;
+                @Movement.canceled -= m_Wrapper.m_Player1ActionsCallbackInterface.OnMovement;
+                @Interact.started -= m_Wrapper.m_Player1ActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_Player1ActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_Player1ActionsCallbackInterface.OnInteract;
+                @MoveCamera.started -= m_Wrapper.m_Player1ActionsCallbackInterface.OnMoveCamera;
+                @MoveCamera.performed -= m_Wrapper.m_Player1ActionsCallbackInterface.OnMoveCamera;
+                @MoveCamera.canceled -= m_Wrapper.m_Player1ActionsCallbackInterface.OnMoveCamera;
+                @ExitPuzzle.started -= m_Wrapper.m_Player1ActionsCallbackInterface.OnExitPuzzle;
+                @ExitPuzzle.performed -= m_Wrapper.m_Player1ActionsCallbackInterface.OnExitPuzzle;
+                @ExitPuzzle.canceled -= m_Wrapper.m_Player1ActionsCallbackInterface.OnExitPuzzle;
+            }
+            m_Wrapper.m_Player1ActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Movement.started += instance.OnMovement;
+                @Movement.performed += instance.OnMovement;
+                @Movement.canceled += instance.OnMovement;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
+                @MoveCamera.started += instance.OnMoveCamera;
+                @MoveCamera.performed += instance.OnMoveCamera;
+                @MoveCamera.canceled += instance.OnMoveCamera;
+                @ExitPuzzle.started += instance.OnExitPuzzle;
+                @ExitPuzzle.performed += instance.OnExitPuzzle;
+                @ExitPuzzle.canceled += instance.OnExitPuzzle;
+            }
+        }
+    }
+    public Player1Actions @Player1 => new Player1Actions(this);
 
     // PuzzleDEBUGGER
     private readonly InputActionMap m_PuzzleDEBUGGER;
@@ -627,6 +851,13 @@ public class @InputMaster : IInputActionCollection, IDisposable
         }
     }
     public interface IPlayerActions
+    {
+        void OnMovement(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
+        void OnMoveCamera(InputAction.CallbackContext context);
+        void OnExitPuzzle(InputAction.CallbackContext context);
+    }
+    public interface IPlayer1Actions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);

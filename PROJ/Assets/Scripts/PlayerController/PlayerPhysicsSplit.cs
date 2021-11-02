@@ -122,10 +122,10 @@ public class PlayerPhysicsSplit : MonoBehaviour
             else
             {
                 smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, smoothingCastHitInfo.normal)
-                                        * ((1 - smoothingCastHitInfo.distance / smoothingMaxDistance)
+                                        * (Mathf.Pow(((1 - smoothingCastHitInfo.distance / smoothingMaxDistance)), powerOf)
                                         * glideNormalForceMargin)
                                         + GlideHeight * Vector3.up;
-                                        //* (Mathf.Pow(((1 - smoothingCastHitInfo.distance / smoothingMaxDistance)), powerOf)
+                                        //*((1 - smoothingCastHitInfo.distance / smoothingMaxDistance)
             }
 
             ApplyFriction(smoothingNormalForce);

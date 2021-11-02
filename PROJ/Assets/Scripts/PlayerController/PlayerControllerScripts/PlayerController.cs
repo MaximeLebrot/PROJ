@@ -20,8 +20,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float slopeMaxAngle = 140;
     [SerializeField] private float decelerationSlopeAngle = 110f;
     [SerializeField] private float slopeDecelerationMultiplier = 2f;
+    [SerializeField] private float glideMinAngle = 80f;
 
-    [Header("GroundCheck")]
+[Header("GroundCheck")]
     [SerializeField] private LayerMask groundCheckMask;
     [SerializeField] private float groundCheckDistance = 0.05f;
 
@@ -39,15 +40,16 @@ public class PlayerController : MonoBehaviour
     private Vector3 input;
     private bool surfCamera = false;
     private float groundCheckBoxSize = 0.25f;
-    private float groundHitAngle;
+    public float groundHitAngle { get; private set; }
+    public float GlideMinAngle => glideMinAngle;
+
     
     void Awake()
     {
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PlayerPhysicsSplit>();
     }
-
-
+    
     private void FixedUpdate()
     {
         physics.AddForce(force);
@@ -91,10 +93,11 @@ public class PlayerController : MonoBehaviour
     }
     private void CalcDirection(Vector3 inp)
     {
-        if (surfCamera)
-            RotateInDirectionOfMovement(inp);
-        else
-            PlayerDirection();
+         if (surfCamera)
+             RotateInDirectionOfMovement(inp);
+         else
+             PlayerDirection();
+       
     }
     private void AccelerateDecelerate() 
     {
@@ -129,7 +132,6 @@ public class PlayerController : MonoBehaviour
 
         input = camRotation * input;
         input.y = 0;
-        //input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;
         ProjectMovement();
         RotateTowardsCameraDirection();
     }

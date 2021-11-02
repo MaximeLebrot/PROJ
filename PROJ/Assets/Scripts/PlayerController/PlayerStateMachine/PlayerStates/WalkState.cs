@@ -23,7 +23,7 @@ public class WalkState : PlayerState
         if (!player.playerController3D.IsGrounded())
             stateMachine.ChangeState<AirborneState>();
 
-        if (player.physics.velocity.magnitude > player.physics.SurfThreshold + 1)
+        if (player.physics.velocity.magnitude > player.physics.SurfThreshold + 1 && player.playerController3D.groundHitAngle < player.playerController3D.GlideMinAngle)
             stateMachine.ChangeState<GlideState>();
     }
     public override void ExitState()
