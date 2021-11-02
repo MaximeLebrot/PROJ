@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float slopeDecelerationMultiplier = 2f;
     [SerializeField] private float glideMinAngle = 80f;
 
-[Header("GroundCheck")]
+    [Header("GroundCheck")]
     [SerializeField] private LayerMask groundCheckMask;
     [SerializeField] private float groundCheckDistance = 0.05f;
 
@@ -40,10 +40,13 @@ public class PlayerController : MonoBehaviour
     private Vector3 input;
     private bool surfCamera = false;
     private float groundCheckBoxSize = 0.25f;
+    private float inputThreshold = 0.1f;
     public float groundHitAngle { get; private set; }
     public float GlideMinAngle => glideMinAngle;
 
-    
+    //Camera Test/Debug
+    public bool dualCameraBehaviour = true;
+
     void Awake()
     {
         cameraTransform = Camera.main.transform;
@@ -65,21 +68,26 @@ public class PlayerController : MonoBehaviour
     }
     public void InputWalk(Vector3 inp)
     {
-        input = inp.x * Vector3.right + 
-                inp.y * Vector3.forward;
+        input = inp.x * turnSpeed * Vector3.right + 
+                inp.y * Vector3.forward;   
 
-        if (input.magnitude > 1f)
+        //to stop character rotation when input is 0
+        if (input.magnitude < inputThreshold)
+            Decelerate();
+        else
         {
-            input.Normalize();
+            if (input.magnitude > 1f)
+            {
+                input.Normalize();
+            }
+            CalcDirection(inp);
+            Accelerate();
         }
-
-        CalcDirection(inp);
-        AccelerateDecelerate();
     }
     public void InputAirborne(Vector3 inp)
     {
-        input = inp.x * Vector3.right +
-                inp.y * Vector3.forward;
+        input = inp.x * cameraTransform.right +
+                inp.y * cameraTransform.forward;
 
         if (input.magnitude > 1f)
         {
@@ -93,24 +101,19 @@ public class PlayerController : MonoBehaviour
     }
     private void CalcDirection(Vector3 inp)
     {
-         if (surfCamera)
-             RotateInDirectionOfMovement(inp);
-         else
-             PlayerDirection();
-       
-    }
-    private void AccelerateDecelerate() 
-    {
-        //Decelerate
-        if (input.magnitude < float.Epsilon)
+        if (dualCameraBehaviour)
         {
-            force += -deceleration * physics.GetXZMovement().normalized;
+            if (surfCamera)
+                RotateInDirectionOfMovement(inp);
+            else
+                PlayerDirection(inp);
         }
-        //Accelerate
         else
-        {
-            Accelerate();           
-        }
+            PlayerDirection(inp);
+    }
+    private void Decelerate()
+    {
+        force += -deceleration * physics.GetXZMovement().normalized;
     }
     private void Accelerate()
     {
@@ -123,8 +126,8 @@ public class PlayerController : MonoBehaviour
         //Makes turning less punishing
         force += (((dot - 1) * turnRate * retainedSpeedWhenTurning * -inputXZ.normalized));
     }
-    //Rotation when using walk
-    private void PlayerDirection()
+    
+    private void PlayerDirection(Vector3 rawInput)
     {
         Vector3 temp = cameraTransform.rotation.eulerAngles;
         temp.x = 0;
@@ -132,15 +135,40 @@ public class PlayerController : MonoBehaviour
 
         input = camRotation * input;
         input.y = 0;
+        RotateInVelocityDirection();
         ProjectMovement();
-        RotateTowardsCameraDirection();
     }
-    private void RotateTowardsCameraDirection()
+    private void RotateInVelocityDirection()
     {
-        transform.localEulerAngles = new Vector3(
+        transform.rotation = Quaternion.LookRotation(physics.GetXZMovement().normalized, Vector3.up);
+    }
+    //Obsolete
+    private void RotateTowardsCameraDirection(Vector3 rawInput)
+    {
+        /*transform.localEulerAngles = new Vector3(
         transform.localEulerAngles.x,
-        cameraTransform.transform.localEulerAngles.y,
-        transform.localEulerAngles.z);
+        cameraTransform.localEulerAngles.y,
+        transform.localEulerAngles.z);*/
+
+        //rotation from input
+        Vector3 temp = transform.rotation.eulerAngles;
+        temp.x = 0;
+        Quaternion rotation = Quaternion.Euler(temp);
+
+        //Add rotation to input
+        //input += rotation * input;
+        /*transform.localEulerAngles = new Vector3(transform.localEulerAngles.x,
+                                                 input.x,
+                                                 transform.localEulerAngles.z);*/
+        transform.rotation = Quaternion.LookRotation(physics.GetXZMovement().normalized, Vector3.up);
+        //transform.Rotate(0, rawInput.x, 0);
+        //transform.forward = Vector3.Lerp(transform.forward, new Vector3(transform.forward.x, input.y, transform.forward.z), turnSpeed * Time.deltaTime);
+
+        /*
+         * vad är y-värdet vi vill åt. Ska spelarens rotation röra sig mot kamerans?
+         * 
+         */
+
     }
 
     //Rotation when using Glide
@@ -167,20 +195,16 @@ public class PlayerController : MonoBehaviour
     private void SlopeDeceleration()
     {
         float slopeDecelerationFactor = ((groundHitAngle - decelerationSlopeAngle) / (slopeMaxAngle - decelerationSlopeAngle));
-        Debug.Log("Ground hit angle is : " + groundHitAngle);
         if (groundHitAngle > decelerationSlopeAngle)
         {
-            //Not high enough to properly stop the glide, but feels like absolute garbage when walking
-            //Which means, this kind of deceleration needs to be done either only in glidestate, or based
-            //off of some momentum factor, if we add Mass as a variable
-
-            force = slopeDecelerationFactor * -physics.velocity * slopeDecelerationMultiplier;
-            Debug.Log("slope decel factor: " + slopeDecelerationFactor + "angle is : " + groundHitAngle);
+            //force = slopeDecelerationFactor * -physics.velocity * slopeDecelerationMultiplier;
+            force = slopeDecelerationFactor * slopeDecelerationMultiplier * -physics.velocity.normalized;
         }
     }
     private void ProjectMovement()
     {
         groundHitAngle = groundHitInfo.collider == null ? 90 : Vector3.Angle(input, groundHitInfo.normal);
+        
         if (groundHitAngle < slopeMaxAngle)
             input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;        
         else
@@ -189,7 +213,6 @@ public class PlayerController : MonoBehaviour
             //Some disruption to movement, possibly another PlayerState, or timed value tweaks
             input = Vector3.zero;
         }
-        //Debug.Log("Angle is : " + angle);
     }
     #endregion
 
