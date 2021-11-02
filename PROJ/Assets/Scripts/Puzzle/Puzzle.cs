@@ -50,18 +50,22 @@ public class Puzzle : MonoBehaviour
 
     public void Load()
     {
+        currentPuzzleNum = 0;
+        currentPuzzleInstance = puzzleInstances[currentPuzzleNum];
+        grid.ResetGrid();
+        PlaceSymbols();
         CheckSolvedPuzzles();
     }
 
     private void CheckSolvedPuzzles()
     {
         while(currentPuzzleInstance.IsSolved() && 
-            currentPuzzleNum + 1 < puzzleInstances.Count && 
-            puzzleInstances[currentPuzzleNum + 1].IsSolved() == false)
+            currentPuzzleNum + 1 <= puzzleInstances.Count)
         {
-            Debug.Log("Den första var löst");
+            Debug.Log("LOAD NEXT PUZZLE");
             NextPuzzle();
         }
+
     }
 
     private void OnEnable()
@@ -96,6 +100,8 @@ public class Puzzle : MonoBehaviour
             //NÅTT SKA HÄNDA HÄR? nån effekt och feedback på att man klarat det här pusslet. Inte spara griden utan stänga av griden typ
             //Exit puzzle
             //Debug.Log("Last puzzle instance completed");
+
+
             EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID()), true));
             grid.CompleteGrid();
             GetComponent<Collider>().enabled = false;

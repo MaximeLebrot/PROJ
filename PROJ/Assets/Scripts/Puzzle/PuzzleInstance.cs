@@ -46,7 +46,7 @@ public class PuzzleInstance : MonoBehaviour
     public void Load()
     {
         currentState = PuzzleDictionary.GetState(puzzleID);
-        Debug.Log(puzzleID + " load ");
+        Debug.Log("Load puzzle " + puzzleID + "    STATE:: " + currentState);
     }
 }
 

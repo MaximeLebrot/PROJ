@@ -81,12 +81,11 @@ public class PuzzleGrid : MonoBehaviour {
         foreach(Node node in nodes)
             if (node.startNode)
             {
-                Debug.Log("START NODE");
                 //node.OnNodeSelected += AddSelectedNode;
                 return node;
             }
       
-        Debug.LogError("No start node selected");
+        Debug.LogError("NO START NODE SELECTED");
         return null;
     }
 
@@ -245,6 +244,7 @@ public class PuzzleGrid : MonoBehaviour {
         foreach(Node n in allNodes)
         {
             n.ResetNeighbours();
+            n.TurnOnCollider();
             n.gameObject.SetActive(false);
         }
 

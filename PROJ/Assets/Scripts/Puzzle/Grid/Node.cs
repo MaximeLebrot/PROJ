@@ -92,4 +92,9 @@ public class Node : MonoBehaviour {
     }
 
     public void ClearSelectable() => OnNodeSelected = null;
+
+    public void TurnOnCollider()
+    {
+        GetComponent<SphereCollider>().enabled = true;
+    }
 }

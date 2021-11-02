@@ -10,7 +10,11 @@ public static class PuzzleDictionary
     private static DictionaryOfIntAndBool allPuzzles = new DictionaryOfIntAndBool(); /*puzzleID & puzzleSuccess*/
 
     public static DictionaryOfIntAndBool GetPuzzles() { return allPuzzles; }
-    public static void SetPuzzles(DictionaryOfIntAndBool puzzles) {  allPuzzles = puzzles; }
+    public static void SetPuzzles(DictionaryOfIntAndBool puzzles) 
+    {  
+        allPuzzles = puzzles; 
+        
+    }
 
 
     public static bool GetState(int id) 
@@ -83,6 +87,18 @@ public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IS
 
         for (int i = 0; i < keys.Count; i++)
             this.Add(keys[i], values[i]);
+    }
+
+    public bool Contains(TKey key)
+    {
+        foreach(TKey k in keys)
+        {
+            if(k.Equals(key))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
