@@ -20,8 +20,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float slopeMaxAngle = 140;
     [SerializeField] private float decelerationSlopeAngle = 110f;
     [SerializeField] private float slopeDecelerationMultiplier = 2f;
+    [SerializeField] private float glideMinAngle = 80f;
 
-    [Header("GroundCheck")]
+[Header("GroundCheck")]
     [SerializeField] private LayerMask groundCheckMask;
     [SerializeField] private float groundCheckDistance = 0.05f;
 
@@ -39,7 +40,9 @@ public class PlayerController : MonoBehaviour
     private Vector3 input;
     private bool surfCamera = false;
     private float groundCheckBoxSize = 0.25f;
-    private float groundHitAngle;
+    public float groundHitAngle { get; private set; }
+    public float GlideMinAngle => glideMinAngle;
+
     
     void Awake()
     {

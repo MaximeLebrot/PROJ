@@ -13,6 +13,7 @@ public class AirborneState : PlayerState
     //NOTE this state should NOT have any values, and therefore not call its superstate's EnterState()
     public override void EnterState() 
     {
+        Debug.Log("Entered Airborne State");
         player.physics.SetFallingGravity();
     }
     public override void RunUpdate()
