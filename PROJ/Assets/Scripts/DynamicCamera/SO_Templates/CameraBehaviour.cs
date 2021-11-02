@@ -15,8 +15,9 @@ public abstract class CameraBehaviour : ScriptableObject {
     protected Transform followTarget;
     protected Vector3 velocity;
     protected Transform transform;
-
+    
     private Vector2 input;
+    private Vector3 calculatedOffset;
     
     public virtual void Initialize(Transform objectTransform, Transform target) {
         transform = objectTransform;
@@ -25,8 +26,10 @@ public abstract class CameraBehaviour : ScriptableObject {
     }
     
     public void ExecuteBehaviour() {
+        calculatedOffset = Vector3.zero;
         ReadInput();
         ClampInput();
+        Collision();
         Behave();
     }
 
@@ -34,26 +37,26 @@ public abstract class CameraBehaviour : ScriptableObject {
         SmoothCollisionMovement();
         RotateCamera();
     }
-
+    
     protected virtual async Task BehaveAsync() => await Task.Yield();
 
     protected void SmoothCollisionMovement() {
         
+        transform.position = Vector3.SmoothDamp(transform.position, followTarget.position + calculatedOffset, ref velocity, cameraMovementSpeed, Mathf.Infinity, Time.deltaTime);
+        
+        Debug.DrawRay(transform.position, followTarget.position - transform.position, Color.red);
+    }
+
+    protected virtual void Collision() {
+
         followTarget.rotation = Quaternion.Euler(input.x, input.y, 0);
         
         Vector3 collisionOffset = followTarget.rotation * offset;
+        
+        if (Physics.SphereCast(followTarget.position, cameraBehaviourData.CollisionRadius, collisionOffset.normalized, out var hitInfo, collisionOffset.magnitude, cameraBehaviourData.CollisionMask))
+            collisionOffset = collisionOffset.normalized * hitInfo.distance;
 
-        collisionOffset = Collision(collisionOffset);
-
-        transform.position = Vector3.SmoothDamp(transform.position, followTarget.position + collisionOffset, ref velocity, cameraMovementSpeed, 30, Time.deltaTime);
-    }
-
-    protected virtual Vector3 Collision(Vector3 cameraOffset) {
-
-        if (Physics.SphereCast(followTarget.position, cameraBehaviourData.CollisionRadius, cameraOffset.normalized, out var hitInfo, cameraOffset.magnitude, cameraBehaviourData.CollisionMask))
-            cameraOffset = cameraOffset.normalized * hitInfo.distance;
-
-        return cameraOffset;
+        calculatedOffset = collisionOffset;
     }
     
     protected virtual void RotateCamera() {
