@@ -67,7 +67,12 @@ public class GamePersistence : MonoBehaviour
 
         //Update the current save file
         string json = PlayerPrefs.GetString("SaveData");
-        Debug.Log("LOAD:: " + json);
+        if(json == "")
+        {
+            Debug.LogError("FAILED TO LOAD");
+            return;
+        }
+
         savesHolder = JsonUtility.FromJson<SaveDataHolder>(json);
 
         if(savesHolder.saves.Contains(saveName) == true)
