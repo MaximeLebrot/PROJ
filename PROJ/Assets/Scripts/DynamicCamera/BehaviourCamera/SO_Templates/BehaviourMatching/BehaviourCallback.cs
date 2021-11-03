@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace NewCamera {
 
@@ -9,21 +10,21 @@ namespace NewCamera {
 
         [SerializeField] private List<CallbackPair> pairs = new List<CallbackPair>();
 
-        private Dictionary<Type, CameraBehaviour> callbacks;
+        private Dictionary<Type, BaseCameraBehaviour> callbacks;
 
         private void OnEnable() {
-            callbacks = new Dictionary<Type, CameraBehaviour>();
+            callbacks = new Dictionary<Type, BaseCameraBehaviour>();
 
             foreach (CallbackPair pair in pairs)
-                callbacks[pair.playerState.GetType()] = pair.cameraBehaviour;
+                callbacks[pair.playerState.GetType()] = pair.baseCameraBehaviour;
         }
 
-        public CameraBehaviour GetCameraBehaviourCallback(PlayerState state) => callbacks.ContainsKey(state.GetType()) ? callbacks[state.GetType()] : null;
+        public BaseCameraBehaviour GetCameraBehaviourCallback(PlayerState state) => callbacks.ContainsKey(state.GetType()) ? callbacks[state.GetType()] : null;
 
         [Serializable]
         private struct CallbackPair {
             public PlayerState playerState;
-            public CameraBehaviour cameraBehaviour;
+            [FormerlySerializedAs("cameraBehaviour")] public BaseCameraBehaviour baseCameraBehaviour;
         }
 
     }

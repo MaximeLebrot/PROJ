@@ -4,19 +4,23 @@ using UnityEngine;
 namespace NewCamera { 
     
     [System.Serializable]
-    public class GlideCameraBehaviour : CameraBehaviour {
+    public class GlideBaseCameraBehaviour : BaseCameraBehaviour {
         
-        public GlideCameraBehaviour(Transform transform, Transform target, Vector3 offset) : base(transform, target, offset) {}
+        public GlideBaseCameraBehaviour(Transform transform, Transform target, OffsetAndCameraSpeed values) : base(transform, target, values) {}
         
         public override Vector3 ExecuteCollision(Vector2 input, CameraBehaviourData data) {
             
-            Vector3 collisionOffset = target.rotation * offset;
+            Vector3 collisionOffset = target.rotation * values.offset;
             
             if (Physics.SphereCast(target.position, data.CollisionRadius, collisionOffset.normalized, out var hitInfo, collisionOffset.magnitude, data.CollisionMask))
                 collisionOffset = collisionOffset.normalized * hitInfo.distance;
 
             return collisionOffset;
             
+        }
+
+        public override Quaternion ExecuteRotate() {
+            return base.ExecuteRotate();
         }
 
         public override Vector2 ClampMovement(Vector2 input, Vector2 values) {
