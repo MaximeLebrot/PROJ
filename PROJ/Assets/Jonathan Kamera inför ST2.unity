@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0.99999905, b: 0.99999905, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -197,7 +197,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2184620921574008162, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
   m_PrefabInstance: {fileID: 553385318}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &108499890
+--- !u!114 &108499888
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -212,9 +212,9 @@ MonoBehaviour:
   inputReference: {fileID: 11400000, guid: 54398b8fed501aa41813fa11036bc179, type: 2}
   cameraBehaviourData: {fileID: 11400000, guid: 178997108c592e743ab86335e4404734, type: 2}
   followTarget: {fileID: 1551527590}
-  cameraFollowSpeed: 0.1
+  cameraFollowSpeed: 0.2
   offset: {x: 0, y: 3, z: -5}
-  xClamp: {x: -60, y: 40}
+  clampValues: {x: -60, y: 40}
 --- !u!114 &108499893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,6 +229,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputReference: {fileID: 11400000, guid: 54398b8fed501aa41813fa11036bc179, type: 2}
   awayTimer: 2
+--- !u!114 &108499894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 108499887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28cbc64e152e91b488a6d810a9ae1db3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1622896231}
 --- !u!1 &149482516 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8627980719989286235, guid: f81c301d22faf3d44a810cfa9a5140a8, type: 3}
@@ -1558,10 +1571,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 637493746017295566, guid: e7143848a98783d4e96901616195f12e, type: 3}
-      propertyPath: dualCameraBehaviour
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7143848a98783d4e96901616195f12e, type: 3}
 --- !u!4 &1551527589 stripped
@@ -1572,6 +1581,11 @@ Transform:
 --- !u!4 &1551527590 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 637493746801876379, guid: e7143848a98783d4e96901616195f12e, type: 3}
+  m_PrefabInstance: {fileID: 1551527588}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1622896231 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 637493746017295554, guid: e7143848a98783d4e96901616195f12e, type: 3}
   m_PrefabInstance: {fileID: 1551527588}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1683819755
