@@ -121,10 +121,15 @@ public class PlayerController : MonoBehaviour
         float dot = Vector3.Dot(inputXZ.normalized, physics.GetXZMovement().normalized);
 
         force += input * acceleration;
-        force -= (((dot - 1) * turnRate * -physics.GetXZMovement().normalized));
+        force -= ((1 - dot) * 0.5f) 
+                 * turnRate 
+                 * physics.GetXZMovement().normalized;
         //Add "retainedSpeedWhenTurning" amount of previously existing momentum to our new direction
         //Makes turning less punishing
-        force += (((dot - 1) * turnRate * retainedSpeedWhenTurning * -inputXZ.normalized));
+        force += ((1 - dot) * 0.5f)
+                 * turnRate 
+                 * retainedSpeedWhenTurning 
+                 * inputXZ.normalized;
     }
     
     private void PlayerDirection(Vector3 rawInput)
