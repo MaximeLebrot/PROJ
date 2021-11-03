@@ -6,7 +6,9 @@ public class PuzzleInstance : MonoBehaviour
 {
     [SerializeField] private int puzzleID; //should be compared to solution on a EvaluatePuzzleEvent and fire a SUCCESS EVENT or FAIL EVENT
     [SerializeField] public List<SymbolModPair> puzzleObjects = new List<SymbolModPair>();
-    
+
+    public List<Vector2Int> activeNodes;
+
     private Puzzle masterPuzzle;
     private bool currentState;
 
@@ -48,6 +50,11 @@ public class PuzzleInstance : MonoBehaviour
         currentState = PuzzleDictionary.GetState(puzzleID);
         Debug.Log("Load puzzle " + puzzleID + "    STATE:: " + currentState);
     }
+
+    public bool HasRestrictions()
+    {
+        return activeNodes.Count > 0;
+    }
 }
 
 [System.Serializable]
@@ -55,4 +62,5 @@ public class SymbolModPair
 {
     public PuzzleObject symbol;
     public ModifierVariant modifier;
+    
 }

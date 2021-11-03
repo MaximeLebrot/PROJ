@@ -41,6 +41,7 @@ public class Puzzle : MonoBehaviour
             inputMaster = new InputMaster();
             PlaceSymbols();
             solution = Translate();
+            
         }
         else
             Debug.LogWarning("NO PUZZLE INSTANCES IN PUZZLE");
@@ -84,7 +85,10 @@ public class Puzzle : MonoBehaviour
    private void InitiatePuzzle()
     {
         //Debug.Log("Initiate puzzle");
+
         grid.ResetGrid();
+        if(currentPuzzleInstance.HasRestrictions())
+            grid.SetRestrictions();
         PlaceSymbols();
     }
     private void NextPuzzle()

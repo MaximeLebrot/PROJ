@@ -7,7 +7,7 @@ public static class PuzzleHelper
 {
     public static string SkipFirstChar(string s)
     {
-        Debug.Log("Skip first char, string length is :" + s.Length);
+        //Debug.Log("Skip first char, string length is :" + s.Length);
         StringBuilder sb = new StringBuilder();
         for (int j = 1; j < s.Length; j++)
         {
@@ -31,28 +31,28 @@ public static class PuzzleHelper
         Vector3 a = aNode.transform.position;
         Vector3 b = bNode.transform.position;
 
-        if (a.x == b.x && a.y > b.y)
+        if (a.x == b.x && a.z > b.z)
             c = '8';
 
-        if (a.x > b.x && a.y > b.y)
+        if (a.x > b.x && a.z > b.z)
             c = '9';
 
-        if (a.x > b.x && a.y == b.y)
+        if (a.x > b.x && a.z == b.z)
             c = '6';
 
-        if (a.x > b.x && a.y < b.y)
+        if (a.x > b.x && a.z < b.z)
             c = '3';
 
-        if (a.x == b.x && a.y < b.y)
+        if (a.x == b.x && a.z < b.z)
             c = '2';
 
-        if (a.x < b.x && a.y < b.y)
+        if (a.x < b.x && a.z < b.z)
             c = '1';
 
-        if (a.x < b.x && a.y == b.y)
+        if (a.x < b.x && a.z == b.z)
             c = '4';
 
-        if (a.x < b.x && a.y > b.y)
+        if (a.x < b.x && a.z > b.z)
             c = '7';
 
 
@@ -65,21 +65,21 @@ public static class PuzzleHelper
         switch (c)
         {
             case '1':
-                return Vector3.down + Vector3.left;
+                return Vector3.back + Vector3.left;
             case '2':
-                return Vector3.down;
+                return Vector3.back;
             case '3':
-                return Vector3.down + Vector3.right;
+                return Vector3.back + Vector3.right;
             case '4':
                 return Vector3.left;
             case '6':
                 return Vector3.right;
             case '7':
-                return Vector3.up + Vector3.left;
+                return Vector3.forward + Vector3.left;
             case '8':
-                return Vector3.up;
+                return Vector3.forward;
             case '9':
-                return Vector3.up + Vector3.right;
+                return Vector3.forward + Vector3.right;
         }
 
         return Vector3.zero;

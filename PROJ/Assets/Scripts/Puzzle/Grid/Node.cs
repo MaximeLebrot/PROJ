@@ -14,10 +14,15 @@ public class Node : MonoBehaviour {
     public List<Node> enabledNodes = new List<Node>(); // this can be in LineObject instead so that a LINE knows what nodes it lit up
     
     public bool startNode;
+
+    public int PosX, PosY; 
+
     
     private void Awake() {
         neighbours = new Dictionary<Node, bool>();
-        FindNeighbours();
+        //FindNeighbours();
+        //PosX = transform.localPosition.x;
+        //PosY = transform.localPosition.y;
     }
     
 
@@ -96,5 +101,19 @@ public class Node : MonoBehaviour {
     public void TurnOnCollider()
     {
         GetComponent<SphereCollider>().enabled = true;
+    }
+
+    public void SetStartNode()
+    {
+        startNode = true;
+    }
+
+    public void SetNeighbours(List<Node> list)
+    {
+        foreach(Node n in list)
+        {
+            //Debug.Log(n.PosX + "   " + n.PosY);
+            neighbours.Add(n, false);
+        }
     }
 }

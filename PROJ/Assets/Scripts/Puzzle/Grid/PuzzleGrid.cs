@@ -6,9 +6,11 @@ using UnityEngine.VFX;
 public class PuzzleGrid : MonoBehaviour {
 
     [SerializeField] private GameObject linePrefab;
+    [SerializeField] private GameObject nodePrefab;
+    [SerializeField] private GameObject startNodePrefab;
+    [SerializeField] private int size;
 
-    private int width;
-    private int height;
+    private int nodeOffset = 3;
     
     private List<Node> closestNodes = new List<Node>();
     private Stack<LineObject> lineRenderers = new Stack<LineObject>();
@@ -16,7 +18,10 @@ public class PuzzleGrid : MonoBehaviour {
     private Node startNode;
 
     [SerializeField]private string solution;
-    private List<Node> allNodes = new List<Node>();
+    private List<Node> allNodesLIST = new List<Node>();
+    private Node[,] allNodes; 
+
+    private List<Node> restrictedNodes = new List<Node>();
 
 
     private PuzzleLine currentLine;
@@ -28,6 +33,7 @@ public class PuzzleGrid : MonoBehaviour {
 
     public string GetSolution() 
     {
+        Debug.Log(solution);
         if (solution.Length > 0)
             return solution[0] == '-' ? PuzzleHelper.SkipFirstChar(solution) : solution;
         else
@@ -63,19 +69,74 @@ public class PuzzleGrid : MonoBehaviour {
     //Setup puzzle from Awake()
     private void StartGrid()
     {
-        allNodes.AddRange(transform.GetComponentsInChildren<Node>());
 
-        startNode = currentNode = FindStartNode(ref allNodes);
+        GenerateGrid();
 
-        width = CalculateWidth(ref allNodes);
-        height = allNodes.Count / width;
-
+        allNodesLIST.AddRange(transform.GetComponentsInChildren<Node>());
         foreach (Node node in allNodes)
             node.gameObject.SetActive(false);
 
         startNode.gameObject.SetActive(true);
-        //AddSelectedNode(startNode);
     }
+
+    public List<Node> FindNeighbours(Node n)
+    {
+
+        List<Node> neighbours = new List<Node>();
+
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                if (x == 0 && y == 0)
+                    continue;
+
+                int nX = n.PosX + x;
+                int nY = n.PosY + y;
+
+                if (nX >= 0 && nX < size && nY >= 0 && nY < size)
+                {
+                    neighbours.Add(allNodes[nX, nY]);
+                }
+            }
+        }
+        
+        return neighbours;
+    }
+
+
+    void GenerateGrid()
+    {
+        allNodes = new Node[size, size];
+        int midIndex = size / 2;
+        for (int x = 0; x < size; x++)
+        {
+            for (int y = 0; y < size; y++)
+            {
+                if(x == midIndex && y == midIndex)
+                    allNodes[x, y] = Instantiate(startNodePrefab, transform).GetComponent<Node>();
+                else
+                    allNodes[x, y] = Instantiate(nodePrefab, transform).GetComponent<Node>();
+
+                allNodes[x, y].PosX = x;
+                allNodes[x, y].PosY = y;
+
+                allNodes[x, y].transform.position = transform.position + (x * transform.right * nodeOffset) + (y * transform.forward * nodeOffset);
+
+                
+            }
+        }
+
+        foreach(Node n in allNodes)
+        {
+            n.SetNeighbours(FindNeighbours(n));
+        }
+
+        allNodes[midIndex, midIndex].SetStartNode();
+        startNode = currentNode = allNodes[midIndex, midIndex];
+        transform.localPosition = (transform.right * -midIndex * nodeOffset) + (transform.forward * -midIndex * nodeOffset);
+    }
+
     private Node FindStartNode(ref List<Node> nodes) 
     {
         foreach(Node node in nodes)
@@ -100,6 +161,11 @@ public class PuzzleGrid : MonoBehaviour {
         //rita linje från startnod till spelare
         currentLineObject = Instantiate(linePrefab, transform.parent);
         currentLine = currentLineObject.GetComponent<PuzzleLine>();      
+    }
+
+    internal void SetRestrictions()
+    {
+        throw new NotImplementedException();
     }
 
     private void AddSelectedNode(Node node) 
@@ -151,7 +217,7 @@ public class PuzzleGrid : MonoBehaviour {
             //Line Instantiation
             GameObject newLineRenderer = Instantiate(linePrefab, transform);
             newLineRenderer.transform.position = currentNode.transform.position;
-            newLineRenderer.GetComponent<PuzzleLine>().SetPosition(PuzzleHelper.TranslateNumToDirection(PuzzleHelper.TranslateInput(node, currentNode)) * 3);
+            newLineRenderer.GetComponent<PuzzleLine>().SetPosition(PuzzleHelper.TranslateNumToDirection(PuzzleHelper.TranslateInput(node, currentNode)) * nodeOffset);
             LineObject line = new LineObject(currentNode, newLineRenderer);
 
             //ADD LINE
@@ -168,19 +234,6 @@ public class PuzzleGrid : MonoBehaviour {
         ActivateNode(node);
     }
    
-    
-    private int CalculateWidth(ref List<Node> nodes) {
-        
-        float currentHeight = nodes[0].transform.position.y;
-        
-        int width = 0;
-        int index = 0;
-
-        while (nodes[index++].transform.position.y <= currentHeight)
-            width++;
-
-        return width;
-    }
 
     //Show and activate neighbours
     private void ActivateNode(Node node) 
@@ -211,7 +264,7 @@ public class PuzzleGrid : MonoBehaviour {
     {
         List<Node> finalNodes = new List<Node>();
         //Debug.Log("Save grid");
-        foreach(Node n in allNodes)
+        foreach(Node n in allNodesLIST)
         {
             if (n.gameObject.activeSelf)
                 finalNodes.Add(n);
@@ -241,7 +294,7 @@ public class PuzzleGrid : MonoBehaviour {
 
         lineRenderers.Clear();
 
-        foreach(Node n in allNodes)
+        foreach(Node n in allNodesLIST)
         {
             n.ResetNeighbours();
             n.TurnOnCollider();
@@ -249,7 +302,7 @@ public class PuzzleGrid : MonoBehaviour {
         }
 
         //sätt currentLine position
-        currentNode = FindStartNode(ref allNodes);
+        currentNode = FindStartNode(ref allNodesLIST);
         currentNode.gameObject.SetActive(true);
 
         if (currentLine != null)
