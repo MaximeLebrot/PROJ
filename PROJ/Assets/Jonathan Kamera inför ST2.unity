@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0.99999905, b: 0.99999905, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -211,10 +211,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputReference: {fileID: 11400000, guid: 54398b8fed501aa41813fa11036bc179, type: 2}
   cameraBehaviourData: {fileID: 11400000, guid: 178997108c592e743ab86335e4404734, type: 2}
+  behaviourCallback: {fileID: 11400000, guid: eb42a6b590cdc394cb43a60c1ce17190, type: 2}
   followTarget: {fileID: 1551527590}
-  cameraFollowSpeed: 0.2
-  offset: {x: 0, y: 3, z: -5}
   clampValues: {x: -60, y: 40}
+  defaultValues:
+    offset: {x: 0, y: 1.5, z: -3}
+    followSpeed: 0.15
+  idleValues:
+    offset: {x: -1, y: 0.5, z: -3}
+    followSpeed: 2
+  glideValues:
+    offset: {x: 0, y: 2, z: -5}
+    followSpeed: 0.05
+  puzzleValues:
+    offset: {x: 0, y: 10, z: -10}
+    followSpeed: 1
 --- !u!114 &108499893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1523,6 +1534,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 295475052740901548, guid: e7143848a98783d4e96901616195f12e, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 295475053473659888, guid: e7143848a98783d4e96901616195f12e, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 637493746017295554, guid: e7143848a98783d4e96901616195f12e, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -1570,6 +1589,14 @@ PrefabInstance:
     - target: {fileID: 637493746017295563, guid: e7143848a98783d4e96901616195f12e, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3517456353992891304, guid: e7143848a98783d4e96901616195f12e, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5368507518597323937, guid: e7143848a98783d4e96901616195f12e, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7143848a98783d4e96901616195f12e, type: 3}

@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace NewCamera
 {
-    public class PuzzleCameraBehaviour : CameraBehaviour {
+    public class PuzzleBaseCameraBehaviour : BaseCameraBehaviour {
         
         private readonly Vector3 eulerRotation = new Vector3(50, 0, 0);
         private Transform puzzle;
         
-        public PuzzleCameraBehaviour(Transform transform, Transform target, OffsetAndCameraSpeed values) : base(transform, target, values) {}
+        public PuzzleBaseCameraBehaviour(Transform transform, Transform target, OffsetAndCameraSpeed values) : base(transform, target, values) {}
         
         public void AssignRotation(Transform puzzleRotation) => this.puzzle = puzzleRotation;
 

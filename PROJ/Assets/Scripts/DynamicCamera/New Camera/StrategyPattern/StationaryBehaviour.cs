@@ -3,7 +3,7 @@ using UnityEngine;
 namespace NewCamera
 {
     [System.Serializable]
-    public class StationaryBehaviour : CameraBehaviour
+    public class StationaryBehaviour : BaseCameraBehaviour
     {
 
         public StationaryBehaviour(Transform transform, Transform target, OffsetAndCameraSpeed values) : base(transform, target, values) {}

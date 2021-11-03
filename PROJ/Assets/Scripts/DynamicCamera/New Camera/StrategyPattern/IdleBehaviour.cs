@@ -4,7 +4,7 @@ using UnityEngine;
 namespace NewCamera
 {
     [System.Serializable]
-    public class IdleBehaviour : CameraBehaviour
+    public class IdleBehaviour : BaseCameraBehaviour
     {
         public IdleBehaviour(Transform transform, Transform target, OffsetAndCameraSpeed values) : base(transform, target, values) {
             Debug.Log("Created idleBehaviour");
