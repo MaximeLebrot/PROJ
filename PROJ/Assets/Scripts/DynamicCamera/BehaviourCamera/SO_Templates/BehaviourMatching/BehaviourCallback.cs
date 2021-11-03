@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CameraBehaviours {
+namespace NewCamera {
 
     [CreateAssetMenu(menuName = "Camera/Camera Behaviour Callbacks")]
     public class BehaviourCallback : ScriptableObject {

@@ -1,28 +1,29 @@
 using UnityEngine;
 
+namespace NewCamera
+{
+    
 [System.Serializable]
 public class CameraBehaviour {
 
     protected Vector3 referenceVelocity;
     protected readonly Transform thisTransform;
     protected readonly Transform target;
+    protected readonly Vector3 offset;
 
-    public CameraBehaviour(Transform transform, Transform target) {
+    public CameraBehaviour(Transform transform, Transform target, Vector3 offset) {
         thisTransform = transform;
         this.target = target;
+        this.offset = offset;
     } 
     
-    public virtual Vector3 ExecuteMove(Vector3 offset, float followSpeed) {
-        return Vector3.SmoothDamp(thisTransform.position, target.position + offset, ref referenceVelocity, followSpeed);
+    public virtual Vector3 ExecuteMove(Vector3 calculatedOffset, float followSpeed) {
+        return Vector3.SmoothDamp(thisTransform.position, target.position + calculatedOffset, ref referenceVelocity, followSpeed);
     }
 
-    public virtual Quaternion ExecuteRotate() {
-        Vector3 direction = (target.position - thisTransform.position).normalized;
-        
-        return Quaternion.LookRotation(direction, Vector3.up);
-    }
-    
-    public virtual Vector3 ExecuteCollision(Vector2 input, Vector3 offset, CameraBehaviourData data) {
+    public virtual Quaternion ExecuteRotate() => target.rotation;
+
+    public virtual Vector3 ExecuteCollision(Vector2 input, CameraBehaviourData data) {
         
         target.rotation = Quaternion.Euler(input.x, input.y, 0);
         
@@ -39,4 +40,6 @@ public class CameraBehaviour {
 
         return input;
     }
+    
+}
 }
