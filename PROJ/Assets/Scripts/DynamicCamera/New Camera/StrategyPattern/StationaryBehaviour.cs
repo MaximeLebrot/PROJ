@@ -6,10 +6,8 @@ namespace NewCamera
     public class StationaryBehaviour : CameraBehaviour
     {
 
-        public StationaryBehaviour(Transform transform, Transform target, Vector3 offset) : base(transform, target, offset)
-        {
-        }
-
+        public StationaryBehaviour(Transform transform, Transform target, OffsetAndCameraSpeed values) : base(transform, target, values) {}
+        
         public override Quaternion ExecuteRotate()
         {
             Vector3 lookDirection = (target.position - thisTransform.position).normalized;

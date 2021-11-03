@@ -13,12 +13,12 @@ public class GameCamera : MonoBehaviour {
     private CameraBehaviour currentCameraBehaviour;
     private CameraBehaviour previousCameraBehaviour;
     [SerializeField] private Transform followTarget;
-    [SerializeField] private float cameraFollowSpeed;
-    [SerializeField] private Vector3 defaultOffset;
-    [SerializeField] private Vector3 idleOffset;
-    [SerializeField] private Vector3 cameraOffset;
-    [SerializeField] private Vector3 glideOffset;
     [SerializeField] private Vector2 clampValues;
+
+    [SerializeField] private OffsetAndCameraSpeed defaultValues;
+    [SerializeField] private OffsetAndCameraSpeed idleValues;
+    [SerializeField] private OffsetAndCameraSpeed glideValues;
+    [SerializeField] private OffsetAndCameraSpeed puzzleValues;
     
     private Vector2 input;
     private Transform thisTransform;
@@ -28,16 +28,16 @@ public class GameCamera : MonoBehaviour {
 
     private void Awake() {
         
-        previousCameraBehaviour = currentCameraBehaviour = new CameraBehaviour(transform, followTarget, defaultOffset);
+        previousCameraBehaviour = currentCameraBehaviour = new CameraBehaviour(transform, followTarget, defaultValues);
         thisTransform = transform;
         
-        lowPriorityBehaviours.Add(typeof(IdleBehaviour), new IdleBehaviour(thisTransform, followTarget, idleOffset)); //When player is not playing
-        lowPriorityBehaviours.Add(typeof(StationaryBehaviour), new StationaryBehaviour(thisTransform, followTarget, defaultOffset)); //When player 
-        lowPriorityBehaviours.Add(typeof(PuzzleCameraBehaviour), new PuzzleCameraBehaviour(thisTransform, followTarget, cameraOffset)); //When player 
+        lowPriorityBehaviours.Add(typeof(IdleBehaviour), new IdleBehaviour(thisTransform, followTarget, idleValues)); //When player is not playing
+        lowPriorityBehaviours.Add(typeof(StationaryBehaviour), new StationaryBehaviour(thisTransform, followTarget, defaultValues)); //When player 
+        lowPriorityBehaviours.Add(typeof(PuzzleCameraBehaviour), new PuzzleCameraBehaviour(thisTransform, followTarget, puzzleValues )); //When player 
         
         
-        highPriorityBehaviours.Add(typeof(GlideState), new GlideCameraBehaviour(thisTransform, followTarget, glideOffset));
-        highPriorityBehaviours.Add(typeof(WalkState), new CameraBehaviour(transform, followTarget, defaultOffset));
+        highPriorityBehaviours.Add(typeof(GlideState), new GlideCameraBehaviour(thisTransform, followTarget, glideValues));
+        highPriorityBehaviours.Add(typeof(WalkState), new CameraBehaviour(transform, followTarget, defaultValues));
     }
     
     private void LateUpdate() {
@@ -47,7 +47,7 @@ public class GameCamera : MonoBehaviour {
         
         Vector3 calculatedOffset = currentCameraBehaviour.ExecuteCollision(input, cameraBehaviourData);
         
-        thisTransform.position = currentCameraBehaviour.ExecuteMove(calculatedOffset, cameraFollowSpeed);
+        thisTransform.position = currentCameraBehaviour.ExecuteMove(calculatedOffset);
         thisTransform.rotation = currentCameraBehaviour.ExecuteRotate();
     }
     
@@ -58,8 +58,7 @@ public class GameCamera : MonoBehaviour {
         input.y += inputDirection.x * cameraBehaviourData.MouseSensitivity;
         
     }
-
-
+    
     private void OnEnable() {
         EventHandler<StartPuzzleEvent>.RegisterListener(OnPuzzleStart);
         EventHandler<ExitPuzzleEvent>.RegisterListener(OnPuzzleExit);
@@ -81,7 +80,7 @@ public class GameCamera : MonoBehaviour {
     }
 
     private void OnReturnToKeyboard(AwayFromKeyboardEvent e) {
-        ChangeBehaviour(previousCameraBehaviour);
+        ChangeBehaviour(lowPriorityBehaviours[typeof(StationaryBehaviour)]);
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnReturnToKeyboard);
         EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
     }
@@ -119,4 +118,12 @@ public class GameCamera : MonoBehaviour {
             Debug.Log("Couldn't find one or all targets, check if they have the right tag");
         }
     }
+
+
+}
+
+[System.Serializable]
+public struct OffsetAndCameraSpeed {
+    public Vector3 offset;
+    public float followSpeed;
 }

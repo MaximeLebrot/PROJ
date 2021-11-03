@@ -10,11 +10,11 @@ namespace NewCamera
         private readonly Vector3 eulerRotation = new Vector3(50, 0, 0);
         private Transform puzzle;
         
-        public PuzzleCameraBehaviour(Transform transform, Transform target, Vector3 offset) : base(transform, target, offset) {}
+        public PuzzleCameraBehaviour(Transform transform, Transform target, OffsetAndCameraSpeed values) : base(transform, target, values) {}
         
         public void AssignRotation(Transform puzzleRotation) => this.puzzle = puzzleRotation;
 
-        public override Vector3 ExecuteMove(Vector3 calculatedOffset, float followSpeed)
+        public override Vector3 ExecuteMove(Vector3 calculatedOffset)
         {
             return thisTransform.position = Vector3.SmoothDamp(thisTransform.position, target.position + puzzle.localRotation * calculatedOffset, ref referenceVelocity, .5f);
         }
