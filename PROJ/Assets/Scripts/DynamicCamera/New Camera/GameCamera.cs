@@ -23,6 +23,8 @@ public class GameCamera : MonoBehaviour {
 
     private void Awake() {
 
+        Cursor.lockState = CursorLockMode.Locked;
+
         BehaviourData defaultValues = AssetDatabase.LoadAssetAtPath<BehaviourData>("Assets/Scripts/DynamicCamera/New Camera/InGameReferences/DefaultData.asset");
         BehaviourData glideValues = AssetDatabase.LoadAssetAtPath<BehaviourData>("Assets/Scripts/DynamicCamera/New Camera/InGameReferences/GlideData.asset");
         BehaviourData idleValues = AssetDatabase.LoadAssetAtPath<BehaviourData>("Assets/Scripts/DynamicCamera/New Camera/InGameReferences/Idle Behaviour Data.asset");
