@@ -8,9 +8,9 @@ namespace NewCamera {
         protected Vector3 referenceVelocity;
         protected readonly Transform thisTransform;
         protected readonly Transform target;
-        protected readonly BehaviourData values;
+        public readonly BehaviourData values;
         
-        public BaseCameraBehaviour(Transform transform, Transform target, BehaviourData values, bool isInputBehaviour) {
+        public BaseCameraBehaviour(Transform transform, Transform target, BehaviourData values) {
             thisTransform = transform;
             this.target = target;
             this.values = values;

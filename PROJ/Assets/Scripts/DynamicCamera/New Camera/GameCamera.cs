@@ -18,25 +18,27 @@ public class GameCamera : MonoBehaviour {
     private Vector2 input;
     private Transform thisTransform;
 
+    [SerializeField] private BehaviourData defaultValues;
+    [SerializeField] private BehaviourData glideValues;
+    [SerializeField] private BehaviourData idleValues;
+    [SerializeField] private BehaviourData puzzleValues;
+    
+
+
     private readonly Dictionary<Type, BaseCameraBehaviour> lowPriorityBehaviours = new Dictionary<Type, BaseCameraBehaviour>();
     private readonly Dictionary<Type, BaseCameraBehaviour> highPriorityBehaviours = new Dictionary<Type, BaseCameraBehaviour>();
 
     private void Awake() {
-
-        BehaviourData defaultValues = AssetDatabase.LoadAssetAtPath<BehaviourData>("Assets/Scripts/DynamicCamera/New Camera/InGameReferences/DefaultData.asset");
-        BehaviourData glideValues = AssetDatabase.LoadAssetAtPath<BehaviourData>("Assets/Scripts/DynamicCamera/New Camera/InGameReferences/GlideData.asset");
-        BehaviourData idleValues = AssetDatabase.LoadAssetAtPath<BehaviourData>("Assets/Scripts/DynamicCamera/New Camera/InGameReferences/Idle Behaviour Data.asset");
-        BehaviourData puzzleValues = AssetDatabase.LoadAssetAtPath<BehaviourData>("Assets/Scripts/DynamicCamera/New Camera/InGameReferences/PuzzleData.asset");
         
         thisTransform = transform;
-        currentBaseCameraBehaviour = new BaseCameraBehaviour(thisTransform, followTarget, defaultValues, true);
+        currentBaseCameraBehaviour = new BaseCameraBehaviour(thisTransform, followTarget, defaultValues);
         
-        lowPriorityBehaviours.Add(typeof(IdleBehaviour), new IdleBehaviour(thisTransform, followTarget, idleValues, false)); //When player is not playing
-        lowPriorityBehaviours.Add(typeof(StationaryBehaviour), new StationaryBehaviour(thisTransform, followTarget, defaultValues, true)); //When player 
-        lowPriorityBehaviours.Add(typeof(PuzzleBaseCameraBehaviour), new PuzzleBaseCameraBehaviour(thisTransform, followTarget, puzzleValues, false )); //When player 
+        lowPriorityBehaviours.Add(typeof(IdleBehaviour), new IdleBehaviour(thisTransform, followTarget, idleValues)); //When player is not playing
+        lowPriorityBehaviours.Add(typeof(StationaryBehaviour), new StationaryBehaviour(thisTransform, followTarget, defaultValues)); //When player 
+        lowPriorityBehaviours.Add(typeof(PuzzleBaseCameraBehaviour), new PuzzleBaseCameraBehaviour(thisTransform, followTarget, puzzleValues )); //When player 
         
-        highPriorityBehaviours.Add(typeof(GlideState), new GlideBaseCameraBehaviour(thisTransform, followTarget, glideValues, true));
-        highPriorityBehaviours.Add(typeof(WalkState), new BaseCameraBehaviour(transform, followTarget, defaultValues, true));
+        highPriorityBehaviours.Add(typeof(GlideState), new GlideBaseCameraBehaviour(thisTransform, followTarget, glideValues));
+        highPriorityBehaviours.Add(typeof(WalkState), new BaseCameraBehaviour(transform, followTarget, defaultValues));
     }
     
     private void LateUpdate() {
