@@ -1,5 +1,4 @@
 using System;
-using Unity.Mathematics;
 using UnityEngine;
 
 namespace NewCamera
@@ -11,7 +10,7 @@ namespace NewCamera
 
         private float pointOnCurve;
         
-        public IdleBehaviour(Transform transform, Transform target, BehaviourData values, bool isInputBehaviour) : base(transform, target, values, isInputBehaviour) {
+        public IdleBehaviour(Transform transform, Transform target, BehaviourData values) : base(transform, target, values) {
             behaviourData = values as IdleBehaviourData;
             EventHandler<AwayFromKeyboardEvent>.RegisterListener(ResetCurveCount);
         }
