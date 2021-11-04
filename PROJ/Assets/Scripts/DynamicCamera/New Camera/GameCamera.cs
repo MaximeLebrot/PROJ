@@ -7,18 +7,17 @@ using UnityEngine.Serialization;
 public class GameCamera : MonoBehaviour {
     
     [SerializeField] private ControllerInputReference inputReference;
-    [SerializeField] private CameraBehaviourData cameraBehaviourData;
-    [SerializeField] private BehaviourCallback behaviourCallback;
-
+    [SerializeField] private GlobalCameraSettings globalCameraSettings;
+    
     private BaseCameraBehaviour currentBaseCameraBehaviour;
-    private BaseCameraBehaviour previousBaseCameraBehaviour;
+
     [SerializeField] private Transform followTarget;
     [SerializeField] private Vector2 clampValues;
 
-    [SerializeField] private OffsetAndCameraSpeed defaultValues;
-    [SerializeField] private OffsetAndCameraSpeed idleValues;
-    [SerializeField] private OffsetAndCameraSpeed glideValues;
-    [SerializeField] private OffsetAndCameraSpeed puzzleValues;
+    [SerializeField] private BehaviourData defaultValues;
+    [SerializeField] private BehaviourData idleValues;
+    [SerializeField] private BehaviourData glideValues;
+    [SerializeField] private BehaviourData puzzleValues;
     
     private Vector2 input;
     private Transform thisTransform;
@@ -28,16 +27,15 @@ public class GameCamera : MonoBehaviour {
 
     private void Awake() {
         
-        previousBaseCameraBehaviour = currentBaseCameraBehaviour = new BaseCameraBehaviour(transform, followTarget, defaultValues);
         thisTransform = transform;
+        currentBaseCameraBehaviour = new BaseCameraBehaviour(thisTransform, followTarget, defaultValues, true);
         
-        lowPriorityBehaviours.Add(typeof(IdleBehaviour), new IdleBehaviour(thisTransform, followTarget, idleValues)); //When player is not playing
-        lowPriorityBehaviours.Add(typeof(StationaryBehaviour), new StationaryBehaviour(thisTransform, followTarget, defaultValues)); //When player 
-        lowPriorityBehaviours.Add(typeof(PuzzleBaseCameraBehaviour), new PuzzleBaseCameraBehaviour(thisTransform, followTarget, puzzleValues )); //When player 
+        lowPriorityBehaviours.Add(typeof(IdleBehaviour), new IdleBehaviour(thisTransform, followTarget, idleValues, false)); //When player is not playing
+        lowPriorityBehaviours.Add(typeof(StationaryBehaviour), new StationaryBehaviour(thisTransform, followTarget, defaultValues, true)); //When player 
+        lowPriorityBehaviours.Add(typeof(PuzzleBaseCameraBehaviour), new PuzzleBaseCameraBehaviour(thisTransform, followTarget, puzzleValues, false )); //When player 
         
-        
-        highPriorityBehaviours.Add(typeof(GlideState), new GlideBaseCameraBehaviour(thisTransform, followTarget, glideValues));
-        highPriorityBehaviours.Add(typeof(WalkState), new BaseCameraBehaviour(transform, followTarget, defaultValues));
+        highPriorityBehaviours.Add(typeof(GlideState), new GlideBaseCameraBehaviour(thisTransform, followTarget, glideValues, true));
+        highPriorityBehaviours.Add(typeof(WalkState), new BaseCameraBehaviour(transform, followTarget, defaultValues, true));
     }
     
     private void LateUpdate() {
@@ -45,7 +43,7 @@ public class GameCamera : MonoBehaviour {
         
         input = currentBaseCameraBehaviour.ClampMovement(input, clampValues);
         
-        Vector3 calculatedOffset = currentBaseCameraBehaviour.ExecuteCollision(input, cameraBehaviourData);
+        Vector3 calculatedOffset = currentBaseCameraBehaviour.ExecuteCollision(input, globalCameraSettings);
         
         thisTransform.position = currentBaseCameraBehaviour.ExecuteMove(calculatedOffset);
         thisTransform.rotation = currentBaseCameraBehaviour.ExecuteRotate();
@@ -54,8 +52,8 @@ public class GameCamera : MonoBehaviour {
     private void ReadInput() {
         Vector2 inputDirection = inputReference.InputMaster.MoveCamera.ReadValue<Vector2>();
         
-        input.x += -inputDirection.y * cameraBehaviourData.MouseSensitivity;
-        input.y += inputDirection.x * cameraBehaviourData.MouseSensitivity;
+        input.x += -inputDirection.y * globalCameraSettings.MouseSensitivity;
+        input.y += inputDirection.x * globalCameraSettings.MouseSensitivity;
         
     }
     
@@ -101,7 +99,7 @@ public class GameCamera : MonoBehaviour {
             
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
             
-        ChangeBehaviour(highPriorityBehaviours[typeof(PuzzleBaseCameraBehaviour)]);
+        ChangeBehaviour(lowPriorityBehaviours[typeof(PuzzleBaseCameraBehaviour)]);
 
         PuzzleBaseCameraBehaviour puzzleBaseBehaviour = currentBaseCameraBehaviour as PuzzleBaseCameraBehaviour;
 
