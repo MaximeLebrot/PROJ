@@ -8,7 +8,7 @@ namespace CameraBehaviours {
     public abstract class CameraBehaviour : ScriptableObject {
 
         [SerializeField] protected ControllerInputReference inputReference;
-        [SerializeField] protected CameraBehaviourData cameraBehaviourData;
+        [SerializeField] protected GlobalCameraSettings globalCameraSettings;
         [SerializeField] protected Vector3 offset;
         [SerializeField] protected Vector2 clampValues;
         [SerializeField] protected float cameraMovementSpeed;
@@ -56,7 +56,7 @@ namespace CameraBehaviours {
 
             Vector3 collisionOffset = followTarget.rotation * offset;
 
-            if (Physics.SphereCast(followTarget.position, cameraBehaviourData.CollisionRadius, collisionOffset.normalized, out var hitInfo, collisionOffset.magnitude, cameraBehaviourData.CollisionMask))
+            if (Physics.SphereCast(followTarget.position, globalCameraSettings.CollisionRadius, collisionOffset.normalized, out var hitInfo, collisionOffset.magnitude, globalCameraSettings.CollisionMask))
                 collisionOffset = collisionOffset.normalized * hitInfo.distance;
 
             calculatedOffset = collisionOffset;
@@ -72,8 +72,8 @@ namespace CameraBehaviours {
         private void ReadInput() {
             Vector2 inputDirection = inputReference.InputMaster.MoveCamera.ReadValue<Vector2>();
 
-            input.x += -inputDirection.y * cameraBehaviourData.MouseSensitivity;
-            input.y += inputDirection.x * cameraBehaviourData.MouseSensitivity;
+            input.x += -inputDirection.y * globalCameraSettings.MouseSensitivity;
+            input.y += inputDirection.x * globalCameraSettings.MouseSensitivity;
 
         }
 

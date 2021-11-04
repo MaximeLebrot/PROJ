@@ -192,67 +192,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c0b2ebf1e8273a4f993bc5a169e10aa, type: 3}
---- !u!1 &108499887 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2184620921574008162, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
-  m_PrefabInstance: {fileID: 553385318}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &108499888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 108499887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b560ea9dcaeb15443a09d7c717025819, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputReference: {fileID: 11400000, guid: 54398b8fed501aa41813fa11036bc179, type: 2}
-  cameraBehaviourData: {fileID: 11400000, guid: 178997108c592e743ab86335e4404734, type: 2}
-  behaviourCallback: {fileID: 11400000, guid: eb42a6b590cdc394cb43a60c1ce17190, type: 2}
-  followTarget: {fileID: 1551527590}
-  clampValues: {x: -60, y: 40}
-  defaultValues:
-    offset: {x: 0, y: 1.5, z: -3}
-    followSpeed: 0.15
-  idleValues:
-    offset: {x: -1, y: 0.5, z: -3}
-    followSpeed: 2
-  glideValues:
-    offset: {x: 0, y: 2, z: -5}
-    followSpeed: 0.05
-  puzzleValues:
-    offset: {x: 0, y: 10, z: -10}
-    followSpeed: 1
---- !u!114 &108499893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 108499887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 314115dd92557bf4dbad3b6105953990, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputReference: {fileID: 11400000, guid: 54398b8fed501aa41813fa11036bc179, type: 2}
-  awayTimer: 2
---- !u!114 &108499894
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 108499887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28cbc64e152e91b488a6d810a9ae1db3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1622896231}
 --- !u!1 &149482516 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8627980719989286235, guid: f81c301d22faf3d44a810cfa9a5140a8, type: 3}
@@ -377,30 +316,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 108499888, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
+      propertyPath: followTarget
+      value: 
+      objectReference: {fileID: 1551527590}
+    - target: {fileID: 108499894, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1622896231}
     - target: {fileID: 2184620921574008162, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
-    - target: {fileID: 2184620921574008163, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
-      propertyPath: eyeTarget
-      value: 
-      objectReference: {fileID: 1551527589}
-    - target: {fileID: 2184620921574008163, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
-      propertyPath: followTarget
-      value: 
-      objectReference: {fileID: 1551527590}
-    - target: {fileID: 2184620921574008163, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
-      propertyPath: listOfBehaviourReferences.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2184620921574008163, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
-      propertyPath: listOfBehaviourReferences.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: a279b70b4cb03d5479c648d12227b34b, type: 2}
-    - target: {fileID: 2184620921574008163, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
-      propertyPath: listOfBehaviourReferences.Array.data[3]
-      value: 
-      objectReference: {fileID: 11400000, guid: cf54f3ec0b75ffb40b4bbbc0ce9a4dbe, type: 2}
     - target: {fileID: 2184620921574008167, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -445,8 +372,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2184620921574008163, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
 --- !u!1 &638839443 stripped
 GameObject:
@@ -1590,6 +1516,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 637493746017295566, guid: e7143848a98783d4e96901616195f12e, type: 3}
+      propertyPath: dualCameraBehaviour
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3517456353992891304, guid: e7143848a98783d4e96901616195f12e, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -1600,11 +1530,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7143848a98783d4e96901616195f12e, type: 3}
---- !u!4 &1551527589 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 637493747113069027, guid: e7143848a98783d4e96901616195f12e, type: 3}
-  m_PrefabInstance: {fileID: 1551527588}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1551527590 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 637493746801876379, guid: e7143848a98783d4e96901616195f12e, type: 3}

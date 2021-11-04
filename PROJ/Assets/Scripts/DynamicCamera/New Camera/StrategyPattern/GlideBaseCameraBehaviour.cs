@@ -1,34 +1,25 @@
+using System;
 using UnityEngine;
 
 
 namespace NewCamera { 
     
-    [System.Serializable]
+    [Serializable]
     public class GlideBaseCameraBehaviour : BaseCameraBehaviour {
         
-        public GlideBaseCameraBehaviour(Transform transform, Transform target, OffsetAndCameraSpeed values) : base(transform, target, values) {}
+        public GlideBaseCameraBehaviour(Transform transform, Transform target, BehaviourData values, bool isInputBehaviour) : base(transform, target, values, isInputBehaviour) {}
         
-        public override Vector3 ExecuteCollision(Vector2 input, CameraBehaviourData data) {
+        public override Vector3 ExecuteCollision(Vector2 input, GlobalCameraSettings data) {
             
-            Vector3 collisionOffset = target.rotation * values.offset;
+            target.rotation = Quaternion.Euler(input.x, input.y, 0);
+
+            Vector3 collisionOffset = target.rotation * values.Offset;
             
             if (Physics.SphereCast(target.position, data.CollisionRadius, collisionOffset.normalized, out var hitInfo, collisionOffset.magnitude, data.CollisionMask))
                 collisionOffset = collisionOffset.normalized * hitInfo.distance;
-
-            return collisionOffset;
             
+            return collisionOffset;
         }
-
-        public override Quaternion ExecuteRotate() {
-            return base.ExecuteRotate();
-        }
-
-        public override Vector2 ClampMovement(Vector2 input, Vector2 values) {
-            input = base.ClampMovement(input, values); //Clamped on the x-axis
-
-            input.y = Mathf.Clamp(input.y, -45, 45);
-
-            return input;
-        }
+        
     }
 }
