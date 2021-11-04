@@ -38,6 +38,7 @@ public class Puzzle : MonoBehaviour
             currentPuzzleInstance = puzzleInstances[0];
             numOfPuzzles = puzzleInstances.Count;
             grid = GetComponentInChildren<PuzzleGrid>();
+            grid.StartGrid();
             inputMaster = new InputMaster();
             InitiatePuzzle();
             solution = Translate();

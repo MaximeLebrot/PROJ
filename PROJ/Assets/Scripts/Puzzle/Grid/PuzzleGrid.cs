@@ -42,9 +42,10 @@ public class PuzzleGrid : MonoBehaviour {
     }
     
     
-    private void Awake() {
+    private void OnEnable() 
+    {
 
-        StartGrid();
+        //StartGrid();
         
     }
 
@@ -67,8 +68,8 @@ public class PuzzleGrid : MonoBehaviour {
         throw new NotImplementedException();
     }
 
-    //Setup puzzle from Awake()
-    private void StartGrid()
+    //Setup puzzle from Puzzle
+    public void StartGrid()
     {
 
         GenerateGrid();

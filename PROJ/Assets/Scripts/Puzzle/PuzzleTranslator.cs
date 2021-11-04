@@ -23,7 +23,7 @@ public class PuzzleTranslator
             translations.Add(obj.GetTranslation());
         }
 
-        //gå igenom array och översätt med switchcase t.ex. logiska operatorer blir något annat här t.ex. case R så roteras den strängen på indexet innan.
+        //gå igenom array och översätt med switchcase t.ex. logiska operatorer blir något annat här t.ex. case R så roteras den
         for (int i = 0; i < translations.Count; i++)
         {
             string newString = "";
@@ -35,6 +35,24 @@ public class PuzzleTranslator
                 case 'Q':
                     newString = PuzzleHelper.SkipFirstChar(oldString);
                     translations[i] = PuzzleHelper.RotateSymbols(newString);
+                    break;
+
+                case 'W':
+                    newString = PuzzleHelper.SkipFirstChar(oldString);
+                    for(int j = 0; j < 2; j++)
+                    {
+                        newString = PuzzleHelper.RotateSymbols(newString);
+                    }
+                    translations[i] = newString;
+                    break;
+
+                case 'E':
+                    newString = PuzzleHelper.SkipFirstChar(oldString);
+                    for (int j = 0; j < 3; j++)
+                    {
+                        newString = PuzzleHelper.RotateSymbols(newString);
+                    }
+                    translations[i] = newString;
                     break;
 
                 case 'R':
@@ -58,16 +76,28 @@ public class PuzzleTranslator
             }
 
         }
+
+        /*
         for (int i = 0; i < translations.Count; i++)
         {
             switch (translations[i])
             {
                 case "Q":
-                    translations[i - 1/*WHAT IF THE FIRST STRING HAS A MOD???*/] = PuzzleHelper.RotateSymbols(translations[i - 1]);
+                    translations[i - 1] = PuzzleHelper.RotateSymbols(translations[i - 1]);
                     translations.Remove("Q");
                     i--;
                     break;
+                case "W":
 
+                    translations[i - 1] = PuzzleHelper.RotateSymbols(translations[i - 1]);
+                    translations.Remove("W");
+                    i--;
+                    break;
+                case "E":
+                    translations[i - 1] = PuzzleHelper.RotateSymbols(translations[i - 1]);
+                    translations.Remove("E");
+                    i--;
+                    break;
                 case "R":
                     translations[i] = translations[i - 1];
                     break;
@@ -76,6 +106,7 @@ public class PuzzleTranslator
                     break;
             }
         }
+        */
 
         foreach (string s in translations)
         {

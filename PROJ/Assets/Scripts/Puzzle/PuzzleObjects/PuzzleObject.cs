@@ -61,8 +61,11 @@ public abstract class PuzzleObject : MonoBehaviour
 public enum ModifierVariant
 {
     None,
-    Rotate,
-    Repeat, 
     Mirrored, 
-    Double
+    Double,
+    Rotate90,
+    Rotate180,
+    Rotate270,
+    RepeatOPEN,
+    RepeatCLOSE
 }
