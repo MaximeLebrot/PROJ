@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class CameraTransition {
 
-    
+    public async void Transit() {
+        
+    }
     
 }

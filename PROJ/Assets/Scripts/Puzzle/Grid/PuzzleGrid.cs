@@ -149,7 +149,7 @@ public class PuzzleGrid : MonoBehaviour {
     private void InstantiateFirstLine()
     {
         //instansiera linje
-        //rita linje frÂn startnod till spelare
+        //rita linje fr√•n startnod till spelare
         currentLineObject = Instantiate(linePrefab, transform.parent);
         currentLine = currentLineObject.GetComponent<PuzzleLine>();      
     }
@@ -306,7 +306,7 @@ public class PuzzleGrid : MonoBehaviour {
             n.Drawable = true;
         }
 
-        //s‰tt currentLine position
+        //s√§tt currentLine position
         currentNode = startNode;
         currentNode.gameObject.SetActive(true);
 
