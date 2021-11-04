@@ -15,11 +15,13 @@ public class Node : MonoBehaviour {
     
     public bool startNode;
 
-    public int PosX, PosY; 
+    public int PosX, PosY;
 
+    public bool Drawable;
     
     private void Awake() {
         neighbours = new Dictionary<Node, bool>();
+        Drawable = true;
         //FindNeighbours();
         //PosX = transform.localPosition.x;
         //PosY = transform.localPosition.y;

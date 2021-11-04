@@ -39,7 +39,7 @@ public class Puzzle : MonoBehaviour
             numOfPuzzles = puzzleInstances.Count;
             grid = GetComponentInChildren<PuzzleGrid>();
             inputMaster = new InputMaster();
-            PlaceSymbols();
+            InitiatePuzzle();
             solution = Translate();
             
         }
@@ -88,8 +88,10 @@ public class Puzzle : MonoBehaviour
 
         grid.ResetGrid();
         if(currentPuzzleInstance.HasRestrictions())
-            grid.SetRestrictions();
+            grid.SetRestrictions(currentPuzzleInstance.GetRestrictions());
+
         PlaceSymbols();
+
     }
     private void NextPuzzle()
     {

@@ -18,10 +18,11 @@ public class PuzzleGrid : MonoBehaviour {
     private Node startNode;
 
     [SerializeField]private string solution;
-    private List<Node> allNodesLIST = new List<Node>();
+    //private List<Node> allNodesLIST = new List<Node>();
     private Node[,] allNodes; 
 
-    private List<Node> restrictedNodes = new List<Node>();
+
+    private List<Node> unrestrictedNodes = new List<Node>();
 
 
     private PuzzleLine currentLine;
@@ -72,7 +73,7 @@ public class PuzzleGrid : MonoBehaviour {
 
         GenerateGrid();
 
-        allNodesLIST.AddRange(transform.GetComponentsInChildren<Node>());
+        //allNodesLIST.AddRange(transform.GetComponentsInChildren<Node>());
         foreach (Node node in allNodes)
             node.gameObject.SetActive(false);
 
@@ -137,18 +138,7 @@ public class PuzzleGrid : MonoBehaviour {
         transform.localPosition = (transform.right * -midIndex * nodeOffset) + (transform.forward * -midIndex * nodeOffset);
     }
 
-    private Node FindStartNode(ref List<Node> nodes) 
-    {
-        foreach(Node node in nodes)
-            if (node.startNode)
-            {
-                //node.OnNodeSelected += AddSelectedNode;
-                return node;
-            }
-      
-        Debug.LogError("NO START NODE SELECTED");
-        return null;
-    }
+
 
     public void StartPuzzle()
     {
@@ -163,9 +153,17 @@ public class PuzzleGrid : MonoBehaviour {
         currentLine = currentLineObject.GetComponent<PuzzleLine>();      
     }
 
-    internal void SetRestrictions()
+    internal void SetRestrictions(List<Vector2Int> unrestricted)
     {
-        throw new NotImplementedException();
+        int midIndex = size / 2;
+        foreach (Node n in allNodes)
+            n.Drawable = false;
+        
+        foreach(Vector2Int vInt in unrestricted)
+        {
+            Debug.Log(vInt);
+            allNodes[vInt.x + midIndex, vInt.y + midIndex].Drawable = true;
+        }
     }
 
     private void AddSelectedNode(Node node) 
@@ -238,6 +236,8 @@ public class PuzzleGrid : MonoBehaviour {
     //Show and activate neighbours
     private void ActivateNode(Node node) 
     {
+
+
         node.gameObject.SetActive(true);
 
         if (closestNodes.Count > 0) {
@@ -252,6 +252,9 @@ public class PuzzleGrid : MonoBehaviour {
         
         foreach (Node neighbour in node.neighbours.Keys) {
 
+            if (neighbour.Drawable == false)
+                continue;
+
             if (neighbour.gameObject.activeSelf == false)
                 node.enabledNodes.Add(neighbour);
 
@@ -264,7 +267,7 @@ public class PuzzleGrid : MonoBehaviour {
     {
         List<Node> finalNodes = new List<Node>();
         //Debug.Log("Save grid");
-        foreach(Node n in allNodesLIST)
+        foreach(Node n in allNodes)
         {
             if (n.gameObject.activeSelf)
                 finalNodes.Add(n);
@@ -294,15 +297,16 @@ public class PuzzleGrid : MonoBehaviour {
 
         lineRenderers.Clear();
 
-        foreach(Node n in allNodesLIST)
+        foreach(Node n in allNodes)
         {
             n.ResetNeighbours();
             n.TurnOnCollider();
             n.gameObject.SetActive(false);
+            n.Drawable = true;
         }
 
         //sätt currentLine position
-        currentNode = FindStartNode(ref allNodesLIST);
+        currentNode = startNode;
         currentNode.gameObject.SetActive(true);
 
         if (currentLine != null)
@@ -311,6 +315,7 @@ public class PuzzleGrid : MonoBehaviour {
             Destroy(currentLineObject, 2);
             currentLine = null;
         }
+
 
     }
 
