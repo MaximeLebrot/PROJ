@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CameraBehaviours;
 using UnityEngine;
 
 namespace DynamicCamera {
@@ -8,10 +9,9 @@ namespace DynamicCamera {
         
         [Header("IF PLAYER IS TARGET: Assign an empty transform as a child to the player , not the actual player")] 
         [SerializeField] private Transform followTarget;
-        [SerializeField] private Transform eyeTarget;
 
         [SerializeField] private List<CameraBehaviour> listOfBehaviourReferences;
-        [SerializeField] private BehaviourCallback behaviourCallback;
+        //[SerializeField] private BehaviourCallback behaviourCallback;
 
         private readonly Dictionary<Type, CameraBehaviour> behaviours = new Dictionary<Type, CameraBehaviour>();
         
@@ -42,14 +42,14 @@ namespace DynamicCamera {
         }
 
         private void OnPlayerStateChange(PlayerStateChangeEvent stateChangeEvent) {
-            CameraBehaviour newBehaviour = behaviourCallback.GetCameraBehaviourCallback(stateChangeEvent.newState);
+         //  CameraBehaviour newBehaviour = behaviourCallback.GetCameraBehaviourCallback(stateChangeEvent.newState);
 
-            if (newBehaviour != null)
-                ChangeBehaviour(newBehaviour, followTarget);
+          //  if (newBehaviour != null)
+          //      ChangeBehaviour(newBehaviour, followTarget);
         }
         
         private void OnAwayFromKeyboard(AwayFromKeyboardEvent e) {
-            ChangeBehaviour(behaviours[typeof(RecenterBehaviour)], eyeTarget);
+            ChangeBehaviour(behaviours[typeof(IdleBehaviour)], followTarget);
             EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
             EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnReturnToKeyboard);
         }
@@ -92,7 +92,6 @@ namespace DynamicCamera {
         public void AssignTargets() {
             try {
                 followTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
-                eyeTarget = GameObject.FindWithTag("EyeTarget").transform;
             } catch (NullReferenceException e) {
                 Debug.Log("Couldn't find one or all targets, check if they have the right tag");
             }

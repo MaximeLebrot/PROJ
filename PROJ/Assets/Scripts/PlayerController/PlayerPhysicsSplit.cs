@@ -85,7 +85,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
             surfThreshold = glideValues.surfThreshold;
         }
 
-        while (time < setValuesLerpSpeed)
+        while (time <= setValuesLerpSpeed)
         {
             //Friction and air resistance
             staticFrictionCoefficient = Mathf.Lerp(staticFrictionCoefficient, values.staticFriction, time * (1 / setValuesLerpSpeed));
@@ -201,8 +201,14 @@ public class PlayerPhysicsSplit : MonoBehaviour
         
      ApplyAirResistance();
     }
+    public float moveThreshold = 0.05f;
     private void MoveOutOfGeometry(Vector3 movement)
     {
+        //Do not move at all if the distance is tiny.
+        //SHOULD not result in a move at all, and therefore shouldnt case trouble..? 
+        if (movement.magnitude < moveThreshold)
+            return;
+
         transform.position += movement;    
        
         for (int i = 0; i < MOVE_OUT_ITERATIONS && velocity.magnitude > 0.001f; i++) 
