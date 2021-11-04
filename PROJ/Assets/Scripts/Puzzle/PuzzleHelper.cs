@@ -60,41 +60,6 @@ public static class PuzzleHelper
         return c;
     }
 
-    public static char TranslateLocalInput(Node aNode, Node bNode)
-    {
-        char c = '-';
-        Vector3 a = aNode.transform.localPosition;
-        Vector3 b = bNode.transform.localPosition;
-
-        if (a.x == b.x && a.z > b.z)
-            c = '8';
-
-        if (a.x > b.x && a.z > b.z)
-            c = '9';
-
-        if (a.x > b.x && a.z == b.z)
-            c = '6';
-
-        if (a.x > b.x && a.z < b.z)
-            c = '3';
-
-        if (a.x == b.x && a.z < b.z)
-            c = '2';
-
-        if (a.x < b.x && a.z < b.z)
-            c = '1';
-
-        if (a.x < b.x && a.z == b.z)
-            c = '4';
-
-        if (a.x < b.x && a.z > b.z)
-            c = '7';
-
-
-
-        return c;
-    }
-
     public static Vector3 TranslateNumToDirection(char c)
     {
         switch (c)
