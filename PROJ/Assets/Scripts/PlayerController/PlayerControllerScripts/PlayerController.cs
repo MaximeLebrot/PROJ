@@ -149,7 +149,11 @@ public class PlayerController : MonoBehaviour
     }
     private void RotateInVelocityDirection()
     {
-        transform.rotation = Quaternion.LookRotation(physics.GetXZMovement().normalized, Vector3.up);
+        Vector3 charVelocity = physics.GetXZMovement();
+        if (charVelocity.magnitude < inputThreshold)
+            return;
+        transform.forward = Vector3.Lerp(transform.forward, charVelocity.normalized, turnSpeed * Time.deltaTime);
+        //transform.rotation = Quaternion.LookRotation(charVelocity.normalized, Vector3.up);
     }
     //Obsolete
     private void RotateTowardsCameraDirection(Vector3 rawInput)
