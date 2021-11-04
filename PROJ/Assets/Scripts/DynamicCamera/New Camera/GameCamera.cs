@@ -29,7 +29,9 @@ public class GameCamera : MonoBehaviour {
     private readonly Dictionary<Type, BaseCameraBehaviour> highPriorityBehaviours = new Dictionary<Type, BaseCameraBehaviour>();
 
     private void Awake() {
-        
+
+        Cursor.lockState = CursorLockMode.Locked;
+
         thisTransform = transform;
         currentBaseCameraBehaviour = new BaseCameraBehaviour(thisTransform, followTarget, defaultValues);
         
