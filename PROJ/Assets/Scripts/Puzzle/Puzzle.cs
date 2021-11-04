@@ -6,6 +6,7 @@ using System.Text;
 public class Puzzle : MonoBehaviour
 {
     //[SerializeField] int puzzleID; //should be compared to solution on a EvaluatePuzzleEvent and fire a SUCCESS EVENT or FAIL EVENT
+    [SerializeField] private int masterPuzzleID; 
     [SerializeField] private List<PuzzleInstance> puzzleInstances = new List<PuzzleInstance>();
     [SerializeField] private string playerInput = "";
     [SerializeField] private string solution;
@@ -32,9 +33,10 @@ public class Puzzle : MonoBehaviour
 
     void Awake()
     {
-        
+      
         if (puzzleInstances.Count > 0)
         {
+            SetupPuzzleInstances();
             currentPuzzleInstance = puzzleInstances[0];
             numOfPuzzles = puzzleInstances.Count;
             grid = GetComponentInChildren<PuzzleGrid>();
@@ -45,9 +47,7 @@ public class Puzzle : MonoBehaviour
             
         }
         else
-            Debug.LogWarning("NO PUZZLE INSTANCES IN PUZZLE");
-
-        
+            Debug.LogWarning("NO PUZZLE INSTANCES IN PUZZLE");        
     }
 
     public void Load()
@@ -82,8 +82,15 @@ public class Puzzle : MonoBehaviour
         EventHandler<ExitPuzzleEvent>.UnregisterListener(ExitPuzzle);
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
     }
+    private void SetupPuzzleInstances()
+    {
+        foreach (PuzzleInstance pi in puzzleInstances)
+        {
+            pi.SetupPuzzleInstance(this, masterPuzzleID);
+        }
 
-   private void InitiatePuzzle()
+    }
+    private void InitiatePuzzle()
     {
         //Debug.Log("Initiate puzzle");
 
@@ -109,7 +116,7 @@ public class Puzzle : MonoBehaviour
             //Debug.Log("Last puzzle instance completed");
 
 
-            EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID()), true));
+            EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID(masterPuzzleID)), true));
             grid.CompleteGrid();
             GetComponent<Collider>().enabled = false;
             return;
@@ -250,7 +257,7 @@ public class Puzzle : MonoBehaviour
             grid.ResetGrid();
         }
         
-        EventHandler<ResetPuzzleEvent>.FireEvent(new ResetPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID())));
+        EventHandler<ResetPuzzleEvent>.FireEvent(new ResetPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID(masterPuzzleID))));
         GetComponentInChildren<PuzzleStarter>().ResetStarter();
 
     }
@@ -269,7 +276,7 @@ public class Puzzle : MonoBehaviour
     {
         if(eve.success != true)
         {
-            if (eve.info.ID == currentPuzzleInstance.GetPuzzleID())
+            if (eve.info.ID == currentPuzzleInstance.GetPuzzleID(masterPuzzleID))
             {
                 grid.ResetGrid();
             }
@@ -293,7 +300,7 @@ public class Puzzle : MonoBehaviour
     }
 
     //Maybe return ID from current PuzzleInstance instead
-    public int GetPuzzleID() { return currentPuzzleInstance.GetPuzzleID();}
+    public int GetPuzzleID() { return currentPuzzleInstance.GetPuzzleID(masterPuzzleID);}
 
 
 }
