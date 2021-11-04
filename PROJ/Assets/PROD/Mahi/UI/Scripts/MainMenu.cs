@@ -19,12 +19,11 @@ public class MainMenu : MonoBehaviour
     void Awake()
     {
         inputMaster = new InputMaster();
-     //   Cursor.visible = true;
+        //Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
-        fovSlider.value = Settings.FieldOfView;
-
-        Camera.main.fieldOfView = Settings.FieldOfView;
+        //fovSlider.value = Settings.FieldOfView;
+        //Camera.main.fieldOfView = Settings.FieldOfView;
 
     }
 

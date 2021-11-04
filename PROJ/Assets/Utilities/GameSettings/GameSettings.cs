@@ -18,6 +18,7 @@ public class GameSettings : ScriptableObject
     public float musicVolume;
     public float voiceVolume;
     public float soundEffectsVolume;
+    public bool mute;
 
     //Easy of Access
     public int fontSize;
@@ -26,8 +27,9 @@ public class GameSettings : ScriptableObject
     public bool blindMode;
 
     //Display
-    public float FieldOfView { get; private set; }
-    public float Brightness { get; private set; }
-    public GraphicsQuality Quality { get; private set; }
+    public float fieldOfView;
+    public float brightness;
+    public GraphicsQuality Quality;
+    public bool fullscreen;
     //private Resolution screenRes? 
 }
