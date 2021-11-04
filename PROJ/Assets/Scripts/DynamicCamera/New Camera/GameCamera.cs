@@ -8,10 +8,9 @@ public class GameCamera : MonoBehaviour {
     
     [SerializeField] private ControllerInputReference inputReference;
     [SerializeField] private CameraBehaviourData cameraBehaviourData;
-    [SerializeField] private BehaviourCallback behaviourCallback;
-
+    
     private BaseCameraBehaviour currentBaseCameraBehaviour;
-    private BaseCameraBehaviour previousBaseCameraBehaviour;
+
     [SerializeField] private Transform followTarget;
     [SerializeField] private Vector2 clampValues;
 
@@ -28,8 +27,8 @@ public class GameCamera : MonoBehaviour {
 
     private void Awake() {
         
-        previousBaseCameraBehaviour = currentBaseCameraBehaviour = new BaseCameraBehaviour(transform, followTarget, defaultValues);
         thisTransform = transform;
+        currentBaseCameraBehaviour = new BaseCameraBehaviour(thisTransform, followTarget, defaultValues);
         
         lowPriorityBehaviours.Add(typeof(IdleBehaviour), new IdleBehaviour(thisTransform, followTarget, idleValues)); //When player is not playing
         lowPriorityBehaviours.Add(typeof(StationaryBehaviour), new StationaryBehaviour(thisTransform, followTarget, defaultValues)); //When player 
@@ -101,7 +100,7 @@ public class GameCamera : MonoBehaviour {
             
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
             
-        ChangeBehaviour(highPriorityBehaviours[typeof(PuzzleBaseCameraBehaviour)]);
+        ChangeBehaviour(lowPriorityBehaviours[typeof(PuzzleBaseCameraBehaviour)]);
 
         PuzzleBaseCameraBehaviour puzzleBaseBehaviour = currentBaseCameraBehaviour as PuzzleBaseCameraBehaviour;
 

@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using NewCamera;
 using UnityEngine;
 
 namespace NewCamera
@@ -12,7 +9,7 @@ namespace NewCamera
         
         public PuzzleBaseCameraBehaviour(Transform transform, Transform target, OffsetAndCameraSpeed values) : base(transform, target, values) {}
         
-        public void AssignRotation(Transform puzzleRotation) => this.puzzle = puzzleRotation;
+        public void AssignRotation(Transform puzzleRotation) => puzzle = puzzleRotation;
 
         public override Vector3 ExecuteMove(Vector3 calculatedOffset)
         {
@@ -24,6 +21,10 @@ namespace NewCamera
             Vector3 rotation = puzzle.localEulerAngles + eulerRotation;
             
             return Quaternion.Euler(rotation);
+        }
+
+        public override Vector3 ExecuteCollision(Vector2 input, CameraBehaviourData data) {
+            return thisTransform.rotation * values.offset;
         }
     }
     
