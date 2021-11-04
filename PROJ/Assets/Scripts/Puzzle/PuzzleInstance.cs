@@ -21,7 +21,6 @@ public class PuzzleInstance : MonoBehaviour
 
     private void OnEnable()
     {
-        masterPuzzle = GetComponentInParent<Puzzle>();
         EventHandler<EvaluateSolutionEvent>.RegisterListener(EvaluateSolution);
     }
 
@@ -37,7 +36,15 @@ public class PuzzleInstance : MonoBehaviour
             masterPuzzle.EvaluateSolution();
     }
 
-    public int GetPuzzleID() { return puzzleID;  }
+    public void SetupPuzzleInstance(Puzzle puzzle, int masterPuzzleID)
+    {
+        masterPuzzle = puzzle;
+        puzzleID = int.Parse(masterPuzzleID.ToString() + puzzleID.ToString());
+    }
+    public int GetPuzzleID(int masterPuzzleID) 
+    {
+        return puzzleID;  
+    }
 
     public void Solve() 
     { 

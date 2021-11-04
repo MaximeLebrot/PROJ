@@ -18,25 +18,25 @@ public class PlayerPhysicsSplit : MonoBehaviour
     [SerializeField] private float minimumPenetrationForPenalty = 0.01f;
     [SerializeField] private LayerMask collisionMask;
     [SerializeField] private float gravityWhenFalling = 10f;
+    [SerializeField] private float glideHeight;
 
     //Properties
     public float GlideHeight { get; private set; }
     public float SurfThreshold { get => surfThreshold; }
 
 
-    //Public variables temporary for debugging via inspector
-    //pls dont judge
+
     [Header("Values set by States")]
-    public float maxSpeed = 12f;
-    public float gravity = 9.81f;
+    private float maxSpeed = 12f;
+    private float gravity = 9.81f;
 
-    public float smoothingMaxDistance = 3f;
-    public int powerOf = 2;
-    public float surfThreshold = 8;
+    private float smoothingMaxDistance = 3f;
+    private int powerOf = 2;
+    private float surfThreshold = 8;
 
-    public float staticFrictionCoefficient = 0.5f;
-    public float kineticFrictionCoefficient = 0.35f;
-    public float airResistance = 0.35f;
+    private float staticFrictionCoefficient = 0.5f;
+    private float kineticFrictionCoefficient = 0.35f;
+    private float airResistance = 0.35f;
 
     //Collision
     private CapsuleCollider attachedCollider;
@@ -49,7 +49,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     {
         attachedCollider = GetComponent<CapsuleCollider>();
     }
-    public float glideHeight;
+
     private void Update()
     {
         AddGravity();
