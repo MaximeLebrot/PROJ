@@ -32,7 +32,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
     private float smoothingMaxDistance = 3f;
     private int powerOf = 2;
-    private float surfThreshold = 8;
+    public float surfThreshold = 8;
 
     private float staticFrictionCoefficient = 0.5f;
     private float kineticFrictionCoefficient = 0.35f;
