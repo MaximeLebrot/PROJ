@@ -8,16 +8,19 @@ namespace NewCamera {
         protected Vector3 referenceVelocity;
         protected readonly Transform thisTransform;
         protected readonly Transform target;
-        protected readonly OffsetAndCameraSpeed values;
+        protected readonly BehaviourData values;
 
-        public BaseCameraBehaviour(Transform transform, Transform target, OffsetAndCameraSpeed values) {
+        private bool isInputBehaviour;
+
+        public BaseCameraBehaviour(Transform transform, Transform target, BehaviourData values, bool isInputBehaviour) {
             thisTransform = transform;
             this.target = target;
             this.values = values;
+            this.isInputBehaviour = isInputBehaviour;
         } 
         
         public virtual Vector3 ExecuteMove(Vector3 calculatedOffset) {
-            return Vector3.SmoothDamp(thisTransform.position, target.position + calculatedOffset, ref referenceVelocity, values.followSpeed);
+            return Vector3.SmoothDamp(thisTransform.position, target.position + calculatedOffset, ref referenceVelocity, values.FollowSpeed);
         }
 
         public virtual Quaternion ExecuteRotate() {
@@ -27,11 +30,12 @@ namespace NewCamera {
             return Quaternion.Slerp(thisTransform.rotation, targetRotation, Time.deltaTime * 50);
         }
 
-        public virtual Vector3 ExecuteCollision(Vector2 input, CameraBehaviourData data) {
+        public virtual Vector3 ExecuteCollision(Vector2 input, GlobalCameraSettings data) {
             
-            target.rotation = Quaternion.Euler(input.x, input.y, 0);
+            if(isInputBehaviour)
+                target.rotation = Quaternion.Euler(input.x, input.y, 0);
             
-            Vector3 collisionOffset = target.rotation * values.offset;
+            Vector3 collisionOffset = target.rotation * values.Offset;
             
             if (Physics.SphereCast(target.position, data.CollisionRadius, collisionOffset.normalized, out var hitInfo, collisionOffset.magnitude, data.CollisionMask))
                 collisionOffset = collisionOffset.normalized * hitInfo.distance;

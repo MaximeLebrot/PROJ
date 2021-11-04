@@ -7,25 +7,17 @@ namespace NewCamera
         private readonly Vector3 eulerRotation = new Vector3(50, 0, 0);
         private Transform puzzle;
         
-        public PuzzleBaseCameraBehaviour(Transform transform, Transform target, OffsetAndCameraSpeed values) : base(transform, target, values) {}
+        public PuzzleBaseCameraBehaviour(Transform transform, Transform target, BehaviourData values, bool isInputBehaviour) : base(transform, target, values, isInputBehaviour) {}
         
         public void AssignRotation(Transform puzzleRotation) => puzzle = puzzleRotation;
 
         public override Vector3 ExecuteMove(Vector3 calculatedOffset)
         {
-            return thisTransform.position = Vector3.SmoothDamp(thisTransform.position, target.position + puzzle.localRotation * calculatedOffset, ref referenceVelocity, .5f);
+            return thisTransform.position = Vector3.SmoothDamp(thisTransform.position, target.position + puzzle.localRotation * values.Offset, ref referenceVelocity, values.FollowSpeed);
         }
 
-        public override Quaternion ExecuteRotate()
-        {
-            Vector3 rotation = puzzle.localEulerAngles + eulerRotation;
-            
-            return Quaternion.Euler(rotation);
-        }
-
-        public override Vector3 ExecuteCollision(Vector2 input, CameraBehaviourData data) {
-            return thisTransform.rotation * values.offset;
+        public override Quaternion ExecuteRotate() {
+            return Quaternion.Lerp(thisTransform.rotation, Quaternion.Euler(puzzle.localEulerAngles + eulerRotation), Time.deltaTime);
         }
     }
-    
 }

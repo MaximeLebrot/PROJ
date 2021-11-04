@@ -14442,11 +14442,6 @@ Transform:
   m_Father: {fileID: 488812122}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &754417466 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 637493747113069027, guid: e7143848a98783d4e96901616195f12e, type: 3}
-  m_PrefabInstance: {fileID: 637493746652575449}
-  m_PrefabAsset: {fileID: 0}
 --- !u!43 &756244743
 Mesh:
   m_ObjectHideFlags: 0
@@ -28318,21 +28313,29 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 108499888, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
+      propertyPath: idleValues
+      value: 
+      objectReference: {fileID: 11400000, guid: 9db25c71cc5f2584ba704a6d0964df6a, type: 2}
+    - target: {fileID: 108499888, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
+      propertyPath: glideValues
+      value: 
+      objectReference: {fileID: 11400000, guid: 1541e9765bf61f740927ace45f8b03f3, type: 2}
+    - target: {fileID: 108499888, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
       propertyPath: followTarget
       value: 
       objectReference: {fileID: 1063971650}
     - target: {fileID: 108499888, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
-      propertyPath: puzzleValues.offset.y
-      value: 1.5
-      objectReference: {fileID: 0}
+      propertyPath: puzzleValues
+      value: 
+      objectReference: {fileID: 11400000, guid: acb69f4a27ceb6549ab10851fc9e2441, type: 2}
     - target: {fileID: 108499888, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
-      propertyPath: puzzleValues.offset.z
-      value: -11
-      objectReference: {fileID: 0}
+      propertyPath: defaultValues
+      value: 
+      objectReference: {fileID: 11400000, guid: 301349ffb4190a84d9cedbaed0935248, type: 2}
     - target: {fileID: 108499888, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
-      propertyPath: puzzleValues.followSpeed
-      value: 2
-      objectReference: {fileID: 0}
+      propertyPath: globalCameraSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: 178997108c592e743ab86335e4404734, type: 2}
     - target: {fileID: 108499894, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
       propertyPath: player
       value: 
@@ -28340,26 +28343,6 @@ PrefabInstance:
     - target: {fileID: 2184620921574008162, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
       propertyPath: m_Name
       value: Main Camera
-      objectReference: {fileID: 0}
-    - target: {fileID: 2184620921574008163, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
-      propertyPath: eyeTarget
-      value: 
-      objectReference: {fileID: 754417466}
-    - target: {fileID: 2184620921574008163, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
-      propertyPath: followTarget
-      value: 
-      objectReference: {fileID: 1063971650}
-    - target: {fileID: 2184620921574008163, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
-      propertyPath: behaviourCallback
-      value: 
-      objectReference: {fileID: 11400000, guid: eb42a6b590cdc394cb43a60c1ce17190, type: 2}
-    - target: {fileID: 2184620921574008164, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
-      propertyPath: m_RendererIndex
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2184620921574008164, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
-      propertyPath: m_RenderPostProcessing
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2184620921574008167, guid: 6bed537269c9b7d47b05b12038a19438, type: 3}
       propertyPath: m_RootOrder

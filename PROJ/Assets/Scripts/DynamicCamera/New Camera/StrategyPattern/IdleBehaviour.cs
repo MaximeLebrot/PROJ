@@ -1,27 +1,36 @@
-using NewCamera;
+using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace NewCamera
 {
-    [System.Serializable]
-    public class IdleBehaviour : BaseCameraBehaviour
-    {
-        public IdleBehaviour(Transform transform, Transform target, OffsetAndCameraSpeed values) : base(transform, target, values) {
-            Debug.Log("Created idleBehaviour");
+    [Serializable]
+    public class IdleBehaviour : BaseCameraBehaviour {
+        
+        private IdleBehaviourData behaviourData;
+
+        private float lineIndex;
+        
+        public IdleBehaviour(Transform transform, Transform target, BehaviourData values, bool isInputBehaviour) : base(transform, target, values, isInputBehaviour) {
+            behaviourData = values as IdleBehaviourData;
+            EventHandler<AwayFromKeyboardEvent>.RegisterListener(ResetCurveCount);
         }
 
         public override Vector3 ExecuteMove(Vector3 calculatedOffset) {
-            return Vector3.SmoothDamp(thisTransform.position, target.parent.position + calculatedOffset, ref referenceVelocity, values.followSpeed);
+            return Vector3.SmoothDamp(thisTransform.position, target.parent.position + calculatedOffset, ref referenceVelocity, values.FollowSpeed);
         }
 
-        public override Quaternion ExecuteRotate()
-        {
-            return Quaternion.Lerp(thisTransform.rotation, Quaternion.LookRotation(target.parent.forward), Time.deltaTime);
-        }
+        public override Quaternion ExecuteRotate() {
 
-        public override Vector3 ExecuteCollision(Vector2 input, CameraBehaviourData data) {
+            float newIndex = behaviourData.RotationCurve.Evaluate(lineIndex);
+            lineIndex += Time.deltaTime / 3;
             
-            Vector3 collisionOffset = target.parent.rotation * values.offset;
+            return Quaternion.Lerp(thisTransform.rotation, Quaternion.LookRotation(target.parent.forward), newIndex);
+        }
+
+        public override Vector3 ExecuteCollision(Vector2 input, GlobalCameraSettings data) {
+            
+            Vector3 collisionOffset = target.parent.rotation * behaviourData.Offset;
         
             if (Physics.SphereCast(target.position, data.CollisionRadius, collisionOffset.normalized, out var hitInfo, collisionOffset.magnitude, data.CollisionMask))
                 collisionOffset = collisionOffset.normalized * hitInfo.distance;
@@ -29,6 +38,8 @@ namespace NewCamera
             return collisionOffset;
             
         }
+
+        private void ResetCurveCount(AwayFromKeyboardEvent e) => lineIndex = 0;
     }
 
 }

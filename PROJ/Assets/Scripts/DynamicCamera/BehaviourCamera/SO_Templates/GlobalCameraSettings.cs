@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Camera/Camera Data/Camera Behaviour Data)", fileName = "Camera Behaviour Data")]
-public class CameraBehaviourData : ScriptableObject {
+public class GlobalCameraSettings : ScriptableObject {
 
     [SerializeField] private float mouseSensitivity;
     [SerializeField] private float collisionRadius;
