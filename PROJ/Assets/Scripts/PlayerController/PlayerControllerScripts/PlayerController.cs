@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour
 
     //Camera Test/Debug
     public bool dualCameraBehaviour = true;
+    public ControllerInputReference inputReference;
 
     void Awake()
     {
@@ -68,7 +69,7 @@ public class PlayerController : MonoBehaviour
     }
     public void InputWalk(Vector3 inp)
     {
-        input = inp.x * turnSpeed * Vector3.right + 
+        input = inp.x */*turnSpeed * - could this be done for rotation input from camera aswell?  */ Vector3.right + 
                 inp.y * Vector3.forward;   
 
         //to stop character rotation when input is 0
@@ -101,19 +102,20 @@ public class PlayerController : MonoBehaviour
     }
     private void CalcDirection(Vector3 inp)
     {
-        if (dualCameraBehaviour)
+       /* if (dualCameraBehaviour)
         {
             if (surfCamera)
                 RotateInDirectionOfMovement(inp);
             else
                 PlayerDirection(inp);
         }
-        else
+        else*/
             PlayerDirection(inp);
     }
     private void Decelerate()
     {
-        force += -deceleration * physics.GetXZMovement().normalized;
+        //Vector3 projectedDeceleration = Vector3.ProjectOnPlane(-physics.GetXZMovement().normalized, groundHitInfo.normal) * deceleration;
+        force += deceleration * -physics.GetXZMovement().normalized;
     }
     private void Accelerate()
     {
@@ -124,6 +126,7 @@ public class PlayerController : MonoBehaviour
         force -= ((1 - dot) * 0.5f) 
                  * turnRate 
                  * physics.GetXZMovement().normalized;
+        
         //Add "retainedSpeedWhenTurning" amount of previously existing momentum to our new direction
         //Makes turning less punishing
         force += ((1 - dot) * 0.5f)
@@ -140,6 +143,7 @@ public class PlayerController : MonoBehaviour
 
         input = camRotation * input;
         input.y = 0;
+
         RotateInVelocityDirection();
         ProjectMovement();
     }
@@ -168,14 +172,7 @@ public class PlayerController : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(physics.GetXZMovement().normalized, Vector3.up);
         //transform.Rotate(0, rawInput.x, 0);
         //transform.forward = Vector3.Lerp(transform.forward, new Vector3(transform.forward.x, input.y, transform.forward.z), turnSpeed * Time.deltaTime);
-
-        /*
-         * vad är y-värdet vi vill åt. Ska spelarens rotation röra sig mot kamerans?
-         * 
-         */
-
     }
-
     //Rotation when using Glide
     private void RotateInDirectionOfMovement(Vector3 rawInput)
     {
@@ -187,21 +184,16 @@ public class PlayerController : MonoBehaviour
         //Add rotation to input
         input = rotation * input;
 
-        //steepClimbMaxAngle
-        //Do we want a percentage of the input to be projected on plane? 
-        //Flat ground would have the same movement, but inclines would not
-        //Would probably result in running away from the ground on declines though, 
-        //unless the gravity keeps it in check, but it wont be certain to do so.
-        //the alternative then would be a full projection on declines, but this requires another split of the logic
         ProjectMovement();
         transform.Rotate(0, rawInput.x * turnSpeed, 0);
 
     }
     private void SlopeDeceleration()
-    {
+    {     
         float slopeDecelerationFactor = ((groundHitAngle - decelerationSlopeAngle) / (slopeMaxAngle - decelerationSlopeAngle));
         if (groundHitAngle > decelerationSlopeAngle)
         {
+            Debug.Log("Using slope deceleration");
             //force = slopeDecelerationFactor * -physics.velocity * slopeDecelerationMultiplier;
             force = slopeDecelerationFactor * slopeDecelerationMultiplier * -physics.velocity.normalized;
         }
