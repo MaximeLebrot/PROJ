@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float slopeDecelerationMultiplier = 2f;
     [SerializeField] private float glideMinAngle = 80f;
 
-[Header("GroundCheck")]
+    [Header("GroundCheck")]
     [SerializeField] private LayerMask groundCheckMask;
     [SerializeField] private float groundCheckDistance = 0.05f;
 
@@ -40,10 +40,14 @@ public class PlayerController : MonoBehaviour
     private Vector3 input;
     private bool surfCamera = false;
     private float groundCheckBoxSize = 0.25f;
+    private float inputThreshold = 0.1f;
     public float groundHitAngle { get; private set; }
     public float GlideMinAngle => glideMinAngle;
 
-    
+    //Camera Test/Debug
+    public bool dualCameraBehaviour = true;
+    public ControllerInputReference inputReference;
+
     void Awake()
     {
         cameraTransform = Camera.main.transform;
@@ -65,21 +69,26 @@ public class PlayerController : MonoBehaviour
     }
     public void InputWalk(Vector3 inp)
     {
-        input = inp.x * Vector3.right + 
-                inp.y * Vector3.forward;
+        input = inp.x */*turnSpeed * - could this be done for rotation input from camera aswell?  */ Vector3.right + 
+                inp.y * Vector3.forward;   
 
-        if (input.magnitude > 1f)
+        //to stop character rotation when input is 0
+        if (input.magnitude < inputThreshold)
+            Decelerate();
+        else
         {
-            input.Normalize();
+            if (input.magnitude > 1f)
+            {
+                input.Normalize();
+            }
+            CalcDirection(inp);
+            Accelerate();
         }
-
-        CalcDirection(inp);
-        AccelerateDecelerate();
     }
     public void InputAirborne(Vector3 inp)
     {
-        input = inp.x * Vector3.right +
-                inp.y * Vector3.forward;
+        input = inp.x * cameraTransform.right +
+                inp.y * cameraTransform.forward;
 
         if (input.magnitude > 1f)
         {
@@ -93,24 +102,20 @@ public class PlayerController : MonoBehaviour
     }
     private void CalcDirection(Vector3 inp)
     {
-         if (surfCamera)
-             RotateInDirectionOfMovement(inp);
-         else
-             PlayerDirection();
-       
+       /* if (dualCameraBehaviour)
+        {
+            if (surfCamera)
+                RotateInDirectionOfMovement(inp);
+            else
+                PlayerDirection(inp);
+        }
+        else*/
+            PlayerDirection(inp);
     }
-    private void AccelerateDecelerate() 
+    private void Decelerate()
     {
-        //Decelerate
-        if (input.magnitude < float.Epsilon)
-        {
-            force += -deceleration * physics.GetXZMovement().normalized;
-        }
-        //Accelerate
-        else
-        {
-            Accelerate();           
-        }
+        //Vector3 projectedDeceleration = Vector3.ProjectOnPlane(-physics.GetXZMovement().normalized, groundHitInfo.normal) * deceleration;
+        force += deceleration * -physics.GetXZMovement().normalized;
     }
     private void Accelerate()
     {
@@ -118,13 +123,19 @@ public class PlayerController : MonoBehaviour
         float dot = Vector3.Dot(inputXZ.normalized, physics.GetXZMovement().normalized);
 
         force += input * acceleration;
-        force -= (((dot - 1) * turnRate * -physics.GetXZMovement().normalized));
+        force -= ((1 - dot) * 0.5f) 
+                 * turnRate 
+                 * physics.GetXZMovement().normalized;
+        
         //Add "retainedSpeedWhenTurning" amount of previously existing momentum to our new direction
         //Makes turning less punishing
-        force += (((dot - 1) * turnRate * retainedSpeedWhenTurning * -inputXZ.normalized));
+        force += ((1 - dot) * 0.5f)
+                 * turnRate 
+                 * retainedSpeedWhenTurning 
+                 * inputXZ.normalized;
     }
-    //Rotation when using walk
-    private void PlayerDirection()
+    
+    private void PlayerDirection(Vector3 rawInput)
     {
         Vector3 temp = cameraTransform.rotation.eulerAngles;
         temp.x = 0;
@@ -132,17 +143,36 @@ public class PlayerController : MonoBehaviour
 
         input = camRotation * input;
         input.y = 0;
-        ProjectMovement();
-        RotateTowardsCameraDirection();
-    }
-    private void RotateTowardsCameraDirection()
-    {
-        transform.localEulerAngles = new Vector3(
-        transform.localEulerAngles.x,
-        cameraTransform.transform.localEulerAngles.y,
-        transform.localEulerAngles.z);
-    }
 
+        RotateInVelocityDirection();
+        ProjectMovement();
+    }
+    private void RotateInVelocityDirection()
+    {
+        transform.rotation = Quaternion.LookRotation(physics.GetXZMovement().normalized, Vector3.up);
+    }
+    //Obsolete
+    private void RotateTowardsCameraDirection(Vector3 rawInput)
+    {
+        /*transform.localEulerAngles = new Vector3(
+        transform.localEulerAngles.x,
+        cameraTransform.localEulerAngles.y,
+        transform.localEulerAngles.z);*/
+
+        //rotation from input
+        Vector3 temp = transform.rotation.eulerAngles;
+        temp.x = 0;
+        Quaternion rotation = Quaternion.Euler(temp);
+
+        //Add rotation to input
+        //input += rotation * input;
+        /*transform.localEulerAngles = new Vector3(transform.localEulerAngles.x,
+                                                 input.x,
+                                                 transform.localEulerAngles.z);*/
+        transform.rotation = Quaternion.LookRotation(physics.GetXZMovement().normalized, Vector3.up);
+        //transform.Rotate(0, rawInput.x, 0);
+        //transform.forward = Vector3.Lerp(transform.forward, new Vector3(transform.forward.x, input.y, transform.forward.z), turnSpeed * Time.deltaTime);
+    }
     //Rotation when using Glide
     private void RotateInDirectionOfMovement(Vector3 rawInput)
     {
@@ -154,33 +184,24 @@ public class PlayerController : MonoBehaviour
         //Add rotation to input
         input = rotation * input;
 
-        //steepClimbMaxAngle
-        //Do we want a percentage of the input to be projected on plane? 
-        //Flat ground would have the same movement, but inclines would not
-        //Would probably result in running away from the ground on declines though, 
-        //unless the gravity keeps it in check, but it wont be certain to do so.
-        //the alternative then would be a full projection on declines, but this requires another split of the logic
         ProjectMovement();
         transform.Rotate(0, rawInput.x * turnSpeed, 0);
 
     }
     private void SlopeDeceleration()
-    {
+    {     
         float slopeDecelerationFactor = ((groundHitAngle - decelerationSlopeAngle) / (slopeMaxAngle - decelerationSlopeAngle));
-        Debug.Log("Ground hit angle is : " + groundHitAngle);
         if (groundHitAngle > decelerationSlopeAngle)
         {
-            //Not high enough to properly stop the glide, but feels like absolute garbage when walking
-            //Which means, this kind of deceleration needs to be done either only in glidestate, or based
-            //off of some momentum factor, if we add Mass as a variable
-
-            force = slopeDecelerationFactor * -physics.velocity * slopeDecelerationMultiplier;
-            Debug.Log("slope decel factor: " + slopeDecelerationFactor + "angle is : " + groundHitAngle);
+            Debug.Log("Using slope deceleration");
+            //force = slopeDecelerationFactor * -physics.velocity * slopeDecelerationMultiplier;
+            force = slopeDecelerationFactor * slopeDecelerationMultiplier * -physics.velocity.normalized;
         }
     }
     private void ProjectMovement()
     {
         groundHitAngle = groundHitInfo.collider == null ? 90 : Vector3.Angle(input, groundHitInfo.normal);
+        
         if (groundHitAngle < slopeMaxAngle)
             input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;        
         else
@@ -189,7 +210,6 @@ public class PlayerController : MonoBehaviour
             //Some disruption to movement, possibly another PlayerState, or timed value tweaks
             input = Vector3.zero;
         }
-        //Debug.Log("Angle is : " + angle);
     }
     #endregion
 

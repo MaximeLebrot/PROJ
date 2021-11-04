@@ -42,7 +42,6 @@ public class AwayController : MonoBehaviour {
     private void WaitForInput() {
         if (InputIsZero()) return;
         
-        Debug.Log("Changing FROM AFK");
         EventHandler<AwayFromKeyboardEvent>.FireEvent(null);
         InputChecker = ReadInput;
         timeSinceLastInput = 0;
