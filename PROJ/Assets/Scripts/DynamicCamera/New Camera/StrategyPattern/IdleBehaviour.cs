@@ -9,7 +9,7 @@ namespace NewCamera
         
         private IdleBehaviourData behaviourData;
 
-        private float lineIndex;
+        private float pointOnCurve;
         
         public IdleBehaviour(Transform transform, Transform target, BehaviourData values, bool isInputBehaviour) : base(transform, target, values, isInputBehaviour) {
             behaviourData = values as IdleBehaviourData;
@@ -22,8 +22,8 @@ namespace NewCamera
 
         public override Quaternion ExecuteRotate() {
 
-            float newIndex = behaviourData.RotationCurve.Evaluate(lineIndex);
-            lineIndex += Time.deltaTime / 3;
+            float newIndex = behaviourData.RotationCurve.Evaluate(pointOnCurve);
+            pointOnCurve +=  Time.deltaTime / behaviourData.FollowSpeed;
             
             return Quaternion.Lerp(thisTransform.rotation, Quaternion.LookRotation(target.parent.forward), newIndex);
         }
@@ -39,7 +39,7 @@ namespace NewCamera
             
         }
 
-        private void ResetCurveCount(AwayFromKeyboardEvent e) => lineIndex = 0;
+        private void ResetCurveCount(AwayFromKeyboardEvent e) => pointOnCurve = 0;
     }
 
 }
