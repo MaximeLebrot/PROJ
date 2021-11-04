@@ -10,7 +10,7 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] private GameSettings defaultSettings;
     [SerializeField] public  GameSettings userSettings;
     public static GameSettings settings;
-    public static SettingsMenu settingsMenu;
+    public static SettingsMenu settingsMenuInstance;
 
     //Audio
     [SerializeField] private Slider musicSlider;
@@ -34,7 +34,7 @@ public class SettingsMenu : MonoBehaviour
 
     private void Awake()
     {
-        settingsMenu = this;
+        settingsMenuInstance = this;
         settings = userSettings;
 
         SetValues(userSettings);
@@ -89,4 +89,6 @@ public class SettingsMenu : MonoBehaviour
         //resolution  = settings.
         fullscreen.isOn = settings.fullscreen;
     }
+
+
 }
