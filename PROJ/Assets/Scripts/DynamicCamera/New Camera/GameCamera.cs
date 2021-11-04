@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using NewCamera;
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
+
 
 public class GameCamera : MonoBehaviour {
     
@@ -13,11 +14,6 @@ public class GameCamera : MonoBehaviour {
 
     [SerializeField] private Transform followTarget;
     [SerializeField] private Vector2 clampValues;
-
-    [SerializeField] private BehaviourData defaultValues;
-    [SerializeField] private BehaviourData idleValues;
-    [SerializeField] private BehaviourData glideValues;
-    [SerializeField] private BehaviourData puzzleValues;
     
     private Vector2 input;
     private Transform thisTransform;
@@ -26,6 +22,11 @@ public class GameCamera : MonoBehaviour {
     private readonly Dictionary<Type, BaseCameraBehaviour> highPriorityBehaviours = new Dictionary<Type, BaseCameraBehaviour>();
 
     private void Awake() {
+
+        BehaviourData defaultValues = AssetDatabase.LoadAssetAtPath<BehaviourData>("Assets/Scripts/DynamicCamera/New Camera/InGameReferences/DefaultData.asset");
+        BehaviourData glideValues = AssetDatabase.LoadAssetAtPath<BehaviourData>("Assets/Scripts/DynamicCamera/New Camera/InGameReferences/GlideData.asset");
+        BehaviourData idleValues = AssetDatabase.LoadAssetAtPath<BehaviourData>("Assets/Scripts/DynamicCamera/New Camera/InGameReferences/Idle Behaviour Data.asset");
+        BehaviourData puzzleValues = AssetDatabase.LoadAssetAtPath<BehaviourData>("Assets/Scripts/DynamicCamera/New Camera/InGameReferences/PuzzleData.asset");
         
         thisTransform = transform;
         currentBaseCameraBehaviour = new BaseCameraBehaviour(thisTransform, followTarget, defaultValues, true);
@@ -113,16 +114,12 @@ public class GameCamera : MonoBehaviour {
     public void AssignTargets() {
         try {
             followTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
+            globalCameraSettings = AssetDatabase.LoadAssetAtPath<GlobalCameraSettings>("Assets/Scripts/DynamicCamera/New Camera/InGameReferences/GlobalCameraSettings.asset");
+            inputReference = AssetDatabase.LoadAssetAtPath<ControllerInputReference>("Assets/Scripts/DynamicCamera/Controller Input Reference.asset");
+            
         } catch (NullReferenceException e) {
             Debug.Log("Couldn't find one or all targets, check if they have the right tag");
         }
     }
-
-
-}
-
-[System.Serializable]
-public struct OffsetAndCameraSpeed {
-    public Vector3 offset;
-    public float followSpeed;
+    
 }
