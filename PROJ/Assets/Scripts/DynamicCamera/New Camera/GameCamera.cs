@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NewCamera;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -113,16 +114,16 @@ public class GameCamera : MonoBehaviour {
     public void AssignTargets() {
         try {
             followTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
+            defaultValues = AssetDatabase.LoadAssetAtPath<BehaviourData>("Assets/Scripts/DynamicCamera/New Camera/InGameReferences/DefaultData.asset");
+            glideValues = AssetDatabase.LoadAssetAtPath<BehaviourData>("Assets/Scripts/DynamicCamera/New Camera/InGameReferences/GlideData.asset");
+            idleValues = AssetDatabase.LoadAssetAtPath<BehaviourData>("Assets/Scripts/DynamicCamera/New Camera/InGameReferences/Idle Behaviour Data.asset");
+            puzzleValues = AssetDatabase.LoadAssetAtPath<BehaviourData>("Assets/Scripts/DynamicCamera/New Camera/InGameReferences/PuzzleData.asset");
+            globalCameraSettings = AssetDatabase.LoadAssetAtPath<GlobalCameraSettings>("Assets/Scripts/DynamicCamera/New Camera/InGameReferences/GlobalCameraSettings.asset");
+            inputReference = AssetDatabase.LoadAssetAtPath<ControllerInputReference>("Assets/Scripts/DynamicCamera/Controller Input Reference.asset");
+            
         } catch (NullReferenceException e) {
             Debug.Log("Couldn't find one or all targets, check if they have the right tag");
         }
     }
-
-
-}
-
-[System.Serializable]
-public struct OffsetAndCameraSpeed {
-    public Vector3 offset;
-    public float followSpeed;
+    
 }
