@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Camera/Behaviour Data", fileName = "New Behaviour Data")]
+[CreateAssetMenu(menuName = "Camera/Behaviour Data/Default Behaviour Data", fileName = "New Default Behaviour Data")]
 public class BehaviourData : ScriptableObject {
 
     [SerializeField] private Vector3 offset;
