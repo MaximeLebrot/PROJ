@@ -8,11 +8,11 @@ public class AwayController : MonoBehaviour {
     
     private float timeSinceLastInput;
 
-    private Action InputChecker;
+    private Action inputChecker;
 
-    private void Awake() => InputChecker = ReadInput;
+    private void Awake() => inputChecker = ReadInput;
     
-    private void Update() => InputChecker?.Invoke();
+    private void Update() => inputChecker?.Invoke();
 
     private void ReadInput() {
         
@@ -22,11 +22,12 @@ public class AwayController : MonoBehaviour {
         else
             timeSinceLastInput = 0;
 
-        if (timeSinceLastInput > awayTimer) {
-            EventHandler<AwayFromKeyboardEvent>.FireEvent(null);
-            InputChecker = WaitForInput;
-        }
-            
+        if (timeSinceLastInput > awayTimer == false) 
+            return;
+        
+        EventHandler<AwayFromKeyboardEvent>.FireEvent(null);
+        inputChecker = WaitForInput;
+
     }
 
     private bool InputIsZero() {
@@ -37,10 +38,11 @@ public class AwayController : MonoBehaviour {
     } 
 
     private void WaitForInput() {
-        if (InputIsZero()) return;
+        if (InputIsZero()) 
+            return;
         
         EventHandler<AwayFromKeyboardEvent>.FireEvent(null);
-        InputChecker = ReadInput;
+        inputChecker = ReadInput;
         timeSinceLastInput = 0;
 
     }
