@@ -11,7 +11,7 @@ public class GlideState : PlayerState
     }
     public override void EnterState()
     {
-        //Debug.Log("Entered Glide State");
+        Debug.Log("Entered Glide State");
         player.playerController3D.TransitionSurf(true);
         player.physics.SetGlide(true);
         base.EnterState();
