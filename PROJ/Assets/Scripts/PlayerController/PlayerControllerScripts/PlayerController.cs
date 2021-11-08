@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
     private RaycastHit groundHitInfo;  
     private Vector3 input;
     private bool surfCamera = false;
-    private float groundCheckBoxSize = 0.25f;
+    private float groundCheckBoxSize = 0.1f;
     private float inputThreshold = 0.1f;
     public float groundHitAngle { get; private set; }
     public float GlideMinAngle => glideMinAngle;
@@ -208,10 +208,17 @@ public class PlayerController : MonoBehaviour
     private void ProjectMovement()
     {
         groundHitAngle = groundHitInfo.collider == null ? 90 : Vector3.Angle(input, groundHitInfo.normal);
+<<<<<<< Updated upstream
         Debug.Log("groundHitAngle is : " + groundHitAngle);
         if (groundHitAngle < slopeMaxAngle)
             input = Vector3.ProjectOnPlane(input, groundHitInfo.normal);        
+=======
+
+        if (groundHitAngle < slopeMaxAngle)
+            input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;     
+>>>>>>> Stashed changes
         else
+        if(groundHitAngle > slopeMaxAngle)
         {
             //Slide state? 
             //Some disruption to movement, possibly another PlayerState, or timed value tweaks
@@ -233,7 +240,7 @@ public class PlayerController : MonoBehaviour
     public bool IsGrounded()
     {
         bool grounded = Physics.BoxCast(transform.position, Vector3.one * groundCheckBoxSize, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance + physics.GlideHeight, groundCheckMask);
-        
+
         return grounded; 
     }
 
