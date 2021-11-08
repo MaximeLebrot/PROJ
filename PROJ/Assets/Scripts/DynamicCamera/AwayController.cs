@@ -10,7 +10,7 @@ public class AwayController : MonoBehaviour {
 
     private Action InputChecker;
 
-    private void Awake() => InputChecker = ReadInput;
+    private void Start() => InputChecker = ReadInput;
     
     private void Update() => InputChecker?.Invoke();
 

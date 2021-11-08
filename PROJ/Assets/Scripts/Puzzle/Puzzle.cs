@@ -41,13 +41,18 @@ public class Puzzle : MonoBehaviour
             numOfPuzzles = puzzleInstances.Count;
             grid = GetComponentInChildren<PuzzleGrid>();
             grid.StartGrid();
-            inputMaster = new InputMaster();
+            
             InitiatePuzzle();
             solution = Translate();
             
         }
         else
             Debug.LogWarning("NO PUZZLE INSTANCES IN PUZZLE");        
+    }
+    private void Start()
+    {
+        inputMaster = new InputMaster();
+        inputMaster.Enable();
     }
 
     public void Load()
@@ -72,7 +77,7 @@ public class Puzzle : MonoBehaviour
 
     private void OnEnable()
     {
-        inputMaster.Enable();
+        
         EventHandler<ExitPuzzleEvent>.RegisterListener(ExitPuzzle);
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
     }

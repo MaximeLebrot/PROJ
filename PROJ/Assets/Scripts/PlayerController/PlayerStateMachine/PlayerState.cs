@@ -13,7 +13,6 @@ public class PlayerState : ScriptableObject
     protected object owner;
 
     //Input
-    protected InputMaster inputMaster;
     protected float xMove, zMove;
 
     public virtual void Initialize(StateMachine stateMachine, object owner) 
@@ -23,9 +22,7 @@ public class PlayerState : ScriptableObject
         player = (MetaPlayerController)owner;
         Debug.Assert(player.physics);
 
-        //Should not be needed when events are properly used for input
-        inputMaster = player.inputMaster;
-        inputMaster.Enable();
+
 
         Initialize();
     }

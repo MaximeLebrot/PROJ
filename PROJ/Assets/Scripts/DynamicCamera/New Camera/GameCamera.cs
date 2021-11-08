@@ -37,7 +37,12 @@ public class GameCamera : MonoBehaviour {
         highPriorityBehaviours.Add(typeof(GlideState), new GlideBaseCameraBehaviour(thisTransform, followTarget, glideValues, true));
         highPriorityBehaviours.Add(typeof(WalkState), new BaseCameraBehaviour(transform, followTarget, defaultValues, true));
     }
-    
+
+    private void Start()
+    {
+        inputReference.Start();
+    }
+
     private void LateUpdate() {
         ReadInput();
         

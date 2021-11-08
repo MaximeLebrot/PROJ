@@ -13,14 +13,12 @@ public class ModularHintSystem : MonoBehaviour
     private InputMaster inputMaster;
 
     private bool showHints = true;
-    
-    void Awake()
+   
+
+    void Start()
     {
         inputMaster = new InputMaster();
-    }
-
-    private void Start()
-    {
+        inputMaster.Enable();
         foreach (PuzzleObject symbol in puzzle.instantiatedSymbols)
         {
             Debug.Log(symbol.name);
@@ -33,7 +31,7 @@ public class ModularHintSystem : MonoBehaviour
 
     private void OnEnable()
     {
-        inputMaster.Enable();
+        
     }
 
     private void OnDisable()
