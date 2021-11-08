@@ -8,15 +8,12 @@ namespace NewCamera {
         protected Vector3 referenceVelocity;
         protected readonly Transform thisTransform;
         protected readonly Transform target;
-        protected readonly BehaviourData values;
-
-        private bool isInputBehaviour;
-
-        public BaseCameraBehaviour(Transform transform, Transform target, BehaviourData values, bool isInputBehaviour) {
+        public readonly BehaviourData values;
+        
+        public BaseCameraBehaviour(Transform transform, Transform target, BehaviourData values) {
             thisTransform = transform;
             this.target = target;
             this.values = values;
-            this.isInputBehaviour = isInputBehaviour;
         } 
         
         public virtual Vector3 ExecuteMove(Vector3 calculatedOffset) {
@@ -25,15 +22,14 @@ namespace NewCamera {
 
         public virtual Quaternion ExecuteRotate() {
             
-            Quaternion targetRotation = Quaternion.LookRotation((target.position - thisTransform.position + target.parent.forward) * 2);
+            Quaternion targetRotation = Quaternion.LookRotation((target.position - thisTransform.position));
             
             return Quaternion.Slerp(thisTransform.rotation, targetRotation, Time.deltaTime * 50);
         }
 
         public virtual Vector3 ExecuteCollision(Vector2 input, GlobalCameraSettings data) {
-            
-            if(isInputBehaviour)
-                target.rotation = Quaternion.Euler(input.x, input.y, 0);
+
+            target.rotation = Quaternion.Euler(input.x, input.y, 0);
             
             Vector3 collisionOffset = target.rotation * values.Offset;
             
@@ -42,7 +38,8 @@ namespace NewCamera {
 
             return collisionOffset;
         }
-
+        
+        
         public virtual Vector2 ClampMovement(Vector2 input, Vector2 clampValues) {
             input.x = Mathf.Clamp(input.x, clampValues.x, clampValues.y);
 

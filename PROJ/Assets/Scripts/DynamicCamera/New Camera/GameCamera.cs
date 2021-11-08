@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using NewCamera;
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
+
 
 public class GameCamera : MonoBehaviour {
     
@@ -13,14 +14,16 @@ public class GameCamera : MonoBehaviour {
 
     [SerializeField] private Transform followTarget;
     [SerializeField] private Vector2 clampValues;
-
-    [SerializeField] private BehaviourData defaultValues;
-    [SerializeField] private BehaviourData idleValues;
-    [SerializeField] private BehaviourData glideValues;
-    [SerializeField] private BehaviourData puzzleValues;
     
     private Vector2 input;
     private Transform thisTransform;
+
+    [SerializeField] private BehaviourData defaultValues;
+    [SerializeField] private BehaviourData glideValues;
+    [SerializeField] private BehaviourData idleValues;
+    [SerializeField] private BehaviourData puzzleValues;
+    
+
 
     private readonly Dictionary<Type, BaseCameraBehaviour> lowPriorityBehaviours = new Dictionary<Type, BaseCameraBehaviour>();
     private readonly Dictionary<Type, BaseCameraBehaviour> highPriorityBehaviours = new Dictionary<Type, BaseCameraBehaviour>();
@@ -28,14 +31,14 @@ public class GameCamera : MonoBehaviour {
     private void Awake() {
         
         thisTransform = transform;
-        currentBaseCameraBehaviour = new BaseCameraBehaviour(thisTransform, followTarget, defaultValues, true);
+        currentBaseCameraBehaviour = new BaseCameraBehaviour(thisTransform, followTarget, defaultValues);
         
-        lowPriorityBehaviours.Add(typeof(IdleBehaviour), new IdleBehaviour(thisTransform, followTarget, idleValues, false)); //When player is not playing
-        lowPriorityBehaviours.Add(typeof(StationaryBehaviour), new StationaryBehaviour(thisTransform, followTarget, defaultValues, true)); //When player 
-        lowPriorityBehaviours.Add(typeof(PuzzleBaseCameraBehaviour), new PuzzleBaseCameraBehaviour(thisTransform, followTarget, puzzleValues, false )); //When player 
+        lowPriorityBehaviours.Add(typeof(IdleBehaviour), new IdleBehaviour(thisTransform, followTarget, idleValues)); //When player is not playing
+        lowPriorityBehaviours.Add(typeof(StationaryBehaviour), new StationaryBehaviour(thisTransform, followTarget, defaultValues)); //When player 
+        lowPriorityBehaviours.Add(typeof(PuzzleBaseCameraBehaviour), new PuzzleBaseCameraBehaviour(thisTransform, followTarget, puzzleValues )); //When player 
         
-        highPriorityBehaviours.Add(typeof(GlideState), new GlideBaseCameraBehaviour(thisTransform, followTarget, glideValues, true));
-        highPriorityBehaviours.Add(typeof(WalkState), new BaseCameraBehaviour(transform, followTarget, defaultValues, true));
+        highPriorityBehaviours.Add(typeof(GlideState), new GlideBaseCameraBehaviour(thisTransform, followTarget, glideValues));
+        highPriorityBehaviours.Add(typeof(WalkState), new BaseCameraBehaviour(transform, followTarget, defaultValues));
     }
 
     private void Start()
@@ -118,16 +121,12 @@ public class GameCamera : MonoBehaviour {
     public void AssignTargets() {
         try {
             followTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
+           // globalCameraSettings = AssetDatabase.LoadAssetAtPath<GlobalCameraSettings>("Assets/Scripts/DynamicCamera/New Camera/InGameReferences/GlobalCameraSettings.asset");
+          //  inputReference = AssetDatabase.LoadAssetAtPath<ControllerInputReference>("Assets/Scripts/DynamicCamera/Controller Input Reference.asset");
+            
         } catch (NullReferenceException e) {
             Debug.Log("Couldn't find one or all targets, check if they have the right tag");
         }
     }
-
-
-}
-
-[System.Serializable]
-public struct OffsetAndCameraSpeed {
-    public Vector3 offset;
-    public float followSpeed;
+    
 }

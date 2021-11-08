@@ -23,7 +23,6 @@ public class AwayController : MonoBehaviour {
             timeSinceLastInput = 0;
 
         if (timeSinceLastInput > awayTimer) {
-            Debug.Log("Changing TO AFK");
             EventHandler<AwayFromKeyboardEvent>.FireEvent(null);
             InputChecker = WaitForInput;
         }

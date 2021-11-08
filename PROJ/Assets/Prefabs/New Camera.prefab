@@ -28,13 +28,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1306360387060383519}
-  m_LocalRotation: {x: -0.032675862, y: 0.43296826, z: -0.01581772, w: -0.90067786}
+  m_LocalRotation: {x: 0.0326779, y: -0.43296763, z: 0.01581496, w: 0.90067816}
   m_LocalPosition: {x: 544.76117, y: 37.72534, z: 532.64746}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -88.35, z: 0}
+  m_LocalEulerAnglesHint: {x: 4.161, y: -51.348, z: 0.011}
 --- !u!20 &1306360387060383515
 Camera:
   m_ObjectHideFlags: 0
@@ -131,11 +131,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputReference: {fileID: 11400000, guid: 54398b8fed501aa41813fa11036bc179, type: 2}
-  cameraBehaviourData: {fileID: 11400000, guid: 178997108c592e743ab86335e4404734, type: 2}
+  globalCameraSettings: {fileID: 11400000, guid: 178997108c592e743ab86335e4404734, type: 2}
   followTarget: {fileID: 0}
-  cameraFollowSpeed: 0.55
-  offset: {x: 0, y: 1.5, z: -4}
   clampValues: {x: -60, y: 40}
+  defaultValues: {fileID: 11400000, guid: 301349ffb4190a84d9cedbaed0935248, type: 2}
+  glideValues: {fileID: 11400000, guid: 1541e9765bf61f740927ace45f8b03f3, type: 2}
+  idleValues: {fileID: 11400000, guid: 9db25c71cc5f2584ba704a6d0964df6a, type: 2}
+  puzzleValues: {fileID: 11400000, guid: acb69f4a27ceb6549ab10851fc9e2441, type: 2}
 --- !u!114 &3911496624126169352
 MonoBehaviour:
   m_ObjectHideFlags: 0

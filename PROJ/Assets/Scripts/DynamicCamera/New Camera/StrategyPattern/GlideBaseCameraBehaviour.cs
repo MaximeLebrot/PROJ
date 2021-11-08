@@ -7,7 +7,7 @@ namespace NewCamera {
     [Serializable]
     public class GlideBaseCameraBehaviour : BaseCameraBehaviour {
         
-        public GlideBaseCameraBehaviour(Transform transform, Transform target, BehaviourData values, bool isInputBehaviour) : base(transform, target, values, isInputBehaviour) {}
+        public GlideBaseCameraBehaviour(Transform transform, Transform target, BehaviourData values) : base(transform, target, values) {}
         
         public override Vector3 ExecuteCollision(Vector2 input, GlobalCameraSettings data) {
             
