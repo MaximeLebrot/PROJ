@@ -6,9 +6,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
 {
     const int MAX_ITER = 10;
     const int MOVE_OUT_ITERATIONS = 5;
-    
-    //Current speed
-    public float velocityMagnitude;
+
     public Vector3 velocity;
     public RaycastHit groundHitInfo { get; private set; }
 
@@ -54,7 +52,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
     private void Update()
     {
-        velocityMagnitude = GetXZMovement().magnitude;
         AddGravity();
         CollisionCheck();
         ClampSpeed();

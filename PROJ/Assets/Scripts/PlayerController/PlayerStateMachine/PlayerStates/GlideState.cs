@@ -11,7 +11,8 @@ public class GlideState : PlayerState
     }
     public override void EnterState()
     {
-        //Debug.Log("Entered Glide State");
+        Debug.Log("Entered Glide State");
+        player.playerController3D.TransitionSurf(true);
         player.physics.SetGlide(true);
         base.EnterState();
     }
@@ -36,6 +37,6 @@ public class GlideState : PlayerState
     }
     private void SetInput()
     {
-        player.playerController3D.InputGlide(inputMaster.Player.Movement.ReadValue<Vector2>());
+        player.playerController3D.InputGlide(player.inputReference.InputMaster.Movement.ReadValue<Vector2>());
     }
 }
