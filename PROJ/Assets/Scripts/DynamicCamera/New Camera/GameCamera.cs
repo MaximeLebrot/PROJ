@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using NewCamera;
-using UnityEditor;
 using UnityEngine;
 
 
@@ -13,6 +13,7 @@ public class GameCamera : MonoBehaviour {
     private BaseCameraBehaviour currentBaseCameraBehaviour;
 
     [SerializeField] private Transform followTarget;
+    [SerializeField] private Transform shoulderPosition;
     [SerializeField] private Vector2 clampValues;
     
     private Vector2 input;
@@ -25,10 +26,12 @@ public class GameCamera : MonoBehaviour {
     
     private readonly Dictionary<Type, BaseCameraBehaviour> behaviours = new Dictionary<Type, BaseCameraBehaviour>();
 
+    private delegate void BehaviourQueue();
+
+    private event BehaviourQueue behaviourQueue;
+
     private void Awake() {
-
-        //Cursor.lockState = CursorLockMode.Locked;
-
+        
         thisTransform = transform;
         currentBaseCameraBehaviour = new BaseCameraBehaviour(thisTransform, followTarget, defaultValues);
         
@@ -37,9 +40,14 @@ public class GameCamera : MonoBehaviour {
         behaviours.Add(typeof(PuzzleBaseCameraBehaviour), new PuzzleBaseCameraBehaviour(thisTransform, followTarget, puzzleValues ));
         behaviours.Add(typeof(GlideState), new GlideBaseCameraBehaviour(thisTransform, followTarget, glideValues));
         behaviours.Add(typeof(WalkState), new BaseCameraBehaviour(transform, followTarget, defaultValues));
+
+        behaviourQueue = ExecuteCameraBehaviour;
+
     }
-        
-    private void LateUpdate() {
+
+    private void LateUpdate() => behaviourQueue?.Invoke();
+
+    private void ExecuteCameraBehaviour() {
         ReadInput();
         
         input = currentBaseCameraBehaviour.ClampMovement(input, clampValues);
@@ -91,10 +99,29 @@ public class GameCamera : MonoBehaviour {
         
     }
 
-    private void OnPuzzleExit(ExitPuzzleEvent exitPuzzleEvent) {
-        
-        Debug.Log("Hello");
-        
+    private async void OnPuzzleExit(ExitPuzzleEvent exitPuzzleEvent) {
+
+        if (exitPuzzleEvent.success) {
+
+            Vector3 offset = exitPuzzleEvent.info.puzzlePos.position - (Quaternion.Euler(0, 0, 0) * exitPuzzleEvent.info.puzzlePos.forward * 10);
+            Quaternion lookDirection = exitPuzzleEvent.info.puzzlePos.rotation;
+
+            //BORDE INTE GÖRA ROTATIONEN HÄR 
+            followTarget.parent.rotation = Quaternion.LookRotation(exitPuzzleEvent.info.puzzlePos.position - followTarget.parent.position);
+            
+            shoulderPosition.localPosition += shoulderPosition.position.x < exitPuzzleEvent.info.puzzlePos.position.x ? shoulderPosition.right : -shoulderPosition.right;
+
+            LookAtTransition rotationTransition = new LookAtTransition(ref thisTransform, shoulderPosition.position, shoulderPosition.rotation.normalized, .001f, .85f, 100f);
+
+            await PlayTransition(rotationTransition);
+
+            LookAtTransition moveTransition = new LookAtTransition(ref thisTransform, offset, lookDirection, 3f, 1f, .3f);
+
+            await PlayTransition(moveTransition);
+
+        }
+            
+        Debug.Log("Transition done");
         EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
         ChangeBehaviour(behaviours[typeof(StationaryBehaviour)]);
     }
@@ -112,10 +139,20 @@ public class GameCamera : MonoBehaviour {
     
     private void ChangeBehaviour(BaseCameraBehaviour newBaseCameraBehaviour) => currentBaseCameraBehaviour = newBaseCameraBehaviour;
 
+    private async Task PlayTransition(CameraTransition transition) {
+        
+        behaviourQueue = null;
+        
+        await transition.Transit();
+
+        behaviourQueue = ExecuteCameraBehaviour;
+    }
+    
     [ContextMenu("Auto-assign targets", false,0)]
     public void AssignTargets() {
         try {
             followTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
+            shoulderPosition = GameObject.FindWithTag("ShoulderCameraPosition").transform;
         } catch (NullReferenceException e) {
             Debug.Log("Couldn't find one or all targets, check if they have the right tag");
         }

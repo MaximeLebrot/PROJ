@@ -5,7 +5,8 @@ public abstract class CameraTransition {
 
     protected readonly Transform transform;
     protected readonly Vector3 endPosition;
-    protected readonly Quaternion endRotation;
+    protected Quaternion endRotation;
+    protected Vector3 referenceVelocity;
 
     public CameraTransition(ref Transform transform, Vector3 endPosition, Quaternion endRotation ) {
         this.transform = transform;
@@ -14,5 +15,7 @@ public abstract class CameraTransition {
     }
 
     public abstract Task Transit();
+
+    public abstract bool IsTransitionDone();
 
 }

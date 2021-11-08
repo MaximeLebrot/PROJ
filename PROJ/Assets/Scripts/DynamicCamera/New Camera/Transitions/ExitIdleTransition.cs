@@ -15,5 +15,8 @@ public class ExitIdleTransition : CameraTransition {
         
         await Task.Delay(3000);
     }
-    
+
+    public override bool IsTransitionDone() {
+        throw new System.NotImplementedException();
+    }
 }

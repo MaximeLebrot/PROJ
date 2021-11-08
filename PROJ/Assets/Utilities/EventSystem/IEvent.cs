@@ -64,6 +64,16 @@ public readonly struct PlayerStateChangeEvent : IEvent {
     public PlayerStateChangeEvent(PlayerState state) => newState = state;
 }
 
+public readonly struct LookAtEvent : IEvent {
+
+    public readonly Transform target;
+
+    public LookAtEvent(Transform target) {
+        this.target = target;
+    }
+
+}
+
 public class AwayFromKeyboardEvent : IEvent { }
 public class SaveEvent : IEvent { }
 #endregion
