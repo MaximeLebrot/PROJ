@@ -208,23 +208,17 @@ public class PlayerController : MonoBehaviour
     private void ProjectMovement()
     {
         groundHitAngle = groundHitInfo.collider == null ? 90 : Vector3.Angle(input, groundHitInfo.normal);
-<<<<<<< Updated upstream
-        Debug.Log("groundHitAngle is : " + groundHitAngle);
         if (groundHitAngle < slopeMaxAngle)
             input = Vector3.ProjectOnPlane(input, groundHitInfo.normal);        
-=======
 
         if (groundHitAngle < slopeMaxAngle)
             input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;     
->>>>>>> Stashed changes
         else
-        if(groundHitAngle > slopeMaxAngle)
         {
             //Slide state? 
             //Some disruption to movement, possibly another PlayerState, or timed value tweaks
             input = Vector3.zero;
         }
-        Debug.DrawLine(transform.position, transform.position + input, Color.blue);
     }
     #endregion
 
