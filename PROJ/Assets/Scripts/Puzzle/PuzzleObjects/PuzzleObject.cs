@@ -57,6 +57,11 @@ public abstract class PuzzleObject : MonoBehaviour
         modifier.transform.rotation = transform.rotation;
     }
 
+    internal void Unload()
+    {
+        //Animate something
+        Destroy(gameObject);
+    }
 }
 
 public enum ModifierVariant

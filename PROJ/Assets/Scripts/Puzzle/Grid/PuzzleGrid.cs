@@ -291,10 +291,12 @@ public class PuzzleGrid : MonoBehaviour {
 
         if(currentLine != null)
         {
-            currentLine.Stop();
+            currentLine.TurnOffLine();
             Destroy(currentLine, 2);
             currentLine = null;
         }
+
+        
         
         //SEND finalNodes and lineRenderers to some Persistance that can store the completed puzzles
 
@@ -305,7 +307,7 @@ public class PuzzleGrid : MonoBehaviour {
         solution = "";
         foreach (LineObject line in lineRenderers)
         {
-            line.line.GetComponent<PuzzleLine>().Stop();
+            line.line.GetComponent<PuzzleLine>().TurnOffLine();
             Destroy(line.line, 2);
         }
 
@@ -325,7 +327,7 @@ public class PuzzleGrid : MonoBehaviour {
 
         if (currentLine != null)
         {
-            currentLine.Stop();
+            currentLine.TurnOffLine();
             Destroy(currentLineObject, 2);
             currentLine = null;
         }

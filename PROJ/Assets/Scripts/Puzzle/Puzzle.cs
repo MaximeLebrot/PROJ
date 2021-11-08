@@ -7,6 +7,7 @@ public class Puzzle : MonoBehaviour
 {
     //[SerializeField] int puzzleID; //should be compared to solution on a EvaluatePuzzleEvent and fire a SUCCESS EVENT or FAIL EVENT
     [SerializeField] private int masterPuzzleID; 
+    [SerializeField] private int nextPuzzleTimer; 
     [SerializeField] private List<PuzzleInstance> puzzleInstances = new List<PuzzleInstance>();
     [SerializeField] private string playerInput = "";
     [SerializeField] private string solution;
@@ -28,12 +29,12 @@ public class Puzzle : MonoBehaviour
     private int numOfFinishedPuzzles = 0;
 
     private Transform player;
-
+    private PuzzleParticles particles;
     public void SetPlayer(Transform t) { player = t; grid.Player = player; }
 
     void Awake()
     {
-      
+        particles = GetComponentInChildren<PuzzleParticles>();
         if (puzzleInstances.Count > 0)
         {
             SetupPuzzleInstances();
@@ -98,9 +99,12 @@ public class Puzzle : MonoBehaviour
     private void InitiatePuzzle()
     {
         //Debug.Log("Initiate puzzle");
-
+        EventHandler<LoadPuzzleEvent>.FireEvent(new LoadPuzzleEvent(new PuzzleInfo(GetPuzzleID())));
+        EventHandler<ResetPuzzleEvent>.FireEvent(new ResetPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID(masterPuzzleID))));
+        GetComponentInChildren<PuzzleStarter>().ResetStarter();
         grid.ResetGrid();
-        if(currentPuzzleInstance.HasRestrictions())
+
+        if (currentPuzzleInstance.HasRestrictions())
             grid.SetRestrictions(currentPuzzleInstance.GetRestrictions());
 
         PlaceSymbols();
@@ -108,7 +112,9 @@ public class Puzzle : MonoBehaviour
     }
     private void NextPuzzle()
     {
-        
+        UnloadSymbols();
+        if(particles != null)
+            particles.Play();
 
         currentPuzzleNum++;     
 
@@ -126,21 +132,21 @@ public class Puzzle : MonoBehaviour
             GetComponent<Collider>().enabled = false;
             return;
         }
-
+        grid.ResetGrid();
         currentPuzzleInstance = puzzleInstances[currentPuzzleNum];
         //OnComplete instance       
-        InitiatePuzzle();
+        Invoke("InitiatePuzzle", nextPuzzleTimer);
     }
 
     #region Place Symbols
     private void PlaceSymbols()
     {
-        for(int i = 0; i <instantiatedSymbols.Count; i++)
+        if(instantiatedSymbols.Count > 0)
         {
-            Destroy(instantiatedSymbols[i].gameObject);
+            UnloadSymbols();
         }
 
-        instantiatedSymbols.Clear();
+        
         //Is this the way we want to fetch the list??
         foreach(SymbolModPair pair in currentPuzzleInstance.puzzleObjects)
         {
@@ -255,19 +261,26 @@ public class Puzzle : MonoBehaviour
             //uppdaterar curr puzzle
             currentPuzzleInstance.Solve();
             EventHandler<SaveEvent>.FireEvent(new SaveEvent());
+            EventHandler<ClearPuzzleEvent>.FireEvent(new ClearPuzzleEvent(new PuzzleInfo(GetPuzzleID())));
+
             NextPuzzle();
         }
         else
         {
-            
-            grid.ResetGrid();
-            if (currentPuzzleInstance.HasRestrictions())
-                grid.SetRestrictions(currentPuzzleInstance.GetRestrictions());
+            InitiatePuzzle();
         }
         
-        EventHandler<ResetPuzzleEvent>.FireEvent(new ResetPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID(masterPuzzleID))));
-        GetComponentInChildren<PuzzleStarter>().ResetStarter();
+        
 
+    }
+
+    private void UnloadSymbols()
+    {
+        foreach(PuzzleObject po in instantiatedSymbols)
+        {
+            po.Unload();
+        }
+        instantiatedSymbols.Clear();
     }
 
     private void OnTriggerExit(Collider other)
