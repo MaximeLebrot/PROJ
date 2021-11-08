@@ -71,6 +71,7 @@ public class GameCamera : MonoBehaviour {
         EventHandler<ExitPuzzleEvent>.RegisterListener(OnPuzzleExit);
         EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
         EventHandler<PlayerStateChangeEvent>.RegisterListener(OnPlayerStateChange);
+        EventHandler<CameraLookAndMoveToEvent>.RegisterListener(OnLookAndMove);
     }
 
     private void OnDisable() {
@@ -78,6 +79,7 @@ public class GameCamera : MonoBehaviour {
         EventHandler<ExitPuzzleEvent>.UnregisterListener(OnPuzzleExit);
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
         EventHandler<PlayerStateChangeEvent>.UnregisterListener(OnPlayerStateChange);
+        EventHandler<CameraLookAndMoveToEvent>.UnregisterListener(OnLookAndMove);
     }
 
     private void OnAwayFromKeyboard(AwayFromKeyboardEvent e) {
@@ -99,31 +101,20 @@ public class GameCamera : MonoBehaviour {
         
     }
 
-    private async void OnPuzzleExit(ExitPuzzleEvent exitPuzzleEvent) {
-
-        if (exitPuzzleEvent.success) {
-
-            Vector3 offset = exitPuzzleEvent.info.puzzlePos.position - (Quaternion.Euler(0, 0, 0) * exitPuzzleEvent.info.puzzlePos.forward * 10);
-            Quaternion lookDirection = exitPuzzleEvent.info.puzzlePos.rotation;
-
-            //BORDE INTE GÖRA ROTATIONEN HÄR 
-            followTarget.parent.rotation = Quaternion.LookRotation(exitPuzzleEvent.info.puzzlePos.position - followTarget.parent.position);
-            
-            shoulderPosition.localPosition += shoulderPosition.position.x < exitPuzzleEvent.info.puzzlePos.position.x ? shoulderPosition.right : -shoulderPosition.right;
-
-            LookAtTransition rotationTransition = new LookAtTransition(ref thisTransform, shoulderPosition.position, shoulderPosition.rotation.normalized, .001f, .85f, 100f);
-
-            await PlayTransition(rotationTransition);
-
-            LookAtTransition moveTransition = new LookAtTransition(ref thisTransform, offset, lookDirection, 3f, 1f, .3f);
-
-            await PlayTransition(moveTransition);
-
-        }
-            
-        Debug.Log("Transition done");
+    private void OnPuzzleExit(ExitPuzzleEvent exitPuzzleEvent) {
         EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
         ChangeBehaviour(behaviours[typeof(StationaryBehaviour)]);
+    }
+
+    private async void OnLookAndMove(CameraLookAndMoveToEvent lookAndMove) {
+
+        MoveToTransition moveToTransition = new MoveToTransition(ref thisTransform, lookAndMove.endPosition, lookAndMove.moveToEventData);
+        LookAtTransition lookAtTransition = new LookAtTransition(ref thisTransform, lookAndMove.endRotation, lookAndMove.lookAtEventData);
+
+        List<Task> transitions = new List<Task>(2) { moveToTransition.Transit(), lookAtTransition.Transit()};
+
+        await PlayTransitions(transitions);
+        
     }
 
     private void OnPuzzleStart(StartPuzzleEvent startPuzzleEvent) {
@@ -139,15 +130,41 @@ public class GameCamera : MonoBehaviour {
     
     private void ChangeBehaviour(BaseCameraBehaviour newBaseCameraBehaviour) => currentBaseCameraBehaviour = newBaseCameraBehaviour;
 
-    private async Task PlayTransition(CameraTransition transition) {
-        
-        behaviourQueue = null;
+    private async Task PlayTransition(CameraTransition<EventData> transition) {
+
+        SetBehaviourExecutionActive(false);
         
         await transition.Transit();
 
-        behaviourQueue = ExecuteCameraBehaviour;
+        SetBehaviourExecutionActive(true);
+    }
+
+    private async Task PlayTransitions(List<Task> transitions) {
+        
+        SetBehaviourExecutionActive(false);
+        
+        await Task.WhenAll(transitions);
+
+        SetBehaviourExecutionActive(true);
+    }
+
+    
+
+    private void SetBehaviourExecutionActive(bool isActive) {
+        if (isActive) { 
+            behaviourQueue = ExecuteCameraBehaviour;
+            EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
+        }
+        
+        else {
+            behaviourQueue = null;
+            EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
+        }
+
     }
     
+    
+
     [ContextMenu("Auto-assign targets", false,0)]
     public void AssignTargets() {
         try {

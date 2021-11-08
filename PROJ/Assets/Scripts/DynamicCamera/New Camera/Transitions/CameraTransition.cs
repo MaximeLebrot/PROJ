@@ -1,21 +1,18 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public abstract class CameraTransition {
+public abstract class CameraTransition<T> {
 
     protected readonly Transform transform;
-    protected readonly Vector3 endPosition;
-    protected Quaternion endRotation;
+    protected readonly T eventData;
     protected Vector3 referenceVelocity;
 
-    public CameraTransition(ref Transform transform, Vector3 endPosition, Quaternion endRotation ) {
+
+    protected CameraTransition(ref Transform transform, T eventData) {
         this.transform = transform;
-        this.endPosition = endPosition;
-        this.endRotation = endRotation;
+        this.eventData = eventData;
     }
 
     public abstract Task Transit();
-
-    public abstract bool IsTransitionDone();
-
+    
 }

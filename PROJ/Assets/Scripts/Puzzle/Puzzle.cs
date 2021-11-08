@@ -1,7 +1,9 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Text;
+using Unity.Mathematics;
+
 
 public class Puzzle : MonoBehaviour
 {
@@ -10,6 +12,9 @@ public class Puzzle : MonoBehaviour
     [SerializeField] private List<PuzzleInstance> puzzleInstances = new List<PuzzleInstance>();
     [SerializeField] private string playerInput = "";
     [SerializeField] private string solution;
+    [SerializeField] private MoveToEventData moveToEventData;
+    [SerializeField] private LookAtEventData lookAtEventData;
+    
     private PuzzleInstance currentPuzzleInstance;
 
     protected PuzzleTranslator translator = new PuzzleTranslator();
@@ -33,7 +38,7 @@ public class Puzzle : MonoBehaviour
 
     void Awake()
     {
-      
+
         if (puzzleInstances.Count > 0)
         {
             SetupPuzzleInstances();
@@ -116,12 +121,23 @@ public class Puzzle : MonoBehaviour
         if(currentPuzzleNum >= puzzleInstances.Count)
         {
             //no more puzzle instances here
-            //NÅTT SKA HÄNDA HÄR? nån effekt och feedback på att man klarat det här pusslet. Inte spara griden utan stänga av griden typ
+            //Nï¿½TT SKA Hï¿½NDA Hï¿½R? nï¿½n effekt och feedback pï¿½ att man klarat det hï¿½r pusslet. Inte spara griden utan stï¿½nga av griden typ
             //Exit puzzle
             //Debug.Log("Last puzzle instance completed");
 
 
             EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID(masterPuzzleID)), true));
+
+            if (moveToEventData != null && lookAtEventData != null) {
+                Vector3 endPosition = symbolPos.position + moveToEventData.Offset;
+                Quaternion endRotation = Quaternion.LookRotation(transform.forward, Vector3.up);    
+            
+                CameraLookAndMoveToEvent cameraLookAndMoveToEvent = new CameraLookAndMoveToEvent(endPosition, endRotation, moveToEventData, lookAtEventData);
+            
+                EventHandler<CameraLookAndMoveToEvent>.FireEvent(cameraLookAndMoveToEvent);
+            }
+            
+            
             grid.CompleteGrid();
             GetComponent<Collider>().enabled = false;
             return;
