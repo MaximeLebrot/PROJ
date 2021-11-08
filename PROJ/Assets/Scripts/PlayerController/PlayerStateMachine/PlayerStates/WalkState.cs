@@ -34,6 +34,6 @@ public class WalkState : PlayerState
     }
     private void SetInput()
     {
-        player.playerController3D.InputWalk(inputMaster.Player.Movement.ReadValue<Vector2>());
+        player.playerController3D.InputWalk(player.inputReference.InputMaster.Movement.ReadValue<Vector2>());
     }
 }

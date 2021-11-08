@@ -16,12 +16,12 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     [SerializeField] private PlayerState[] states;
     [SerializeField] public List<ControllerValues> controllerValues = new List<ControllerValues>();
     
-    public InputMaster inputMaster;
+    public ControllerInputReference inputReference;
 
 
-    private void Awake()
+    private void Start()
     {
-        inputMaster = new InputMaster();
+        
         physics = GetComponent<PlayerPhysicsSplit>();
         playerController3D = GetComponent<PlayerController>();
         puzzleController = GetComponent<PuzzlePlayerController>();
