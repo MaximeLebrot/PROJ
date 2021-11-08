@@ -41,13 +41,18 @@ public class Puzzle : MonoBehaviour
             numOfPuzzles = puzzleInstances.Count;
             grid = GetComponentInChildren<PuzzleGrid>();
             grid.StartGrid();
-            inputMaster = new InputMaster();
+            
             InitiatePuzzle();
             solution = Translate();
             
         }
         else
             Debug.LogWarning("NO PUZZLE INSTANCES IN PUZZLE");        
+    }
+    private void Start()
+    {
+        inputMaster = new InputMaster();
+        inputMaster.Enable();
     }
 
     public void Load()
@@ -72,7 +77,7 @@ public class Puzzle : MonoBehaviour
 
     private void OnEnable()
     {
-        inputMaster.Enable();
+        
         EventHandler<ExitPuzzleEvent>.RegisterListener(ExitPuzzle);
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
     }
@@ -189,25 +194,25 @@ public class Puzzle : MonoBehaviour
         int midRight = instantiatedSymbols.Count / 2;
         int midLeft = midRight - 1;
 
-        Vector3 midLeftPos = symbolPos.position - (Vector3.right * (symbolOffset / 2));
-        Vector3 midRightPos = symbolPos.position + (Vector3.right * (symbolOffset / 2));
+        Vector3 midLeftPos = (Vector3.left * (symbolOffset / 2));
+        Vector3 midRightPos = (Vector3.right * (symbolOffset / 2));
 
-        instantiatedSymbols[midLeft].transform.position = midLeftPos;
-        instantiatedSymbols[midLeft].transform.rotation = symbolPos.rotation;
+        instantiatedSymbols[midLeft].transform.localPosition = midLeftPos;
+        instantiatedSymbols[midLeft].transform.localRotation = new Quaternion(0,0,0,0);
 
-        instantiatedSymbols[midRight].transform.position = midRightPos;
-        instantiatedSymbols[midRight].transform.rotation = symbolPos.rotation;
+        instantiatedSymbols[midRight].transform.localPosition = midRightPos;
+        instantiatedSymbols[midRight].transform.rotation = new Quaternion(0, 0, 0, 0);
 
         for (int i = 1; i <= midLeft; i++)
         {
             Vector3 tempPos = midLeftPos;
             tempPos -= i * (symbolOffset * Vector3.right);
-            instantiatedSymbols[midLeft - i].transform.position = tempPos;
+            instantiatedSymbols[midLeft - i].transform.localPosition = tempPos;
             instantiatedSymbols[midLeft - i].transform.rotation = symbolPos.rotation;
 
             tempPos = midRightPos;
             tempPos += i * (symbolOffset * Vector3.right);
-            instantiatedSymbols[midRight + i].transform.position = tempPos;
+            instantiatedSymbols[midRight + i].transform.localPosition = tempPos;
             instantiatedSymbols[midRight + i].transform.rotation = symbolPos.rotation;
         }
     }
@@ -254,7 +259,10 @@ public class Puzzle : MonoBehaviour
         }
         else
         {
+            
             grid.ResetGrid();
+            if (currentPuzzleInstance.HasRestrictions())
+                grid.SetRestrictions(currentPuzzleInstance.GetRestrictions());
         }
         
         EventHandler<ResetPuzzleEvent>.FireEvent(new ResetPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID(masterPuzzleID))));

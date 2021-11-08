@@ -30,7 +30,7 @@ public class PuzzleGrid : MonoBehaviour {
 
     public Transform Player { get; set; }
 
-   
+    private Puzzle masterPuzzle;
 
     public string GetSolution() 
     {
@@ -55,7 +55,8 @@ public class PuzzleGrid : MonoBehaviour {
         {
             currentLine.Play();
             currentLine.transform.position = currentNode.transform.position;
-            currentLine.SetPosition(new Vector3(Player.position.x,currentLine.transform.position.y ,Player.position.z) - currentLine.transform.position);
+            currentLine.transform.localRotation = Quaternion.Inverse(GetComponentInParent<Puzzle>().transform.rotation);
+            currentLine.SetPosition((new Vector3(Player.position.x,currentLine.transform.position.y ,Player.position.z) - currentLine.transform.position));
         }
     }
 
@@ -74,6 +75,7 @@ public class PuzzleGrid : MonoBehaviour {
 
         GenerateGrid();
 
+        masterPuzzle = GetComponentInParent<Puzzle>();
         //allNodesLIST.AddRange(transform.GetComponentsInChildren<Node>());
         foreach (Node node in allNodes)
             node.gameObject.SetActive(false);
@@ -110,6 +112,8 @@ public class PuzzleGrid : MonoBehaviour {
     void GenerateGrid()
     {
         allNodes = new Node[size, size];
+        Vector3 zVec = new Vector3(0, 0, 1);
+        Vector3 xVec = new Vector3(1, 0, 0);
         int midIndex = size / 2;
         for (int x = 0; x < size; x++)
         {
@@ -123,7 +127,8 @@ public class PuzzleGrid : MonoBehaviour {
                 allNodes[x, y].PosX = x;
                 allNodes[x, y].PosY = y;
 
-                allNodes[x, y].transform.position = transform.position + (x * transform.right * nodeOffset) + (y * transform.forward * nodeOffset);
+                allNodes[x, y].transform.position = transform.position;
+                allNodes[x,y].transform.localPosition = (x * Vector3.right * nodeOffset) + (y * Vector3.forward * nodeOffset);
 
                 
             }
@@ -136,7 +141,7 @@ public class PuzzleGrid : MonoBehaviour {
 
         allNodes[midIndex, midIndex].SetStartNode();
         startNode = currentNode = allNodes[midIndex, midIndex];
-        transform.localPosition = (transform.right * -midIndex * nodeOffset) + (transform.forward * -midIndex * nodeOffset);
+        transform.localPosition = (Vector3.right * -midIndex * nodeOffset) + (Vector3.forward * -midIndex * nodeOffset);
     }
 
 
@@ -149,7 +154,7 @@ public class PuzzleGrid : MonoBehaviour {
     private void InstantiateFirstLine()
     {
         //instansiera linje
-        //rita linje frÂn startnod till spelare
+        //rita linje fr√•n startnod till spelare
         currentLineObject = Instantiate(linePrefab, transform.parent);
         currentLine = currentLineObject.GetComponent<PuzzleLine>();      
     }
@@ -165,6 +170,8 @@ public class PuzzleGrid : MonoBehaviour {
             Debug.Log(vInt);
             allNodes[vInt.x + midIndex, vInt.y + midIndex].Drawable = true;
         }
+
+        startNode.Drawable = true;
     }
 
     private void AddSelectedNode(Node node) 
@@ -216,7 +223,13 @@ public class PuzzleGrid : MonoBehaviour {
             //Line Instantiation
             GameObject newLineRenderer = Instantiate(linePrefab, transform);
             newLineRenderer.transform.position = currentNode.transform.position;
-            newLineRenderer.GetComponent<PuzzleLine>().SetPosition(PuzzleHelper.TranslateNumToDirection(PuzzleHelper.TranslateInput(node, currentNode)) * nodeOffset);
+            newLineRenderer.transform.localRotation = Quaternion.Inverse(masterPuzzle.transform.rotation);
+
+            newLineRenderer.GetComponent<PuzzleLine>().SetPosition((
+                node.transform.localPosition - currentNode.transform.localPosition).normalized * 
+                Vector3.Distance(node.transform.localPosition, currentNode.transform.localPosition),
+                masterPuzzle.transform.rotation);
+
             LineObject line = new LineObject(currentNode, newLineRenderer);
 
             //ADD LINE
@@ -227,7 +240,7 @@ public class PuzzleGrid : MonoBehaviour {
         }
 
         //THIS SHOULD BE DONE IN GETSOLUTION()
-        solution += PuzzleHelper.TranslateInput(node, currentNode); 
+        solution += PuzzleHelper.TranslateLocalInput(node, currentNode); 
 
         currentNode = node;
         ActivateNode(node);
@@ -306,7 +319,7 @@ public class PuzzleGrid : MonoBehaviour {
             n.Drawable = true;
         }
 
-        //s‰tt currentLine position
+        //s√§tt currentLine position
         currentNode = startNode;
         currentNode.gameObject.SetActive(true);
 

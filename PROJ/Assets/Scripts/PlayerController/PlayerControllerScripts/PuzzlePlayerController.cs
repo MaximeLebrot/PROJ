@@ -26,37 +26,30 @@ public class PuzzlePlayerController : MonoBehaviour
     private float xMove, zMove;
     private RaycastHit groundHitInfo;
 
-    private InputMaster inputMaster;
     
     public int CurrentPuzzleID { get; set; }
     public Transform PuzzleTransform { get; set; }
 
+    public MetaPlayerController metaPlayerController;
 
-    void Awake()
+
+    void Start()
     {
-        inputMaster = new InputMaster();
         physics = GetComponent<PlayerPhysicsSplit>();
-    }
-    private void OnEnable()
-    {
-        inputMaster.Enable();
-    }
-    private void OnDisable()
-    {
-        inputMaster.Disable();
+
     }
     private void Update()
     {
-        xMove = inputMaster.Player.Movement.ReadValue<Vector2>().x;
-        zMove = inputMaster.Player.Movement.ReadValue<Vector2>().y;
+        xMove = metaPlayerController.inputReference.InputMaster.Movement.ReadValue<Vector2>().x;
+        zMove = metaPlayerController.inputReference.InputMaster.Movement.ReadValue<Vector2>().y;
 
 
-        if (inputMaster.Player.ExitPuzzle.triggered)
+        if (metaPlayerController.inputReference.InputMaster.ExitPuzzle.triggered)
         {
             EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(PuzzleTransform.GetComponent<Puzzle>().GetPuzzleID()), false));
         }
 
-        if (inputMaster.PuzzleDEBUGGER.calculatesolution.triggered)
+        if (metaPlayerController.inputReference.InputMaster.evaluateSolution.triggered)
         {
             PuzzleTransform.GetComponent<Puzzle>().EvaluateSolution();
         }

@@ -1468,6 +1468,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ede1155289adbad459ea3f0f7bd44a5f, type: 2}
   - {fileID: 11400000, guid: 1c86d9228b43e8c40a6a34963bc366f3, type: 2}
   - {fileID: 11400000, guid: b13653734636c2a438782ec4917610f9, type: 2}
+  inputReference: {fileID: 0}
 --- !u!114 &637493746017295566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1484,12 +1485,12 @@ MonoBehaviour:
   deceleration: 5
   maxSpeed: 40
   turnRate: 10
-  turnSpeed: 2
+  turnSpeed: 10
   retainedSpeedWhenTurning: 2
   airControl: 0.2
   slopeMaxAngle: 140
   decelerationSlopeAngle: 110
-  slopeDecelerationMultiplier: 15
+  slopeDecelerationMultiplier: 25
   glideMinAngle: 80
   groundCheckMask:
     serializedVersion: 2
@@ -1519,14 +1520,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 59
   gravityWhenFalling: 25
-  maxSpeed: 12
-  gravity: 9.81
-  smoothingMaxDistance: 3
-  powerOf: 2
-  surfThreshold: 9
-  staticFrictionCoefficient: 0.5
-  kineticFrictionCoefficient: 0.35
-  airResistance: 0.35
   glideHeight: 0.5
   moveThreshold: 0.01
 --- !u!114 &637493746017295564
@@ -1547,6 +1540,7 @@ MonoBehaviour:
   turnRate: 10
   turnSpeed: 30
   force: {x: 0, y: 0, z: 0}
+  metaPlayerController: {fileID: 637493746017295553}
 --- !u!95 &637493746017295565
 Animator:
   serializedVersion: 3

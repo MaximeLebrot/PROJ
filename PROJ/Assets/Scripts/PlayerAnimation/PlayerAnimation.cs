@@ -17,6 +17,11 @@ public class PlayerAnimation : MonoBehaviour
         anim = GetComponent<Animator>(); 
     }
 
+    private void Start()
+    {
+        inputReference.Start();
+    }
+
     private void Update()
     {
         input = inputReference.InputMaster.Movement.ReadValue<Vector2>();

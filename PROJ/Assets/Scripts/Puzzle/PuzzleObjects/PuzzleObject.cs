@@ -52,6 +52,7 @@ public abstract class PuzzleObject : MonoBehaviour
         modInfo = modHolder.GetComponent<ModifierHolder>().GetModifier(modVar);
         modifier = Instantiate(modInfo.modifier);
         modifier.transform.parent = transform;
+        modifier.transform.localScale = new Vector3(0.7f, 0.7f, 1);
         modifier.transform.localPosition = modifierPosition;
         modifier.transform.rotation = transform.rotation;
     }

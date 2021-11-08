@@ -15,16 +15,17 @@ public class ShowSolution : MonoBehaviour
 
     [SerializeField] private AudioSource source;
 
-    void Awake()
+    void Start()
     {
   //     time = 0;
        anim = GetComponent<Animator>();
        inputMaster = new InputMaster();
+       inputMaster.Enable();
     }
     
     private void OnEnable()
     {
-        inputMaster.Enable();
+        
         EventHandler<ExitPuzzleEvent>.RegisterListener(PlayAnimation);
     }
     private void OnDisable()

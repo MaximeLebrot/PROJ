@@ -6,7 +6,7 @@ namespace NewCamera
     public class StationaryBehaviour : BaseCameraBehaviour
     {
 
-        public StationaryBehaviour(Transform transform, Transform target, BehaviourData values, bool isInputBehaviour) : base(transform, target, values, isInputBehaviour) {}
+        public StationaryBehaviour(Transform transform, Transform target, BehaviourData values) : base(transform, target, values) {}
         
         public override Quaternion ExecuteRotate()
         {

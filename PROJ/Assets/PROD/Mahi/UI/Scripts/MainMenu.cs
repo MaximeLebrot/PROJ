@@ -18,7 +18,7 @@ public class MainMenu : MonoBehaviour
 
     void Awake()
     {
-        inputMaster = new InputMaster();
+        
         //Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
@@ -27,9 +27,10 @@ public class MainMenu : MonoBehaviour
 
     }
 
+
     private void OnEnable()
     {
-        inputMaster.Enable();
+        
     }
     private void OnDisable()
     {
@@ -38,6 +39,8 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
+        inputMaster = new InputMaster();
+        inputMaster.Enable();
         anim = GetComponent<Animator>();
         optionsMenu.SetActive(false);
         prototypeMenu.SetActive(false);

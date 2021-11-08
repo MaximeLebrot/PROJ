@@ -7,13 +7,14 @@ public class ReturnToMain : MonoBehaviour
 {
     private InputMaster inputMaster;
 
-    void Awake()
+    void Start()
     {
         inputMaster = new InputMaster();
+        inputMaster.Enable();
     }
     private void OnEnable()
     {
-        inputMaster.Enable();
+        
     }
 
     private void OnDisable()
