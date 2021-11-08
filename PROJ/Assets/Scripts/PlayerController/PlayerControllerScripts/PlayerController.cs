@@ -38,8 +38,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public Vector3 force;
     private RaycastHit groundHitInfo;  
     private Vector3 input;
-    private bool surfCamera = false;
-    private float groundCheckBoxSize = 0.25f;
+    private float groundCheckBoxSize = 0.1f;
     private float inputThreshold = 0.1f;
     public float groundHitAngle { get; private set; }
     public float GlideMinAngle => glideMinAngle;
@@ -81,7 +80,7 @@ public class PlayerController : MonoBehaviour
             {
                 input.Normalize();
             }
-            CalcDirection(inp);
+            PlayerDirection(inp);
             Accelerate();
         }
     }
@@ -95,34 +94,22 @@ public class PlayerController : MonoBehaviour
             input.Normalize();
         }
 
-        CalcDirection(inp);
+        PlayerDirection(inp);
         input *= airControl;
         //Cannot decelerate when airborne
         Accelerate();
     }
-    private void CalcDirection(Vector3 inp)
-    {
-       /* if (dualCameraBehaviour)
-        {
-            if (surfCamera)
-                RotateInDirectionOfMovement(inp);
-            else
-                PlayerDirection(inp);
-        }
-        else*/
-            PlayerDirection(inp);
-    }
     private void Decelerate()
     {
         //Vector3 projectedDeceleration = Vector3.ProjectOnPlane(-physics.GetXZMovement().normalized, groundHitInfo.normal) * deceleration;
-        force += deceleration * -physics.GetXZMovement().normalized;
+        force = deceleration * -physics.GetXZMovement().normalized;
     }
     private void Accelerate()
     {
         Vector3 inputXZ = new Vector3(input.x, 0, input.z);
         float dot = Vector3.Dot(inputXZ.normalized, physics.GetXZMovement().normalized);
 
-        force += input * acceleration;
+        force = input * acceleration;
         force -= ((1 - dot) * 0.5f) 
                  * turnRate 
                  * physics.GetXZMovement().normalized;
@@ -217,11 +204,6 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-
-    public void TransitionSurf(bool val)
-    {
-        surfCamera = val;
-    }
     /// <summary>
     /// Boxcast to get a little thickness to the groundcheck so as to not get stuck in crevasses or similar geometry. 
     /// </summary>
