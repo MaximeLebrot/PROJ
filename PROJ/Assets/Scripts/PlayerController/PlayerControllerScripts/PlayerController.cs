@@ -36,10 +36,9 @@ public class PlayerController : MonoBehaviour
 
 
     [HideInInspector] public Vector3 force;
-    public RaycastHit groundHitInfo;  
+    private RaycastHit groundHitInfo;  
     private Vector3 input;
-    private bool surfCamera = false;
-    private float groundCheckBoxSize = 0.25f;
+    private float groundCheckBoxSize = 0.1f;
     private float inputThreshold = 0.1f;
     public float groundHitAngle { get; private set; }
     public float GlideMinAngle => glideMinAngle;
@@ -69,7 +68,7 @@ public class PlayerController : MonoBehaviour
     }
     public void InputWalk(Vector3 inp)
     {
-        input = inp.x * Vector3.right + 
+        input = inp.x */*turnSpeed * - could this be done for rotation input from camera aswell?  */ Vector3.right + 
                 inp.y * Vector3.forward;   
 
         //to stop character rotation when input is 0
@@ -81,7 +80,7 @@ public class PlayerController : MonoBehaviour
             {
                 input.Normalize();
             }
-            CalcDirection(inp);
+            PlayerDirection(inp);
             Accelerate();
         }
     }
@@ -95,34 +94,22 @@ public class PlayerController : MonoBehaviour
             input.Normalize();
         }
 
-        CalcDirection(inp);
+        PlayerDirection(inp);
         input *= airControl;
         //Cannot decelerate when airborne
         Accelerate();
     }
-    private void CalcDirection(Vector3 inp)
-    {
-       /* if (dualCameraBehaviour)
-        {
-            if (surfCamera)
-                RotateInDirectionOfMovement(inp);
-            else
-                PlayerDirection(inp);
-        }
-        else*/
-            PlayerDirection(inp);
-    }
     private void Decelerate()
     {
-        Vector3 projectedDeceleration = Vector3.ProjectOnPlane(-physics.GetXZMovement().normalized, groundHitInfo.normal) * deceleration;
-        force += projectedDeceleration;
+        //Vector3 projectedDeceleration = Vector3.ProjectOnPlane(-physics.GetXZMovement().normalized, groundHitInfo.normal) * deceleration;
+        force = deceleration * -physics.GetXZMovement().normalized;
     }
     private void Accelerate()
     {
         Vector3 inputXZ = new Vector3(input.x, 0, input.z);
         float dot = Vector3.Dot(inputXZ.normalized, physics.GetXZMovement().normalized);
 
-        force += input * acceleration;
+        force = input * acceleration;
         force -= ((1 - dot) * 0.5f) 
                  * turnRate 
                  * physics.GetXZMovement().normalized;
@@ -149,11 +136,7 @@ public class PlayerController : MonoBehaviour
     }
     private void RotateInVelocityDirection()
     {
-        Vector3 charVelocity = physics.GetXZMovement();
-        if (charVelocity.magnitude < inputThreshold)
-            return;
-        transform.forward = Vector3.Lerp(transform.forward, charVelocity.normalized, turnSpeed * Time.deltaTime);
-        //transform.rotation = Quaternion.LookRotation(charVelocity.normalized, Vector3.up);
+        transform.rotation = Quaternion.LookRotation(physics.GetXZMovement().normalized, Vector3.up);
     }
     //Obsolete
     private void RotateTowardsCameraDirection(Vector3 rawInput)
@@ -217,11 +200,6 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-
-    public void TransitionSurf(bool val)
-    {
-        surfCamera = val;
-    }
     /// <summary>
     /// Boxcast to get a little thickness to the groundcheck so as to not get stuck in crevasses or similar geometry. 
     /// </summary>
