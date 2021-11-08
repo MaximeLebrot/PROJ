@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class LookAtTransition : CameraTransition<LookAtEventData> {
+public class LookAtTransition : EventDataCameraTransition<LookAtEventData> {
     
     private readonly Quaternion endRotation;
 

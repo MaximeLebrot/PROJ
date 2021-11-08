@@ -115,6 +115,9 @@ public class GameCamera : MonoBehaviour {
 
         await PlayTransitions(transitions);
         
+        ResetBehindPlayerTransition resetBehindPlayerTransition = new ResetBehindPlayerTransition(ref thisTransform, shoulderPosition.position, shoulderPosition.rotation, .2f);
+
+        await PlayTransition(resetBehindPlayerTransition);
     }
 
     private void OnPuzzleStart(StartPuzzleEvent startPuzzleEvent) {
@@ -130,11 +133,11 @@ public class GameCamera : MonoBehaviour {
     
     private void ChangeBehaviour(BaseCameraBehaviour newBaseCameraBehaviour) => currentBaseCameraBehaviour = newBaseCameraBehaviour;
 
-    private async Task PlayTransition(CameraTransition<EventData> transition) {
+    private async Task PlayTransition(CameraTransition cameraTransition) {
 
         SetBehaviourExecutionActive(false);
         
-        await transition.Transit();
+        await cameraTransition.Transit();
 
         SetBehaviourExecutionActive(true);
     }
@@ -149,7 +152,6 @@ public class GameCamera : MonoBehaviour {
     }
 
     
-
     private void SetBehaviourExecutionActive(bool isActive) {
         if (isActive) { 
             behaviourQueue = ExecuteCameraBehaviour;
@@ -160,6 +162,8 @@ public class GameCamera : MonoBehaviour {
             behaviourQueue = null;
             EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
         }
+
+        input = followTarget.parent.transform.rotation * input;
 
     }
     

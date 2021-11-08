@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class MoveToTransition : CameraTransition<MoveToEventData> {
+public class MoveToTransition : EventDataCameraTransition<MoveToEventData> {
     
     private readonly Vector3 endPosition;
 
