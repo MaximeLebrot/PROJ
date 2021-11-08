@@ -69,13 +69,8 @@ public class PlayerController : MonoBehaviour
     }
     public void InputWalk(Vector3 inp)
     {
-<<<<<<< Updated upstream
-        input = inp.x */*turnSpeed * - could this be done for rotation input from camera aswell?  */ Vector3.right + 
-                inp.y * Vector3.forward;   
-=======
         input = inp.x * Vector3.right + 
                 inp.y * Vector3.forward;
->>>>>>> Stashed changes
 
         //to stop character rotation when input is 0
         if (input.magnitude < inputThreshold)
@@ -119,18 +114,12 @@ public class PlayerController : MonoBehaviour
     }
     private void Decelerate()
     {
-<<<<<<< Updated upstream
-        //Vector3 projectedDeceleration = Vector3.ProjectOnPlane(-physics.GetXZMovement().normalized, groundHitInfo.normal) * deceleration;
-        force += deceleration * -physics.GetXZMovement().normalized;
-=======
         //Debug
         if(physics.velocity.magnitude > 0.05f)
             Debug.Log("Decelerating");
 
-
         Vector3 projectedDeceleration = Vector3.ProjectOnPlane(-physics.GetXZMovement().normalized, groundHitInfo.normal) * deceleration;
         force += projectedDeceleration;
->>>>>>> Stashed changes
     }
     private void Accelerate()
     {
