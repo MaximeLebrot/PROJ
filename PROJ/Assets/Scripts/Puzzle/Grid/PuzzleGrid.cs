@@ -30,7 +30,7 @@ public class PuzzleGrid : MonoBehaviour {
 
     public Transform Player { get; set; }
 
-   
+    private Puzzle masterPuzzle;
 
     public string GetSolution() 
     {
@@ -75,6 +75,7 @@ public class PuzzleGrid : MonoBehaviour {
 
         GenerateGrid();
 
+        masterPuzzle = GetComponentInParent<Puzzle>();
         //allNodesLIST.AddRange(transform.GetComponentsInChildren<Node>());
         foreach (Node node in allNodes)
             node.gameObject.SetActive(false);
@@ -153,7 +154,7 @@ public class PuzzleGrid : MonoBehaviour {
     private void InstantiateFirstLine()
     {
         //instansiera linje
-        //rita linje frÂn startnod till spelare
+        //rita linje fr√•n startnod till spelare
         currentLineObject = Instantiate(linePrefab, transform.parent);
         currentLine = currentLineObject.GetComponent<PuzzleLine>();      
     }
@@ -222,12 +223,12 @@ public class PuzzleGrid : MonoBehaviour {
             //Line Instantiation
             GameObject newLineRenderer = Instantiate(linePrefab, transform);
             newLineRenderer.transform.position = currentNode.transform.position;
-            newLineRenderer.transform.localRotation = Quaternion.Inverse(GetComponentInParent<Puzzle>().transform.rotation);
+            newLineRenderer.transform.localRotation = Quaternion.Inverse(masterPuzzle.transform.rotation);
 
             newLineRenderer.GetComponent<PuzzleLine>().SetPosition((
                 node.transform.localPosition - currentNode.transform.localPosition).normalized * 
-                Vector3.Distance(node.transform.localPosition, currentNode.transform.localPosition), 
-                GetComponentInParent<Puzzle>().transform.rotation);
+                Vector3.Distance(node.transform.localPosition, currentNode.transform.localPosition),
+                masterPuzzle.transform.rotation);
 
             LineObject line = new LineObject(currentNode, newLineRenderer);
 
@@ -318,7 +319,7 @@ public class PuzzleGrid : MonoBehaviour {
             n.Drawable = true;
         }
 
-        //s‰tt currentLine position
+        //s√§tt currentLine position
         currentNode = startNode;
         currentNode.gameObject.SetActive(true);
 

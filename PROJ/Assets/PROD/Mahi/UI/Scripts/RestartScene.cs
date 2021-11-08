@@ -10,13 +10,14 @@ public class RestartScene : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    void Awake()
+    void Start()
     {
         inputMaster = new InputMaster();
+        inputMaster.Enable();
     }
     private void OnEnable()
     {
-        inputMaster.Enable();
+        
     }
     private void OnDisable()
     {
