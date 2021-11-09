@@ -14,6 +14,8 @@ public class Logbook : MonoBehaviour
             CloseTab(i);
     }
 
+    //Add so it takes input from keys.
+
     public void OpenWelcomeTab()
     {
         for (int i = 0; i < tabsRight.Length; i++)
