@@ -36,14 +36,14 @@ public class SettingsMenu : MonoBehaviour
     private void Awake()
     {
         settingsMenuInstance = this;
-        settings = userSettings;
-
-        SetValues(userSettings);
-        Camera.main.fieldOfView = fieldOfView.value;
     }
     private void OnEnable()
     {
-        musicSlider.onValueChanged.AddListener(delegate { OnValueChanged();});
+
+        Debug.Log("Settings menu on enable");
+        LoadSavedSettings();
+
+        /*musicSlider.onValueChanged.AddListener(delegate { OnValueChanged();});
         voiceSlider.onValueChanged.AddListener(delegate { OnValueChanged();});
         sfxSlider.onValueChanged.AddListener(delegate { OnValueChanged();});
         mute.onValueChanged.AddListener(delegate { OnValueChanged();});
@@ -56,12 +56,12 @@ public class SettingsMenu : MonoBehaviour
         fieldOfView.onValueChanged.AddListener(delegate { OnValueChanged();});
         brightness.onValueChanged.AddListener(delegate { OnValueChanged(); });
         quality.onValueChanged.AddListener(delegate { OnValueChanged(); });
-        fullscreen.onValueChanged.AddListener(delegate { OnValueChanged(); });
+        fullscreen.onValueChanged.AddListener(delegate { OnValueChanged(); });*/
 
     }
     private void OnDisable()
     {
-        musicSlider.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
+        /*musicSlider.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
         voiceSlider.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
         sfxSlider.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
         mute.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
@@ -75,19 +75,16 @@ public class SettingsMenu : MonoBehaviour
         brightness.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
         quality.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
         fullscreen.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
-        fieldOfView.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
+        fieldOfView.onValueChanged.RemoveListener(delegate { OnValueChanged(); });*/
     }
     public void OnValueChanged()
     {
         //Temporary code to not break the FoV slider before the event and listeners are implemented
         userSettings.fieldOfView = fieldOfView.value;
-        Camera.main.fieldOfView = fieldOfView.value;
-        
+        Camera.main.fieldOfView = fieldOfView.value;     
         //assign values to user settings - settings object are only used for storing data between sessions.
         StoreValues();
-
         //Create and fire SettingsChangedEvent (AudioHandler, anything that uses fontSize etc needs to listen for this event
-
         //EventHandler<SettingsChangedEvent>.FireEvent(new SettingsChangedEvent(userSettings));
     }
 
@@ -95,30 +92,33 @@ public class SettingsMenu : MonoBehaviour
     public void RestoreDefaultValues()
     {
         //copy default values into user values
-        
-        //SetValues();
+        SetValues(defaultSettings);
     }
-    private void SetValues(GameSettings settings)
+    //Called from button in settings menu
+    public void SaveSettings()
     {
-        //Audio
-        musicSlider.value = settings.musicVolume;
-        voiceSlider.value = settings.voiceVolume;
-        sfxSlider.value = settings.soundEffectsVolume;
-        mute.isOn = settings.mute;
-
-        //Ease of use
-        fontSize.value = settings.fontSize;
-        pointerSize.value = settings.pointerSize;
-        showDesktop.isOn = settings.showDesktop;
-        blindMode.isOn = settings.blindMode;
-
-        //Display                    
-        fieldOfView.value = settings.fieldOfView;
-        brightness.value = settings.brightness;
-        //quality = settings.Quality;
-        //resolution  = settings.
-        fullscreen.isOn = settings.fullscreen;
+        StoreValues();
+        EventHandler<SaveSettingsEvent>.FireEvent(new SaveSettingsEvent(userSettings));
+        Debug.Log("Fired save settings event");
     }
+    private void LoadSavedSettings()
+    {
+        string json = PlayerPrefs.GetString("SavedSettings");
+
+        if (json == "")
+        {
+            RestoreDefaultValues();
+            SaveSettings();
+            Debug.Log("Loaded default settings");
+            return;
+        }
+        Debug.Log(json);
+        SettingsData savedSettings = JsonUtility.FromJson<SettingsData>(json);
+        userSettings = savedSettings;
+        Debug.Log("Saved settings music volume: " + savedSettings.musicVolume);
+        SetValues(savedSettings);
+    }
+  
     private void StoreValues()
     {
         //Audio
@@ -140,28 +140,61 @@ public class SettingsMenu : MonoBehaviour
         //resolution  = settings.
         userSettings.fullscreen = fullscreen.isOn;
     }
+    private void SetValues(GameSettings settings)
+    {
+        Debug.Log("WRong set values");
+        //Audio
+        musicSlider.value = settings.musicVolume;
+        voiceSlider.value = settings.voiceVolume;
+        sfxSlider.value = settings.soundEffectsVolume;
+        mute.isOn = settings.mute;
+
+        //Ease of use
+        fontSize.value = settings.fontSize;
+        pointerSize.value = settings.pointerSize;
+        showDesktop.isOn = settings.showDesktop;
+        blindMode.isOn = settings.blindMode;
+
+        //Display                    
+        fieldOfView.value = settings.fieldOfView;
+        brightness.value = settings.brightness;
+        //quality = settings.Quality;
+        //resolution  = settings.
+        fullscreen.isOn = settings.fullscreen;
+    }
+    private void SetValues(SettingsData settings)
+    {
+        //Audio
+        musicSlider.value = settings.musicVolume;
+        voiceSlider.value = settings.voiceVolume;
+        sfxSlider.value = settings.soundEffectsVolume;
+        mute.isOn = settings.mute;
+        Debug.Log("Set values, Music slider is + " + musicSlider.value+ "it should be " + settings.musicVolume);
+
+        //Ease of use
+        fontSize.value = settings.fontSize;
+        pointerSize.value = settings.pointerSize;
+        showDesktop.isOn = settings.showDesktop;
+        blindMode.isOn = settings.blindMode;
+
+        //Display                    
+        fieldOfView.value = settings.fieldOfView;
+        brightness.value = settings.brightness;
+        //quality = settings.Quality;
+        //resolution  = settings.
+        fullscreen.isOn = settings.fullscreen;
+    }
+
+    //How would we like to store the default values as json? 
+    //Using existing scriptable object meanwhile
+    private void SetDefaultValues()
+    {
+        string json = PlayerPrefs.GetString("DefaultSettings");
+        SettingsData settings = JsonUtility.FromJson<SettingsData>(json);
+        //SetValues(settings);
+    }
+   
+
 
 }
-    [Serializable]
-    public struct SettingsData
-{
-    //Audio
-    public float musicVolume;
-    public float voiceVolume;
-    public float soundEffectsVolume;
-    public bool mute;
 
-    //Easy of Access
-    public int fontSize;
-    public float pointerSize;
-    public bool showDesktop; //What is this? 
-    public bool blindMode;
-
-    //Display
-    public float fieldOfView;
-    public float brightness;
-    //public GraphicsQuality Quality;
-    public bool fullscreen;
-    //private Resolution screenRes? 
-
-}

@@ -65,5 +65,11 @@ public readonly struct PlayerStateChangeEvent : IEvent {
 }
 
 public class AwayFromKeyboardEvent : IEvent { }
-public class SaveEvent : IEvent { }
 #endregion
+
+public class SaveEvent : IEvent { }
+public class SaveSettingsEvent : IEvent 
+{
+    public SettingsData settingsData;
+    public SaveSettingsEvent(SettingsData data) => settingsData = data;
+}
