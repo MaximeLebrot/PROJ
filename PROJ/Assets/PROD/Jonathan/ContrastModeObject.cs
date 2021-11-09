@@ -5,19 +5,20 @@ using UnityEngine;
 
 public class ContrastModeObject : MonoBehaviour {
 
-    [SerializeField] private SkinnedMeshRenderer meshRenderer;
-    [SerializeField] private List<Material> contrastMaterials;
+    [SerializeField] private Renderer meshRenderer;
     [SerializeField] private bool replaceMaterials;
+    [SerializeField] private List<Material> contrastMaterials;
+    
 
-    private List<Material> defaultMaterials;
+    private List<Material> defaultMaterials = new List<Material>();
 
-    private List<Material> swapMaterials;
+    private List<Material> swapMaterials = new List<Material>();
 
 
     private void Awake() {
         defaultMaterials = meshRenderer.materials.ToList();
 
-        if (replaceMaterials)
+        if (!replaceMaterials)
             swapMaterials.AddRange(defaultMaterials);
 
         swapMaterials = contrastMaterials;

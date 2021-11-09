@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1266056791}
   - component: {fileID: 3372544531655227956}
   - component: {fileID: 4744562067547662606}
+  - component: {fileID: -4703660020111835726}
   m_Layer: 8
   m_Name: StartNode
   m_TagString: Untagged
@@ -118,6 +119,7 @@ MonoBehaviour:
   startNode: 0
   PosX: 0
   PosY: 0
+  Drawable: 0
 --- !u!54 &3372544531655227956
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -147,6 +149,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Active: 0
+--- !u!114 &-4703660020111835726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5946362518061914328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1116b784c33ecf34d8289cbcc266c101, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 4506803875265848488}
+  replaceMaterials: 1
+  contrastMaterials:
+  - {fileID: 2100000, guid: 637c8072a2a69374f855ca58be949b8a, type: 2}
 --- !u!1 &6750411623378878718
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,6 +177,7 @@ GameObject:
   - component: {fileID: 9114949324511681631}
   - component: {fileID: 2736612642209636726}
   - component: {fileID: 7077842229059007101}
+  - component: {fileID: 4154495583480222211}
   m_Layer: 8
   m_Name: Sphere
   m_TagString: Untagged
@@ -242,3 +261,19 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4154495583480222211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6750411623378878718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1116b784c33ecf34d8289cbcc266c101, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 2736612642209636726}
+  replaceMaterials: 1
+  contrastMaterials:
+  - {fileID: 2100000, guid: afe2b7377e39a76408f7c9c95ba1c46f, type: 2}
