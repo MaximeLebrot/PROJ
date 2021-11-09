@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
 
 
     [HideInInspector] public Vector3 force;
-    private RaycastHit groundHitInfo;  
+    public RaycastHit groundHitInfo;  
     private Vector3 input;
     private bool surfCamera = false;
     private float groundCheckBoxSize = 0.1f;

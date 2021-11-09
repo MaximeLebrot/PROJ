@@ -42,22 +42,6 @@ public class SettingsMenu : MonoBehaviour
 
         Debug.Log("Settings menu on enable");
         LoadSavedSettings();
-
-        /*musicSlider.onValueChanged.AddListener(delegate { OnValueChanged();});
-        voiceSlider.onValueChanged.AddListener(delegate { OnValueChanged();});
-        sfxSlider.onValueChanged.AddListener(delegate { OnValueChanged();});
-        mute.onValueChanged.AddListener(delegate { OnValueChanged();});
-
-        fontSize.onValueChanged.AddListener(delegate { OnValueChanged();});
-        pointerSize.onValueChanged.AddListener(delegate { OnValueChanged();});
-        showDesktop.onValueChanged.AddListener(delegate { OnValueChanged(); });
-        blindMode.onValueChanged.AddListener(delegate { OnValueChanged(); });
-
-        fieldOfView.onValueChanged.AddListener(delegate { OnValueChanged();});
-        brightness.onValueChanged.AddListener(delegate { OnValueChanged(); });
-        quality.onValueChanged.AddListener(delegate { OnValueChanged(); });
-        fullscreen.onValueChanged.AddListener(delegate { OnValueChanged(); });*/
-
     }
     private void OnDisable()
     {
@@ -77,18 +61,8 @@ public class SettingsMenu : MonoBehaviour
         fullscreen.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
         fieldOfView.onValueChanged.RemoveListener(delegate { OnValueChanged(); });*/
     }
-    public void OnValueChanged()
-    {
-        //Temporary code to not break the FoV slider before the event and listeners are implemented
-        userSettings.fieldOfView = fieldOfView.value;
-        Camera.main.fieldOfView = fieldOfView.value;     
-        //assign values to user settings - settings object are only used for storing data between sessions.
-        StoreValues();
-        //Create and fire SettingsChangedEvent (AudioHandler, anything that uses fontSize etc needs to listen for this event
-        //EventHandler<SettingsChangedEvent>.FireEvent(new SettingsChangedEvent(userSettings));
-    }
 
-    //This will need a button if we want to implement it
+    //Called from button in settings menu
     public void RestoreDefaultValues()
     {
         //copy default values into user values
@@ -97,7 +71,7 @@ public class SettingsMenu : MonoBehaviour
     //Called from button in settings menu
     public void SaveSettings()
     {
-        StoreValues();
+        UpdateUserSettings();
         EventHandler<SaveSettingsEvent>.FireEvent(new SaveSettingsEvent(userSettings));
         Debug.Log("Fired save settings event");
     }
@@ -119,7 +93,7 @@ public class SettingsMenu : MonoBehaviour
         SetValues(savedSettings);
     }
   
-    private void StoreValues()
+    private void UpdateUserSettings()
     {
         //Audio
         userSettings.musicVolume = musicSlider.value;
@@ -140,14 +114,14 @@ public class SettingsMenu : MonoBehaviour
         //resolution  = settings.
         userSettings.fullscreen = fullscreen.isOn;
     }
-    private void SetValues(GameSettings settings)
+    private void SetValues(SettingsData settings)
     {
-        Debug.Log("WRong set values");
         //Audio
         musicSlider.value = settings.musicVolume;
         voiceSlider.value = settings.voiceVolume;
         sfxSlider.value = settings.soundEffectsVolume;
         mute.isOn = settings.mute;
+        Debug.Log("Set values, Music slider is + " + musicSlider.value + "it should be " + settings.musicVolume);
 
         //Ease of use
         fontSize.value = settings.fontSize;
@@ -162,14 +136,14 @@ public class SettingsMenu : MonoBehaviour
         //resolution  = settings.
         fullscreen.isOn = settings.fullscreen;
     }
-    private void SetValues(SettingsData settings)
+    private void SetValues(GameSettings settings)
     {
+        Debug.Log("WRong set values");
         //Audio
         musicSlider.value = settings.musicVolume;
         voiceSlider.value = settings.voiceVolume;
         sfxSlider.value = settings.soundEffectsVolume;
         mute.isOn = settings.mute;
-        Debug.Log("Set values, Music slider is + " + musicSlider.value+ "it should be " + settings.musicVolume);
 
         //Ease of use
         fontSize.value = settings.fontSize;
