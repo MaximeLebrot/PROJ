@@ -186,11 +186,8 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
             //GlideHeight should be zero when walking, but needs to be added here to get a smooth transition along with the lerp in SetValues
             Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, hitInfo.normal)
-                                    + GlideHeight * Vector3.up;
-
-            //velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
+                                  + GlideHeight * Vector3.up;
             velocity += normalForce;
-
             ApplyFriction(normalForce);
 
             if (i < MAX_ITER)
@@ -204,6 +201,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     public float moveThreshold = 0.05f;
     private void MoveOutOfGeometry(Vector3 movement)
     {
+        Debug.Log("movement magnitude is : " + movement.magnitude);
         //Do not move at all if the distance is tiny.
         //SHOULD not result in a move at all, and therefore shouldnt case trouble..? 
         if (movement.magnitude < moveThreshold)

@@ -36,10 +36,10 @@ public class PlayerController : MonoBehaviour
 
 
     [HideInInspector] public Vector3 force;
-    public RaycastHit groundHitInfo;  
+    private RaycastHit groundHitInfo;  
     private Vector3 input;
     private bool surfCamera = false;
-    private float groundCheckBoxSize = 0.25f;
+    private float groundCheckBoxSize = 0.1f;
     private float inputThreshold = 0.1f;
     public float groundHitAngle { get; private set; }
     public float GlideMinAngle => glideMinAngle;
@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
     public void InputWalk(Vector3 inp)
     {
         input = inp.x * Vector3.right + 
-                inp.y * Vector3.forward;   
+                inp.y * Vector3.forward;
 
         //to stop character rotation when input is 0
         if (input.magnitude < inputThreshold)
@@ -81,7 +81,7 @@ public class PlayerController : MonoBehaviour
             {
                 input.Normalize();
             }
-            CalcDirection(inp);
+            PlayerDirection(inp);
             Accelerate();
         }
     }
@@ -114,6 +114,10 @@ public class PlayerController : MonoBehaviour
     }
     private void Decelerate()
     {
+        //Debug
+        if(physics.velocity.magnitude > 0.05f)
+            Debug.Log("Decelerating");
+
         Vector3 projectedDeceleration = Vector3.ProjectOnPlane(-physics.GetXZMovement().normalized, groundHitInfo.normal) * deceleration;
         force += projectedDeceleration;
     }
@@ -122,7 +126,7 @@ public class PlayerController : MonoBehaviour
         Vector3 inputXZ = new Vector3(input.x, 0, input.z);
         float dot = Vector3.Dot(inputXZ.normalized, physics.GetXZMovement().normalized);
 
-        force += input * acceleration;
+        force = input * acceleration;
         force -= ((1 - dot) * 0.5f) 
                  * turnRate 
                  * physics.GetXZMovement().normalized;
@@ -153,7 +157,6 @@ public class PlayerController : MonoBehaviour
         if (charVelocity.magnitude < inputThreshold)
             return;
         transform.forward = Vector3.Lerp(transform.forward, charVelocity.normalized, turnSpeed * Time.deltaTime);
-        //transform.rotation = Quaternion.LookRotation(charVelocity.normalized, Vector3.up);
     }
     //Obsolete
     private void RotateTowardsCameraDirection(Vector3 rawInput)
@@ -205,9 +208,11 @@ public class PlayerController : MonoBehaviour
     private void ProjectMovement()
     {
         groundHitAngle = groundHitInfo.collider == null ? 90 : Vector3.Angle(input, groundHitInfo.normal);
-        
         if (groundHitAngle < slopeMaxAngle)
-            input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;        
+            input = Vector3.ProjectOnPlane(input, groundHitInfo.normal);        
+
+        if (groundHitAngle < slopeMaxAngle)
+            input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;     
         else
         {
             //Slide state? 
@@ -229,7 +234,7 @@ public class PlayerController : MonoBehaviour
     public bool IsGrounded()
     {
         bool grounded = Physics.BoxCast(transform.position, Vector3.one * groundCheckBoxSize, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance + physics.GlideHeight, groundCheckMask);
-        
+
         return grounded; 
     }
 
