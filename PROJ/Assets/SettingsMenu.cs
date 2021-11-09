@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class SettingsMenu : MonoBehaviour
 {
     [Tooltip("DONT TOUCH")]
     [SerializeField] private GameSettings defaultSettings;
-    [SerializeField] public  GameSettings userSettings;
-    public static GameSettings settings;
+    [SerializeField] public  SettingsData userSettings;
+    public static SettingsData settings;
     public static SettingsMenu settingsMenuInstance;
 
     //Audio
@@ -42,10 +43,38 @@ public class SettingsMenu : MonoBehaviour
     }
     private void OnEnable()
     {
-       fieldOfView.onValueChanged.AddListener(delegate { OnValueChanged(); });
+        musicSlider.onValueChanged.AddListener(delegate { OnValueChanged();});
+        voiceSlider.onValueChanged.AddListener(delegate { OnValueChanged();});
+        sfxSlider.onValueChanged.AddListener(delegate { OnValueChanged();});
+        mute.onValueChanged.AddListener(delegate { OnValueChanged();});
+
+        fontSize.onValueChanged.AddListener(delegate { OnValueChanged();});
+        pointerSize.onValueChanged.AddListener(delegate { OnValueChanged();});
+        showDesktop.onValueChanged.AddListener(delegate { OnValueChanged(); });
+        blindMode.onValueChanged.AddListener(delegate { OnValueChanged(); });
+
+        fieldOfView.onValueChanged.AddListener(delegate { OnValueChanged();});
+        brightness.onValueChanged.AddListener(delegate { OnValueChanged(); });
+        quality.onValueChanged.AddListener(delegate { OnValueChanged(); });
+        fullscreen.onValueChanged.AddListener(delegate { OnValueChanged(); });
+
     }
     private void OnDisable()
     {
+        musicSlider.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
+        voiceSlider.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
+        sfxSlider.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
+        mute.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
+
+        fontSize.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
+        pointerSize.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
+        showDesktop.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
+        blindMode.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
+
+        fieldOfView.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
+        brightness.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
+        quality.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
+        fullscreen.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
         fieldOfView.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
     }
     public void OnValueChanged()
@@ -53,8 +82,9 @@ public class SettingsMenu : MonoBehaviour
         //Temporary code to not break the FoV slider before the event and listeners are implemented
         userSettings.fieldOfView = fieldOfView.value;
         Camera.main.fieldOfView = fieldOfView.value;
-
+        
         //assign values to user settings - settings object are only used for storing data between sessions.
+        StoreValues();
 
         //Create and fire SettingsChangedEvent (AudioHandler, anything that uses fontSize etc needs to listen for this event
 
@@ -89,6 +119,49 @@ public class SettingsMenu : MonoBehaviour
         //resolution  = settings.
         fullscreen.isOn = settings.fullscreen;
     }
+    private void StoreValues()
+    {
+        //Audio
+        userSettings.musicVolume = musicSlider.value;
+        userSettings.voiceVolume = voiceSlider.value;
+        userSettings.soundEffectsVolume = sfxSlider.value;
+        userSettings.mute = mute.isOn;
 
+        //Ease of use
+        userSettings.fontSize = (int)fontSize.value;
+        userSettings.pointerSize = pointerSize.value;
+        userSettings.showDesktop = showDesktop.isOn;
+        userSettings.blindMode = blindMode.isOn;
+
+        //Display                    
+        userSettings.fieldOfView = fieldOfView.value;
+        userSettings.brightness = brightness.value;
+        //quality = settings.Quality;
+        //resolution  = settings.
+        userSettings.fullscreen = fullscreen.isOn;
+    }
+
+}
+    [Serializable]
+    public struct SettingsData
+{
+    //Audio
+    public float musicVolume;
+    public float voiceVolume;
+    public float soundEffectsVolume;
+    public bool mute;
+
+    //Easy of Access
+    public int fontSize;
+    public float pointerSize;
+    public bool showDesktop; //What is this? 
+    public bool blindMode;
+
+    //Display
+    public float fieldOfView;
+    public float brightness;
+    //public GraphicsQuality Quality;
+    public bool fullscreen;
+    //private Resolution screenRes? 
 
 }
