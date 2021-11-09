@@ -361,6 +361,33 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""OneSwitch"",
+            ""id"": ""1c650195-fd7e-4a81-a847-7cc027d7e2a8"",
+            ""actions"": [
+                {
+                    ""name"": ""OnlyButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""a7c3378b-2aaa-4b9b-8be4-9c3824308de7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""5c38d5e4-8db4-4e94-9b86-77535c5e76ed"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OnlyButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -412,6 +439,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_BackToMain = m_UI.FindAction("BackToMain", throwIfNotFound: true);
         m_UI_RestartScene = m_UI.FindAction("RestartScene", throwIfNotFound: true);
+        // OneSwitch
+        m_OneSwitch = asset.FindActionMap("OneSwitch", throwIfNotFound: true);
+        m_OneSwitch_OnlyButton = m_OneSwitch.FindAction("OnlyButton", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -636,6 +666,39 @@ public class @InputMaster : IInputActionCollection, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // OneSwitch
+    private readonly InputActionMap m_OneSwitch;
+    private IOneSwitchActions m_OneSwitchActionsCallbackInterface;
+    private readonly InputAction m_OneSwitch_OnlyButton;
+    public struct OneSwitchActions
+    {
+        private @InputMaster m_Wrapper;
+        public OneSwitchActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
+        public InputAction @OnlyButton => m_Wrapper.m_OneSwitch_OnlyButton;
+        public InputActionMap Get() { return m_Wrapper.m_OneSwitch; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(OneSwitchActions set) { return set.Get(); }
+        public void SetCallbacks(IOneSwitchActions instance)
+        {
+            if (m_Wrapper.m_OneSwitchActionsCallbackInterface != null)
+            {
+                @OnlyButton.started -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnOnlyButton;
+                @OnlyButton.performed -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnOnlyButton;
+                @OnlyButton.canceled -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnOnlyButton;
+            }
+            m_Wrapper.m_OneSwitchActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @OnlyButton.started += instance.OnOnlyButton;
+                @OnlyButton.performed += instance.OnOnlyButton;
+                @OnlyButton.canceled += instance.OnOnlyButton;
+            }
+        }
+    }
+    public OneSwitchActions @OneSwitch => new OneSwitchActions(this);
     private int m_StndKBMSchemeIndex = -1;
     public InputControlScheme StndKBMScheme
     {
@@ -675,5 +738,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
     {
         void OnBackToMain(InputAction.CallbackContext context);
         void OnRestartScene(InputAction.CallbackContext context);
+    }
+    public interface IOneSwitchActions
+    {
+        void OnOnlyButton(InputAction.CallbackContext context);
     }
 }
