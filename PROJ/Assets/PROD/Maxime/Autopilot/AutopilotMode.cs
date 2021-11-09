@@ -73,7 +73,10 @@ public class AutopilotMode : MonoBehaviour
                 if (!finishedPuzzle)
                 {
                     if (fullAutopilot)
+                    {
+                        pilotText.SetActive(false);
                         moveToNode = true;
+                    }
                     else
                         moveToNode = !moveToNode;
                 }
