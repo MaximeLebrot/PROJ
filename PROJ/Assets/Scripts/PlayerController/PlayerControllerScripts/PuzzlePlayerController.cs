@@ -49,18 +49,6 @@ public class PuzzlePlayerController : MonoBehaviour
     void Start()
     {
         physics = GetComponent<PlayerPhysicsSplit>();
-
-    }
-    private void Update()
-    {
-        xMove = metaPlayerController.inputReference.InputMaster.Movement.ReadValue<Vector2>().x;
-        zMove = metaPlayerController.inputReference.InputMaster.Movement.ReadValue<Vector2>().y;
-
-        Vector3 input = 
-        PuzzleTransform.right * xMove +
-        PuzzleTransform.forward * zMove;
-        
-        HandleInput(input);
     }
     private void OnQuitPuzzle(InputAction.CallbackContext obj)
     {
@@ -73,13 +61,17 @@ public class PuzzlePlayerController : MonoBehaviour
     }
 
     #region Movement
-    public void HandleInput(Vector3 inp)
+    public void SetInput(Vector2 inp)
     {
-        input = inp;
+        //Local space
+        input =
+        PuzzleTransform.right * inp.x +
+        PuzzleTransform.forward * inp.y ;
+
         RotateCharacterInsidePuzzle();
         if (input.magnitude < float.Epsilon)
         {
-            Decelerate();
+              Decelerate();
             return;
         }
         else 

@@ -201,7 +201,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
     public float moveThreshold = 0.05f;
     private void MoveOutOfGeometry(Vector3 movement)
     {
-        Debug.Log("movement magnitude is : " + movement.magnitude);
         //Do not move at all if the distance is tiny.
         //SHOULD not result in a move at all, and therefore shouldnt case trouble..? 
         if (movement.magnitude < moveThreshold)

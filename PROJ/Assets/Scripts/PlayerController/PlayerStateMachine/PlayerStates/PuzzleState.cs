@@ -15,11 +15,18 @@ public class PuzzleState : PlayerState
         player.puzzleController.enabled = true;
         base.EnterState();
     }
-
+    public override void RunUpdate()
+    {
+        SetInput();
+    }
     public override void ExitState()
     {
         player.playerController3D.enabled = true;
         player.puzzleController.enabled = false;
         base.ExitState();
+    }
+    private void SetInput()
+    {
+        player.puzzleController.SetInput(player.inputReference.InputMaster.Movement.ReadValue<Vector2>());
     }
 }
