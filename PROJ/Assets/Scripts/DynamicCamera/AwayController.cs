@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AwayController : MonoBehaviour {
@@ -12,7 +10,7 @@ public class AwayController : MonoBehaviour {
 
     private Action InputChecker;
 
-    private void Awake() => InputChecker = ReadInput;
+    private void Start() => InputChecker = ReadInput;
     
     private void Update() => InputChecker?.Invoke();
 
@@ -25,7 +23,6 @@ public class AwayController : MonoBehaviour {
             timeSinceLastInput = 0;
 
         if (timeSinceLastInput > awayTimer) {
-            Debug.Log("Changing TO AFK");
             EventHandler<AwayFromKeyboardEvent>.FireEvent(null);
             InputChecker = WaitForInput;
         }
@@ -42,7 +39,6 @@ public class AwayController : MonoBehaviour {
     private void WaitForInput() {
         if (InputIsZero()) return;
         
-        Debug.Log("Changing FROM AFK");
         EventHandler<AwayFromKeyboardEvent>.FireEvent(null);
         InputChecker = ReadInput;
         timeSinceLastInput = 0;

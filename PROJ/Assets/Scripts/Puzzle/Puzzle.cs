@@ -6,6 +6,7 @@ using System.Text;
 public class Puzzle : MonoBehaviour
 {
     //[SerializeField] int puzzleID; //should be compared to solution on a EvaluatePuzzleEvent and fire a SUCCESS EVENT or FAIL EVENT
+    [SerializeField] private int masterPuzzleID; 
     [SerializeField] private List<PuzzleInstance> puzzleInstances = new List<PuzzleInstance>();
     [SerializeField] private string playerInput = "";
     [SerializeField] private string solution;
@@ -32,21 +33,51 @@ public class Puzzle : MonoBehaviour
 
     void Awake()
     {
+      
         if (puzzleInstances.Count > 0)
         {
+            SetupPuzzleInstances();
             currentPuzzleInstance = puzzleInstances[0];
             numOfPuzzles = puzzleInstances.Count;
             grid = GetComponentInChildren<PuzzleGrid>();
-            inputMaster = new InputMaster();
-            PlaceSymbols();
+            grid.StartGrid();
+            
+            InitiatePuzzle();
             solution = Translate();
+            
         }
         else
-            Debug.LogWarning("NO PUZZLE INSTANCES IN PUZZLE");
+            Debug.LogWarning("NO PUZZLE INSTANCES IN PUZZLE");        
     }
+    private void Start()
+    {
+        inputMaster = new InputMaster();
+        inputMaster.Enable();
+    }
+
+    public void Load()
+    {
+        currentPuzzleNum = 0;
+        currentPuzzleInstance = puzzleInstances[currentPuzzleNum];
+        grid.ResetGrid();
+        PlaceSymbols();
+        CheckSolvedPuzzles();
+    }
+
+    private void CheckSolvedPuzzles()
+    {
+        while(currentPuzzleInstance.IsSolved() && 
+            currentPuzzleNum + 1 <= puzzleInstances.Count)
+        {
+            Debug.Log("LOAD NEXT PUZZLE");
+            NextPuzzle();
+        }
+
+    }
+
     private void OnEnable()
     {
-        inputMaster.Enable();
+        
         EventHandler<ExitPuzzleEvent>.RegisterListener(ExitPuzzle);
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
     }
@@ -56,24 +87,41 @@ public class Puzzle : MonoBehaviour
         EventHandler<ExitPuzzleEvent>.UnregisterListener(ExitPuzzle);
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
     }
+    private void SetupPuzzleInstances()
+    {
+        foreach (PuzzleInstance pi in puzzleInstances)
+        {
+            pi.SetupPuzzleInstance(this, masterPuzzleID);
+        }
 
-   private void InitiatePuzzle()
+    }
+    private void InitiatePuzzle()
     {
         //Debug.Log("Initiate puzzle");
+
         grid.ResetGrid();
+        if(currentPuzzleInstance.HasRestrictions())
+            grid.SetRestrictions(currentPuzzleInstance.GetRestrictions());
+
         PlaceSymbols();
+
     }
     private void NextPuzzle()
     {
+        
+
         currentPuzzleNum++;     
 
         //Debug.Log("Next puzzle, #" + currentPuzzleNum);
         if(currentPuzzleNum >= puzzleInstances.Count)
         {
             //no more puzzle instances here
+            //NÅTT SKA HÄNDA HÄR? nån effekt och feedback på att man klarat det här pusslet. Inte spara griden utan stänga av griden typ
             //Exit puzzle
             //Debug.Log("Last puzzle instance completed");
-            EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID()), true));
+
+
+            EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID(masterPuzzleID)), true));
             grid.CompleteGrid();
             GetComponent<Collider>().enabled = false;
             return;
@@ -146,25 +194,25 @@ public class Puzzle : MonoBehaviour
         int midRight = instantiatedSymbols.Count / 2;
         int midLeft = midRight - 1;
 
-        Vector3 midLeftPos = symbolPos.position - (Vector3.right * (symbolOffset / 2));
-        Vector3 midRightPos = symbolPos.position + (Vector3.right * (symbolOffset / 2));
+        Vector3 midLeftPos = (Vector3.left * (symbolOffset / 2));
+        Vector3 midRightPos = (Vector3.right * (symbolOffset / 2));
 
-        instantiatedSymbols[midLeft].transform.position = midLeftPos;
-        instantiatedSymbols[midLeft].transform.rotation = symbolPos.rotation;
+        instantiatedSymbols[midLeft].transform.localPosition = midLeftPos;
+        instantiatedSymbols[midLeft].transform.localRotation = new Quaternion(0,0,0,0);
 
-        instantiatedSymbols[midRight].transform.position = midRightPos;
-        instantiatedSymbols[midRight].transform.rotation = symbolPos.rotation;
+        instantiatedSymbols[midRight].transform.localPosition = midRightPos;
+        instantiatedSymbols[midRight].transform.rotation = new Quaternion(0, 0, 0, 0);
 
         for (int i = 1; i <= midLeft; i++)
         {
             Vector3 tempPos = midLeftPos;
             tempPos -= i * (symbolOffset * Vector3.right);
-            instantiatedSymbols[midLeft - i].transform.position = tempPos;
+            instantiatedSymbols[midLeft - i].transform.localPosition = tempPos;
             instantiatedSymbols[midLeft - i].transform.rotation = symbolPos.rotation;
 
             tempPos = midRightPos;
             tempPos += i * (symbolOffset * Vector3.right);
-            instantiatedSymbols[midRight + i].transform.position = tempPos;
+            instantiatedSymbols[midRight + i].transform.localPosition = tempPos;
             instantiatedSymbols[midRight + i].transform.rotation = symbolPos.rotation;
         }
     }
@@ -205,14 +253,19 @@ public class Puzzle : MonoBehaviour
         if (solution.Equals(grid.GetSolution()))
         {
             //uppdaterar curr puzzle
+            currentPuzzleInstance.Solve();
+            EventHandler<SaveEvent>.FireEvent(new SaveEvent());
             NextPuzzle();
         }
         else
         {
+            
             grid.ResetGrid();
+            if (currentPuzzleInstance.HasRestrictions())
+                grid.SetRestrictions(currentPuzzleInstance.GetRestrictions());
         }
         
-        EventHandler<ResetPuzzleEvent>.FireEvent(new ResetPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID())));
+        EventHandler<ResetPuzzleEvent>.FireEvent(new ResetPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID(masterPuzzleID))));
         GetComponentInChildren<PuzzleStarter>().ResetStarter();
 
     }
@@ -231,7 +284,7 @@ public class Puzzle : MonoBehaviour
     {
         if(eve.success != true)
         {
-            if (eve.info.ID == currentPuzzleInstance.GetPuzzleID())
+            if (eve.info.ID == currentPuzzleInstance.GetPuzzleID(masterPuzzleID))
             {
                 grid.ResetGrid();
             }
@@ -255,7 +308,7 @@ public class Puzzle : MonoBehaviour
     }
 
     //Maybe return ID from current PuzzleInstance instead
-    public int GetPuzzleID() { return currentPuzzleInstance.GetPuzzleID();}
+    public int GetPuzzleID() { return currentPuzzleInstance.GetPuzzleID(masterPuzzleID);}
 
 
 }

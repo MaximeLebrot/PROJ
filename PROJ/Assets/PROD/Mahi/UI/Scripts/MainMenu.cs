@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
@@ -8,19 +11,26 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject prototypeMenu;
     [SerializeField] private GameObject settingsMenu;
     [SerializeField] private GameObject mainMenu;
+    [SerializeField] private Slider fovSlider;
+    [SerializeField] private TextMeshProUGUI fovText;
     private Animator anim;
     private InputMaster inputMaster;
 
     void Awake()
     {
-        inputMaster = new InputMaster();
-     //   Cursor.visible = true;
+        
+        //Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
+        //fovSlider.value = Settings.FieldOfView;
+        //Camera.main.fieldOfView = Settings.FieldOfView;
+
     }
+
+
     private void OnEnable()
     {
-        inputMaster.Enable();
+        
     }
     private void OnDisable()
     {
@@ -29,6 +39,8 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
+        inputMaster = new InputMaster();
+        inputMaster.Enable();
         anim = GetComponent<Animator>();
         optionsMenu.SetActive(false);
         prototypeMenu.SetActive(false);
@@ -41,6 +53,13 @@ public class MainMenu : MonoBehaviour
         {
             PressAnyKey();
         }
+
+        int value = (int)fovSlider.value;
+        
+        fovText.text = value.ToString();
+
+        Settings.FieldOfView = fovSlider.value;
+
     }
 
     public void OpenPrototype()

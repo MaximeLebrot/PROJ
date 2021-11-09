@@ -40,7 +40,6 @@ public abstract class PuzzleObject : MonoBehaviour
             modifiedString += modInfo.translation;
         }
 
-        Debug.Log(modifiedString + translation);
         //CANNOT COMBINE MODIFIERS RIGHT NOW
         return modifiedString + translation;
     }
@@ -53,6 +52,7 @@ public abstract class PuzzleObject : MonoBehaviour
         modInfo = modHolder.GetComponent<ModifierHolder>().GetModifier(modVar);
         modifier = Instantiate(modInfo.modifier);
         modifier.transform.parent = transform;
+        modifier.transform.localScale = new Vector3(0.7f, 0.7f, 1);
         modifier.transform.localPosition = modifierPosition;
         modifier.transform.rotation = transform.rotation;
     }
@@ -62,8 +62,11 @@ public abstract class PuzzleObject : MonoBehaviour
 public enum ModifierVariant
 {
     None,
-    Rotate,
-    Repeat, 
     Mirrored, 
-    Double
+    Double,
+    Rotate90,
+    Rotate180,
+    Rotate270,
+    RepeatOPEN,
+    RepeatCLOSE
 }

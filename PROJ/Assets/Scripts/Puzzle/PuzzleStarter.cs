@@ -7,8 +7,8 @@ public class PuzzleStarter : MonoBehaviour
 
     public bool Active;
 
-    [SerializeField] private AudioSource source;
-    [SerializeField] private GameObject enderText;
+    //[SerializeField] private AudioSource source;
+    //[SerializeField] private GameObject enderText;
     private void Start()
     {
         puzzle = GetComponentInParent<Puzzle>();
@@ -17,7 +17,6 @@ public class PuzzleStarter : MonoBehaviour
 
     private void OnEnable()
     {
-
         EventHandler<ExitPuzzleEvent>.RegisterListener(OnExit);
         EventHandler<ResetPuzzleEvent>.RegisterListener(ResetStarter);
     }
@@ -43,18 +42,18 @@ public class PuzzleStarter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("PuzzleStarter Trigger entered");
 
         if (Active == false)
         {
-            Debug.Log("Start Puzzle");
+            Debug.Log("PuzzleStarter Trigger entered");
             EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzle.GetPuzzleID(), GetComponentInParent<Puzzle>().transform)));
             puzzle.SetPlayer(other.transform);
             Active = true;
-
+            /*
             source.Play(); //S
             if (enderText != null)
                 enderText.SetActive(true); //S
+            */
         }
 
 
@@ -65,11 +64,12 @@ public class PuzzleStarter : MonoBehaviour
 
     public void ResetStarter()
     {
-
-            Debug.Log("Exited");
+        
             Active = false;
+        /*
             if (enderText != null)
                 enderText.SetActive(false);
+        */
 
     }
 

@@ -11,11 +11,11 @@ public class EnableBlindMode : MonoBehaviour
 
     void Awake()
     {
-        inputMaster = new InputMaster();
+        
     }
     private void OnEnable()
     {
-        inputMaster.Enable();
+        
     }
     private void OnDisable()
     {
@@ -24,6 +24,8 @@ public class EnableBlindMode : MonoBehaviour
 
     void Start()
     {
+        inputMaster = new InputMaster();
+        inputMaster.Enable();
         ExitBlindMode();
     }
 

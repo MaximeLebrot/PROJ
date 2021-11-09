@@ -4,121 +4,111 @@ using UnityEngine;
 
 public class Logbook : MonoBehaviour
 {
-    // For the time being it just flips between tabs
+    [SerializeField] private GameObject[] pages; // Will prob wanna categorize them later.
+    [SerializeField] private GameObject[] tabsLeft; //Don't include Tab_0
+    [SerializeField] private GameObject[] tabsRight; //Don't include Tab_0
 
-    public GameObject page0; //The welcome page
-    public GameObject page1; //Base
-    public GameObject page2; //Minimalist
-    public GameObject page3; //Titles
-    public GameObject page4; //Thicker
-    public GameObject page5; //Refined
-
-    public GameObject[] tabs; // An array with all the tabs (currently theres 6)
+    public void Start()
+    {
+        for (int i = 0; i < tabsLeft.Length; i++)
+            CloseTab(i);
+    }
 
     public void OpenWelcomeTab()
     {
-        for (int i = 0; i < tabs.Length; i++)
-            MoveBackTab(i);
+        for (int i = 0; i < tabsRight.Length; i++)
+            CloseTab(i);
         CloseEverything();
-        if (page0.activeInHierarchy != true)
-            page0.SetActive(true);
+        if (pages[0].activeInHierarchy != true)
+            pages[0].SetActive(true);
     }
 
     public void OpenFirstTab()
     {
-        for(int i = 1; i < tabs.Length; i++)
-            MoveBackTab(i);
-        MoveTab(0);
+        for (int i = 1; i < tabsRight.Length; i++)
+            CloseTab(i);
+        OpenTab(0);
         CloseEverything();
-        if (page1.activeInHierarchy != true)
-            page1.SetActive(true);
+        if (pages[1].activeInHierarchy != true)
+            pages[1].SetActive(true);
     }
 
     public void OpenSecondTab()
     {
-        for (int i = 2; i < tabs.Length; i++)
-            MoveBackTab(i);
-        for (int i = 0; i < tabs.Length; i++)
+        for (int i = 2; i < tabsRight.Length; i++)
+            CloseTab(i);
+        for (int i = 0; i < tabsRight.Length; i++)
         {
             if (i <= 1)
-                MoveTab(i);
+                OpenTab(i);
         }
         CloseEverything();
-        if (page2.activeInHierarchy != true)
-            page2.SetActive(true);
+        if (pages[2].activeInHierarchy != true)
+            pages[2].SetActive(true);
     }
 
     public void OpenThirdTab()
     {
-        for (int i = 3; i < tabs.Length; i++)
-            MoveBackTab(i);
-        for (int i = 0; i < tabs.Length; i++)
+        for (int i = 3; i < tabsRight.Length; i++)
+            CloseTab(i);
+        for (int i = 0; i < tabsRight.Length; i++)
         {
             if (i <= 2)
-                MoveTab(i);
+                OpenTab(i);
         }
-        MoveTab(2);
+        OpenTab(2);
         CloseEverything();
-        if (page3.activeInHierarchy != true)
-            page3.SetActive(true);
+        if (pages[3].activeInHierarchy != true)
+            pages[3].SetActive(true);
     }
 
     public void OpenForthTab()
     {
-        for (int i = 4; i < tabs.Length; i++)
-            MoveBackTab(i);
-        for (int i = 0; i < tabs.Length; i++)
+        for (int i = 4; i < tabsRight.Length; i++)
+            CloseTab(i);
+        for (int i = 0; i < tabsRight.Length; i++)
         {
             if (i <= 3)
-                MoveTab(i);
+                OpenTab(i);
         }
         CloseEverything();
-        if (page4.activeInHierarchy != true)
-            page4.SetActive(true);
+        if (pages[4].activeInHierarchy != true)
+            pages[4].SetActive(true);
     }
 
     public void OpenFifthTab()
     {
-        for (int i = 0; i < tabs.Length; i++)
-                MoveTab(i);
+        for (int i = 0; i < tabsRight.Length; i++)
+            OpenTab(i);
         CloseEverything();
-        if (page5.activeInHierarchy != true)
-            page5.SetActive(true);
+        if (pages[5].activeInHierarchy != true)
+            pages[5].SetActive(true);
     }
 
-    public void CloseEverything()
+    private void CloseEverything()
     {
-        if (page0.activeInHierarchy != false)
-            page0.SetActive(false);
-        if (page1.activeInHierarchy != false)
-            page1.SetActive(false);
-        if (page2.activeInHierarchy != false)
-            page2.SetActive(false);
-        if (page3.activeInHierarchy != false)
-            page3.SetActive(false);
-        if (page4.activeInHierarchy != false)
-            page4.SetActive(false);
-        if (page5.activeInHierarchy != false)
-            page5.SetActive(false);
-    }
-
-    // At the moment the values need to be 1830 and 90 because of stuff. Trust.
-    public void MoveTab(int i)
-    {
-        Transform tabsTransform = tabs[i].GetComponent<Transform>();
-        if (tabsTransform.transform.position.x == 1830f)
+        for (int i = 0; i < pages.Length; i++)
         {
-            tabsTransform.transform.position = new Vector3(tabsTransform.transform.position.x - 1740, tabsTransform.transform.position.y, 0);
-            //tabsTransform.transform.rotation = Quaternion.Euler(0, 180, 0);
+            if (pages[i].activeInHierarchy != false)
+                pages[i].SetActive(false);
         }
     }
 
-    public void MoveBackTab(int i)
+    // Needs to deactivate the tab on the left and active the tab on the right side.
+    private void OpenTab(int i)
     {
-        Transform tabsTransform = tabs[i].GetComponent<Transform>();
-        if (tabsTransform.transform.position.x == 90f)
-        {
-            tabsTransform.transform.position = new Vector3(tabsTransform.transform.position.x + 1740, tabsTransform.transform.position.y, 0);
-        }
+        if (tabsRight[i].activeInHierarchy != false)
+            tabsRight[i].SetActive(false);
+        if (tabsLeft[i].activeInHierarchy != true)
+            tabsLeft[i].SetActive(true);
+    }
+
+    // Needs to deactivate the tab on the right and active the tab on the left side.
+    private void CloseTab(int i)
+    {
+        if (tabsLeft[i].activeInHierarchy != false)
+            tabsLeft[i].SetActive(false);
+        if (tabsRight[i].activeInHierarchy != true)
+            tabsRight[i].SetActive(true);
     }
 }

@@ -24,9 +24,10 @@ public class AutopilotMode : MonoBehaviour
 
     private InputMaster inputMaster;
 
-    void Awake()
+    void Start()
     {
         inputMaster = new InputMaster();
+        inputMaster.Enable();
         if (player == null)
             player = GameObject.FindGameObjectWithTag("Player");
     }
@@ -52,7 +53,7 @@ public class AutopilotMode : MonoBehaviour
 
     private void OnEnable()
     {
-        inputMaster.Enable();
+        
     }
 
     private void OnDisable()
