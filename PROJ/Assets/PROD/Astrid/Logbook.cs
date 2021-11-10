@@ -7,12 +7,17 @@ public class Logbook : MonoBehaviour
     [SerializeField] private GameObject[] pages; // Will prob wanna categorize them later.
     [SerializeField] private GameObject[] tabsLeft; //Don't include Tab_0
     [SerializeField] private GameObject[] tabsRight; //Don't include Tab_0
+    private AudioSource audioSource;
 
     public void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+
         for (int i = 0; i < tabsLeft.Length; i++)
             CloseTab(i);
     }
+
+    //Add so it takes input from keys.
 
     public void OpenWelcomeTab()
     {
@@ -21,6 +26,7 @@ public class Logbook : MonoBehaviour
         CloseEverything();
         if (pages[0].activeInHierarchy != true)
             pages[0].SetActive(true);
+        audioSource.Play();
     }
 
     public void OpenFirstTab()
@@ -31,6 +37,7 @@ public class Logbook : MonoBehaviour
         CloseEverything();
         if (pages[1].activeInHierarchy != true)
             pages[1].SetActive(true);
+        audioSource.Play();
     }
 
     public void OpenSecondTab()
@@ -45,6 +52,7 @@ public class Logbook : MonoBehaviour
         CloseEverything();
         if (pages[2].activeInHierarchy != true)
             pages[2].SetActive(true);
+        audioSource.Play();
     }
 
     public void OpenThirdTab()
@@ -60,6 +68,7 @@ public class Logbook : MonoBehaviour
         CloseEverything();
         if (pages[3].activeInHierarchy != true)
             pages[3].SetActive(true);
+        audioSource.Play();
     }
 
     public void OpenForthTab()
@@ -74,6 +83,7 @@ public class Logbook : MonoBehaviour
         CloseEverything();
         if (pages[4].activeInHierarchy != true)
             pages[4].SetActive(true);
+        audioSource.Play();
     }
 
     public void OpenFifthTab()
@@ -83,6 +93,7 @@ public class Logbook : MonoBehaviour
         CloseEverything();
         if (pages[5].activeInHierarchy != true)
             pages[5].SetActive(true);
+        audioSource.Play();
     }
 
     private void CloseEverything()
