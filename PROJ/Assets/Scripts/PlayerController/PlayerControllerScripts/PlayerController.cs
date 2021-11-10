@@ -202,7 +202,7 @@ public class PlayerController : MonoBehaviour
         float slopeDecelerationFactor = ((groundHitAngle - decelerationSlopeAngle) / (slopeMaxAngle - decelerationSlopeAngle));
         if (groundHitAngle > decelerationSlopeAngle)
         {
-            Debug.Log("Using slope deceleration");
+            //Debug.Log("Using slope deceleration");
             //force = slopeDecelerationFactor * -physics.velocity * slopeDecelerationMultiplier;
             force = slopeDecelerationFactor * slopeDecelerationMultiplier * -physics.velocity.normalized;
         }
