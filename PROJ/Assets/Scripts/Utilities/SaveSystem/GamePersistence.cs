@@ -12,6 +12,7 @@ public class GamePersistence : MonoBehaviour
     private void OnEnable()
     {
         EventHandler<SaveEvent>.RegisterListener(OnSave);
+
         //LoadMostRecent(); //Continue button should call this
     }
 

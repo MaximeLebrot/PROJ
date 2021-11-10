@@ -6,27 +6,41 @@ using UnityEngine;
 public class Node : MonoBehaviour {
 
     [SerializeField] private LayerMask nodeLayer;
+
     
     public delegate void OnSelected(Node node);
     public event OnSelected OnNodeSelected;
 
+
+
+    //MAKE PRIVATE
     public Dictionary<Node, bool> neighbours { get; private set; }
-    public List<Node> enabledNodes = new List<Node>(); // this can be in LineObject instead so that a LINE knows what nodes it lit up
+    public List<Node> enabledBy = new List<Node>();
+    //public List<Node> enabledNodes = new List<Node>(); // this can be in LineObject instead so that a LINE knows what nodes it lit up
     
     public bool startNode;
 
     public int PosX, PosY;
 
-    public bool Drawable;
-    
+    public bool Drawable { get; set; }
+
+
+    private Animator anim;
     private void Awake() {
+        anim = GetComponent<Animator>();
         neighbours = new Dictionary<Node, bool>();
         Drawable = true;
+        TurnOn();
         //FindNeighbours();
         //PosX = transform.localPosition.x;
         //PosY = transform.localPosition.y;
     }
-    
+
+    private void OnEnable()
+    {
+        gameObject.SetActive(true);
+        TurnOn();
+    }
 
 
     private void OnTriggerEnter(Collider other)
@@ -117,5 +131,37 @@ public class Node : MonoBehaviour {
             //Debug.Log(n.PosX + "   " + n.PosY);
             neighbours.Add(n, false);
         }
+    }
+
+    public void TurnOn()
+    {
+        //Animate shit
+        //anim.SetTrigger("on");
+    }
+
+    internal void TurnOff()
+    {
+        //Animate Shit
+        anim.SetTrigger("off");
+        enabledBy.Clear();
+        //gameObject.SetActive(false);
+    }
+
+    public void TurnOffGameObject()
+    {
+        if (startNode == false)
+            gameObject.SetActive(false);
+    }
+
+    internal void Restart()
+    {
+        Invoke("TurnOn", 1);
+    }
+
+    internal void RemoveEnablingNode(Node currentNode)
+    {
+        enabledBy.Remove(currentNode);
+        if (enabledBy.Count == 0)
+            TurnOff();
     }
 }

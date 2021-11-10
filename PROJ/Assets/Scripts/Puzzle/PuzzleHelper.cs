@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Text;
+using System;
 
 public static class PuzzleHelper
 {
@@ -14,6 +15,32 @@ public static class PuzzleHelper
             sb.Append(s[j]);
         }
         return sb.ToString();
+    }
+
+    internal static int TranslateWindToRotations(char windDirection)
+    {
+        switch (windDirection)
+        {
+            case '8':
+                return 0;
+            case '9':
+                return 1;
+            case '6':
+                return 2;
+            case '3':
+                return 3;
+            case '2':
+                return 4;
+            case '1':
+                return 5;
+            case '4':
+                return 6;
+            case '7':
+                return 7;
+
+            default:
+                return 0;
+        }
     }
 
     public static string RemoveLastChar(string s)
@@ -120,7 +147,7 @@ public static class PuzzleHelper
         return Vector3.zero;
     }
 
-    public static string RotateSymbols(string chars)
+    public static string RotateSymbolsTwoStep(string chars)
     {
         //switch case för att rotera varje char. foreach char in chars.. switch() t.ex. case 8 = 6
         string rotatedString = "";
@@ -151,6 +178,45 @@ public static class PuzzleHelper
                     break;
                 case '7':
                     rotatedString += '9';
+                    break;
+            }
+        }
+
+
+        return rotatedString;
+    }
+
+    public static string RotateSymbolsOneStep(string chars)
+    {
+        //switch case för att rotera varje char. foreach char in chars.. switch() t.ex. case 8 = 6
+        string rotatedString = "";
+        foreach (char c in chars)
+        {
+            switch (c)
+            {
+                case '8':
+                    rotatedString += '9';
+                    break;
+                case '6':
+                    rotatedString += '3';
+                    break;
+                case '2':
+                    rotatedString += '1';
+                    break;
+                case '4':
+                    rotatedString += '7';
+                    break;
+                case '9':
+                    rotatedString += '6';
+                    break;
+                case '3':
+                    rotatedString += '2';
+                    break;
+                case '1':
+                    rotatedString += '4';
+                    break;
+                case '7':
+                    rotatedString += '8';
                     break;
             }
         }

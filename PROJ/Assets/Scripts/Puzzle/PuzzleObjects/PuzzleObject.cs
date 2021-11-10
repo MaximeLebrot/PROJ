@@ -19,10 +19,11 @@ public abstract class PuzzleObject : MonoBehaviour
     private ModInfo modInfo;
     private Image modifierImage; //dekal som ska visas någonstans!?!? HUR GÖR MAN
     private GameObject modifier;
+    private Animator anim;
 
-    private void OnEnable()
+    private void Awake()
     {
-        
+        anim = GetComponent<Animator>();
     }
 
 
@@ -59,8 +60,22 @@ public abstract class PuzzleObject : MonoBehaviour
 
     internal void Unload()
     {
-        //Animate something
-        Destroy(gameObject);
+        anim.SetTrigger("off");
+        Debug.Log(modInfo.variant);
+        if(modInfo.variant != ModifierVariant.None == true)
+        {
+            modifier.GetComponent<Animator>().SetTrigger("off");
+        }
+        Destroy(gameObject, 2);
+    }
+
+    internal void TurnOn()
+    {
+        Debug.Log(gameObject + " ON ");
+    }
+    internal void TurnOff()
+    {
+        Debug.Log(gameObject + " OFF ");
     }
 }
 

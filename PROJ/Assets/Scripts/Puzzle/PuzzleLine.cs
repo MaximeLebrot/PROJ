@@ -6,12 +6,8 @@ using UnityEngine.VFX;
 public class PuzzleLine : MonoBehaviour
 {
     [SerializeField] private VisualEffect lineParticle;
-    private Animator anim;
+    [SerializeField] private Animator anim;
 
-    private void Start()
-    {
-        anim = GetComponent<Animator>();
-    }
 
     public void SetPosition(Vector3 pos, Quaternion puzzleRot)
     {
@@ -26,7 +22,8 @@ public class PuzzleLine : MonoBehaviour
     public void TurnOffLine()
     {
         //animate something that calls on Stop
-        Stop();
+        anim.SetTrigger("off");
+        //Invoke("Stop", 1.5f);
     }
 
     public void Stop()

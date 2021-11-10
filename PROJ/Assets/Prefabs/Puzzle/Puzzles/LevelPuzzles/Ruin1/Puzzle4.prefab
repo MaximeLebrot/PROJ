@@ -26,7 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4968284054520333352}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 20.3, y: -79.2, z: 845.66}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -54,7 +54,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   masterPuzzleID: 4
-  nextPuzzleTimer: 0
+  nextPuzzleTimer: 1
   puzzleInstances:
   - {fileID: 8753537196444921018}
   - {fileID: 8846086792631629725}
@@ -721,6 +721,10 @@ PrefabInstance:
     - target: {fileID: 6743447071680423281, guid: bef741833dbb4094b962a2c28a603fff, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6743447071680423286, guid: bef741833dbb4094b962a2c28a603fff, type: 3}
+      propertyPath: m_InitialEventNameOverriden
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6743447072066509889, guid: bef741833dbb4094b962a2c28a603fff, type: 3}
       propertyPath: m_Name

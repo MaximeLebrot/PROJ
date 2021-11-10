@@ -49,6 +49,7 @@ public class PuzzlePlayerController : MonoBehaviour
             EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(PuzzleTransform.GetComponent<Puzzle>().GetPuzzleID()), false));
         }
 
+        
         if (metaPlayerController.inputReference.InputMaster.evaluateSolution.triggered)
         {
             PuzzleTransform.GetComponent<Puzzle>().EvaluateSolution();
