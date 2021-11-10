@@ -33,7 +33,6 @@ public class WindPuzzle : Puzzle
     {
         
 
-
         //Debug.Log(solution);
         if (solution.Equals(grid.GetSolution()))
         {

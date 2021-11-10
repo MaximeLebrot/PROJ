@@ -393,10 +393,7 @@ public class PuzzleGrid : MonoBehaviour {
 
     private void RestartStartNode()
     {
-        Debug.Log("Turning ON StartNode");
         currentNode = startNode;
-        currentNode.gameObject.SetActive(true);
-        currentNode.TurnOn();
         currentNode.TurnOnCollider();
         Invoke("TellPuzzleGridIsReady", 1.5f);
     }

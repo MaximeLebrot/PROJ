@@ -410,7 +410,12 @@ public class Puzzle : MonoBehaviour
         {
             if (eve.info.ID == currentPuzzleInstance.GetPuzzleID(masterPuzzleID))
             {
-                grid.ResetGrid();
+                if(eve.success == false)
+                {
+                    Debug.Log("RESET PUZZLE");
+                    grid.ResetGrid();
+                }
+                    
             }
         }
 

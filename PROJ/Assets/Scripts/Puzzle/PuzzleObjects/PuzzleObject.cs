@@ -61,7 +61,7 @@ public abstract class PuzzleObject : MonoBehaviour
     internal void Unload()
     {
         anim.SetTrigger("off");
-        Debug.Log(modInfo.variant);
+
         if(modInfo.variant != ModifierVariant.None == true)
         {
             modifier.GetComponent<Animator>().SetTrigger("off");

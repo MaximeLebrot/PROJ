@@ -135,16 +135,25 @@ public class Node : MonoBehaviour {
 
     public void TurnOn()
     {
-        //Animate shit
-        anim.SetTrigger("on");
+        anim.SetBool("On", true);
+        
     }
 
     internal void TurnOff()
     {
         //Animate Shit
-        anim.SetTrigger("off");
+        anim.SetBool("Off", true);
         enabledBy.Clear();
         //gameObject.SetActive(false);
+    }
+
+    public void AnimOff()
+    {
+        anim.SetBool("Off", false);
+    }
+    public void AnimOn()
+    {
+        anim.SetBool("On", false);
     }
 
     public void TurnOffGameObject()
@@ -161,7 +170,7 @@ public class Node : MonoBehaviour {
     internal void RemoveEnablingNode(Node currentNode)
     {
         enabledBy.Remove(currentNode);
-        if (enabledBy.Count == 0)
+        if (enabledBy.Count == 0 && startNode == false)
             TurnOff();
     }
 }
