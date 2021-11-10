@@ -12,6 +12,7 @@ public class GlideState : PlayerState
     public override void EnterState()
     {
         Debug.Log("Entered Glide State");
+        player.glideParticle.Play();
         player.playerController3D.TransitionSurf(true);
         player.physics.SetGlide(true);
         base.EnterState();
@@ -34,6 +35,7 @@ public class GlideState : PlayerState
     public override void ExitState()
     {
         base.ExitState();
+        player.glideParticle.Stop();
     }
     private void SetInput()
     {

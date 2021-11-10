@@ -296,6 +296,12 @@ public class PlayerPhysicsSplit : MonoBehaviour
         velocity = maxSpeed != 0 ? Vector3.ClampMagnitude(new Vector3(velocity.x, 0, velocity.z), maxSpeed) : velocity;
         velocity.y = temp;
     }
+    /*  When FPS drops too low, the multiplication from AddForce makes you unable to move - it multiplies by a delta time of 0.02 (50FPS)
+     *  but if your FPS is 10, the adding of force to velocity apparently becomes very small. Time.deltaTime does not return actual deltaTime inside this method, because it is called 
+     *  from a FixedUpdate, hence fixedDeltaTime and deltaTime here are the same. The deltaTime multiplication must happen outside this method to use actual deltaTime. Garbage. 
+     *  velocity += forceInput * Time.deltaTime;
+        forceInput = Vector3.zero;
+     */
     public void AddForce(Vector3 input)
     {
         velocity += input.magnitude < inputThreshold ? Vector3.zero : input * Time.fixedDeltaTime;
