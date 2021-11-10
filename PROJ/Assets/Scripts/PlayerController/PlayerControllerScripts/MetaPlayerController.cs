@@ -9,6 +9,7 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     public PlayerPhysicsSplit physics { get; private set; }
     public PlayerController playerController3D { get; private set; }
     public PuzzlePlayerController puzzleController { get; private set; }
+    public Animator animator { get; private set; }
 
 
     //Particles
@@ -23,11 +24,12 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
 
     private void Start()
-    {
-        
+    {        
         physics = GetComponent<PlayerPhysicsSplit>();
         playerController3D = GetComponent<PlayerController>();
         puzzleController = GetComponent<PuzzlePlayerController>();
+        animator = GetComponent<Animator>();
+
         stateMachine = new StateMachine(this, states);
     }
     private void OnEnable()
