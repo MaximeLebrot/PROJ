@@ -123,6 +123,25 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &10578364 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4130667339654915723, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
+  m_PrefabInstance: {fileID: 4417960371735121330}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &10578365
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10578364}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.16
+  m_Height: 0.56
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &117796149
 GameObject:
   m_ObjectHideFlags: 0
@@ -526,7 +545,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh256742
+  m_Name: pb_Mesh322708
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -765,6 +784,25 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 178997108c592e743ab86335e4404734, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2648f4adccb77c9468ce105025f3f7e2, type: 3}
+--- !u!1 &1178952758 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7919170914264224721, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
+  m_PrefabInstance: {fileID: 4417960371735121330}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &1178952759
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1178952758}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.16
+  m_Height: 0.56
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1317502493
 GameObject:
   m_ObjectHideFlags: 0
@@ -1335,7 +1373,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-342954
+  m_Name: pb_Mesh322724
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1504,13 +1542,33 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4417960369899097628, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
+      propertyPath: m_Radius
+      value: 0.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 4417960370019328982, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
+      propertyPath: m_CapsuleColliders.Array.size
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 4417960370019328982, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
+      propertyPath: m_CapsuleColliders.Array.data[11]
+      value: 
+      objectReference: {fileID: 10578365}
+    - target: {fileID: 4417960370019328982, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
+      propertyPath: m_CapsuleColliders.Array.data[12]
+      value: 
+      objectReference: {fileID: 1178952759}
+    - target: {fileID: 4417960371071639294, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
+      propertyPath: m_Radius
+      value: 0.16
+      objectReference: {fileID: 0}
     - target: {fileID: 8203257626104097637, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8203257626104097637, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -326.64
+      value: -309
       objectReference: {fileID: 0}
     - target: {fileID: 8203257626104097637, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1518,7 +1576,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8203257626104097637, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 98.39
+      value: 76.47
       objectReference: {fileID: 0}
     - target: {fileID: 8203257626104097637, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
       propertyPath: m_LocalRotation.w
