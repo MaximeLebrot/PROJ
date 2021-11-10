@@ -23,11 +23,11 @@ public class OSWalkState : PlayerState
         if (player.inputReference.OneSwitchInputMaster.OnlyButton.triggered)
             stateMachine.ChangeState<OSSpinState>();
 
-        if (!player.playerController3D.IsGrounded())
-            stateMachine.ChangeState<OSAirborneState>();
+        //if (!player.playerController3D.IsGrounded())
+        //stateMachine.ChangeState<OSAirborneState>();
 
-        if (player.physics.velocity.magnitude > player.physics.SurfThreshold + 1 && player.playerController3D.groundHitAngle < player.playerController3D.GlideMinAngle)
-            stateMachine.ChangeState<OSGlideState>();
+        //if (player.physics.velocity.magnitude > player.physics.SurfThreshold + 1 && player.playerController3D.groundHitAngle < player.playerController3D.GlideMinAngle)
+            //stateMachine.ChangeState<OSGlideState>();
     }
 
     public override void ExitState()

@@ -10,6 +10,7 @@ public class OSPuzzleState : PlayerState
     public override void EnterState()
     {
         Debug.Log("Entered Puzzle State");
+        player.physics.velocity = Vector3.zero;
         player.playerController3D.enabled = false;
         player.puzzleController.enabled = true;
         base.EnterState();

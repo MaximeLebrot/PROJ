@@ -11,7 +11,7 @@ public class OSGlideState : PlayerState
 
     public override void EnterState()
     {
-        //Debug.Log("Entered Glide State");
+        Debug.Log("Entered Glide State");
         player.physics.SetGlide(true);
         base.EnterState();
     }
