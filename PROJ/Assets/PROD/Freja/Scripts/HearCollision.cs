@@ -35,7 +35,7 @@ public class HearCollision : MonoBehaviour
     {
         float volume = 0;
 
-        volume = vr / 20; // 0 - 1
+        volume = vr / 10; // 0 - 1
 
         volume -= 1; //0.2 - 0.8
 
