@@ -8,11 +8,28 @@ public class AwayController : MonoBehaviour {
     
     private float timeSinceLastInput;
 
-    private Action InputChecker;
+    private Action inputChecker;
 
-    private void Start() => InputChecker = ReadInput;
-    
-    private void Update() => InputChecker?.Invoke();
+    private void Awake() {
+        inputChecker = ReadInput;
+        
+        EventHandler<StartPuzzleEvent>.RegisterListener(TurnAFKCheckOff);
+        EventHandler<ExitPuzzleEvent>.RegisterListener(TurnAFKCheckOn);
+        
+    }
+
+    private void OnDisable() {
+        EventHandler<StartPuzzleEvent>.UnregisterListener(TurnAFKCheckOff);
+        EventHandler<ExitPuzzleEvent>.UnregisterListener(TurnAFKCheckOn);
+    }
+
+    private void Update() => inputChecker?.Invoke();
+
+    private void TurnAFKCheckOff(StartPuzzleEvent e) => inputChecker = null;
+    private void TurnAFKCheckOn(ExitPuzzleEvent e) {
+        timeSinceLastInput = 0;
+        inputChecker = ReadInput;
+    }
 
     private void ReadInput() {
         
@@ -22,11 +39,12 @@ public class AwayController : MonoBehaviour {
         else
             timeSinceLastInput = 0;
 
-        if (timeSinceLastInput > awayTimer) {
-            EventHandler<AwayFromKeyboardEvent>.FireEvent(null);
-            InputChecker = WaitForInput;
-        }
-            
+        if (timeSinceLastInput > awayTimer == false) 
+            return;
+        
+        EventHandler<AwayFromKeyboardEvent>.FireEvent(null);
+        inputChecker = WaitForInput;
+
     }
 
     private bool InputIsZero() {
@@ -37,10 +55,11 @@ public class AwayController : MonoBehaviour {
     } 
 
     private void WaitForInput() {
-        if (InputIsZero()) return;
+        if (InputIsZero()) 
+            return;
         
         EventHandler<AwayFromKeyboardEvent>.FireEvent(null);
-        InputChecker = ReadInput;
+        inputChecker = ReadInput;
         timeSinceLastInput = 0;
 
     }

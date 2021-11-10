@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using NewCamera;
-using UnityEditor;
 using UnityEngine;
 
 
@@ -13,6 +13,7 @@ public class GameCamera : MonoBehaviour {
     private BaseCameraBehaviour currentBaseCameraBehaviour;
 
     [SerializeField] private Transform followTarget;
+    [SerializeField] private Transform shoulderPosition;
     [SerializeField] private Vector2 clampValues;
     
     private Vector2 input;
@@ -23,30 +24,30 @@ public class GameCamera : MonoBehaviour {
     [SerializeField] private BehaviourData idleValues;
     [SerializeField] private BehaviourData puzzleValues;
     
+    private readonly Dictionary<Type, BaseCameraBehaviour> behaviours = new Dictionary<Type, BaseCameraBehaviour>();
 
+    private delegate void BehaviourQueue();
 
-    private readonly Dictionary<Type, BaseCameraBehaviour> lowPriorityBehaviours = new Dictionary<Type, BaseCameraBehaviour>();
-    private readonly Dictionary<Type, BaseCameraBehaviour> highPriorityBehaviours = new Dictionary<Type, BaseCameraBehaviour>();
+    private event BehaviourQueue behaviourQueue;
 
     private void Awake() {
         
         thisTransform = transform;
         currentBaseCameraBehaviour = new BaseCameraBehaviour(thisTransform, followTarget, defaultValues);
         
-        lowPriorityBehaviours.Add(typeof(IdleBehaviour), new IdleBehaviour(thisTransform, followTarget, idleValues)); //When player is not playing
-        lowPriorityBehaviours.Add(typeof(StationaryBehaviour), new StationaryBehaviour(thisTransform, followTarget, defaultValues)); //When player 
-        lowPriorityBehaviours.Add(typeof(PuzzleBaseCameraBehaviour), new PuzzleBaseCameraBehaviour(thisTransform, followTarget, puzzleValues )); //When player 
-        
-        highPriorityBehaviours.Add(typeof(GlideState), new GlideBaseCameraBehaviour(thisTransform, followTarget, glideValues));
-        highPriorityBehaviours.Add(typeof(WalkState), new BaseCameraBehaviour(transform, followTarget, defaultValues));
+        behaviours.Add(typeof(IdleBehaviour), new IdleBehaviour(thisTransform, followTarget, idleValues)); 
+        behaviours.Add(typeof(StationaryBehaviour), new StationaryBehaviour(thisTransform, followTarget, defaultValues));  
+        behaviours.Add(typeof(PuzzleBaseCameraBehaviour), new PuzzleBaseCameraBehaviour(thisTransform, followTarget, puzzleValues ));
+        behaviours.Add(typeof(GlideState), new GlideBaseCameraBehaviour(thisTransform, followTarget, glideValues));
+        behaviours.Add(typeof(WalkState), new BaseCameraBehaviour(transform, followTarget, defaultValues));
+
+        behaviourQueue = ExecuteCameraBehaviour;
+
     }
 
-    private void Start()
-    {
-        inputReference.Start();
-    }
+    private void LateUpdate() => behaviourQueue?.Invoke();
 
-    private void LateUpdate() {
+    private void ExecuteCameraBehaviour() {
         ReadInput();
         
         input = currentBaseCameraBehaviour.ClampMovement(input, clampValues);
@@ -70,6 +71,7 @@ public class GameCamera : MonoBehaviour {
         EventHandler<ExitPuzzleEvent>.RegisterListener(OnPuzzleExit);
         EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
         EventHandler<PlayerStateChangeEvent>.RegisterListener(OnPlayerStateChange);
+        EventHandler<CameraLookAndMoveToEvent>.RegisterListener(OnLookAndMove);
     }
 
     private void OnDisable() {
@@ -77,53 +79,101 @@ public class GameCamera : MonoBehaviour {
         EventHandler<ExitPuzzleEvent>.UnregisterListener(OnPuzzleExit);
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
         EventHandler<PlayerStateChangeEvent>.UnregisterListener(OnPlayerStateChange);
+        EventHandler<CameraLookAndMoveToEvent>.UnregisterListener(OnLookAndMove);
     }
 
     private void OnAwayFromKeyboard(AwayFromKeyboardEvent e) {
-        ChangeBehaviour(lowPriorityBehaviours[typeof(IdleBehaviour)]);
+        ChangeBehaviour(behaviours[typeof(IdleBehaviour)]);
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
         EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnReturnToKeyboard);
     }
 
     private void OnReturnToKeyboard(AwayFromKeyboardEvent e) {
-        ChangeBehaviour(lowPriorityBehaviours[typeof(StationaryBehaviour)]);
+        ChangeBehaviour(behaviours[typeof(StationaryBehaviour)]);
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnReturnToKeyboard);
         EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
     }
 
     private void OnPlayerStateChange(PlayerStateChangeEvent stateChangeEvent) {
 
-        if (highPriorityBehaviours.ContainsKey(stateChangeEvent.newState.GetType()))
-            ChangeBehaviour(highPriorityBehaviours[stateChangeEvent.newState.GetType()]);
+        if (behaviours.ContainsKey(stateChangeEvent.newState.GetType()))
+            ChangeBehaviour(behaviours[stateChangeEvent.newState.GetType()]);
         
     }
 
     private void OnPuzzleExit(ExitPuzzleEvent exitPuzzleEvent) {
         EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
-        ChangeBehaviour(lowPriorityBehaviours[typeof(StationaryBehaviour)]);
+        ChangeBehaviour(behaviours[typeof(StationaryBehaviour)]);
+    }
+
+    private async void OnLookAndMove(CameraLookAndMoveToEvent lookAndMove) {
+
+        MoveToTransition moveToTransition = new MoveToTransition(ref thisTransform, lookAndMove.endPosition, lookAndMove.moveToEventData);
+        LookAtTransition lookAtTransition = new LookAtTransition(ref thisTransform, lookAndMove.endRotation, lookAndMove.lookAtEventData);
+
+        List<Task> transitions = new List<Task>(2) { moveToTransition.Transit(), lookAtTransition.Transit()};
+
+        await PlayTransitions(transitions);
+        
+        ResetBehindPlayerTransition resetBehindPlayerTransition = new ResetBehindPlayerTransition(ref thisTransform, shoulderPosition.position, shoulderPosition.rotation, .2f);
+
+        await PlayTransition(resetBehindPlayerTransition);
     }
 
     private void OnPuzzleStart(StartPuzzleEvent startPuzzleEvent) {
             
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
             
-        ChangeBehaviour(lowPriorityBehaviours[typeof(PuzzleBaseCameraBehaviour)]);
+        ChangeBehaviour(behaviours[typeof(PuzzleBaseCameraBehaviour)]);
 
         PuzzleBaseCameraBehaviour puzzleBaseBehaviour = currentBaseCameraBehaviour as PuzzleBaseCameraBehaviour;
 
-        puzzleBaseBehaviour.AssignRotation(startPuzzleEvent.info.puzzlePos);
-            
+        puzzleBaseBehaviour?.AssignRotation(startPuzzleEvent.info.puzzlePos);
     }
     
     private void ChangeBehaviour(BaseCameraBehaviour newBaseCameraBehaviour) => currentBaseCameraBehaviour = newBaseCameraBehaviour;
+
+    private async Task PlayTransition(CameraTransition cameraTransition) {
+
+        SetBehaviourExecutionActive(false);
+        
+        await cameraTransition.Transit();
+
+        SetBehaviourExecutionActive(true);
+    }
+
+    private async Task PlayTransitions(List<Task> transitions) {
+        
+        SetBehaviourExecutionActive(false);
+        
+        await Task.WhenAll(transitions);
+
+        SetBehaviourExecutionActive(true);
+    }
+
+    
+    private void SetBehaviourExecutionActive(bool isActive) {
+        if (isActive) { 
+            behaviourQueue = ExecuteCameraBehaviour;
+            EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
+        }
+        
+        else {
+            behaviourQueue = null;
+            EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
+        }
+
+        input = followTarget.parent.transform.rotation * input;
+
+    }
+    
+    
 
     [ContextMenu("Auto-assign targets", false,0)]
     public void AssignTargets() {
         try {
             followTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
-           // globalCameraSettings = AssetDatabase.LoadAssetAtPath<GlobalCameraSettings>("Assets/Scripts/DynamicCamera/New Camera/InGameReferences/GlobalCameraSettings.asset");
-          //  inputReference = AssetDatabase.LoadAssetAtPath<ControllerInputReference>("Assets/Scripts/DynamicCamera/Controller Input Reference.asset");
-            
+            shoulderPosition = GameObject.FindWithTag("ShoulderCameraPosition").transform;
         } catch (NullReferenceException e) {
             Debug.Log("Couldn't find one or all targets, check if they have the right tag");
         }

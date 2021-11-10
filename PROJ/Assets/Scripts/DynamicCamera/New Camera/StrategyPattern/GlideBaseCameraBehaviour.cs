@@ -6,13 +6,17 @@ namespace NewCamera {
     
     [Serializable]
     public class GlideBaseCameraBehaviour : BaseCameraBehaviour {
-        
-        public GlideBaseCameraBehaviour(Transform transform, Transform target, BehaviourData values) : base(transform, target, values) {}
-        
+
+        private GlideBehaviourData glideBehaviourData;
+
+        public GlideBaseCameraBehaviour(Transform transform, Transform target, BehaviourData values) : base(transform, target, values) {
+            glideBehaviourData = values as GlideBehaviourData;
+        }
+
         public override Vector3 ExecuteCollision(Vector2 input, GlobalCameraSettings data) {
             
-            target.rotation = Quaternion.Euler(input.x, input.y, 0);
-
+            target.rotation = input != Vector2.zero ? Quaternion.Euler(input.x, input.y, 0) : Quaternion.Lerp(target.rotation, target.parent.rotation, Time.deltaTime * glideBehaviourData.RotationSpeed);
+            
             Vector3 collisionOffset = target.rotation * values.Offset;
             
             if (Physics.SphereCast(target.position, data.CollisionRadius, collisionOffset.normalized, out var hitInfo, collisionOffset.magnitude, data.CollisionMask))

@@ -58,27 +58,51 @@ public class PuzzleInfo
     public PuzzleInfo(int id, Transform pp) { ID = id; puzzlePos = pp; }
 }
 
-public class ClearPuzzleEvent : IEvent
-{
-    public PuzzleInfo info;
-    public ClearPuzzleEvent(PuzzleInfo info) { this.info = info; }
-}
-
-public class LoadPuzzleEvent : IEvent
-{
-    public PuzzleInfo info;
-    public LoadPuzzleEvent(PuzzleInfo info) { this.info = info; }
-}
-
-#endregion
-
 public readonly struct PlayerStateChangeEvent : IEvent {
 
     public readonly PlayerState newState;
     public PlayerStateChangeEvent(PlayerState state) => newState = state;
 }
 
+public readonly struct CameraLookAtEvent : IEvent {
+
+    public readonly Transform lookAtTarget;
+    public readonly float transitionTime;
+    public readonly float delayWhenDone;
+    public readonly float rotationSpeed;
+    
+    public CameraLookAtEvent(Transform lookAtTarget, float transitionTime, float delayWhenDone, float rotationSpeed) {
+        this.lookAtTarget = lookAtTarget;
+        this.transitionTime = transitionTime;
+        this.delayWhenDone = delayWhenDone;
+        this.rotationSpeed = rotationSpeed;
+    }
+
+}
+
+public readonly struct CameraLookAndMoveToEvent : IEvent {
+
+    public readonly MoveToEventData moveToEventData;
+    public readonly LookAtEventData lookAtEventData;
+
+    public readonly Vector3 endPosition;
+    public readonly Quaternion endRotation;
+    
+    public CameraLookAndMoveToEvent(Vector3 endPosition, Quaternion endRotation, MoveToEventData moveToEventData, LookAtEventData lookAtEventData) {
+        this.endPosition = endPosition;
+        this.endRotation = endRotation;
+        this.moveToEventData = moveToEventData;
+        this.lookAtEventData = lookAtEventData;
+    }
+
+}
+
 public class AwayFromKeyboardEvent : IEvent { }
+#endregion
+
 public class SaveEvent : IEvent { }
-
-
+public class SaveSettingsEvent : IEvent 
+{
+    public SettingsData settingsData;
+    public SaveSettingsEvent(SettingsData data) => settingsData = data;
+}

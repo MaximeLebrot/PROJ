@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class MetaPlayerController : MonoBehaviour, IPersist
 {
@@ -10,6 +11,8 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     public PuzzlePlayerController puzzleController { get; private set; }
 
 
+    //Particles
+    public VisualEffect glideParticle;
 
     //StateMachine
     private StateMachine stateMachine;

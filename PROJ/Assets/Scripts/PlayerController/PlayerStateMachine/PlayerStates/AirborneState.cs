@@ -35,10 +35,12 @@ public class AirborneState : PlayerState
     {
         player.physics.SetNormalGravity();
 
-        if (player.physics.velocity.magnitude < player.physics.SurfThreshold)
-            stateMachine.ChangeState<WalkState>();
-        else
+        if (player.physics.velocity.magnitude > player.physics.SurfThreshold 
+            && player.playerController3D.groundHitAngle < player.playerController3D.GlideMinAngle
+            && player.playerController3D.groundHitInfo.collider.gameObject.CompareTag("Glideable"))
             stateMachine.ChangeState<GlideState>();
+        else
+            stateMachine.ChangeState<WalkState>();
 
     }
 }

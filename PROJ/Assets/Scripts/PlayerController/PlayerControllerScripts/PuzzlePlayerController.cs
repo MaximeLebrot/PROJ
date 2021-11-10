@@ -24,45 +24,35 @@ public class PuzzlePlayerController : MonoBehaviour
     public Animator animator { get; private set; }
     private Vector3 input;
     private float xMove, zMove;
-    private RaycastHit groundHitInfo;
 
-    
+    //Input
+    private InputAction quitPuzzle;
+
+
     public int CurrentPuzzleID { get; set; }
     public Transform PuzzleTransform { get; set; }
 
     public MetaPlayerController metaPlayerController;
+    private void OnEnable()
+    {
+        quitPuzzle = metaPlayerController.inputReference.InputMaster.ExitPuzzle;
+        //Does this screw up the build? >>>>> NEW CODE FOR INPUT SYSTEM <<<<
+        quitPuzzle.Enable();
 
-
+        metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
+    }
+    private void OnDisable()
+    {
+        metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle;
+        quitPuzzle.Disable();
+    }
     void Start()
     {
         physics = GetComponent<PlayerPhysicsSplit>();
-
     }
-    private void Update()
+    private void OnQuitPuzzle(InputAction.CallbackContext obj)
     {
-        xMove = metaPlayerController.inputReference.InputMaster.Movement.ReadValue<Vector2>().x;
-        zMove = metaPlayerController.inputReference.InputMaster.Movement.ReadValue<Vector2>().y;
-
-
-        if (metaPlayerController.inputReference.InputMaster.ExitPuzzle.triggered)
-        {
-            EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(PuzzleTransform.GetComponent<Puzzle>().GetPuzzleID()), false));
-        }
-
-        
-        if (metaPlayerController.inputReference.InputMaster.evaluateSolution.triggered)
-        {
-            PuzzleTransform.GetComponent<Puzzle>().EvaluateSolution();
-        }
-        
-
-        
-
-        Vector3 input = 
-        PuzzleTransform.right * xMove +
-        PuzzleTransform.forward * zMove;
-        
-        HandleInput(input);
+        EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(PuzzleTransform.GetComponent<Puzzle>().GetPuzzleID()), false));
     }
     private void FixedUpdate()
     {
@@ -71,13 +61,17 @@ public class PuzzlePlayerController : MonoBehaviour
     }
 
     #region Movement
-    public void HandleInput(Vector3 inp)
+    public void SetInput(Vector2 inp)
     {
-        input = inp;
+        //Local space
+        input =
+        PuzzleTransform.right * inp.x +
+        PuzzleTransform.forward * inp.y ;
+
         RotateCharacterInsidePuzzle();
         if (input.magnitude < float.Epsilon)
         {
-            Decelerate();
+              Decelerate();
             return;
         }
         else 

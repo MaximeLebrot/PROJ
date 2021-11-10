@@ -164,7 +164,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""id"": ""1362b017-5dac-4a05-b539-af7917f1d25b"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""ScaleVector2(x=7,y=7)"",
                     ""groups"": ""Stnd KBM"",
                     ""action"": ""MoveCamera"",
                     ""isComposite"": false,

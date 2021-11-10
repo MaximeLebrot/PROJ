@@ -32,7 +32,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
     private float smoothingMaxDistance = 3f;
     private int powerOf = 2;
-    private float surfThreshold = 8;
+    public float surfThreshold = 8;
 
     private float staticFrictionCoefficient = 0.5f;
     private float kineticFrictionCoefficient = 0.35f;
@@ -186,11 +186,8 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
             //GlideHeight should be zero when walking, but needs to be added here to get a smooth transition along with the lerp in SetValues
             Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, hitInfo.normal)
-                                    + GlideHeight * Vector3.up;
-
-            //velocity += -normalHitInfo.normal * (normalHitInfo.distance - skinWidth);
+                                  + GlideHeight * Vector3.up;
             velocity += normalForce;
-
             ApplyFriction(normalForce);
 
             if (i < MAX_ITER)
@@ -299,6 +296,12 @@ public class PlayerPhysicsSplit : MonoBehaviour
         velocity = maxSpeed != 0 ? Vector3.ClampMagnitude(new Vector3(velocity.x, 0, velocity.z), maxSpeed) : velocity;
         velocity.y = temp;
     }
+    /*  When FPS drops too low, the multiplication from AddForce makes you unable to move - it multiplies by a delta time of 0.02 (50FPS)
+     *  but if your FPS is 10, the adding of force to velocity apparently becomes very small. Time.deltaTime does not return actual deltaTime inside this method, because it is called 
+     *  from a FixedUpdate, hence fixedDeltaTime and deltaTime here are the same. The deltaTime multiplication must happen outside this method to use actual deltaTime. Garbage. 
+     *  velocity += forceInput * Time.deltaTime;
+        forceInput = Vector3.zero;
+     */
     public void AddForce(Vector3 input)
     {
         velocity += input.magnitude < inputThreshold ? Vector3.zero : input * Time.fixedDeltaTime;
