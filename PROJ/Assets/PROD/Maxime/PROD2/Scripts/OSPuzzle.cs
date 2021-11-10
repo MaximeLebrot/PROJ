@@ -9,12 +9,14 @@ public class OSPuzzle : MonoBehaviour
     [SerializeField] private GameObject parent;
 
     [SerializeField, Range(0.1f, 0.9f)] private float speed;
-    [SerializeField] private float time = 1f, timer;
-    [SerializeField] private int iterator = 0;
-    [SerializeField] private float frameCounter;
     [SerializeField, Range(0.01f, 0.3f)] private float holdingButtonLimit = 0.2f;
-    [SerializeField] private bool pressingButton = false;
+
+    private float time = 1f, timer;
+    private int iterator = 0;
+    private float frameCounter;
+    private bool pressingButton = false;
     private bool giveLostTime = true;
+
     private InputMaster inputMaster;
 
     public void StartOSPuzzle(StartPuzzleEvent eve)
@@ -26,7 +28,6 @@ public class OSPuzzle : MonoBehaviour
 
     public void ExitOSPuzzle(ExitPuzzleEvent eve)
     {
-        Debug.Log("BOOHJubshd'");
         parent.SetActive(false);
     }
 
@@ -72,11 +73,6 @@ public class OSPuzzle : MonoBehaviour
             }
 
         }
-    }
-
-    internal void StartOSPuzzle()
-    {
-        throw new NotImplementedException();
     }
 
     #region UES
