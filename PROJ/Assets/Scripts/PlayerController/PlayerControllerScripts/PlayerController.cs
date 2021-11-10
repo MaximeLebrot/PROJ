@@ -116,9 +116,10 @@ public class PlayerController : MonoBehaviour
     private void Decelerate()
     {
         //Debug
+        /*
         if(physics.velocity.magnitude > 0.05f)
             Debug.Log("Decelerating");
-
+        */
         Vector3 projectedDeceleration = Vector3.ProjectOnPlane(-physics.GetXZMovement().normalized, groundHitInfo.normal) * deceleration;
         force += projectedDeceleration;
     }

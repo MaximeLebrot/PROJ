@@ -273,11 +273,26 @@ public class PuzzleGrid : MonoBehaviour {
         {
             //masterPuzzle.CheckIfClearedSymbol(solution[0] == '-' ? PuzzleHelper.SkipFirstChar(solution) : solution);
             if (masterPuzzle.EvaluateSolution())
+            {
+                DestroyCurrentLine();
                 return true;
+            }
+                
         }
 
         return false;
     }
+
+    private void DestroyCurrentLine()
+    {
+        if (currentLine != null)
+        {
+            currentLine.Stop();
+            Destroy(currentLine, 2);
+            currentLine = null;
+        }
+    }
+
     //Show and activate neighbours
     private void ActivateNode(Node node, bool eraser) 
     {
@@ -314,12 +329,7 @@ public class PuzzleGrid : MonoBehaviour {
     {
         DestroyNodes();
         DestroyLines();
-        if (currentLine != null)
-        {
-            currentLine.Stop();
-            Destroy(currentLine, 2);
-            currentLine = null;
-        }
+        DestroyCurrentLine();
 
     }
 
@@ -329,12 +339,7 @@ public class PuzzleGrid : MonoBehaviour {
         TurnOffLines();
         TurnOffNodes();
 
-        if (currentLineObject != null)
-        {
-            currentLine.Stop();
-            Destroy(currentLineObject, 2);
-            currentLine = null;
-        }
+        DestroyCurrentLine();
 
 
     }
@@ -382,7 +387,7 @@ public class PuzzleGrid : MonoBehaviour {
         {
             n.TurnOffCollider();
             n.TurnOff();
-            Destroy(n, 2);
+            Destroy(n.gameObject, 2);
         }
     }
 

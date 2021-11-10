@@ -34,7 +34,7 @@ public class WindPuzzle : Puzzle
         
 
 
-        Debug.Log(solution);
+        //Debug.Log(solution);
         if (solution.Equals(grid.GetSolution()))
         {
             windMarkers[currentPuzzleInstance.GetComponent<WindPuzzleInstance>().GetWindRotations()].GetComponentInChildren<Animator>().SetTrigger("off");

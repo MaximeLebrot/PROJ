@@ -125,7 +125,7 @@ public class Puzzle : MonoBehaviour
 
         currentPuzzleNum++;     
 
-        Debug.Log("Next puzzle, #" + currentPuzzleNum);
+        //Debug.Log("Next puzzle, #" + currentPuzzleNum);
         if(currentPuzzleNum >= puzzleInstances.Count)
         {
             //no more puzzle instances here

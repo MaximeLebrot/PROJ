@@ -136,7 +136,7 @@ public class Node : MonoBehaviour {
     public void TurnOn()
     {
         //Animate shit
-        //anim.SetTrigger("on");
+        anim.SetTrigger("on");
     }
 
     internal void TurnOff()

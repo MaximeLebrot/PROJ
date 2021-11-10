@@ -97,6 +97,19 @@ public readonly struct CameraLookAndMoveToEvent : IEvent {
 
 }
 
+public class ClearPuzzleEvent : IEvent
+{
+    public PuzzleInfo info;
+    public ClearPuzzleEvent(PuzzleInfo info) { this.info = info; }
+}
+public class LoadPuzzleEvent : IEvent
+{
+    public PuzzleInfo info;
+    public LoadPuzzleEvent(PuzzleInfo info) { this.info = info; }
+}
+
+
+
 public class AwayFromKeyboardEvent : IEvent { }
 #endregion
 
