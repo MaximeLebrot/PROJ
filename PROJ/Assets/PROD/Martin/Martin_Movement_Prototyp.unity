@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0.99999905, b: 0.99999905, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -199,7 +199,7 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 20
+      - m_Value: 13
         m_Name: Smoke Rate over Distance
         m_Overridden: 0
     m_Vector2f:
@@ -320,13 +320,41 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 489970052, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 489970052, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[0].m_Name
+      value: Smoke Rate over Distance
+      objectReference: {fileID: 0}
+    - target: {fileID: 489970052, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[1].m_Name
+      value: Flakes Rate over Distance
+      objectReference: {fileID: 0}
+    - target: {fileID: 489970052, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[0].m_Value
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 489970052, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[1].m_Value
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 489970052, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[0].m_Overridden
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 489970052, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[1].m_Overridden
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8203257626104097637, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8203257626104097637, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 778.9224
+      value: 775.84
       objectReference: {fileID: 0}
     - target: {fileID: 8203257626104097637, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
       propertyPath: m_LocalPosition.y
@@ -334,7 +362,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8203257626104097637, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 749.32355
+      value: 749.9
       objectReference: {fileID: 0}
     - target: {fileID: 8203257626104097637, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
       propertyPath: m_LocalRotation.w
@@ -887,11 +915,11 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 802216951}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30

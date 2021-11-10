@@ -45,13 +45,22 @@ public class PlayerPhysicsSplit : MonoBehaviour
     private bool isGliding;
     private float glideNormalForceMargin = 1.1f;
     private float setValuesLerpSpeed = 2f;
+
+    //Input Debug/Fix/Fuckery
+    private Vector3 forceInput;
+    private PlayerController pc;
     private void OnEnable()
     {
+        pc = GetComponent<PlayerController>();
         attachedCollider = GetComponent<CapsuleCollider>();
     }
 
     private void Update()
     {
+        //Add velocity and reset force vector in playercontroller       
+        velocity += forceInput * Time.deltaTime;
+        pc.ResetForceVector();
+
         AddGravity();
         CollisionCheck();
         ClampSpeed();
@@ -201,6 +210,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     public float moveThreshold = 0.05f;
     private void MoveOutOfGeometry(Vector3 movement)
     {
+        Debug.Log("movement magnitude is: " + movement.magnitude);
         //Do not move at all if the distance is tiny.
         //SHOULD not result in a move at all, and therefore shouldnt case trouble..? 
         if (movement.magnitude < moveThreshold)
@@ -304,7 +314,10 @@ public class PlayerPhysicsSplit : MonoBehaviour
      */
     public void AddForce(Vector3 input)
     {
-        velocity += input.magnitude < inputThreshold ? Vector3.zero : input * Time.fixedDeltaTime;
+        forceInput = Vector3.zero;
+        forceInput = input.magnitude < inputThreshold ? Vector3.zero : input;
+        //Obsolete
+        //velocity += input.magnitude < inputThreshold ? Vector3.zero : input * Time.fixedDeltaTime;
     }
     public Vector3 GetXZMovement()
     {
