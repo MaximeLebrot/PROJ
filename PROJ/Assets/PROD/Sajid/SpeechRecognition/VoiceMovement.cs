@@ -24,11 +24,15 @@ public class VoiceMovement : MonoBehaviour
         actions.Add("back", Back);
         actions.Add("right", Right);
         actions.Add("left", Left);
-        actions.Add("rotate", Rotate);
+
+        actions.Add("rotate ninety", Rotate);
+        actions.Add("rotate onehundred and eighty", Rotate180);
+        actions.Add("rotate threehundred and sixty", Rotate360);
+ 
         actions.Add("Wow", Owen);
         actions.Add("Mums", David);
         actions.Add("Dance", Dance);
-        actions.Add("Play Dead", Die);
+        actions.Add("Kill", Die);
         actions.Add("Music", Song);
         direction.text = "";
         keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
@@ -71,9 +75,31 @@ public class VoiceMovement : MonoBehaviour
     private void Rotate()
     {
         transform.Rotate(0, 90, 0);
-        direction.text = "Rotate";
+        direction.text = "Rotate 90";
         direction.GetComponent<Animator>().SetTrigger("active");
     }
+
+    private void Rotate180()
+    {
+        transform.Rotate(0, 180, 0);
+        direction.text = "Rotate 180";
+        direction.GetComponent<Animator>().SetTrigger("active");
+    }
+
+    private void Rotate270()
+    {
+        transform.Rotate(0, 180, 0);
+        direction.text = "Rotate 270";
+        direction.GetComponent<Animator>().SetTrigger("active");
+    }
+
+    private void Rotate360()
+    {
+        transform.Rotate(0, 360, 0);
+        direction.text = "Rotate 360";
+        direction.GetComponent<Animator>().SetTrigger("active");
+    }
+
 
     private void Owen()
     {
