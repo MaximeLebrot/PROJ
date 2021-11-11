@@ -25,6 +25,7 @@ public class GameSettings : ScriptableObject
     public float pointerSize;
     public bool showDesktop; //What is this? 
     public bool blindMode;
+    public bool highContrastMode;
 
     //Display
     public float fieldOfView;
