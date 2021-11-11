@@ -167,12 +167,10 @@ public class GameCamera : MonoBehaviour {
             behaviourQueue = ExecuteCameraBehaviour;
             EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
         }
-        
         else {
             behaviourQueue = null;
             EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
         }
-        
     }
     
     [ContextMenu("Auto-assign targets", false,0)]
@@ -184,7 +182,6 @@ public class GameCamera : MonoBehaviour {
             Debug.Log("Couldn't find one or all targets, check if they have the right tag");
         }
     }
-    
 }
 
 public struct CustomInput {

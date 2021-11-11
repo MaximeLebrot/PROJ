@@ -7,7 +7,7 @@ using UnityEngine.Rendering.Universal;
 public class ContrastModeSwitch : MonoBehaviour {
 
     private Camera mainCamera;
-    private GameObject overlayCamera;
+    [SerializeField] private GameObject overlayCamera;
 
     [SerializeField] private Volume postProcess;
     
@@ -22,8 +22,7 @@ public class ContrastModeSwitch : MonoBehaviour {
     private void Awake() {
         
         mainCamera = Camera.main;
-        overlayCamera = mainCamera.transform.GetChild(0).gameObject;
-
+        
         mainRegularRenderLayers = mainCamera.cullingMask = -1; //Render every layer. 
 
         postProcess.profile.TryGet(out colorAdjustments);
