@@ -46,6 +46,7 @@ public class BookHandler : MonoBehaviour
     public void ChangeToChapter(Chapter chapter)
     {
         HideTableOfContents();
+        allPages[currentPage].gameObject.SetActive(false);
         currentPage = chapter.pageNumber;
         currentChapter = chapter;
         foreach (Chapter chap in logbook.Keys)
