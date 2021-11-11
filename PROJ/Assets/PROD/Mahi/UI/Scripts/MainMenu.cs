@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,14 +9,12 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject prototypeMenu;
     [SerializeField] private GameObject settingsMenu;
     [SerializeField] private GameObject mainMenu;
-    [SerializeField] private Slider fovSlider;
-    [SerializeField] private TextMeshProUGUI fovText;
     [SerializeField] private ControllerInputReference  inputMaster;
 
     private void Awake() {
         Cursor.lockState = CursorLockMode.None;
-        
         inputMaster.Initialize();
+        Application.targetFrameRate = 60;
     }
     
     void Start() {
@@ -28,7 +23,6 @@ public class MainMenu : MonoBehaviour
         settingsMenu.SetActive(false);
         mainMenu.SetActive(true);
         inputMaster.InputMaster.Anykey.performed += PressAnyKey;
-
     }
 
     public void OpenPrototype()
@@ -59,5 +53,14 @@ public class MainMenu : MonoBehaviour
     private void PressAnyKey(InputAction.CallbackContext e) {
         inputMaster.InputMaster.Anykey.performed -= PressAnyKey;
         BackToMain();
+    }
+
+    public void ChangeFontSize(float fontSize) {
+
+        TextMeshProUGUI[] allTexts = GetComponentsInChildren<TextMeshProUGUI>();
+
+        foreach (TextMeshProUGUI text in allTexts)
+            text.fontSize = fontSize;
+
     }
 }

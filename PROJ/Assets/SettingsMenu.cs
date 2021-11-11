@@ -36,10 +36,8 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] private TextMeshProUGUI brightnessSliderText
         ;
     [SerializeField] private TMP_Dropdown quality;
-    //[SerializeField]private TMP_Dropdown resolution;
     [SerializeField] private Toggle fullscreen;
-
-
+    
     private void Awake()
     {
         settingsMenuInstance = this;
