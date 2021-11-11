@@ -57,14 +57,6 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
-                },
-                {
-                    ""name"": ""ContrastMode"",
-                    ""type"": ""Button"",
-                    ""id"": ""19fab7fd-e07d-45de-9389-2916cd53a3b4"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -172,7 +164,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""id"": ""1362b017-5dac-4a05-b539-af7917f1d25b"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
-                    ""processors"": ""ScaleVector2(x=7,y=7)"",
+                    ""processors"": """",
                     ""groups"": ""Stnd KBM"",
                     ""action"": ""MoveCamera"",
                     ""isComposite"": false,
@@ -197,17 +189,6 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Stnd KBM"",
                     ""action"": ""evaluateSolution"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""6141eb4b-b7ae-4c77-bd9e-e6a046f7387d"",
-                    ""path"": ""<Keyboard>/k"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Stnd KBM"",
-                    ""action"": ""ContrastMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -382,21 +363,197 @@ public class @InputMaster : IInputActionCollection, IDisposable
             ]
         },
         {
-            ""name"": ""OneSwitch"",
-            ""id"": ""1c650195-fd7e-4a81-a847-7cc027d7e2a8"",
+            ""name"": ""SymbolAudio"",
+            ""id"": ""b1caf9d3-1cf8-4a6d-94b4-35324026fb1b"",
             ""actions"": [
                 {
-                    ""name"": ""OnlyButton"",
+                    ""name"": ""PlayOne"",
                     ""type"": ""Button"",
-                    ""id"": ""a7c3378b-2aaa-4b9b-8be4-9c3824308de7"",
+                    ""id"": ""e404df02-170d-40ce-8594-d950ea7d2930"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""PuzzleTest"",
+                    ""name"": ""PlayTwo"",
                     ""type"": ""Button"",
-                    ""id"": ""244df09a-6c4b-4af8-b9af-307360c847e9"",
+                    ""id"": ""65e88fb7-1a72-43b2-b5f0-1803b5370994"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlayThree"",
+                    ""type"": ""Button"",
+                    ""id"": ""3fdd71f2-7d0d-49f5-82eb-7f943d4f59f5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlayFour"",
+                    ""type"": ""Button"",
+                    ""id"": ""0c66dab9-bf1b-4f73-9efd-b322f2fbb268"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlayFive"",
+                    ""type"": ""Button"",
+                    ""id"": ""c8f3379e-af34-4cb4-b93e-6d98ab53f75b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlaySix"",
+                    ""type"": ""Button"",
+                    ""id"": ""35bbb24d-7216-467d-9bd7-3a8f3e953716"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlaySeven"",
+                    ""type"": ""Button"",
+                    ""id"": ""1d16adb0-bb70-4114-a08d-47efebfaa514"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlayEight"",
+                    ""type"": ""Button"",
+                    ""id"": ""29285ec2-a977-4dc4-b747-6171eee6c69a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlayNine"",
+                    ""type"": ""Button"",
+                    ""id"": ""6349192c-f8ab-438a-ac08-93090180a1a4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlayTen"",
+                    ""type"": ""Button"",
+                    ""id"": ""976d4def-3b66-47e8-bebd-a4eb39f8c46d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlayEleven"",
+                    ""type"": ""Button"",
+                    ""id"": ""92db4846-915a-4fe3-aa42-a7f67903b408"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlayTwelve"",
+                    ""type"": ""Button"",
+                    ""id"": ""fb19b03d-8b5d-429d-8873-ceb0225f6050"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlayThirteen"",
+                    ""type"": ""Button"",
+                    ""id"": ""83038e3f-5f1d-4732-9a37-a3ec2a93983a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlayFourteen"",
+                    ""type"": ""Button"",
+                    ""id"": ""10779757-48ee-4271-bc15-8e11f3f97745"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlayFifteen"",
+                    ""type"": ""Button"",
+                    ""id"": ""f65465ad-443b-4229-bfee-e032fd02a4c5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlaySixteen"",
+                    ""type"": ""Button"",
+                    ""id"": ""926629c0-0791-4e03-8a81-02253fb0abc6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlaySeventeen"",
+                    ""type"": ""Button"",
+                    ""id"": ""2a9833b7-7515-4594-a237-204e1406cfe1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlayEighteen"",
+                    ""type"": ""Button"",
+                    ""id"": ""c7f4b869-f14f-44aa-ade8-7f6284b96387"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlayNineteen"",
+                    ""type"": ""Button"",
+                    ""id"": ""3f22718a-16e6-438e-8bd9-6ef43abc254c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlayTwenty"",
+                    ""type"": ""Button"",
+                    ""id"": ""73fc1835-0079-4255-9fb6-03fec5d4467a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlayTwentyOne"",
+                    ""type"": ""Button"",
+                    ""id"": ""ec73460b-89f4-4504-a825-f0ecfc3e259c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlayTwentyTwo"",
+                    ""type"": ""Button"",
+                    ""id"": ""5a6b95d6-ee5f-4ea8-9e16-7d84b1db4e78"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlayTwentyThree"",
+                    ""type"": ""Button"",
+                    ""id"": ""68be810e-2de9-4da1-93df-4333e3a92e8c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlayTwentyFour"",
+                    ""type"": ""Button"",
+                    ""id"": ""b8fbf49f-ec26-43ed-82b2-e44c85ea559b"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -405,23 +562,265 @@ public class @InputMaster : IInputActionCollection, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""5c38d5e4-8db4-4e94-9b86-77535c5e76ed"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""id"": ""074bd90b-902c-412f-98b1-bb80c43c3c0f"",
+                    ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""OnlyButton"",
+                    ""action"": ""PlayOne"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c8cabd77-3209-4838-b88c-e3db55095b28"",
-                    ""path"": ""<Keyboard>/b"",
+                    ""id"": ""64886b5d-24c4-4343-a7af-5344ca564ae9"",
+                    ""path"": ""<Keyboard>/2"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""PuzzleTest"",
+                    ""action"": ""PlayTwo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9b111f8f-7c44-473e-b34b-9224cd7864c7"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayThree"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2e81a0cb-6147-4bfa-997c-4d7e51f53d6a"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayFour"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""039879a9-1247-437d-9e27-a6e151e4a65b"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayFive"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4dea58d4-096a-4cae-a4dc-d2accafc0398"",
+                    ""path"": ""<Keyboard>/6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlaySix"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""213c64e0-3cfd-42cd-916b-0e5f71d8202f"",
+                    ""path"": ""<Keyboard>/7"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlaySeven"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""23e0c89c-9a76-4d7d-9fe1-6a41f64640d9"",
+                    ""path"": ""<Keyboard>/8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayEight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""014491ef-93c0-4512-9638-5e59ba600ca2"",
+                    ""path"": ""<Keyboard>/9"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayNine"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""334609e6-aaa3-4c0c-a8fa-3c5f51140898"",
+                    ""path"": ""<Keyboard>/numpad1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayEleven"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5cd275d9-bbcb-4984-875e-2f0f0dc540d9"",
+                    ""path"": ""<Keyboard>/0"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayTen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4096d6fe-e094-4428-af32-85396574172a"",
+                    ""path"": ""<Keyboard>/numpad2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayTwelve"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dbc7e770-0150-454b-90ad-981b65d3cba9"",
+                    ""path"": ""<Keyboard>/numpad3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayThirteen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bba1906c-2abc-4bf2-a495-e2715c054d45"",
+                    ""path"": ""<Keyboard>/numpad4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayFourteen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a46e88b2-76ca-4ea4-98af-62dab95b220e"",
+                    ""path"": ""<Keyboard>/numpad5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayFifteen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6620f812-5352-44f3-a327-cd3b83a69c10"",
+                    ""path"": ""<Keyboard>/numpad6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlaySixteen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""77ec26fb-1b95-4ead-9cdb-dbe20c1dbdc8"",
+                    ""path"": ""<Keyboard>/numpad7"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlaySeventeen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""89cfd423-13d7-4c3f-b2be-5569b5ac44f7"",
+                    ""path"": ""<Keyboard>/numpad8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayEighteen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3fe17b7a-503a-4f63-9f83-b0888b4fe435"",
+                    ""path"": ""<Keyboard>/numpad9"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayNineteen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5018f79a-7e04-4f87-9620-60d2dbcb3b25"",
+                    ""path"": ""<Keyboard>/numpad0"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayTwenty"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""924c4127-67f3-4091-a5bb-f48ba5f0ddc9"",
+                    ""path"": ""<Keyboard>/numpadDivide"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayTwentyOne"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""54721938-975a-4b93-af3b-2e2d0c123611"",
+                    ""path"": ""<Keyboard>/numpadMultiply"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayTwentyTwo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fd12936c-f173-4f87-b4a3-8c36211fbcd1"",
+                    ""path"": ""<Keyboard>/numpadMinus"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayTwentyThree"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""105ee07d-a186-4fdb-aa5a-d5130ac40c90"",
+                    ""path"": ""<Keyboard>/numpadPlus"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayTwentyFour"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -465,7 +864,6 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Player_MoveCamera = m_Player.FindAction("MoveCamera", throwIfNotFound: true);
         m_Player_ExitPuzzle = m_Player.FindAction("ExitPuzzle", throwIfNotFound: true);
         m_Player_evaluateSolution = m_Player.FindAction("evaluateSolution", throwIfNotFound: true);
-        m_Player_ContrastMode = m_Player.FindAction("ContrastMode", throwIfNotFound: true);
         // PuzzleDEBUGGER
         m_PuzzleDEBUGGER = asset.FindActionMap("PuzzleDEBUGGER", throwIfNotFound: true);
         m_PuzzleDEBUGGER_calculatesolution = m_PuzzleDEBUGGER.FindAction("calculate solution", throwIfNotFound: true);
@@ -478,10 +876,32 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_BackToMain = m_UI.FindAction("BackToMain", throwIfNotFound: true);
         m_UI_RestartScene = m_UI.FindAction("RestartScene", throwIfNotFound: true);
-        // OneSwitch
-        m_OneSwitch = asset.FindActionMap("OneSwitch", throwIfNotFound: true);
-        m_OneSwitch_OnlyButton = m_OneSwitch.FindAction("OnlyButton", throwIfNotFound: true);
-        m_OneSwitch_PuzzleTest = m_OneSwitch.FindAction("PuzzleTest", throwIfNotFound: true);
+        // SymbolAudio
+        m_SymbolAudio = asset.FindActionMap("SymbolAudio", throwIfNotFound: true);
+        m_SymbolAudio_PlayOne = m_SymbolAudio.FindAction("PlayOne", throwIfNotFound: true);
+        m_SymbolAudio_PlayTwo = m_SymbolAudio.FindAction("PlayTwo", throwIfNotFound: true);
+        m_SymbolAudio_PlayThree = m_SymbolAudio.FindAction("PlayThree", throwIfNotFound: true);
+        m_SymbolAudio_PlayFour = m_SymbolAudio.FindAction("PlayFour", throwIfNotFound: true);
+        m_SymbolAudio_PlayFive = m_SymbolAudio.FindAction("PlayFive", throwIfNotFound: true);
+        m_SymbolAudio_PlaySix = m_SymbolAudio.FindAction("PlaySix", throwIfNotFound: true);
+        m_SymbolAudio_PlaySeven = m_SymbolAudio.FindAction("PlaySeven", throwIfNotFound: true);
+        m_SymbolAudio_PlayEight = m_SymbolAudio.FindAction("PlayEight", throwIfNotFound: true);
+        m_SymbolAudio_PlayNine = m_SymbolAudio.FindAction("PlayNine", throwIfNotFound: true);
+        m_SymbolAudio_PlayTen = m_SymbolAudio.FindAction("PlayTen", throwIfNotFound: true);
+        m_SymbolAudio_PlayEleven = m_SymbolAudio.FindAction("PlayEleven", throwIfNotFound: true);
+        m_SymbolAudio_PlayTwelve = m_SymbolAudio.FindAction("PlayTwelve", throwIfNotFound: true);
+        m_SymbolAudio_PlayThirteen = m_SymbolAudio.FindAction("PlayThirteen", throwIfNotFound: true);
+        m_SymbolAudio_PlayFourteen = m_SymbolAudio.FindAction("PlayFourteen", throwIfNotFound: true);
+        m_SymbolAudio_PlayFifteen = m_SymbolAudio.FindAction("PlayFifteen", throwIfNotFound: true);
+        m_SymbolAudio_PlaySixteen = m_SymbolAudio.FindAction("PlaySixteen", throwIfNotFound: true);
+        m_SymbolAudio_PlaySeventeen = m_SymbolAudio.FindAction("PlaySeventeen", throwIfNotFound: true);
+        m_SymbolAudio_PlayEighteen = m_SymbolAudio.FindAction("PlayEighteen", throwIfNotFound: true);
+        m_SymbolAudio_PlayNineteen = m_SymbolAudio.FindAction("PlayNineteen", throwIfNotFound: true);
+        m_SymbolAudio_PlayTwenty = m_SymbolAudio.FindAction("PlayTwenty", throwIfNotFound: true);
+        m_SymbolAudio_PlayTwentyOne = m_SymbolAudio.FindAction("PlayTwentyOne", throwIfNotFound: true);
+        m_SymbolAudio_PlayTwentyTwo = m_SymbolAudio.FindAction("PlayTwentyTwo", throwIfNotFound: true);
+        m_SymbolAudio_PlayTwentyThree = m_SymbolAudio.FindAction("PlayTwentyThree", throwIfNotFound: true);
+        m_SymbolAudio_PlayTwentyFour = m_SymbolAudio.FindAction("PlayTwentyFour", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -536,7 +956,6 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_MoveCamera;
     private readonly InputAction m_Player_ExitPuzzle;
     private readonly InputAction m_Player_evaluateSolution;
-    private readonly InputAction m_Player_ContrastMode;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -546,7 +965,6 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @MoveCamera => m_Wrapper.m_Player_MoveCamera;
         public InputAction @ExitPuzzle => m_Wrapper.m_Player_ExitPuzzle;
         public InputAction @evaluateSolution => m_Wrapper.m_Player_evaluateSolution;
-        public InputAction @ContrastMode => m_Wrapper.m_Player_ContrastMode;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -571,9 +989,6 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @evaluateSolution.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEvaluateSolution;
                 @evaluateSolution.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEvaluateSolution;
                 @evaluateSolution.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEvaluateSolution;
-                @ContrastMode.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnContrastMode;
-                @ContrastMode.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnContrastMode;
-                @ContrastMode.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnContrastMode;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -593,9 +1008,6 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @evaluateSolution.started += instance.OnEvaluateSolution;
                 @evaluateSolution.performed += instance.OnEvaluateSolution;
                 @evaluateSolution.canceled += instance.OnEvaluateSolution;
-                @ContrastMode.started += instance.OnContrastMode;
-                @ContrastMode.performed += instance.OnContrastMode;
-                @ContrastMode.canceled += instance.OnContrastMode;
             }
         }
     }
@@ -715,46 +1127,222 @@ public class @InputMaster : IInputActionCollection, IDisposable
     }
     public UIActions @UI => new UIActions(this);
 
-    // OneSwitch
-    private readonly InputActionMap m_OneSwitch;
-    private IOneSwitchActions m_OneSwitchActionsCallbackInterface;
-    private readonly InputAction m_OneSwitch_OnlyButton;
-    private readonly InputAction m_OneSwitch_PuzzleTest;
-    public struct OneSwitchActions
+    // SymbolAudio
+    private readonly InputActionMap m_SymbolAudio;
+    private ISymbolAudioActions m_SymbolAudioActionsCallbackInterface;
+    private readonly InputAction m_SymbolAudio_PlayOne;
+    private readonly InputAction m_SymbolAudio_PlayTwo;
+    private readonly InputAction m_SymbolAudio_PlayThree;
+    private readonly InputAction m_SymbolAudio_PlayFour;
+    private readonly InputAction m_SymbolAudio_PlayFive;
+    private readonly InputAction m_SymbolAudio_PlaySix;
+    private readonly InputAction m_SymbolAudio_PlaySeven;
+    private readonly InputAction m_SymbolAudio_PlayEight;
+    private readonly InputAction m_SymbolAudio_PlayNine;
+    private readonly InputAction m_SymbolAudio_PlayTen;
+    private readonly InputAction m_SymbolAudio_PlayEleven;
+    private readonly InputAction m_SymbolAudio_PlayTwelve;
+    private readonly InputAction m_SymbolAudio_PlayThirteen;
+    private readonly InputAction m_SymbolAudio_PlayFourteen;
+    private readonly InputAction m_SymbolAudio_PlayFifteen;
+    private readonly InputAction m_SymbolAudio_PlaySixteen;
+    private readonly InputAction m_SymbolAudio_PlaySeventeen;
+    private readonly InputAction m_SymbolAudio_PlayEighteen;
+    private readonly InputAction m_SymbolAudio_PlayNineteen;
+    private readonly InputAction m_SymbolAudio_PlayTwenty;
+    private readonly InputAction m_SymbolAudio_PlayTwentyOne;
+    private readonly InputAction m_SymbolAudio_PlayTwentyTwo;
+    private readonly InputAction m_SymbolAudio_PlayTwentyThree;
+    private readonly InputAction m_SymbolAudio_PlayTwentyFour;
+    public struct SymbolAudioActions
     {
         private @InputMaster m_Wrapper;
-        public OneSwitchActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
-        public InputAction @OnlyButton => m_Wrapper.m_OneSwitch_OnlyButton;
-        public InputAction @PuzzleTest => m_Wrapper.m_OneSwitch_PuzzleTest;
-        public InputActionMap Get() { return m_Wrapper.m_OneSwitch; }
+        public SymbolAudioActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
+        public InputAction @PlayOne => m_Wrapper.m_SymbolAudio_PlayOne;
+        public InputAction @PlayTwo => m_Wrapper.m_SymbolAudio_PlayTwo;
+        public InputAction @PlayThree => m_Wrapper.m_SymbolAudio_PlayThree;
+        public InputAction @PlayFour => m_Wrapper.m_SymbolAudio_PlayFour;
+        public InputAction @PlayFive => m_Wrapper.m_SymbolAudio_PlayFive;
+        public InputAction @PlaySix => m_Wrapper.m_SymbolAudio_PlaySix;
+        public InputAction @PlaySeven => m_Wrapper.m_SymbolAudio_PlaySeven;
+        public InputAction @PlayEight => m_Wrapper.m_SymbolAudio_PlayEight;
+        public InputAction @PlayNine => m_Wrapper.m_SymbolAudio_PlayNine;
+        public InputAction @PlayTen => m_Wrapper.m_SymbolAudio_PlayTen;
+        public InputAction @PlayEleven => m_Wrapper.m_SymbolAudio_PlayEleven;
+        public InputAction @PlayTwelve => m_Wrapper.m_SymbolAudio_PlayTwelve;
+        public InputAction @PlayThirteen => m_Wrapper.m_SymbolAudio_PlayThirteen;
+        public InputAction @PlayFourteen => m_Wrapper.m_SymbolAudio_PlayFourteen;
+        public InputAction @PlayFifteen => m_Wrapper.m_SymbolAudio_PlayFifteen;
+        public InputAction @PlaySixteen => m_Wrapper.m_SymbolAudio_PlaySixteen;
+        public InputAction @PlaySeventeen => m_Wrapper.m_SymbolAudio_PlaySeventeen;
+        public InputAction @PlayEighteen => m_Wrapper.m_SymbolAudio_PlayEighteen;
+        public InputAction @PlayNineteen => m_Wrapper.m_SymbolAudio_PlayNineteen;
+        public InputAction @PlayTwenty => m_Wrapper.m_SymbolAudio_PlayTwenty;
+        public InputAction @PlayTwentyOne => m_Wrapper.m_SymbolAudio_PlayTwentyOne;
+        public InputAction @PlayTwentyTwo => m_Wrapper.m_SymbolAudio_PlayTwentyTwo;
+        public InputAction @PlayTwentyThree => m_Wrapper.m_SymbolAudio_PlayTwentyThree;
+        public InputAction @PlayTwentyFour => m_Wrapper.m_SymbolAudio_PlayTwentyFour;
+        public InputActionMap Get() { return m_Wrapper.m_SymbolAudio; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(OneSwitchActions set) { return set.Get(); }
-        public void SetCallbacks(IOneSwitchActions instance)
+        public static implicit operator InputActionMap(SymbolAudioActions set) { return set.Get(); }
+        public void SetCallbacks(ISymbolAudioActions instance)
         {
-            if (m_Wrapper.m_OneSwitchActionsCallbackInterface != null)
+            if (m_Wrapper.m_SymbolAudioActionsCallbackInterface != null)
             {
-                @OnlyButton.started -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnOnlyButton;
-                @OnlyButton.performed -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnOnlyButton;
-                @OnlyButton.canceled -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnOnlyButton;
-                @PuzzleTest.started -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnPuzzleTest;
-                @PuzzleTest.performed -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnPuzzleTest;
-                @PuzzleTest.canceled -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnPuzzleTest;
+                @PlayOne.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayOne;
+                @PlayOne.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayOne;
+                @PlayOne.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayOne;
+                @PlayTwo.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTwo;
+                @PlayTwo.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTwo;
+                @PlayTwo.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTwo;
+                @PlayThree.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayThree;
+                @PlayThree.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayThree;
+                @PlayThree.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayThree;
+                @PlayFour.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayFour;
+                @PlayFour.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayFour;
+                @PlayFour.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayFour;
+                @PlayFive.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayFive;
+                @PlayFive.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayFive;
+                @PlayFive.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayFive;
+                @PlaySix.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlaySix;
+                @PlaySix.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlaySix;
+                @PlaySix.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlaySix;
+                @PlaySeven.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlaySeven;
+                @PlaySeven.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlaySeven;
+                @PlaySeven.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlaySeven;
+                @PlayEight.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayEight;
+                @PlayEight.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayEight;
+                @PlayEight.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayEight;
+                @PlayNine.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayNine;
+                @PlayNine.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayNine;
+                @PlayNine.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayNine;
+                @PlayTen.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTen;
+                @PlayTen.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTen;
+                @PlayTen.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTen;
+                @PlayEleven.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayEleven;
+                @PlayEleven.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayEleven;
+                @PlayEleven.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayEleven;
+                @PlayTwelve.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTwelve;
+                @PlayTwelve.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTwelve;
+                @PlayTwelve.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTwelve;
+                @PlayThirteen.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayThirteen;
+                @PlayThirteen.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayThirteen;
+                @PlayThirteen.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayThirteen;
+                @PlayFourteen.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayFourteen;
+                @PlayFourteen.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayFourteen;
+                @PlayFourteen.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayFourteen;
+                @PlayFifteen.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayFifteen;
+                @PlayFifteen.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayFifteen;
+                @PlayFifteen.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayFifteen;
+                @PlaySixteen.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlaySixteen;
+                @PlaySixteen.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlaySixteen;
+                @PlaySixteen.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlaySixteen;
+                @PlaySeventeen.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlaySeventeen;
+                @PlaySeventeen.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlaySeventeen;
+                @PlaySeventeen.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlaySeventeen;
+                @PlayEighteen.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayEighteen;
+                @PlayEighteen.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayEighteen;
+                @PlayEighteen.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayEighteen;
+                @PlayNineteen.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayNineteen;
+                @PlayNineteen.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayNineteen;
+                @PlayNineteen.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayNineteen;
+                @PlayTwenty.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTwenty;
+                @PlayTwenty.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTwenty;
+                @PlayTwenty.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTwenty;
+                @PlayTwentyOne.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTwentyOne;
+                @PlayTwentyOne.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTwentyOne;
+                @PlayTwentyOne.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTwentyOne;
+                @PlayTwentyTwo.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTwentyTwo;
+                @PlayTwentyTwo.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTwentyTwo;
+                @PlayTwentyTwo.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTwentyTwo;
+                @PlayTwentyThree.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTwentyThree;
+                @PlayTwentyThree.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTwentyThree;
+                @PlayTwentyThree.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTwentyThree;
+                @PlayTwentyFour.started -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTwentyFour;
+                @PlayTwentyFour.performed -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTwentyFour;
+                @PlayTwentyFour.canceled -= m_Wrapper.m_SymbolAudioActionsCallbackInterface.OnPlayTwentyFour;
             }
-            m_Wrapper.m_OneSwitchActionsCallbackInterface = instance;
+            m_Wrapper.m_SymbolAudioActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @OnlyButton.started += instance.OnOnlyButton;
-                @OnlyButton.performed += instance.OnOnlyButton;
-                @OnlyButton.canceled += instance.OnOnlyButton;
-                @PuzzleTest.started += instance.OnPuzzleTest;
-                @PuzzleTest.performed += instance.OnPuzzleTest;
-                @PuzzleTest.canceled += instance.OnPuzzleTest;
+                @PlayOne.started += instance.OnPlayOne;
+                @PlayOne.performed += instance.OnPlayOne;
+                @PlayOne.canceled += instance.OnPlayOne;
+                @PlayTwo.started += instance.OnPlayTwo;
+                @PlayTwo.performed += instance.OnPlayTwo;
+                @PlayTwo.canceled += instance.OnPlayTwo;
+                @PlayThree.started += instance.OnPlayThree;
+                @PlayThree.performed += instance.OnPlayThree;
+                @PlayThree.canceled += instance.OnPlayThree;
+                @PlayFour.started += instance.OnPlayFour;
+                @PlayFour.performed += instance.OnPlayFour;
+                @PlayFour.canceled += instance.OnPlayFour;
+                @PlayFive.started += instance.OnPlayFive;
+                @PlayFive.performed += instance.OnPlayFive;
+                @PlayFive.canceled += instance.OnPlayFive;
+                @PlaySix.started += instance.OnPlaySix;
+                @PlaySix.performed += instance.OnPlaySix;
+                @PlaySix.canceled += instance.OnPlaySix;
+                @PlaySeven.started += instance.OnPlaySeven;
+                @PlaySeven.performed += instance.OnPlaySeven;
+                @PlaySeven.canceled += instance.OnPlaySeven;
+                @PlayEight.started += instance.OnPlayEight;
+                @PlayEight.performed += instance.OnPlayEight;
+                @PlayEight.canceled += instance.OnPlayEight;
+                @PlayNine.started += instance.OnPlayNine;
+                @PlayNine.performed += instance.OnPlayNine;
+                @PlayNine.canceled += instance.OnPlayNine;
+                @PlayTen.started += instance.OnPlayTen;
+                @PlayTen.performed += instance.OnPlayTen;
+                @PlayTen.canceled += instance.OnPlayTen;
+                @PlayEleven.started += instance.OnPlayEleven;
+                @PlayEleven.performed += instance.OnPlayEleven;
+                @PlayEleven.canceled += instance.OnPlayEleven;
+                @PlayTwelve.started += instance.OnPlayTwelve;
+                @PlayTwelve.performed += instance.OnPlayTwelve;
+                @PlayTwelve.canceled += instance.OnPlayTwelve;
+                @PlayThirteen.started += instance.OnPlayThirteen;
+                @PlayThirteen.performed += instance.OnPlayThirteen;
+                @PlayThirteen.canceled += instance.OnPlayThirteen;
+                @PlayFourteen.started += instance.OnPlayFourteen;
+                @PlayFourteen.performed += instance.OnPlayFourteen;
+                @PlayFourteen.canceled += instance.OnPlayFourteen;
+                @PlayFifteen.started += instance.OnPlayFifteen;
+                @PlayFifteen.performed += instance.OnPlayFifteen;
+                @PlayFifteen.canceled += instance.OnPlayFifteen;
+                @PlaySixteen.started += instance.OnPlaySixteen;
+                @PlaySixteen.performed += instance.OnPlaySixteen;
+                @PlaySixteen.canceled += instance.OnPlaySixteen;
+                @PlaySeventeen.started += instance.OnPlaySeventeen;
+                @PlaySeventeen.performed += instance.OnPlaySeventeen;
+                @PlaySeventeen.canceled += instance.OnPlaySeventeen;
+                @PlayEighteen.started += instance.OnPlayEighteen;
+                @PlayEighteen.performed += instance.OnPlayEighteen;
+                @PlayEighteen.canceled += instance.OnPlayEighteen;
+                @PlayNineteen.started += instance.OnPlayNineteen;
+                @PlayNineteen.performed += instance.OnPlayNineteen;
+                @PlayNineteen.canceled += instance.OnPlayNineteen;
+                @PlayTwenty.started += instance.OnPlayTwenty;
+                @PlayTwenty.performed += instance.OnPlayTwenty;
+                @PlayTwenty.canceled += instance.OnPlayTwenty;
+                @PlayTwentyOne.started += instance.OnPlayTwentyOne;
+                @PlayTwentyOne.performed += instance.OnPlayTwentyOne;
+                @PlayTwentyOne.canceled += instance.OnPlayTwentyOne;
+                @PlayTwentyTwo.started += instance.OnPlayTwentyTwo;
+                @PlayTwentyTwo.performed += instance.OnPlayTwentyTwo;
+                @PlayTwentyTwo.canceled += instance.OnPlayTwentyTwo;
+                @PlayTwentyThree.started += instance.OnPlayTwentyThree;
+                @PlayTwentyThree.performed += instance.OnPlayTwentyThree;
+                @PlayTwentyThree.canceled += instance.OnPlayTwentyThree;
+                @PlayTwentyFour.started += instance.OnPlayTwentyFour;
+                @PlayTwentyFour.performed += instance.OnPlayTwentyFour;
+                @PlayTwentyFour.canceled += instance.OnPlayTwentyFour;
             }
         }
     }
-    public OneSwitchActions @OneSwitch => new OneSwitchActions(this);
+    public SymbolAudioActions @SymbolAudio => new SymbolAudioActions(this);
     private int m_StndKBMSchemeIndex = -1;
     public InputControlScheme StndKBMScheme
     {
@@ -780,7 +1368,6 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnMoveCamera(InputAction.CallbackContext context);
         void OnExitPuzzle(InputAction.CallbackContext context);
         void OnEvaluateSolution(InputAction.CallbackContext context);
-        void OnContrastMode(InputAction.CallbackContext context);
     }
     public interface IPuzzleDEBUGGERActions
     {
@@ -796,9 +1383,31 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnBackToMain(InputAction.CallbackContext context);
         void OnRestartScene(InputAction.CallbackContext context);
     }
-    public interface IOneSwitchActions
+    public interface ISymbolAudioActions
     {
-        void OnOnlyButton(InputAction.CallbackContext context);
-        void OnPuzzleTest(InputAction.CallbackContext context);
+        void OnPlayOne(InputAction.CallbackContext context);
+        void OnPlayTwo(InputAction.CallbackContext context);
+        void OnPlayThree(InputAction.CallbackContext context);
+        void OnPlayFour(InputAction.CallbackContext context);
+        void OnPlayFive(InputAction.CallbackContext context);
+        void OnPlaySix(InputAction.CallbackContext context);
+        void OnPlaySeven(InputAction.CallbackContext context);
+        void OnPlayEight(InputAction.CallbackContext context);
+        void OnPlayNine(InputAction.CallbackContext context);
+        void OnPlayTen(InputAction.CallbackContext context);
+        void OnPlayEleven(InputAction.CallbackContext context);
+        void OnPlayTwelve(InputAction.CallbackContext context);
+        void OnPlayThirteen(InputAction.CallbackContext context);
+        void OnPlayFourteen(InputAction.CallbackContext context);
+        void OnPlayFifteen(InputAction.CallbackContext context);
+        void OnPlaySixteen(InputAction.CallbackContext context);
+        void OnPlaySeventeen(InputAction.CallbackContext context);
+        void OnPlayEighteen(InputAction.CallbackContext context);
+        void OnPlayNineteen(InputAction.CallbackContext context);
+        void OnPlayTwenty(InputAction.CallbackContext context);
+        void OnPlayTwentyOne(InputAction.CallbackContext context);
+        void OnPlayTwentyTwo(InputAction.CallbackContext context);
+        void OnPlayTwentyThree(InputAction.CallbackContext context);
+        void OnPlayTwentyFour(InputAction.CallbackContext context);
     }
 }

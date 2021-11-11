@@ -8,13 +8,43 @@ public class Logbook : MonoBehaviour
     [SerializeField] private GameObject[] tabsLeft; //Don't include Tab_0
     [SerializeField] private GameObject[] tabsRight; //Don't include Tab_0
     private AudioSource audioSource;
+    private int iterator;
 
     public void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        iterator = 0;
 
         for (int i = 0; i < tabsLeft.Length; i++)
             CloseTab(i);
+    }
+    public void ChangePage(bool forward)
+    {
+        for (int i = 0; i < tabsRight.Length; i++)
+            CloseTab(i);
+        if (forward)
+        {
+            if (iterator < pages.Length)
+            {
+                pages[iterator].SetActive(false);
+                iterator++;
+                pages[iterator].SetActive(true);
+            }
+        }
+        else
+        {
+            if (iterator > 0)
+            {
+                pages[iterator].SetActive(false);
+                iterator--;
+                pages[iterator].SetActive(true);
+            }
+        }
+        for (int i = 0; i < tabsRight.Length; i++)
+        {
+            if (i <= iterator)
+                OpenTab(i);
+        }
     }
 
     //Add so it takes input from keys.
@@ -112,6 +142,8 @@ public class Logbook : MonoBehaviour
             tabsRight[i].SetActive(false);
         if (tabsLeft[i].activeInHierarchy != true)
             tabsLeft[i].SetActive(true);
+        iterator = i;
+        Debug.Log(iterator);
     }
 
     // Needs to deactivate the tab on the right and active the tab on the left side.
