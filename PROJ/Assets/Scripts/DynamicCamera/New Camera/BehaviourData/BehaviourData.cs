@@ -5,8 +5,9 @@ public class BehaviourData : ScriptableObject {
 
     [SerializeField] private Vector3 offset;
     [SerializeField] private float followSpeed;
-
+    [SerializeField] private float rotationSpeed;
     public Vector3 Offset => offset;
     public float FollowSpeed => followSpeed;
+    public float RotationSpeed => rotationSpeed;
 
 }
