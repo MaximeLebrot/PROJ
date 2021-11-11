@@ -129,7 +129,7 @@ public class Puzzle : MonoBehaviour
         if(currentPuzzleNum >= puzzleInstances.Count)
         {
             //no more puzzle instances here
-            //NÅTT SKA HÄNDA HÄR? nån effekt och feedback på att man klarat det här pusslet. Inte spara griden utan stänga av griden typ
+            //NÃ…TT SKA HÃ„NDA HÃ„R? nÃ¥n effekt och feedback pÃ¥ att man klarat det hÃ¤r pusslet. Inte spara griden utan stÃ¤nga av griden typ
             //Exit puzzle
             //Debug.Log("Last puzzle instance completed");
 
@@ -424,7 +424,7 @@ public class Puzzle : MonoBehaviour
 
 /*
  * 
- * translation (Lista med varje symbols översättning per index), solution (string), symbools
+ * translation (Lista med varje symbols Ã¶versÃ¤ttning per index), solution (string), symbools
  * 
  * int solutionIndex = 0;
  * int translationIndex = 0;

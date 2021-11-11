@@ -36,10 +36,8 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] private TextMeshProUGUI brightnessSliderText
         ;
     [SerializeField] private TMP_Dropdown quality;
-    //[SerializeField]private TMP_Dropdown resolution;
     [SerializeField] private Toggle fullscreen;
-
-
+    
     private void Awake()
     {
         settingsMenuInstance = this;
@@ -181,6 +179,15 @@ public class SettingsMenu : MonoBehaviour
         string json = PlayerPrefs.GetString("DefaultSettings");
         SettingsData settings = JsonUtility.FromJson<SettingsData>(json);
         //SetValues(settings);
+    }
+
+    public void ChangeFontSize(float fontSize) {
+
+        TextMeshProUGUI[] texts = GetComponentsInChildren<TextMeshProUGUI>();
+
+        foreach (TextMeshProUGUI text in texts)
+            text.fontSize = fontSize;
+
     }
     
 }

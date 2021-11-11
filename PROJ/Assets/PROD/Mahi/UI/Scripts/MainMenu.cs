@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,24 +9,19 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject prototypeMenu;
     [SerializeField] private GameObject settingsMenu;
     [SerializeField] private GameObject mainMenu;
-    [SerializeField] private Slider fovSlider;
-    [SerializeField] private TextMeshProUGUI fovText;
     [SerializeField] private ControllerInputReference  inputMaster;
 
     private void Awake() {
         Cursor.lockState = CursorLockMode.None;
-        Application.targetFrameRate = 60;
         inputMaster.Initialize();
     }
-
+    
     void Start() {
         optionsMenu.SetActive(false);
         prototypeMenu.SetActive(false);
         settingsMenu.SetActive(false);
         mainMenu.SetActive(true);
         inputMaster.InputMaster.Anykey.performed += PressAnyKey;
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 60;
     }
 
     public void OpenPrototype()
@@ -61,4 +53,5 @@ public class MainMenu : MonoBehaviour
         inputMaster.InputMaster.Anykey.performed -= PressAnyKey;
         BackToMain();
     }
+
 }

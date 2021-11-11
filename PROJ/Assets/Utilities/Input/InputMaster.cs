@@ -73,6 +73,14 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""c480e120-4e87-4ad7-8512-1f825dd22bae"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -227,6 +235,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Stnd KBM"",
                     ""action"": ""Anykey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""90d4db88-97ae-4326-a18b-429a8c16159f"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Stnd KBM"",
+                    ""action"": ""Menu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -486,6 +505,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Player_evaluateSolution = m_Player.FindAction("evaluateSolution", throwIfNotFound: true);
         m_Player_ContrastMode = m_Player.FindAction("ContrastMode", throwIfNotFound: true);
         m_Player_Anykey = m_Player.FindAction("Anykey", throwIfNotFound: true);
+        m_Player_Menu = m_Player.FindAction("Menu", throwIfNotFound: true);
         // PuzzleDEBUGGER
         m_PuzzleDEBUGGER = asset.FindActionMap("PuzzleDEBUGGER", throwIfNotFound: true);
         m_PuzzleDEBUGGER_calculatesolution = m_PuzzleDEBUGGER.FindAction("calculate solution", throwIfNotFound: true);
@@ -558,6 +578,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_evaluateSolution;
     private readonly InputAction m_Player_ContrastMode;
     private readonly InputAction m_Player_Anykey;
+    private readonly InputAction m_Player_Menu;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -569,6 +590,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @evaluateSolution => m_Wrapper.m_Player_evaluateSolution;
         public InputAction @ContrastMode => m_Wrapper.m_Player_ContrastMode;
         public InputAction @Anykey => m_Wrapper.m_Player_Anykey;
+        public InputAction @Menu => m_Wrapper.m_Player_Menu;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -599,6 +621,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @Anykey.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAnykey;
                 @Anykey.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAnykey;
                 @Anykey.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAnykey;
+                @Menu.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMenu;
+                @Menu.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMenu;
+                @Menu.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMenu;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -624,6 +649,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @Anykey.started += instance.OnAnykey;
                 @Anykey.performed += instance.OnAnykey;
                 @Anykey.canceled += instance.OnAnykey;
+                @Menu.started += instance.OnMenu;
+                @Menu.performed += instance.OnMenu;
+                @Menu.canceled += instance.OnMenu;
             }
         }
     }
@@ -810,6 +838,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnEvaluateSolution(InputAction.CallbackContext context);
         void OnContrastMode(InputAction.CallbackContext context);
         void OnAnykey(InputAction.CallbackContext context);
+        void OnMenu(InputAction.CallbackContext context);
     }
     public interface IPuzzleDEBUGGERActions
     {
