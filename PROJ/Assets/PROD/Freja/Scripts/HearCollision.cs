@@ -23,14 +23,18 @@ public class HearCollision : MonoBehaviour
 
     void Start()
     {
+        sphereRadius = GetComponent<SphereCollider>().radius;
+
         if (transform == null)
             transform = GetComponent<Transform>();
         if (audioArray.Length == 0)
             audioArray = GetComponentsInChildren<AudioSource>();
         foreach (AudioSource audio in audioArray)
+        {
             ETHandle.Add(audio, null);
+            audio.maxDistance = sphereRadius;
+        }
        
-        sphereRadius = GetComponent<SphereCollider>().radius;
         soundLength = alertSound.length;
         timer = cd;
     }
@@ -40,7 +44,15 @@ public class HearCollision : MonoBehaviour
         foreach (AudioSource audio in ETHandle.Keys)
         {
             if (ETHandle[audio] != null)
+            {
                 UpdateAudioSourcePosition(audio, ETHandle[audio]);
+                if(!audio.isPlaying)
+                    audio.PlayOneShot(alertSound);
+            }
+            else
+            {
+                audio.Stop();
+            }
         }
     }
 
@@ -151,26 +163,6 @@ public class HearCollision : MonoBehaviour
      //    }
      //}
 
-
-     private void PlayAlert(int place)
-     {
-         switch (place)
-         {
-             case 1:
-                 frontSource.PlayOneShot(alertSound);
-                 break;
-             case 2:
-                 leftSource.PlayOneShot(alertSound);
-                 break;
-             case 3:
-                 rightSource.PlayOneShot(alertSound);
-                 break;
-             case 4:
-                 backSource.PlayOneShot(alertSound);
-                 break;
-             default:
-                 return;
-         }
      }
     #endregion
      */
