@@ -18,17 +18,18 @@ public class MainMenu : MonoBehaviour
 
     private void Awake() {
         Cursor.lockState = CursorLockMode.None;
-        
+        Application.targetFrameRate = 60;
         inputMaster.Initialize();
     }
-    
+
     void Start() {
         optionsMenu.SetActive(false);
         prototypeMenu.SetActive(false);
         settingsMenu.SetActive(false);
         mainMenu.SetActive(true);
         inputMaster.InputMaster.Anykey.performed += PressAnyKey;
-
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;
     }
 
     public void OpenPrototype()
