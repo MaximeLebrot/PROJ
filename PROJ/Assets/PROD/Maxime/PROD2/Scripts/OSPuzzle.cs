@@ -48,8 +48,8 @@ public class OSPuzzle : MonoBehaviour
                     if (iterator >= nodes.Count)
                         iterator = 0;
                     foreach (Button node in nodes)
-                        node.image.color = Color.white;
-                    nodes[iterator].image.color = Color.red;
+                        node.image.color = Color.red;
+                    nodes[iterator].image.color = Color.green;
                     iterator++;
                     timer = 0;
                 }

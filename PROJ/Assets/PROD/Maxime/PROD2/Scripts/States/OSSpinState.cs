@@ -13,6 +13,7 @@ public class OSSpinState : PlayerState
     public override void EnterState()
     {
         Debug.Log("Entered Spin State");
+        player.physics.velocity = Vector3.zero;
         base.EnterState();
         player.physics.SetGlide(false);
     }

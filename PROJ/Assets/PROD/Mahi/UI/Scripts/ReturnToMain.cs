@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class ReturnToMain : MonoBehaviour
 {
     private InputMaster inputMaster;
+    [SerializeField] string sceneName;
 
     void Start()
     {
@@ -31,7 +32,9 @@ public class ReturnToMain : MonoBehaviour
 
     public void ReturnToMainMenu()
     {
-        SceneManager.LoadScene("Mahi_MainMenu_Prototyp");
+        if (sceneName == "")
+            sceneName = "MainMenu";
+        SceneManager.LoadScene(sceneName);
     }
       
 }
