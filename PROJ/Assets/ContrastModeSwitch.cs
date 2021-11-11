@@ -32,6 +32,7 @@ public class ContrastModeSwitch : MonoBehaviour {
 
         overlayCamera.transform.gameObject.SetActive(false);
         
+        
     }
 
     private void Start() {
