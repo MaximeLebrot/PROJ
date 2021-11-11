@@ -13,7 +13,8 @@ public class VoiceMovement : MonoBehaviour
     private Dictionary<string, Action> actions = new Dictionary<string, Action>();
    // [SerializeField] private GameObject Text;
     public Text direction;
-
+    public GameObject[] kanelbullar;
+    private int i = 0;
     private void Start()
     {
         actions.Add("forward", Forward);
@@ -24,6 +25,7 @@ public class VoiceMovement : MonoBehaviour
         actions.Add("left", Left);
         actions.Add("rotate", Rotate);
         actions.Add("Wow", Owen);
+        actions.Add("Mums", David);
         direction.text = "";
         keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
         keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
@@ -73,6 +75,14 @@ public class VoiceMovement : MonoBehaviour
     {
         //transform.Rotate(0, 90, 0);
         direction.text = "Wooooow";
+        direction.GetComponent<Animator>().SetTrigger("active");
+    }
+
+    private void David()
+    {
+        kanelbullar[i].SetActive(true);
+        i++;
+        direction.text = "David";
         direction.GetComponent<Animator>().SetTrigger("active");
     }
 
