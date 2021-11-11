@@ -37,9 +37,14 @@ public class VoiceMovement : MonoBehaviour
 
         actions.Add("Mums", David);
         actions.Add("Cinnamon", David);
+        actions.Add("David", David);
+        actions.Add("Emma", David);
+
 
         actions.Add("Dance", Dance);
         actions.Add("Kill", Die);
+        actions.Add("Thomas", Dance);
+        actions.Add("Awe", Dance);
 
         direction.text = "";
         keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
