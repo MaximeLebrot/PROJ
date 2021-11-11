@@ -42,11 +42,13 @@ namespace NewCamera {
 
         public virtual void ManipulatePivotTarget(CustomInput input, Vector2 clampValues) {
             
+            //If no input, use previous rotation
             if (input.aim == Vector2.zero && input.movement.x == 0) {
                 target.eulerAngles = previousRotation;
                 return;
             }
             
+            //If only movement input, move camera to target-parent back.
             if(input.aim == Vector2.zero && input.movement.x != 0) {
                 Vector3 parentRotation = target.parent.eulerAngles;
                 parentRotation.x = 0;
@@ -55,9 +57,6 @@ namespace NewCamera {
                 return;
             }
             
-   
-            
-
             Vector3 desiredRotation  = target.eulerAngles + (Vector3)input.aim;
             
             if (desiredRotation.x > 180)
