@@ -122,6 +122,19 @@ public static class PuzzleHelper
         return c;
     }
 
+    public static string DoubleStrokes(string newString)
+    {
+        string returnString = "";
+
+        for(int i = 0; i < newString.Length; i++)
+        {
+            returnString += newString[i];
+            returnString += newString[i];
+        }
+
+        return returnString;
+    }
+
     public static Vector3 TranslateNumToDirection(char c)
     {
         switch (c)
