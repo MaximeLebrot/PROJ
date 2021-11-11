@@ -15,6 +15,7 @@ public class VoiceMovement : MonoBehaviour
     public Text direction;
     public GameObject[] kanelbullar;
     public Animator animator;
+    public GameObject song;
 
     private int i = 0;
     private void Start()
@@ -27,7 +28,8 @@ public class VoiceMovement : MonoBehaviour
         actions.Add("Wow", Owen);
         actions.Add("Mums", David);
         actions.Add("Dance", Dance);
-        actions.Add("Kill", Die);
+        actions.Add("Play Dead", Die);
+        actions.Add("Music", Song);
         direction.text = "";
         keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
         keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
@@ -98,6 +100,14 @@ public class VoiceMovement : MonoBehaviour
     {
         animator.SetTrigger("Death");
         direction.text = "Dying";
+        direction.GetComponent<Animator>().SetTrigger("active");
+    }
+
+    private void Song()
+    {
+        song.GetComponent<AudioSource>().Play();
+        animator.SetTrigger("Dance");
+        direction.text = "Rick Rolled";
         direction.GetComponent<Animator>().SetTrigger("active");
     }
 
