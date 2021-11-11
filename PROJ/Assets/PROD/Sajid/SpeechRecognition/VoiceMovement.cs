@@ -13,17 +13,32 @@ public class VoiceMovement : MonoBehaviour
     private Dictionary<string, Action> actions = new Dictionary<string, Action>();
    // [SerializeField] private GameObject Text;
     public Text direction;
+    public GameObject[] kanelbullar;
+    public Animator animator;
+    public GameObject song;
+    public GameObject Light;
 
+    private int i = 0;
     private void Start()
     {
         actions.Add("forward", Forward);
-       // actions.Add("up", Up);
-       // actions.Add("down", Down);
         actions.Add("back", Back);
         actions.Add("right", Right);
         actions.Add("left", Left);
+
+        actions.Add("rotate ninety", Rotate);
         actions.Add("rotate", Rotate);
-        actions.Add("Wow", Owen);
+
+        actions.Add("rotate onehundred and eighty", Rotate180);
+        actions.Add("rotate one eighty", Rotate180);
+
+        actions.Add("rotate twohundred and seventy", Rotate270);
+        actions.Add("rotate two seventy", Rotate270);
+
+        actions.Add("Mums", David);
+        actions.Add("Dance", Dance);
+        actions.Add("Kill", Die);
+
         direction.text = "";
         keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
         keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
@@ -65,14 +80,44 @@ public class VoiceMovement : MonoBehaviour
     private void Rotate()
     {
         transform.Rotate(0, 90, 0);
-        direction.text = "Rotate";
+        direction.text = "Rotate 90";
         direction.GetComponent<Animator>().SetTrigger("active");
     }
 
-    private void Owen()
+    private void Rotate180()
     {
-        //transform.Rotate(0, 90, 0);
-        direction.text = "Wooooow";
+        transform.Rotate(0, 180, 0);
+        direction.text = "Rotate 180";
+        direction.GetComponent<Animator>().SetTrigger("active");
+    }
+
+    private void Rotate270()
+    {
+        transform.Rotate(0, 270, 0);
+        direction.text = "Rotate 270";
+        direction.GetComponent<Animator>().SetTrigger("active");
+    }
+
+    private void David()
+    {
+        kanelbullar[i].SetActive(true);
+        i++;
+      
+    }
+
+    private void Dance()
+    {
+        animator.SetTrigger("Dance");
+        direction.text = "Rick Rolled";
+        song.GetComponent<AudioSource>().Play();
+        direction.GetComponent<Animator>().SetTrigger("active");
+        Light.GetComponent<Animator>().SetTrigger("ActivateLight");
+    }
+
+    private void Die()
+    {
+        animator.SetTrigger("Death");
+        direction.text = "Dying";
         direction.GetComponent<Animator>().SetTrigger("active");
     }
 
