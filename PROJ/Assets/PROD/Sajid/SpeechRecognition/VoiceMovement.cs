@@ -14,6 +14,8 @@ public class VoiceMovement : MonoBehaviour
    // [SerializeField] private GameObject Text;
     public Text direction;
     public GameObject[] kanelbullar;
+    public Animator animator;
+
     private int i = 0;
     private void Start()
     {
@@ -26,6 +28,7 @@ public class VoiceMovement : MonoBehaviour
         actions.Add("rotate", Rotate);
         actions.Add("Wow", Owen);
         actions.Add("Mums", David);
+        actions.Add("Dance", Dance);
         direction.text = "";
         keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
         keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
@@ -84,6 +87,11 @@ public class VoiceMovement : MonoBehaviour
         i++;
        // direction.text = "David";
        // direction.GetComponent<Animator>().SetTrigger("active");
+    }
+
+    private void Dance()
+    {
+        animator.SetTrigger("Dance");
     }
 
 }
