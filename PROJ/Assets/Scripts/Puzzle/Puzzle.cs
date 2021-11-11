@@ -117,7 +117,7 @@ public class Puzzle : MonoBehaviour
         translations = translator.GetTranslations();
 
     }
-    protected void NextPuzzle()
+    protected virtual void NextPuzzle()
     {
         UnloadSymbols();
         if(particles != null)

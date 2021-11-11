@@ -7,6 +7,7 @@ public class WindPuzzle : Puzzle
 {
 
     [SerializeField] private VisualEffect wind;
+    [SerializeField] private Animator windBurst;
     [SerializeField] List<GameObject> windMarkers;
 
     public override void InitiatePuzzle()
@@ -15,6 +16,7 @@ public class WindPuzzle : Puzzle
         //Start Wind
         wind.Play();
         wind.SetVector3("Direction", currentPuzzleInstance.GetComponent<WindPuzzleInstance>().GetWindDirection());
+        windBurst.SetTrigger("burst");
         base.InitiatePuzzle();
 
         //adjust solution for wind
@@ -36,7 +38,9 @@ public class WindPuzzle : Puzzle
         //Debug.Log(solution);
         if (solution.Equals(grid.GetSolution()))
         {
+
             windMarkers[currentPuzzleInstance.GetComponent<WindPuzzleInstance>().GetWindRotations()].GetComponentInChildren<Animator>().SetTrigger("off");
+            
             //uppdaterar curr puzzle
             currentPuzzleInstance.Solve();
             EventHandler<SaveEvent>.FireEvent(new SaveEvent());
@@ -47,5 +51,11 @@ public class WindPuzzle : Puzzle
         }
 
         return false;
+    }
+
+    protected override void NextPuzzle()
+    {
+        wind.Stop();
+        base.NextPuzzle();
     }
 }
