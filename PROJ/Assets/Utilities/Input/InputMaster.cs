@@ -57,6 +57,14 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ContrastMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""19fab7fd-e07d-45de-9389-2916cd53a3b4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -189,6 +197,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Stnd KBM"",
                     ""action"": ""evaluateSolution"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6141eb4b-b7ae-4c77-bd9e-e6a046f7387d"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Stnd KBM"",
+                    ""action"": ""ContrastMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -400,6 +419,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Player_MoveCamera = m_Player.FindAction("MoveCamera", throwIfNotFound: true);
         m_Player_ExitPuzzle = m_Player.FindAction("ExitPuzzle", throwIfNotFound: true);
         m_Player_evaluateSolution = m_Player.FindAction("evaluateSolution", throwIfNotFound: true);
+        m_Player_ContrastMode = m_Player.FindAction("ContrastMode", throwIfNotFound: true);
         // PuzzleDEBUGGER
         m_PuzzleDEBUGGER = asset.FindActionMap("PuzzleDEBUGGER", throwIfNotFound: true);
         m_PuzzleDEBUGGER_calculatesolution = m_PuzzleDEBUGGER.FindAction("calculate solution", throwIfNotFound: true);
@@ -466,6 +486,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_MoveCamera;
     private readonly InputAction m_Player_ExitPuzzle;
     private readonly InputAction m_Player_evaluateSolution;
+    private readonly InputAction m_Player_ContrastMode;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -475,6 +496,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @MoveCamera => m_Wrapper.m_Player_MoveCamera;
         public InputAction @ExitPuzzle => m_Wrapper.m_Player_ExitPuzzle;
         public InputAction @evaluateSolution => m_Wrapper.m_Player_evaluateSolution;
+        public InputAction @ContrastMode => m_Wrapper.m_Player_ContrastMode;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -499,6 +521,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @evaluateSolution.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEvaluateSolution;
                 @evaluateSolution.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEvaluateSolution;
                 @evaluateSolution.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEvaluateSolution;
+                @ContrastMode.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnContrastMode;
+                @ContrastMode.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnContrastMode;
+                @ContrastMode.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnContrastMode;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -518,6 +543,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @evaluateSolution.started += instance.OnEvaluateSolution;
                 @evaluateSolution.performed += instance.OnEvaluateSolution;
                 @evaluateSolution.canceled += instance.OnEvaluateSolution;
+                @ContrastMode.started += instance.OnContrastMode;
+                @ContrastMode.performed += instance.OnContrastMode;
+                @ContrastMode.canceled += instance.OnContrastMode;
             }
         }
     }
@@ -661,6 +689,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnMoveCamera(InputAction.CallbackContext context);
         void OnExitPuzzle(InputAction.CallbackContext context);
         void OnEvaluateSolution(InputAction.CallbackContext context);
+        void OnContrastMode(InputAction.CallbackContext context);
     }
     public interface IPuzzleDEBUGGERActions
     {

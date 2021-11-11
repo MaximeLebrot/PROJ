@@ -12,8 +12,7 @@ GameObject:
   - component: {fileID: 7792583503459585062}
   - component: {fileID: 7792583503459585063}
   - component: {fileID: 1934161488309287442}
-  - component: {fileID: 2040299816410894179}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,19 +49,7 @@ VisualEffect:
   m_ResourceVersion: 1
   m_PropertySheet:
     m_Float:
-      m_Array:
-      - m_Value: 0.4
-        m_Name: GravityForce
-        m_Overridden: 1
-      - m_Value: 1000
-        m_Name: Rate
-        m_Overridden: 1
-      - m_Value: 15.8
-        m_Name: Turbulence_Freq
-        m_Overridden: 1
-      - m_Value: 1.5
-        m_Name: Turbulence_Intensity
-        m_Overridden: 1
+      m_Array: []
     m_Vector2f:
       m_Array: []
     m_Vector3f:
@@ -142,23 +129,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineParticle: {fileID: 7792583503459585062}
-  anim: {fileID: 2040299816410894179}
---- !u!95 &2040299816410894179
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7792583503459585060}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 2cf5b3f2ff8f7ae42837b0f20809d488, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0

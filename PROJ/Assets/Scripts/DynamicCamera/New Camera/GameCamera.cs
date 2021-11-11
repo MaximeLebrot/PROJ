@@ -16,7 +16,6 @@ public class GameCamera : MonoBehaviour {
     [SerializeField] private Transform shoulderPosition;
     [SerializeField] private Vector2 clampValues;
     
-    private Vector2 input;
     private Transform thisTransform;
 
     [SerializeField] private BehaviourData defaultValues;
@@ -31,7 +30,7 @@ public class GameCamera : MonoBehaviour {
     private event BehaviourQueue behaviourQueue;
 
     private void Awake() {
-        
+        inputReference.Initialize();
         thisTransform = transform;
         currentBaseCameraBehaviour = new BaseCameraBehaviour(thisTransform, followTarget, defaultValues);
         
@@ -49,21 +48,28 @@ public class GameCamera : MonoBehaviour {
 
     private void ExecuteCameraBehaviour() {
         ReadInput();
+
+        CustomInput input = ReadInput();
         
-        input = currentBaseCameraBehaviour.ClampMovement(input, clampValues);
+        currentBaseCameraBehaviour.ManipulatePivotTarget(input, clampValues);
         
-        Vector3 calculatedOffset = currentBaseCameraBehaviour.ExecuteCollision(input, globalCameraSettings);
+        Vector3 calculatedOffset = currentBaseCameraBehaviour.ExecuteCollision(globalCameraSettings);
         
         thisTransform.position = currentBaseCameraBehaviour.ExecuteMove(calculatedOffset);
         thisTransform.rotation = currentBaseCameraBehaviour.ExecuteRotate();
     }
     
-    private void ReadInput() {
+    private CustomInput ReadInput() {
         Vector2 inputDirection = inputReference.InputMaster.MoveCamera.ReadValue<Vector2>();
+
+        CustomInput input = new CustomInput();
         
-        input.x += -inputDirection.y * globalCameraSettings.MouseSensitivity;
-        input.y += inputDirection.x * globalCameraSettings.MouseSensitivity;
+        input.aim.x = -inputDirection.y * globalCameraSettings.MouseSensitivity;
+        input.aim.y = inputDirection.x * globalCameraSettings.MouseSensitivity;
         
+        input.movement = inputReference.InputMaster.Movement.ReadValue<Vector2>();
+
+        return input;
     }
     
     private void OnEnable() {
@@ -162,13 +168,9 @@ public class GameCamera : MonoBehaviour {
             behaviourQueue = null;
             EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
         }
-
-        input = followTarget.parent.transform.rotation * input;
-
+        
     }
     
-    
-
     [ContextMenu("Auto-assign targets", false,0)]
     public void AssignTargets() {
         try {
@@ -179,4 +181,9 @@ public class GameCamera : MonoBehaviour {
         }
     }
     
+}
+
+public struct CustomInput {
+    public Vector2 aim;
+    public Vector2 movement;
 }

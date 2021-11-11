@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6559058839097383669}
   - component: {fileID: 1266056791}
   - component: {fileID: 3372544531655227956}
-  - component: {fileID: 1269543558556154878}
+  - component: {fileID: -8330610664675238175}
   m_Layer: 8
   m_Name: Node
   m_TagString: Untagged
@@ -118,6 +118,7 @@ MonoBehaviour:
   startNode: 0
   PosX: 0
   PosY: 0
+  Drawable: 0
 --- !u!54 &3372544531655227956
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -134,25 +135,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!95 &1269543558556154878
-Animator:
-  serializedVersion: 3
+--- !u!114 &-8330610664675238175
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5946362518061914328}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a0ab9f30440559d478e320c4bd3ae2a0, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1116b784c33ecf34d8289cbcc266c101, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 4506803875265848488}
+  replaceMaterials: 1
+  contrastMaterials:
+  - {fileID: 2100000, guid: 637c8072a2a69374f855ca58be949b8a, type: 2}
 --- !u!1 &6750411623378878718
 GameObject:
   m_ObjectHideFlags: 0
@@ -165,6 +163,7 @@ GameObject:
   - component: {fileID: 9114949324511681631}
   - component: {fileID: 2736612642209636726}
   - component: {fileID: 7077842229059007101}
+  - component: {fileID: 4537173306027062952}
   m_Layer: 8
   m_Name: Sphere
   m_TagString: Untagged
@@ -248,3 +247,19 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4537173306027062952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6750411623378878718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1116b784c33ecf34d8289cbcc266c101, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 2736612642209636726}
+  replaceMaterials: 1
+  contrastMaterials:
+  - {fileID: 2100000, guid: afe2b7377e39a76408f7c9c95ba1c46f, type: 2}

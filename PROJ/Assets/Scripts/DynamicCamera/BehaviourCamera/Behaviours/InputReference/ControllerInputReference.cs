@@ -7,7 +7,7 @@ public class ControllerInputReference : ScriptableObject {
     private InputMaster inputMaster;
     public InputMaster.PlayerActions InputMaster => inputMaster.Player;
 
-    public void Start() {
+    public void Initialize() {
         inputMaster = new InputMaster();
         inputMaster.Enable();
     }

@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+        //Application.targetFrameRate = 0;
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PlayerPhysicsSplit>();
     }
@@ -58,9 +59,19 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         physics.AddForce(force);
+        Debug.Log("Player controller sending " + force.magnitude + " force");
+        //force = Vector3.zero;
+    }
+    /// <summary>
+    /// If FPS dips below 50 (fixed update tick), resetting the value locally - as in, inside FixedUpdate - 
+    /// will result in input values that are actually captured by the state machine being discarded. Input must be allowed to accumulate in that case,
+    /// and to accomplish this, force needs to be reset when a frame from Update is actually called inside the physics script, to ensure that we use the input
+    /// values before resetting the vector.
+    /// </summary>
+    public void ResetForceVector()
+    {
         force = Vector3.zero;
     }
-
     #region Movement
 
     public void InputGlide(Vector3 inp)

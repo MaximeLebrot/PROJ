@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 726748327297514550}
   - component: {fileID: 726748327297514553}
   - component: {fileID: 726748327297514552}
-  - component: {fileID: -2329956825122631963}
-  m_Layer: 0
+  - component: {fileID: 5955762341688610974}
+  m_Layer: 12
   m_Name: Symbol_DOWN
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -330,22 +330,19 @@ MonoBehaviour:
   modifierPosition: {x: 0, y: 0.7, z: 0}
   modHolder: {fileID: 1073604482966591804, guid: c9638917c5349b04cbbf5a4d7c06321e, type: 3}
   modVariant: 0
---- !u!95 &-2329956825122631963
-Animator:
-  serializedVersion: 3
+--- !u!114 &5955762341688610974
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 726748327297514554}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 93ac71683761b0f49ad9abcb56d32b7b, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1116b784c33ecf34d8289cbcc266c101, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 726748327297514551}
+  contrastMaterials:
+  - {fileID: 2100000, guid: 1d6cfc4d260c56a4b8ec23b117db3dda, type: 2}
+  replaceMaterials: 1
