@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class MetaPlayerController : MonoBehaviour, IPersist
 {
@@ -8,8 +9,11 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     public PlayerPhysicsSplit physics { get; private set; }
     public PlayerController playerController3D { get; private set; }
     public PuzzlePlayerController puzzleController { get; private set; }
+    public Animator animator { get; private set; }
 
 
+    //Particles
+    public VisualEffect glideParticle;
 
     //StateMachine
     private StateMachine stateMachine;
@@ -20,11 +24,12 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
 
     private void Start()
-    {
-        
+    {        
         physics = GetComponent<PlayerPhysicsSplit>();
         playerController3D = GetComponent<PlayerController>();
         puzzleController = GetComponent<PuzzlePlayerController>();
+        animator = GetComponent<Animator>();
+
         stateMachine = new StateMachine(this, states);
     }
     private void OnEnable()
@@ -48,6 +53,10 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     {
         stateMachine.ChangeState<WalkState>();
     }
+
+    public void ChangeStateToOSPuzzle(StartPuzzleEvent eve) => stateMachine.ChangeState<OSPuzzleState>();
+
+    public void ChangeStateToOSWalk(ExitPuzzleEvent eve) => stateMachine.ChangeState<OSWalkState>();
 
     private void Update()
     {

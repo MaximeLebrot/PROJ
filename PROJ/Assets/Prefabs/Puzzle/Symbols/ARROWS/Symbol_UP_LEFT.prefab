@@ -14,7 +14,9 @@ GameObject:
   - component: {fileID: 7666092639239919877}
   - component: {fileID: 7666092639239919874}
   - component: {fileID: 7666092639239919875}
-  m_Layer: 0
+  - component: {fileID: -652037857938927688}
+  - component: {fileID: 7049579170128425982}
+  m_Layer: 12
   m_Name: Symbol_UP_LEFT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -329,3 +331,38 @@ MonoBehaviour:
   modifierPosition: {x: 0, y: 0.7, z: 0}
   modHolder: {fileID: 1073604482966591804, guid: c9638917c5349b04cbbf5a4d7c06321e, type: 3}
   modVariant: 0
+--- !u!114 &-652037857938927688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7666092639239919873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1116b784c33ecf34d8289cbcc266c101, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 7666092639239919876}
+  replaceMaterials: 1
+  contrastMaterials:
+  - {fileID: 2100000, guid: 69a3aca0de5dde9468af09b4899faf77, type: 2}
+--- !u!95 &7049579170128425982
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7666092639239919873}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 93ac71683761b0f49ad9abcb56d32b7b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

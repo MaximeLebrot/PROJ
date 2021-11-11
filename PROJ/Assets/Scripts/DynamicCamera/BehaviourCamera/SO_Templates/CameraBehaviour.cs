@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace CameraBehaviours {
     
-    //[CanEditMultipleObjects]
     public abstract class CameraBehaviour : ScriptableObject {
 
         [SerializeField] protected ControllerInputReference inputReference;

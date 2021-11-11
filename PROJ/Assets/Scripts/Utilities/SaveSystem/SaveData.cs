@@ -22,10 +22,9 @@ public class SaveData
 [Serializable]
 public class SaveDataHolder
 {
-
     public DictionaryOfStringAndSaveData saves = new DictionaryOfStringAndSaveData();
     public int currentNrOfSaves;
-
+    public SettingsData userSettingsData;
 }
 
 

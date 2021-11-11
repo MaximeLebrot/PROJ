@@ -57,6 +57,14 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ContrastMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""19fab7fd-e07d-45de-9389-2916cd53a3b4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -164,7 +172,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""id"": ""1362b017-5dac-4a05-b539-af7917f1d25b"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""ScaleVector2(x=7,y=7)"",
                     ""groups"": ""Stnd KBM"",
                     ""action"": ""MoveCamera"",
                     ""isComposite"": false,
@@ -189,6 +197,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Stnd KBM"",
                     ""action"": ""evaluateSolution"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6141eb4b-b7ae-4c77-bd9e-e6a046f7387d"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Stnd KBM"",
+                    ""action"": ""ContrastMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -361,6 +380,52 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""OneSwitch"",
+            ""id"": ""1c650195-fd7e-4a81-a847-7cc027d7e2a8"",
+            ""actions"": [
+                {
+                    ""name"": ""OnlyButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""a7c3378b-2aaa-4b9b-8be4-9c3824308de7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PuzzleTest"",
+                    ""type"": ""Button"",
+                    ""id"": ""244df09a-6c4b-4af8-b9af-307360c847e9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""5c38d5e4-8db4-4e94-9b86-77535c5e76ed"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OnlyButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c8cabd77-3209-4838-b88c-e3db55095b28"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PuzzleTest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -400,6 +465,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Player_MoveCamera = m_Player.FindAction("MoveCamera", throwIfNotFound: true);
         m_Player_ExitPuzzle = m_Player.FindAction("ExitPuzzle", throwIfNotFound: true);
         m_Player_evaluateSolution = m_Player.FindAction("evaluateSolution", throwIfNotFound: true);
+        m_Player_ContrastMode = m_Player.FindAction("ContrastMode", throwIfNotFound: true);
         // PuzzleDEBUGGER
         m_PuzzleDEBUGGER = asset.FindActionMap("PuzzleDEBUGGER", throwIfNotFound: true);
         m_PuzzleDEBUGGER_calculatesolution = m_PuzzleDEBUGGER.FindAction("calculate solution", throwIfNotFound: true);
@@ -412,6 +478,10 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_BackToMain = m_UI.FindAction("BackToMain", throwIfNotFound: true);
         m_UI_RestartScene = m_UI.FindAction("RestartScene", throwIfNotFound: true);
+        // OneSwitch
+        m_OneSwitch = asset.FindActionMap("OneSwitch", throwIfNotFound: true);
+        m_OneSwitch_OnlyButton = m_OneSwitch.FindAction("OnlyButton", throwIfNotFound: true);
+        m_OneSwitch_PuzzleTest = m_OneSwitch.FindAction("PuzzleTest", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -466,6 +536,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_MoveCamera;
     private readonly InputAction m_Player_ExitPuzzle;
     private readonly InputAction m_Player_evaluateSolution;
+    private readonly InputAction m_Player_ContrastMode;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -475,6 +546,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @MoveCamera => m_Wrapper.m_Player_MoveCamera;
         public InputAction @ExitPuzzle => m_Wrapper.m_Player_ExitPuzzle;
         public InputAction @evaluateSolution => m_Wrapper.m_Player_evaluateSolution;
+        public InputAction @ContrastMode => m_Wrapper.m_Player_ContrastMode;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -499,6 +571,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @evaluateSolution.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEvaluateSolution;
                 @evaluateSolution.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEvaluateSolution;
                 @evaluateSolution.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEvaluateSolution;
+                @ContrastMode.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnContrastMode;
+                @ContrastMode.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnContrastMode;
+                @ContrastMode.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnContrastMode;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -518,6 +593,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @evaluateSolution.started += instance.OnEvaluateSolution;
                 @evaluateSolution.performed += instance.OnEvaluateSolution;
                 @evaluateSolution.canceled += instance.OnEvaluateSolution;
+                @ContrastMode.started += instance.OnContrastMode;
+                @ContrastMode.performed += instance.OnContrastMode;
+                @ContrastMode.canceled += instance.OnContrastMode;
             }
         }
     }
@@ -636,6 +714,47 @@ public class @InputMaster : IInputActionCollection, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // OneSwitch
+    private readonly InputActionMap m_OneSwitch;
+    private IOneSwitchActions m_OneSwitchActionsCallbackInterface;
+    private readonly InputAction m_OneSwitch_OnlyButton;
+    private readonly InputAction m_OneSwitch_PuzzleTest;
+    public struct OneSwitchActions
+    {
+        private @InputMaster m_Wrapper;
+        public OneSwitchActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
+        public InputAction @OnlyButton => m_Wrapper.m_OneSwitch_OnlyButton;
+        public InputAction @PuzzleTest => m_Wrapper.m_OneSwitch_PuzzleTest;
+        public InputActionMap Get() { return m_Wrapper.m_OneSwitch; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(OneSwitchActions set) { return set.Get(); }
+        public void SetCallbacks(IOneSwitchActions instance)
+        {
+            if (m_Wrapper.m_OneSwitchActionsCallbackInterface != null)
+            {
+                @OnlyButton.started -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnOnlyButton;
+                @OnlyButton.performed -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnOnlyButton;
+                @OnlyButton.canceled -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnOnlyButton;
+                @PuzzleTest.started -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnPuzzleTest;
+                @PuzzleTest.performed -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnPuzzleTest;
+                @PuzzleTest.canceled -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnPuzzleTest;
+            }
+            m_Wrapper.m_OneSwitchActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @OnlyButton.started += instance.OnOnlyButton;
+                @OnlyButton.performed += instance.OnOnlyButton;
+                @OnlyButton.canceled += instance.OnOnlyButton;
+                @PuzzleTest.started += instance.OnPuzzleTest;
+                @PuzzleTest.performed += instance.OnPuzzleTest;
+                @PuzzleTest.canceled += instance.OnPuzzleTest;
+            }
+        }
+    }
+    public OneSwitchActions @OneSwitch => new OneSwitchActions(this);
     private int m_StndKBMSchemeIndex = -1;
     public InputControlScheme StndKBMScheme
     {
@@ -661,6 +780,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnMoveCamera(InputAction.CallbackContext context);
         void OnExitPuzzle(InputAction.CallbackContext context);
         void OnEvaluateSolution(InputAction.CallbackContext context);
+        void OnContrastMode(InputAction.CallbackContext context);
     }
     public interface IPuzzleDEBUGGERActions
     {
@@ -675,5 +795,10 @@ public class @InputMaster : IInputActionCollection, IDisposable
     {
         void OnBackToMain(InputAction.CallbackContext context);
         void OnRestartScene(InputAction.CallbackContext context);
+    }
+    public interface IOneSwitchActions
+    {
+        void OnOnlyButton(InputAction.CallbackContext context);
+        void OnPuzzleTest(InputAction.CallbackContext context);
     }
 }

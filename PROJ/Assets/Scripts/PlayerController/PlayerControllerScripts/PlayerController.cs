@@ -2,6 +2,7 @@
 using UnityEngine;
 
 
+
 public class PlayerController : MonoBehaviour
 {
     #region Parameters exposed in the inspector
@@ -36,8 +37,9 @@ public class PlayerController : MonoBehaviour
 
 
     [HideInInspector] public Vector3 force;
-    private RaycastHit groundHitInfo;  
+    public RaycastHit groundHitInfo;  
     private Vector3 input;
+    private bool surfCamera = false;
     private float groundCheckBoxSize = 0.1f;
     private float inputThreshold = 0.1f;
     public float groundHitAngle { get; private set; }
@@ -49,6 +51,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+        //Application.targetFrameRate = 0;
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PlayerPhysicsSplit>();
     }
@@ -56,9 +59,19 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         physics.AddForce(force);
+        //Debug.Log("Player controller sending " + force.magnitude + " force");
+        //force = Vector3.zero;
+    }
+    /// <summary>
+    /// If FPS dips below 50 (fixed update tick), resetting the value locally - as in, inside FixedUpdate - 
+    /// will result in input values that are actually captured by the state machine being discarded. Input must be allowed to accumulate in that case,
+    /// and to accomplish this, force needs to be reset when a frame from Update is actually called inside the physics script, to ensure that we use the input
+    /// values before resetting the vector.
+    /// </summary>
+    public void ResetForceVector()
+    {
         force = Vector3.zero;
     }
-
     #region Movement
 
     public void InputGlide(Vector3 inp)
@@ -68,8 +81,8 @@ public class PlayerController : MonoBehaviour
     }
     public void InputWalk(Vector3 inp)
     {
-        input = inp.x */*turnSpeed * - could this be done for rotation input from camera aswell?  */ Vector3.right + 
-                inp.y * Vector3.forward;   
+        input = inp.x * Vector3.right + 
+                inp.y * Vector3.forward;
 
         //to stop character rotation when input is 0
         if (input.magnitude < inputThreshold)
@@ -94,15 +107,32 @@ public class PlayerController : MonoBehaviour
             input.Normalize();
         }
 
-        PlayerDirection(inp);
+        CalcDirection(inp);
         input *= airControl;
         //Cannot decelerate when airborne
         Accelerate();
     }
+    private void CalcDirection(Vector3 inp)
+    {
+       /* if (dualCameraBehaviour)
+        {
+            if (surfCamera)
+                RotateInDirectionOfMovement(inp);
+            else
+                PlayerDirection(inp);
+        }
+        else*/
+            PlayerDirection(inp);
+    }
     private void Decelerate()
     {
-        //Vector3 projectedDeceleration = Vector3.ProjectOnPlane(-physics.GetXZMovement().normalized, groundHitInfo.normal) * deceleration;
-        force = deceleration * -physics.GetXZMovement().normalized;
+        //Debug
+        /*
+        if(physics.velocity.magnitude > 0.05f)
+            Debug.Log("Decelerating");
+        */
+        Vector3 projectedDeceleration = Vector3.ProjectOnPlane(-physics.GetXZMovement().normalized, groundHitInfo.normal) * deceleration;
+        force += projectedDeceleration;
     }
     private void Accelerate()
     {
@@ -140,7 +170,6 @@ public class PlayerController : MonoBehaviour
         if (charVelocity.magnitude < inputThreshold)
             return;
         transform.forward = Vector3.Lerp(transform.forward, charVelocity.normalized, turnSpeed * Time.deltaTime);
-        //transform.rotation = Quaternion.LookRotation(charVelocity.normalized, Vector3.up);
     }
     //Obsolete
     private void RotateTowardsCameraDirection(Vector3 rawInput)
@@ -184,7 +213,7 @@ public class PlayerController : MonoBehaviour
         float slopeDecelerationFactor = ((groundHitAngle - decelerationSlopeAngle) / (slopeMaxAngle - decelerationSlopeAngle));
         if (groundHitAngle > decelerationSlopeAngle)
         {
-            Debug.Log("Using slope deceleration");
+            //Debug.Log("Using slope deceleration");
             //force = slopeDecelerationFactor * -physics.velocity * slopeDecelerationMultiplier;
             force = slopeDecelerationFactor * slopeDecelerationMultiplier * -physics.velocity.normalized;
         }
@@ -192,9 +221,11 @@ public class PlayerController : MonoBehaviour
     private void ProjectMovement()
     {
         groundHitAngle = groundHitInfo.collider == null ? 90 : Vector3.Angle(input, groundHitInfo.normal);
-        
         if (groundHitAngle < slopeMaxAngle)
-            input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;        
+            input = Vector3.ProjectOnPlane(input, groundHitInfo.normal);        
+
+        if (groundHitAngle < slopeMaxAngle)
+            input = input.magnitude * Vector3.ProjectOnPlane(input, groundHitInfo.normal).normalized;     
         else
         {
             //Slide state? 
@@ -204,6 +235,11 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+
+    public void TransitionSurf(bool val)
+    {
+        surfCamera = val;
+    }
     /// <summary>
     /// Boxcast to get a little thickness to the groundcheck so as to not get stuck in crevasses or similar geometry. 
     /// </summary>
@@ -211,7 +247,7 @@ public class PlayerController : MonoBehaviour
     public bool IsGrounded()
     {
         bool grounded = Physics.BoxCast(transform.position, Vector3.one * groundCheckBoxSize, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance + physics.GlideHeight, groundCheckMask);
-        
+
         return grounded; 
     }
 
