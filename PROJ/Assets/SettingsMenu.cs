@@ -102,10 +102,10 @@ public class SettingsMenu : MonoBehaviour
         userSettings.mute = mute.isOn;
 
         //Ease of use
-        userSettings.fontSize = (int)fontSize.value;
-        userSettings.pointerSize = pointerSize.value;
-        userSettings.showDesktop = showDesktop.isOn;
-        userSettings.blindMode = blindMode.isOn;
+        //userSettings.fontSize = (int)fontSize.value;
+        //userSettings.pointerSize = pointerSize.value;
+        //userSettings.showDesktop = showDesktop.isOn;
+        //userSettings.blindMode = blindMode.isOn;
 
         //Display                    
         userSettings.fieldOfView = fieldOfView.value;
@@ -146,10 +146,10 @@ public class SettingsMenu : MonoBehaviour
         mute.isOn = settings.mute;
 
         //Ease of use
-        fontSize.value = settings.fontSize;
-        pointerSize.value = settings.pointerSize;
-        showDesktop.isOn = settings.showDesktop;
-        blindMode.isOn = settings.blindMode;
+        //fontSize.value = settings.fontSize;
+        //pointerSize.value = settings.pointerSize;
+        //showDesktop.isOn = settings.showDesktop;
+        //blindMode.isOn = settings.blindMode;
 
         //Display                    
         fieldOfView.value = settings.fieldOfView;
