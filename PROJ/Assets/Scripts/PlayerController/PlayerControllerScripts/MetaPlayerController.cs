@@ -54,6 +54,10 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         stateMachine.ChangeState<WalkState>();
     }
 
+    public void ChangeStateToOSPuzzle(StartPuzzleEvent eve) => stateMachine.ChangeState<OSPuzzleState>();
+
+    public void ChangeStateToOSWalk(ExitPuzzleEvent eve) => stateMachine.ChangeState<OSWalkState>();
+
     private void Update()
     {
         stateMachine.RunUpdate();
