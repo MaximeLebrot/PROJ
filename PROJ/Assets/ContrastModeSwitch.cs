@@ -20,12 +20,8 @@ public class ContrastModeSwitch : MonoBehaviour {
     private bool contrastModeActivated;
 
     //Will be IEvent later, this is only for testing
-    public delegate void ContrastModeActivate(bool isActive);
-    public static event ContrastModeActivate OnContrastModeActivate;
     
     private void Awake() {
-
-        contrastModeActivated = false;
         
         mainCamera = Camera.main;
         overlayCamera = mainCamera.transform.GetChild(0).gameObject;
@@ -35,6 +31,11 @@ public class ContrastModeSwitch : MonoBehaviour {
         postProcess.profile.TryGet(out colorAdjustments);
 
         overlayCamera.transform.gameObject.SetActive(false);
+        
+        
+    }
+
+    private void Start() {
         inputReference.InputMaster.ContrastMode.performed += SwitchToContrastMode;
     }
     
@@ -44,7 +45,6 @@ public class ContrastModeSwitch : MonoBehaviour {
         mainCamera.cullingMask = contrastModeActivated ? contrastModeRenderLayers : mainRegularRenderLayers; 
         colorAdjustments.saturation.value = contrastModeActivated ? colorAdjustments.saturation.min : 0;
 
-        OnContrastModeActivate?.Invoke(contrastModeActivated);
     }
     
 }

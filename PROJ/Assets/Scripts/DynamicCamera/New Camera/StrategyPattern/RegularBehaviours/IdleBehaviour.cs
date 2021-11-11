@@ -10,13 +10,13 @@ namespace NewCamera
 
         private float pointOnCurve;
         
-        public IdleBehaviour(Transform transform, Transform target, BehaviourData values) : base(transform, target, values) {
-            idleBehaviourData = values as IdleBehaviourData;
+        public IdleBehaviour(Transform transform, Transform target, BehaviourData behaviourValues) : base(transform, target, behaviourValues) {
+            idleBehaviourData = behaviourValues as IdleBehaviourData;
             EventHandler<AwayFromKeyboardEvent>.RegisterListener(ResetCurveCount);
         }
 
         public override Vector3 ExecuteMove(Vector3 calculatedOffset) {
-            return Vector3.SmoothDamp(thisTransform.position, target.parent.position + calculatedOffset, ref referenceVelocity, values.FollowSpeed);
+            return Vector3.SmoothDamp(thisTransform.position, target.parent.position + calculatedOffset, ref referenceVelocity, behaviourValues.FollowSpeed);
         }
 
         public override Quaternion ExecuteRotate() {

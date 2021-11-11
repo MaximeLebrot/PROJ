@@ -24,6 +24,7 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] private Slider pointerSize;
     [SerializeField] private Toggle showDesktop;
     [SerializeField] private Toggle blindMode;
+    [SerializeField] private Toggle highContrastMode;
 
     //Display
     [SerializeField] private Slider fieldOfView;
@@ -106,6 +107,7 @@ public class SettingsMenu : MonoBehaviour
         userSettings.pointerSize = pointerSize.value;
         userSettings.showDesktop = showDesktop.isOn;
         userSettings.blindMode = blindMode.isOn;
+        userSettings.highContrastMode = highContrastMode.isOn;
 
         //Display                    
         userSettings.fieldOfView = fieldOfView.value;
@@ -128,7 +130,8 @@ public class SettingsMenu : MonoBehaviour
         pointerSize.value = settings.pointerSize;
         showDesktop.isOn = settings.showDesktop;
         blindMode.isOn = settings.blindMode;
-
+        highContrastMode.isOn = settings.highContrastMode;
+        
         //Display                    
         fieldOfView.value = settings.fieldOfView;
         brightness.value = settings.brightness;
@@ -150,7 +153,8 @@ public class SettingsMenu : MonoBehaviour
         pointerSize.value = settings.pointerSize;
         showDesktop.isOn = settings.showDesktop;
         blindMode.isOn = settings.blindMode;
-
+        highContrastMode.isOn = settings.highContrastMode;
+        
         //Display                    
         fieldOfView.value = settings.fieldOfView;
         brightness.value = settings.brightness;

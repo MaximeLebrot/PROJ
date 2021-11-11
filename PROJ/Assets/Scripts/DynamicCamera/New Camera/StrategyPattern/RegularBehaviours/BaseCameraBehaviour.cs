@@ -6,33 +6,33 @@ namespace NewCamera {
     public class BaseCameraBehaviour {
 
         protected Vector3 referenceVelocity;
+        protected Vector3 previousRotation;
         protected readonly Transform thisTransform;
         protected readonly Transform target;
-        public readonly BehaviourData values;
+        public readonly BehaviourData behaviourValues;
 
-        private Vector3 previousRotation;
-        
-        public BaseCameraBehaviour(Transform transform, Transform target, BehaviourData values) {
+
+        public BaseCameraBehaviour(Transform transform, Transform target, BehaviourData behaviourValues) {
             thisTransform = transform;
             this.target = target;
-            this.values = values;
+            this.behaviourValues = behaviourValues;
             previousRotation = target.eulerAngles;
         } 
         
         public virtual Vector3 ExecuteMove(Vector3 calculatedOffset) {
-            return Vector3.SmoothDamp(thisTransform.position, target.position + calculatedOffset, ref referenceVelocity, values.FollowSpeed);
+            return Vector3.SmoothDamp(thisTransform.position, target.position + calculatedOffset, ref referenceVelocity, behaviourValues.FollowSpeed);
         }
 
         public virtual Quaternion ExecuteRotate() {
             
             Quaternion targetRotation = Quaternion.LookRotation((target.position - thisTransform.position));
             
-            return Quaternion.Slerp(thisTransform.rotation, targetRotation, Time.deltaTime * 50);
+            return Quaternion.Slerp(thisTransform.rotation, targetRotation, Time.deltaTime * behaviourValues.RotationSpeed);
         }
 
         public virtual Vector3 ExecuteCollision(GlobalCameraSettings data) {
             
-            Vector3 collisionOffset = target.rotation * values.Offset;
+            Vector3 collisionOffset = target.rotation * behaviourValues.Offset;
             
             if (Physics.SphereCast(target.position, data.CollisionRadius, collisionOffset.normalized, out var hitInfo, collisionOffset.magnitude, data.CollisionMask))
                 collisionOffset = collisionOffset.normalized * hitInfo.distance;
@@ -68,10 +68,7 @@ namespace NewCamera {
             
             target.eulerAngles = desiredRotation;
             previousRotation = target.eulerAngles;
-
         }
-        
-        
         
     }
 }
