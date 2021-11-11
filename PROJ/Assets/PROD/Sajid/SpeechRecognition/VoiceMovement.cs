@@ -20,8 +20,6 @@ public class VoiceMovement : MonoBehaviour
     private void Start()
     {
         actions.Add("forward", Forward);
-       // actions.Add("up", Up);
-       // actions.Add("down", Down);
         actions.Add("back", Back);
         actions.Add("right", Right);
         actions.Add("left", Left);
@@ -29,6 +27,7 @@ public class VoiceMovement : MonoBehaviour
         actions.Add("Wow", Owen);
         actions.Add("Mums", David);
         actions.Add("Dance", Dance);
+        actions.Add("Kill", Die);
         direction.text = "";
         keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
         keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
@@ -85,13 +84,21 @@ public class VoiceMovement : MonoBehaviour
     {
         kanelbullar[i].SetActive(true);
         i++;
-       // direction.text = "David";
-       // direction.GetComponent<Animator>().SetTrigger("active");
+      
     }
 
     private void Dance()
     {
         animator.SetTrigger("Dance");
+        direction.text = "Dancing";
+        direction.GetComponent<Animator>().SetTrigger("active");
+    }
+
+    private void Die()
+    {
+        animator.SetTrigger("Death");
+        direction.text = "Dying";
+        direction.GetComponent<Animator>().SetTrigger("active");
     }
 
 }
