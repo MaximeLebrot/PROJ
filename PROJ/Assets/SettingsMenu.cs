@@ -15,19 +15,26 @@ public class SettingsMenu : MonoBehaviour
 
     //Audio
     [SerializeField] private Slider musicSlider;
+    [SerializeField] private TextMeshProUGUI musicSliderValueText;
+    
     [SerializeField] private Slider voiceSlider;
+    [SerializeField] private TextMeshProUGUI voiceSliderText;
+    
     [SerializeField] private Slider sfxSlider;
+    [SerializeField] private TextMeshProUGUI sfxSliderText;
     [SerializeField] private Toggle mute;
 
     //Ease of Use
-    [SerializeField] private Slider fontSize;
-    [SerializeField] private Slider pointerSize;
-    [SerializeField] private Toggle showDesktop;
     [SerializeField] private Toggle blindMode;
+    [SerializeField] private Toggle highContrastMode;
 
     //Display
     [SerializeField] private Slider fieldOfView;
+    [SerializeField] private TextMeshProUGUI fieldOfViewSliderText;
+    
     [SerializeField] private Slider brightness;
+    [SerializeField] private TextMeshProUGUI brightnessSliderText
+        ;
     [SerializeField] private TMP_Dropdown quality;
     //[SerializeField]private TMP_Dropdown resolution;
     [SerializeField] private Toggle fullscreen;
@@ -36,32 +43,43 @@ public class SettingsMenu : MonoBehaviour
     private void Awake()
     {
         settingsMenuInstance = this;
+
+        musicSlider.onValueChanged.AddListener(newValue => {
+            musicSlider.value = newValue;
+            musicSliderValueText.text = ((int)(newValue)).ToString();
+        });
+
+        voiceSlider.onValueChanged.AddListener(newValue => {
+            voiceSlider.value = newValue;
+            voiceSliderText.text = ((int)(newValue)).ToString();
+        });
+        
+        sfxSlider.onValueChanged.AddListener(newValue => {
+            sfxSlider.value = newValue;
+            sfxSliderText.text = ((int)(newValue)).ToString();
+        });
+        
+        fieldOfView.onValueChanged.AddListener(newValue => {
+            fieldOfView.value = newValue;
+            fieldOfViewSliderText.text = ((int)(newValue)).ToString();
+        });
+        
+        brightness.onValueChanged.AddListener(newValue => {
+            brightness.value = newValue;
+            brightnessSliderText.text = ((int)(newValue)).ToString();
+        });
+        
+        
     }
+    
     private void OnEnable()
     {
 
         Debug.Log("Settings menu on enable");
         LoadSavedSettings();
+        
     }
-    private void OnDisable()
-    {
-        /*musicSlider.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
-        voiceSlider.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
-        sfxSlider.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
-        mute.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
-
-        fontSize.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
-        pointerSize.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
-        showDesktop.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
-        blindMode.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
-
-        fieldOfView.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
-        brightness.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
-        quality.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
-        fullscreen.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
-        fieldOfView.onValueChanged.RemoveListener(delegate { OnValueChanged(); });*/
-    }
-
+    
     //Called from button in settings menu
     public void RestoreDefaultValues()
     {
@@ -100,6 +118,7 @@ public class SettingsMenu : MonoBehaviour
         userSettings.voiceVolume = voiceSlider.value;
         userSettings.soundEffectsVolume = sfxSlider.value;
         userSettings.mute = mute.isOn;
+        userSettings.highContrastMode = highContrastMode.isOn;
 
         //Ease of use
         //userSettings.fontSize = (int)fontSize.value;
@@ -124,10 +143,8 @@ public class SettingsMenu : MonoBehaviour
         Debug.Log("Set values, Music slider is + " + musicSlider.value + "it should be " + settings.musicVolume);
 
         //Ease of use
-        fontSize.value = settings.fontSize;
-        pointerSize.value = settings.pointerSize;
-        showDesktop.isOn = settings.showDesktop;
         blindMode.isOn = settings.blindMode;
+        highContrastMode.isOn = settings.highContrastMode;
 
         //Display                    
         fieldOfView.value = settings.fieldOfView;
@@ -146,11 +163,9 @@ public class SettingsMenu : MonoBehaviour
         mute.isOn = settings.mute;
 
         //Ease of use
-        //fontSize.value = settings.fontSize;
-        //pointerSize.value = settings.pointerSize;
-        //showDesktop.isOn = settings.showDesktop;
-        //blindMode.isOn = settings.blindMode;
-
+        blindMode.isOn = settings.blindMode;
+        highContrastMode.isOn = settings.highContrastMode;
+        
         //Display                    
         fieldOfView.value = settings.fieldOfView;
         brightness.value = settings.brightness;
@@ -167,8 +182,6 @@ public class SettingsMenu : MonoBehaviour
         SettingsData settings = JsonUtility.FromJson<SettingsData>(json);
         //SetValues(settings);
     }
-   
-
-
+    
 }
 

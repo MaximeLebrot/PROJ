@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
@@ -13,52 +14,20 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private Slider fovSlider;
     [SerializeField] private TextMeshProUGUI fovText;
-    private Animator anim;
-    private InputMaster inputMaster;
+    [SerializeField] private ControllerInputReference  inputMaster;
 
-    void Awake()
-    {
-        
-        //Cursor.visible = true;
+    private void Awake() {
         Cursor.lockState = CursorLockMode.None;
-
-        //fovSlider.value = Settings.FieldOfView;
-        //Camera.main.fieldOfView = Settings.FieldOfView;
-
-    }
-
-
-    private void OnEnable()
-    {
         
+        inputMaster.Initialize();
     }
-    private void OnDisable()
-    {
-        inputMaster.Disable();
-    }
-
-    void Start()
-    {
-        inputMaster = new InputMaster();
-        inputMaster.Enable();
-        anim = GetComponent<Animator>();
+    
+    void Start() {
         optionsMenu.SetActive(false);
         prototypeMenu.SetActive(false);
         settingsMenu.SetActive(false);
         mainMenu.SetActive(true);
-    }
-    private void Update()
-    {
-        if (inputMaster.PuzzleDEBUGGER.PressAnyButton.triggered)
-        {
-            PressAnyKey();
-        }
-
-        int value = (int)fovSlider.value;
-        
-        fovText.text = value.ToString();
-
-        Settings.FieldOfView = fovSlider.value;
+        inputMaster.InputMaster.Anykey.performed += PressAnyKey;
 
     }
 
@@ -87,8 +56,8 @@ public class MainMenu : MonoBehaviour
         Application.Quit();
     }
 
-    private void PressAnyKey()
-    {
+    private void PressAnyKey(InputAction.CallbackContext e) {
+        inputMaster.InputMaster.Anykey.performed -= PressAnyKey;
         BackToMain();
     }
 }

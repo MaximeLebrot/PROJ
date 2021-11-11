@@ -21,9 +21,6 @@ public class GameSettings : ScriptableObject
     public bool mute;
 
     //Easy of Access
-    public int fontSize;
-    public float pointerSize;
-    public bool showDesktop; //What is this? 
     public bool blindMode;
     public bool highContrastMode;
 
