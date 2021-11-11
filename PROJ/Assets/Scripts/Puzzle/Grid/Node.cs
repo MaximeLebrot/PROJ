@@ -174,3 +174,5 @@ public class Node : MonoBehaviour {
             TurnOff();
     }
 }
+
+[Serializable] public class DictionaryOfIntAndBool : SerializableDictionary<int, bool> { }

@@ -296,7 +296,7 @@ public class PuzzleGrid : MonoBehaviour {
     //Show and activate neighbours
     private void ActivateNode(Node node, bool eraser) 
     {
-
+        Debug.Log(node);
 
         node.gameObject.SetActive(true);
 
@@ -395,6 +395,7 @@ public class PuzzleGrid : MonoBehaviour {
     {
         currentNode = startNode;
         currentNode.TurnOnCollider();
+        currentNode.ResetNeighbours();
         Invoke("TellPuzzleGridIsReady", 1.5f);
     }
 
