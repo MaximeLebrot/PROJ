@@ -35,7 +35,9 @@ public class VoiceMovement : MonoBehaviour
         actions.Add("rotate twohundred and seventy", Rotate270);
         actions.Add("rotate two seventy", Rotate270);
 
-        actions.Add("Bun", David);
+        actions.Add("Bulle", David);
+        actions.Add("Cinnamon", David);
+
         actions.Add("Dance", Dance);
         actions.Add("Kill", Die);
 
