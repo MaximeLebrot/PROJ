@@ -825,6 +825,52 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""OneSwitch"",
+            ""id"": ""2e34ae07-59c2-4967-b7b1-664d93d94fba"",
+            ""actions"": [
+                {
+                    ""name"": ""OnlyButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""8f27a7fc-4d31-4034-8500-1f3d6f37d08a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""New action1"",
+                    ""type"": ""Value"",
+                    ""id"": ""9e4a4e72-ea8b-4809-93ff-0e3fa66e2770"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""c274daef-8d09-45ac-9f1d-dba7ee8f3790"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OnlyButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d5aeb90d-d8b0-43f4-9785-d8cc47664d84"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -902,6 +948,10 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_SymbolAudio_PlayTwentyTwo = m_SymbolAudio.FindAction("PlayTwentyTwo", throwIfNotFound: true);
         m_SymbolAudio_PlayTwentyThree = m_SymbolAudio.FindAction("PlayTwentyThree", throwIfNotFound: true);
         m_SymbolAudio_PlayTwentyFour = m_SymbolAudio.FindAction("PlayTwentyFour", throwIfNotFound: true);
+        // OneSwitch
+        m_OneSwitch = asset.FindActionMap("OneSwitch", throwIfNotFound: true);
+        m_OneSwitch_OnlyButton = m_OneSwitch.FindAction("OnlyButton", throwIfNotFound: true);
+        m_OneSwitch_Newaction1 = m_OneSwitch.FindAction("New action1", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1343,6 +1393,47 @@ public class @InputMaster : IInputActionCollection, IDisposable
         }
     }
     public SymbolAudioActions @SymbolAudio => new SymbolAudioActions(this);
+
+    // OneSwitch
+    private readonly InputActionMap m_OneSwitch;
+    private IOneSwitchActions m_OneSwitchActionsCallbackInterface;
+    private readonly InputAction m_OneSwitch_OnlyButton;
+    private readonly InputAction m_OneSwitch_Newaction1;
+    public struct OneSwitchActions
+    {
+        private @InputMaster m_Wrapper;
+        public OneSwitchActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
+        public InputAction @OnlyButton => m_Wrapper.m_OneSwitch_OnlyButton;
+        public InputAction @Newaction1 => m_Wrapper.m_OneSwitch_Newaction1;
+        public InputActionMap Get() { return m_Wrapper.m_OneSwitch; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(OneSwitchActions set) { return set.Get(); }
+        public void SetCallbacks(IOneSwitchActions instance)
+        {
+            if (m_Wrapper.m_OneSwitchActionsCallbackInterface != null)
+            {
+                @OnlyButton.started -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnOnlyButton;
+                @OnlyButton.performed -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnOnlyButton;
+                @OnlyButton.canceled -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnOnlyButton;
+                @Newaction1.started -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnNewaction1;
+                @Newaction1.performed -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnNewaction1;
+                @Newaction1.canceled -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnNewaction1;
+            }
+            m_Wrapper.m_OneSwitchActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @OnlyButton.started += instance.OnOnlyButton;
+                @OnlyButton.performed += instance.OnOnlyButton;
+                @OnlyButton.canceled += instance.OnOnlyButton;
+                @Newaction1.started += instance.OnNewaction1;
+                @Newaction1.performed += instance.OnNewaction1;
+                @Newaction1.canceled += instance.OnNewaction1;
+            }
+        }
+    }
+    public OneSwitchActions @OneSwitch => new OneSwitchActions(this);
     private int m_StndKBMSchemeIndex = -1;
     public InputControlScheme StndKBMScheme
     {
@@ -1409,5 +1500,10 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnPlayTwentyTwo(InputAction.CallbackContext context);
         void OnPlayTwentyThree(InputAction.CallbackContext context);
         void OnPlayTwentyFour(InputAction.CallbackContext context);
+    }
+    public interface IOneSwitchActions
+    {
+        void OnOnlyButton(InputAction.CallbackContext context);
+        void OnNewaction1(InputAction.CallbackContext context);
     }
 }
