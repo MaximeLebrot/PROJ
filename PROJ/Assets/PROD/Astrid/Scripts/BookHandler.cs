@@ -9,7 +9,7 @@ public class BookHandler : MonoBehaviour
     [SerializeField] private Chapter currentChapter;
     [SerializeField] private int currentPage;
 
-    private TableOfContents tableOfContents;
+    [SerializeField] private TableOfContents tableOfContents;
 
     private AudioSource audioSource;
 
@@ -121,7 +121,6 @@ public class BookHandler : MonoBehaviour
                 OpenTableOfContents();
                 return;
             }
-
             foreach (Chapter chap in logbook.Keys)
                 chap.HandleChapterSelection(GetChapterFromPage(currentPage));
             foreach (Page page in allPages)
