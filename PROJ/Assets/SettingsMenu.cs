@@ -180,12 +180,12 @@ public class SettingsMenu : MonoBehaviour
         SettingsData settings = JsonUtility.FromJson<SettingsData>(json);
         //SetValues(settings);
     }
-    
+
     public void ChangeFontSize(float fontSize) {
 
-        TextMeshProUGUI[] allTexts = GetComponentsInChildren<TextMeshProUGUI>();
+        TextMeshProUGUI[] texts = GetComponentsInChildren<TextMeshProUGUI>();
 
-        foreach (TextMeshProUGUI text in allTexts)
+        foreach (TextMeshProUGUI text in texts)
             text.fontSize = fontSize;
 
     }
