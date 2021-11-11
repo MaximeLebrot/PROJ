@@ -82,8 +82,8 @@ public class VoiceMovement : MonoBehaviour
     {
         kanelbullar[i].SetActive(true);
         i++;
-        direction.text = "David";
-        direction.GetComponent<Animator>().SetTrigger("active");
+       // direction.text = "David";
+       // direction.GetComponent<Animator>().SetTrigger("active");
     }
 
 }
