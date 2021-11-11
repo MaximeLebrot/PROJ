@@ -839,7 +839,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""New action1"",
+                    ""name"": ""PuzzleTest"",
                     ""type"": ""Value"",
                     ""id"": ""9e4a4e72-ea8b-4809-93ff-0e3fa66e2770"",
                     ""expectedControlType"": """",
@@ -866,7 +866,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action1"",
+                    ""action"": ""PuzzleTest"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -951,7 +951,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         // OneSwitch
         m_OneSwitch = asset.FindActionMap("OneSwitch", throwIfNotFound: true);
         m_OneSwitch_OnlyButton = m_OneSwitch.FindAction("OnlyButton", throwIfNotFound: true);
-        m_OneSwitch_Newaction1 = m_OneSwitch.FindAction("New action1", throwIfNotFound: true);
+        m_OneSwitch_PuzzleTest = m_OneSwitch.FindAction("PuzzleTest", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1398,13 +1398,13 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputActionMap m_OneSwitch;
     private IOneSwitchActions m_OneSwitchActionsCallbackInterface;
     private readonly InputAction m_OneSwitch_OnlyButton;
-    private readonly InputAction m_OneSwitch_Newaction1;
+    private readonly InputAction m_OneSwitch_PuzzleTest;
     public struct OneSwitchActions
     {
         private @InputMaster m_Wrapper;
         public OneSwitchActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
         public InputAction @OnlyButton => m_Wrapper.m_OneSwitch_OnlyButton;
-        public InputAction @Newaction1 => m_Wrapper.m_OneSwitch_Newaction1;
+        public InputAction @PuzzleTest => m_Wrapper.m_OneSwitch_PuzzleTest;
         public InputActionMap Get() { return m_Wrapper.m_OneSwitch; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1417,9 +1417,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @OnlyButton.started -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnOnlyButton;
                 @OnlyButton.performed -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnOnlyButton;
                 @OnlyButton.canceled -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnOnlyButton;
-                @Newaction1.started -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnNewaction1;
-                @Newaction1.performed -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnNewaction1;
-                @Newaction1.canceled -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnNewaction1;
+                @PuzzleTest.started -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnPuzzleTest;
+                @PuzzleTest.performed -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnPuzzleTest;
+                @PuzzleTest.canceled -= m_Wrapper.m_OneSwitchActionsCallbackInterface.OnPuzzleTest;
             }
             m_Wrapper.m_OneSwitchActionsCallbackInterface = instance;
             if (instance != null)
@@ -1427,9 +1427,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @OnlyButton.started += instance.OnOnlyButton;
                 @OnlyButton.performed += instance.OnOnlyButton;
                 @OnlyButton.canceled += instance.OnOnlyButton;
-                @Newaction1.started += instance.OnNewaction1;
-                @Newaction1.performed += instance.OnNewaction1;
-                @Newaction1.canceled += instance.OnNewaction1;
+                @PuzzleTest.started += instance.OnPuzzleTest;
+                @PuzzleTest.performed += instance.OnPuzzleTest;
+                @PuzzleTest.canceled += instance.OnPuzzleTest;
             }
         }
     }
@@ -1504,6 +1504,6 @@ public class @InputMaster : IInputActionCollection, IDisposable
     public interface IOneSwitchActions
     {
         void OnOnlyButton(InputAction.CallbackContext context);
-        void OnNewaction1(InputAction.CallbackContext context);
+        void OnPuzzleTest(InputAction.CallbackContext context);
     }
 }
