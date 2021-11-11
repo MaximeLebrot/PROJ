@@ -10,8 +10,9 @@ public class InGameMenu : MonoBehaviour {
     public SettingsMenu SettingsMenu => settingsMenu;
 
     private void Awake() {
-        Debug.Log(panel);
         panel.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+
     }
 
     private void Start() {
@@ -19,6 +20,7 @@ public class InGameMenu : MonoBehaviour {
     }
 
     private void OpenMenu(InputAction.CallbackContext e) {
+        Cursor.lockState = CursorLockMode.None;
         panel.transform.gameObject.SetActive(true);
         EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(true));
         inputReference.InputMaster.Menu.performed -= OpenMenu;
@@ -29,6 +31,7 @@ public class InGameMenu : MonoBehaviour {
         EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(false));
         inputReference.InputMaster.Menu.performed -= CloseMenu;
         inputReference.InputMaster.Menu.performed += OpenMenu;
+        Cursor.lockState = CursorLockMode.Locked;
         panel.SetActive(false);
 
     }
