@@ -24,8 +24,6 @@ public class ContrastModeObject : MonoBehaviour {
         swapMaterials = contrastMaterials;
 
         //Will be IEvent later, this is only for testing
-        ContrastModeSwitch.OnContrastModeActivate += OnContrastModeEvent;
-
     }
 
     private void OnContrastModeEvent(bool isActive) => meshRenderer.materials = isActive ? swapMaterials.ToArray() : defaultMaterials.ToArray();

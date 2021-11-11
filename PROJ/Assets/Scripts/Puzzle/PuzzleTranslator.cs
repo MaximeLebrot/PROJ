@@ -71,7 +71,11 @@ public class PuzzleTranslator
                     newString = PuzzleHelper.SkipFirstChar(oldString);
                     translations[i] = PuzzleHelper.MirrorSymbols(newString);
                     break;
-
+                case 'D':
+                    newString = PuzzleHelper.SkipFirstChar(oldString);
+                    translations[i] = PuzzleHelper.DoubleStrokes(newString);
+                    break;
+                    
                 default:
                     break;
             }

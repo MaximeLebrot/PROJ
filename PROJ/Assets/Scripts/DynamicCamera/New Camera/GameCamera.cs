@@ -22,28 +22,32 @@ public class GameCamera : MonoBehaviour {
     [SerializeField] private BehaviourData glideValues;
     [SerializeField] private BehaviourData idleValues;
     [SerializeField] private BehaviourData puzzleValues;
+    [SerializeField] private BehaviourData oneSwitchValues;
+    
+    [SerializeField] private bool oneSwitchMode;
     
     private readonly Dictionary<Type, BaseCameraBehaviour> behaviours = new Dictionary<Type, BaseCameraBehaviour>();
 
     private delegate void BehaviourQueue();
-
     private event BehaviourQueue behaviourQueue;
 
     private void Awake() {
         inputReference.Initialize();
         thisTransform = transform;
-        currentBaseCameraBehaviour = new BaseCameraBehaviour(thisTransform, followTarget, defaultValues);
+        
+        currentBaseCameraBehaviour = oneSwitchMode ? new OneSwitchCameraBehaviour(transform, followTarget, oneSwitchValues) : new BaseCameraBehaviour(thisTransform, followTarget, defaultValues);
         
         behaviours.Add(typeof(IdleBehaviour), new IdleBehaviour(thisTransform, followTarget, idleValues)); 
         behaviours.Add(typeof(StationaryBehaviour), new StationaryBehaviour(thisTransform, followTarget, defaultValues));  
         behaviours.Add(typeof(PuzzleBaseCameraBehaviour), new PuzzleBaseCameraBehaviour(thisTransform, followTarget, puzzleValues ));
         behaviours.Add(typeof(GlideState), new GlideBaseCameraBehaviour(thisTransform, followTarget, glideValues));
         behaviours.Add(typeof(WalkState), new BaseCameraBehaviour(transform, followTarget, defaultValues));
-
+        behaviours.Add(typeof(OSSpinState), new OneSwitchCameraBehaviour(transform, followTarget, oneSwitchValues));
+        behaviours.Add(typeof(OSWalkState), behaviours[typeof(OSSpinState)]);
+        behaviours.Add(typeof(OSPuzzleState), behaviours[typeof(PuzzleBaseCameraBehaviour)]);
+        
         behaviourQueue = ExecuteCameraBehaviour;
-
     }
-
     private void LateUpdate() => behaviourQueue?.Invoke();
 
     private void ExecuteCameraBehaviour() {
