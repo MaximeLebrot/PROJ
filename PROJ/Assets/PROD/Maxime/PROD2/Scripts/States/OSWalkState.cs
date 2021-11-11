@@ -38,7 +38,7 @@ public class OSWalkState : PlayerState
     private void WalkForward()
     {
         //player.playerController3D.InputWalk(player.inputReference.InputMaster.Movement.ReadValue<Vector2>());
-        Debug.Log("Walking");
+        //Debug.Log("Walking");
         player.playerController3D.InputWalk(forward);
     }
 }

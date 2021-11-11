@@ -11,8 +11,8 @@ public class OSPuzzleState : PlayerState
     {
         Debug.Log("Entered Puzzle State");
         player.physics.velocity = Vector3.zero;
-        player.playerController3D.enabled = false;
-        player.puzzleController.enabled = true;
+        //player.playerController3D.enabled = false;
+        //player.puzzleController.enabled = true;
         base.EnterState();
     }
     public override void RunUpdate()
@@ -22,8 +22,8 @@ public class OSPuzzleState : PlayerState
     }
     public override void ExitState()
     {
-        player.playerController3D.enabled = true;
-        player.puzzleController.enabled = false;
+        //player.playerController3D.enabled = true;
+        //player.puzzleController.enabled = false;
         base.ExitState();
     }
 }
