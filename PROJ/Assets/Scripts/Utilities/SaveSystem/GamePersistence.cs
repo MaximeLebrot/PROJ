@@ -12,12 +12,14 @@ public class GamePersistence : MonoBehaviour
     private void OnEnable()
     {
         EventHandler<SaveEvent>.RegisterListener(OnSave);
+        EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
         //LoadMostRecent(); //Continue button should call this
     }
 
     private void OnDisable()
     {
         EventHandler<SaveEvent>.UnregisterListener(OnSave);
+        EventHandler<SaveSettingsEvent>.UnregisterListener(OnSaveSettings);
         //Save();
     }
 
@@ -199,4 +201,15 @@ public class GamePersistence : MonoBehaviour
 
         //WHAT HAPPENS if we were inside a puzzle when we loaded or saved? always load outside puzzle state?
     }
+
+    #region Save Settings
+
+    private void OnSaveSettings(SaveSettingsEvent eve)
+    {
+        var json = JsonUtility.ToJson(eve.settingsData);
+        PlayerPrefs.SetString("SavedSettings", json);
+        Debug.Log("Settings Saved!");
+    }
+
+    #endregion
 }

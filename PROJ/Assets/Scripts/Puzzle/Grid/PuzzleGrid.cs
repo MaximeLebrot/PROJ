@@ -13,6 +13,7 @@ public class PuzzleGrid : MonoBehaviour {
     private int nodeOffset = 3;
     
     private List<Node> closestNodes = new List<Node>();
+    private List<Node> lineNodes = new List<Node>();
     private Stack<LineObject> lineRenderers = new Stack<LineObject>();
     private Node currentNode;
     private Node startNode;
@@ -34,7 +35,7 @@ public class PuzzleGrid : MonoBehaviour {
 
     public string GetSolution() 
     {
-        Debug.Log(solution);
+        //Debug.Log(solution);
         if (solution.Length > 0)
             return solution[0] == '-' ? PuzzleHelper.SkipFirstChar(solution) : solution;
         else
@@ -148,7 +149,7 @@ public class PuzzleGrid : MonoBehaviour {
 
     public void StartPuzzle()
     {
-        ActivateNode(startNode);
+        ActivateNode(startNode, false);
         InstantiateFirstLine();
     }
     private void InstantiateFirstLine()
@@ -167,7 +168,7 @@ public class PuzzleGrid : MonoBehaviour {
         
         foreach(Vector2Int vInt in unrestricted)
         {
-            Debug.Log(vInt);
+            //Debug.Log(vInt);
             allNodes[vInt.x + midIndex, vInt.y + midIndex].Drawable = true;
         }
 
@@ -181,19 +182,21 @@ public class PuzzleGrid : MonoBehaviour {
 
         LineObject newLine = new LineObject(node);
         
-        //THIS IS WEIRD
 
         //Om vi har en linje...
         if (lineRenderers.Count > 0 && lineRenderers.Peek().CompareLastLine(newLine))
         {
             //Checks if this was the last line that was drawn, if so delete that line (eraser)
             LineObject oldLine = lineRenderers.Pop();
-            foreach (Node n in currentNode.enabledNodes)
+            foreach (Node n in currentNode.neighbours.Keys)
             {
-                n.gameObject.SetActive(false);
+                n.RemoveEnablingNode(currentNode); 
             }
 
-            currentNode.enabledNodes.Clear();
+            /*
+            if (lineNodes.Contains(currentNode))
+                lineNodes.Remove(currentNode);
+            */
 
             //REMOVE LAST CHAR IN SOLUTION OR CALCULATE EVERYTHING AFTERWARDS
             solution = PuzzleHelper.RemoveLastChar(solution);
@@ -201,8 +204,10 @@ public class PuzzleGrid : MonoBehaviour {
             node.RemoveLineToNode(currentNode);
             currentNode.RemoveLineToNode(node);
             currentNode = node;
-            ActivateNode(node);
+            ActivateNode(node, true);
             Destroy(oldLine.line);
+
+            SendToPuzzleForEvaluation();
             return;
         }
 
@@ -240,15 +245,56 @@ public class PuzzleGrid : MonoBehaviour {
         }
 
         //THIS SHOULD BE DONE IN GETSOLUTION()
-        solution += PuzzleHelper.TranslateLocalInput(node, currentNode); 
+        solution += PuzzleHelper.TranslateLocalInput(node, currentNode);
+
+        if (SendToPuzzleForEvaluation())
+        {
+            TurnOffCollision();
+            return;
+        }
+            
 
         currentNode = node;
-        ActivateNode(node);
+        lineNodes.Add(currentNode);
+        ActivateNode(node, false);
     }
-   
+
+    private void TurnOffCollision()
+    {
+        foreach (Node n in allNodes)
+        {
+            n.TurnOffCollider();
+        }
+    }
+
+    private bool SendToPuzzleForEvaluation()
+    {
+        if (solution.Length > 0)
+        {
+            //masterPuzzle.CheckIfClearedSymbol(solution[0] == '-' ? PuzzleHelper.SkipFirstChar(solution) : solution);
+            if (masterPuzzle.EvaluateSolution())
+            {
+                DestroyCurrentLine();
+                return true;
+            }
+                
+        }
+
+        return false;
+    }
+
+    private void DestroyCurrentLine()
+    {
+        if (currentLine != null)
+        {
+            currentLine.Stop();
+            Destroy(currentLine, 2);
+            currentLine = null;
+        }
+    }
 
     //Show and activate neighbours
-    private void ActivateNode(Node node) 
+    private void ActivateNode(Node node, bool eraser) 
     {
 
 
@@ -269,70 +315,95 @@ public class PuzzleGrid : MonoBehaviour {
             if (neighbour.Drawable == false)
                 continue;
 
-            if (neighbour.gameObject.activeSelf == false)
-                node.enabledNodes.Add(neighbour);
-
             neighbour.gameObject.SetActive(true);
+            neighbour.TurnOnCollider();
+            if(!eraser)
+                neighbour.enabledBy.Add(node);
+
             neighbour.OnNodeSelected += AddSelectedNode;
         } 
     }
 
+    #region TURNING_OFF_GRID
     public void CompleteGrid()
     {
-        List<Node> finalNodes = new List<Node>();
-        //Debug.Log("Save grid");
-        foreach(Node n in allNodes)
-        {
-            if (n.gameObject.activeSelf)
-                finalNodes.Add(n);
-
-            n.TurnOffCollider();
-        }
-
-        if(currentLine != null)
-        {
-            currentLine.Stop();
-            Destroy(currentLine, 2);
-            currentLine = null;
-        }
-        
-        //SEND finalNodes and lineRenderers to some Persistance that can store the completed puzzles
+        DestroyNodes();
+        DestroyLines();
+        DestroyCurrentLine();
 
     }
 
     public void ResetGrid()
     {
         solution = "";
-        foreach (LineObject line in lineRenderers)
-        {
-            line.line.GetComponent<PuzzleLine>().Stop();
-            Destroy(line.line, 2);
-        }
+        TurnOffLines();
+        TurnOffNodes();
 
-        lineRenderers.Clear();
-
-        foreach(Node n in allNodes)
-        {
-            n.ResetNeighbours();
-            n.TurnOnCollider();
-            n.gameObject.SetActive(false);
-            n.Drawable = true;
-        }
-
-        //sätt currentLine position
-        currentNode = startNode;
-        currentNode.gameObject.SetActive(true);
-
-        if (currentLine != null)
-        {
-            currentLine.Stop();
-            Destroy(currentLineObject, 2);
-            currentLine = null;
-        }
+        DestroyCurrentLine();
 
 
     }
 
+    private void TurnOffLines()
+    {
+        foreach (LineObject line in lineRenderers)
+        {
+            line.line.GetComponent<PuzzleLine>().TurnOffLine();
+            Destroy(line.line, 2);
+        }
+        lineRenderers.Clear();
+    }
+
+    private void TurnOffNodes()
+    {
+        Debug.Log("TURN OFF NODES");
+        foreach (Node n in allNodes)
+        {
+            if(n.startNode == false)
+            {
+                n.ResetNeighbours();
+                n.TurnOffCollider();
+                n.TurnOff();
+                n.Drawable = true;
+            }
+        }
+        //RestartStartNode();
+        Invoke("RestartStartNode", 1f);
+    }
+
+    private void DestroyLines()
+    {
+        foreach (LineObject line in lineRenderers)
+        {
+            line.line.GetComponent<PuzzleLine>().TurnOffLine();
+            Destroy(line.line, 2);
+        }
+
+        
+    }
+    private void DestroyNodes()
+    {
+        foreach (Node n in allNodes)
+        {
+            n.TurnOffCollider();
+            n.TurnOff();
+            Destroy(n.gameObject, 2);
+        }
+    }
+
+    private void RestartStartNode()
+    {
+        currentNode = startNode;
+        currentNode.TurnOnCollider();
+        Invoke("TellPuzzleGridIsReady", 1.5f);
+    }
+
+    private void TellPuzzleGridIsReady()
+    {
+        masterPuzzle.InitiatePuzzle();
+    }
+
+    #endregion
 }
 
 public class LineObject
@@ -341,6 +412,7 @@ public class LineObject
     //THIS LINE OBJECT SHOULD HOLD THE NODES THAT WERE ENABLED
     public Node originNode;
     public GameObject line;
+    public List<Node> enabledNodes = new List<Node>();
 
     public LineObject(Node a, GameObject lineRen)
     {
