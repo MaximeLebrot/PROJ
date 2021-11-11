@@ -14,7 +14,6 @@ public class MainMenu : MonoBehaviour
     private void Awake() {
         Cursor.lockState = CursorLockMode.None;
         inputMaster.Initialize();
-        Application.targetFrameRate = 60;
     }
     
     void Start() {
@@ -55,12 +54,4 @@ public class MainMenu : MonoBehaviour
         BackToMain();
     }
 
-    public void ChangeFontSize(float fontSize) {
-
-        TextMeshProUGUI[] allTexts = GetComponentsInChildren<TextMeshProUGUI>();
-
-        foreach (TextMeshProUGUI text in allTexts)
-            text.fontSize = fontSize;
-
-    }
 }

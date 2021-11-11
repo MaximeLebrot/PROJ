@@ -181,5 +181,14 @@ public class SettingsMenu : MonoBehaviour
         //SetValues(settings);
     }
     
+    public void ChangeFontSize(float fontSize) {
+
+        TextMeshProUGUI[] allTexts = GetComponentsInChildren<TextMeshProUGUI>();
+
+        foreach (TextMeshProUGUI text in allTexts)
+            text.fontSize = fontSize;
+
+    }
+    
 }
 

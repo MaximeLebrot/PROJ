@@ -60,6 +60,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Menu",
+                    "type": "Button",
+                    "id": "c480e120-4e87-4ad7-8512-1f825dd22bae",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -214,6 +222,188 @@
                     "processors": "",
                     "groups": "Stnd KBM",
                     "action": "Anykey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "90d4db88-97ae-4326-a18b-429a8c16159f",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Stnd KBM",
+                    "action": "Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "PlayerNoInputMode",
+            "id": "896677fe-1962-4d22-92c4-dc398dbe0f8b",
+            "actions": [
+                {
+                    "name": "Movement",
+                    "type": "Value",
+                    "id": "ca09b453-5e4e-4e8d-b321-23b60fbd397e",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "19aa56c6-3a98-4106-88e3-cc4da32fa503",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "MoveCamera",
+                    "type": "Value",
+                    "id": "d403b2ed-8d84-45b6-977d-81cd0dd36d6d",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "ExitPuzzle",
+                    "type": "Button",
+                    "id": "7b2c0095-81e0-4fa3-9e84-92e235d52296",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "evaluateSolution",
+                    "type": "Button",
+                    "id": "7dddd600-a442-4c0e-900e-009a72c45915",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "ContrastMode",
+                    "type": "Button",
+                    "id": "2baa9f62-4db5-4043-930b-8a2474d79672",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Anykey",
+                    "type": "Button",
+                    "id": "678c287f-f784-40a1-b867-a124523d1f89",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Menu",
+                    "type": "Button",
+                    "id": "63c577cf-4eb7-424c-8266-7a3965c3bae3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d4e4d338-93b1-4829-a1c5-d07da91fba9a",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Stnd KBM",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d2fb29f7-2bb8-494e-820d-2853ffba2375",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Stnd KBM",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2de35f23-5e62-475b-8a70-298cfa136a0a",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Stnd KBM",
+                    "action": "MoveCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e7b2258a-008c-47e9-aa38-58ce0ea9cf13",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "ScaleVector2(x=7,y=7)",
+                    "groups": "Stnd KBM",
+                    "action": "MoveCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "21a1501b-ab5b-4dd8-b6dd-441941a6db82",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Stnd KBM",
+                    "action": "ExitPuzzle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bfd4d572-d451-4503-b99c-e96e55ed66ae",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Stnd KBM",
+                    "action": "evaluateSolution",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8f9c7034-d17d-49bb-8c0b-952993089f9b",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Stnd KBM",
+                    "action": "ContrastMode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "99ef1e52-613d-4190-8862-3af77435b139",
+                    "path": "<Keyboard>/anyKey",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Stnd KBM",
+                    "action": "Anykey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "12c7449f-6145-4f8c-b297-ab9ce6f0d5dc",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Stnd KBM",
+                    "action": "Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
