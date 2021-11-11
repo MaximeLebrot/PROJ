@@ -13,7 +13,6 @@ public class VoiceMovement : MonoBehaviour
     private Dictionary<string, Action> actions = new Dictionary<string, Action>();
    // [SerializeField] private GameObject Text;
     public Text direction;
-    public Animator animator;
 
     private void Start()
     {
@@ -24,6 +23,7 @@ public class VoiceMovement : MonoBehaviour
         actions.Add("right", Right);
         actions.Add("left", Left);
         actions.Add("rotate", Rotate);
+        actions.Add("Wow", Owen);
         direction.text = "";
         keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
         keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
@@ -66,6 +66,13 @@ public class VoiceMovement : MonoBehaviour
     {
         transform.Rotate(0, 90, 0);
         direction.text = "Rotate";
+        direction.GetComponent<Animator>().SetTrigger("active");
+    }
+
+    private void Owen()
+    {
+        //transform.Rotate(0, 90, 0);
+        direction.text = "Wooooow";
         direction.GetComponent<Animator>().SetTrigger("active");
     }
 
