@@ -24,7 +24,6 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] private Slider pointerSize;
     [SerializeField] private Toggle showDesktop;
     [SerializeField] private Toggle blindMode;
-    [SerializeField] private Toggle highContrastMode;
 
     //Display
     [SerializeField] private Slider fieldOfView;
@@ -103,11 +102,10 @@ public class SettingsMenu : MonoBehaviour
         userSettings.mute = mute.isOn;
 
         //Ease of use
-        userSettings.fontSize = (int)fontSize.value;
-        userSettings.pointerSize = pointerSize.value;
-        userSettings.showDesktop = showDesktop.isOn;
-        userSettings.blindMode = blindMode.isOn;
-        userSettings.highContrastMode = highContrastMode.isOn;
+        //userSettings.fontSize = (int)fontSize.value;
+        //userSettings.pointerSize = pointerSize.value;
+        //userSettings.showDesktop = showDesktop.isOn;
+        //userSettings.blindMode = blindMode.isOn;
 
         //Display                    
         userSettings.fieldOfView = fieldOfView.value;
@@ -130,8 +128,7 @@ public class SettingsMenu : MonoBehaviour
         pointerSize.value = settings.pointerSize;
         showDesktop.isOn = settings.showDesktop;
         blindMode.isOn = settings.blindMode;
-        highContrastMode.isOn = settings.highContrastMode;
-        
+
         //Display                    
         fieldOfView.value = settings.fieldOfView;
         brightness.value = settings.brightness;
@@ -149,12 +146,11 @@ public class SettingsMenu : MonoBehaviour
         mute.isOn = settings.mute;
 
         //Ease of use
-        fontSize.value = settings.fontSize;
-        pointerSize.value = settings.pointerSize;
-        showDesktop.isOn = settings.showDesktop;
-        blindMode.isOn = settings.blindMode;
-        highContrastMode.isOn = settings.highContrastMode;
-        
+        //fontSize.value = settings.fontSize;
+        //pointerSize.value = settings.pointerSize;
+        //showDesktop.isOn = settings.showDesktop;
+        //blindMode.isOn = settings.blindMode;
+
         //Display                    
         fieldOfView.value = settings.fieldOfView;
         brightness.value = settings.brightness;
