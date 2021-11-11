@@ -10,13 +10,17 @@ public class VoiceMovement : MonoBehaviour
 {
     private KeywordRecognizer keywordRecognizer;
     private Dictionary<string, Action> actions = new Dictionary<string, Action>();
-
+    [SerializeField] private GameObject cube;
     private void Start()
     {
         actions.Add("forward", Forward);
         actions.Add("up", Up);
         actions.Add("down", Down);
         actions.Add("back", Back);
+        actions.Add("right", Right);
+        actions.Add("left", Left);
+        actions.Add("rotate", Rotate);
+        cube.transform.Translate(0, 0, 0);
 
         keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
         keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
@@ -46,5 +50,20 @@ public class VoiceMovement : MonoBehaviour
     private void Down()
     {
         transform.Translate(0, -1, 0);
+    }
+
+    private void Left()
+    {
+        transform.Translate(0, 0, 1);
+    }
+
+    private void Right()
+    {
+        transform.Translate(0, 0, -1);
+    }
+
+    private void Rotate()
+    {
+        transform.Rotate(0, 90, 0);
     }
 }
