@@ -10,7 +10,7 @@ public class GameCamera : MonoBehaviour {
     [SerializeField] private ControllerInputReference inputReference;
     [SerializeField] private GlobalCameraSettings globalCameraSettings;
     
-    [SerializeField] private BaseCameraBehaviour currentBaseCameraBehaviour;
+    private BaseCameraBehaviour currentBaseCameraBehaviour;
 
     [SerializeField] private Transform followTarget;
     [SerializeField] private Transform shoulderPosition;

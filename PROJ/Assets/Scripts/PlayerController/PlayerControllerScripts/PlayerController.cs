@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         physics.AddForce(force);
-        Debug.Log("Player controller sending " + force.magnitude + " force");
+       // Debug.Log("Player controller sending " + force.magnitude + " force");
         //force = Vector3.zero;
     }
     /// <summary>
