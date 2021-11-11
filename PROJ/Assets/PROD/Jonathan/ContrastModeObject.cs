@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,12 +8,9 @@ public class ContrastModeObject : MonoBehaviour {
     [SerializeField] private bool replaceMaterials;
     [SerializeField] private List<Material> contrastMaterials;
     
-
     private List<Material> defaultMaterials = new List<Material>();
-
     private List<Material> swapMaterials = new List<Material>();
-
-
+    
     private void Awake() {
         defaultMaterials = meshRenderer.materials.ToList();
 
@@ -22,9 +18,11 @@ public class ContrastModeObject : MonoBehaviour {
             swapMaterials.AddRange(defaultMaterials);
 
         swapMaterials = contrastMaterials;
-
-        //Will be IEvent later, this is only for testing
     }
 
-    private void OnContrastModeEvent(bool isActive) => meshRenderer.materials = isActive ? swapMaterials.ToArray() : defaultMaterials.ToArray();
+    private void OnEnable() => EventHandler<SaveSettingsEvent>.RegisterListener(OnContrastModeEvent);
+    private void OnDisable() => EventHandler<SaveSettingsEvent>.UnregisterListener(OnContrastModeEvent);
+    
+    
+    private void OnContrastModeEvent(SaveSettingsEvent settings) => meshRenderer.materials = settings.settingsData.highContrastMode ? swapMaterials.ToArray() : defaultMaterials.ToArray();
 }
