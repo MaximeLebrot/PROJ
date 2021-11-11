@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 108499888}
   - component: {fileID: 108499893}
   - component: {fileID: 108499894}
+  - component: {fileID: 5095567452145577446}
   m_Layer: 9
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -136,8 +137,8 @@ MonoBehaviour:
   followTarget: {fileID: 0}
   clampValues: {x: -60, y: 40}
   defaultValues: {fileID: 11400000, guid: 301349ffb4190a84d9cedbaed0935248, type: 2}
-  idleValues: {fileID: 11400000, guid: 9db25c71cc5f2584ba704a6d0964df6a, type: 2}
   glideValues: {fileID: 11400000, guid: 1541e9765bf61f740927ace45f8b03f3, type: 2}
+  idleValues: {fileID: 11400000, guid: 9db25c71cc5f2584ba704a6d0964df6a, type: 2}
   puzzleValues: {fileID: 11400000, guid: acb69f4a27ceb6549ab10851fc9e2441, type: 2}
 --- !u!114 &108499893
 MonoBehaviour:
@@ -166,3 +167,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+--- !u!114 &5095567452145577446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2184620921574008162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attenuationObject: {fileID: 0}
+  ListenerNumber: -1
