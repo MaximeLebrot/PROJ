@@ -27,7 +27,7 @@ namespace NewCamera
             return Quaternion.Lerp(thisTransform.rotation, Quaternion.LookRotation(target.parent.forward), newIndex);
         }
 
-        public override Vector3 ExecuteCollision(Vector2 input, GlobalCameraSettings data) {
+        public override Vector3 ExecuteCollision(GlobalCameraSettings data) {
             
             Vector3 collisionOffset = target.parent.rotation * idleBehaviourData.Offset;
         

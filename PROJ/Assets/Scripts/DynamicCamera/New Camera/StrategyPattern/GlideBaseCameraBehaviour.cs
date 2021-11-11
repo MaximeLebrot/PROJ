@@ -13,9 +13,11 @@ namespace NewCamera {
             glideBehaviourData = values as GlideBehaviourData;
         }
 
-        public override Vector3 ExecuteCollision(Vector2 input, GlobalCameraSettings data) {
+        public override Vector3 ExecuteCollision(GlobalCameraSettings data) {
             
+            /*
             target.rotation = input != Vector2.zero ? Quaternion.Euler(input.x, input.y, 0) : Quaternion.Lerp(target.rotation, target.parent.rotation, Time.deltaTime * glideBehaviourData.RotationSpeed);
+            */
             
             Vector3 collisionOffset = target.rotation * values.Offset;
             
