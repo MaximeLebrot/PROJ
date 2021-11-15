@@ -11,7 +11,7 @@ public class PlayerState : ScriptableObject
     protected StateMachine stateMachine;
     protected MetaPlayerController player;
     protected object owner;
-
+    protected int glideableLayer = 14;
     //Input
     protected float xMove, zMove;
 
@@ -28,6 +28,11 @@ public class PlayerState : ScriptableObject
     }
     public virtual void Initialize() { }
     public virtual void EnterState() 
+    {
+        if (values)
+            player.physics.SetValues(values);
+    }
+    public virtual void EnterState(PlayerState previousState)
     {
         if (values)
             player.physics.SetValues(values);
