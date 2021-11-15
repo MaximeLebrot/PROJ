@@ -113,8 +113,6 @@ public class PuzzleGrid : MonoBehaviour {
     void GenerateGrid()
     {
         allNodes = new Node[size, size];
-        Vector3 zVec = new Vector3(0, 0, 1);
-        Vector3 xVec = new Vector3(1, 0, 0);
         int midIndex = size / 2;
         for (int x = 0; x < size; x++)
         {
@@ -181,40 +179,21 @@ public class PuzzleGrid : MonoBehaviour {
             return;
 
         LineObject newLine = new LineObject(node);
-        
 
-        //Om vi har en linje...
+        #region ERASER
+        //If a line already exists with currentNode, erase
         if (lineRenderers.Count > 0 && lineRenderers.Peek().CompareLastLine(newLine))
         {
-            //Checks if this was the last line that was drawn, if so delete that line (eraser)
-            LineObject oldLine = lineRenderers.Pop();
-            foreach (Node n in currentNode.neighbours.Keys)
-            {
-                n.RemoveEnablingNode(currentNode); 
-            }
-
-            /*
-            if (lineNodes.Contains(currentNode))
-                lineNodes.Remove(currentNode);
-            */
-
-            //REMOVE LAST CHAR IN SOLUTION OR CALCULATE EVERYTHING AFTERWARDS
-            solution = PuzzleHelper.RemoveLastChar(solution);
-
-            node.RemoveLineToNode(currentNode);
-            currentNode.RemoveLineToNode(node);
-            currentNode = node;
-            ActivateNode(node, true);
-            Destroy(oldLine.line);
-
-            SendToPuzzleForEvaluation();
+            EraseLine(node);
             return;
         }
+        #endregion
 
-        //Annars..
+        #region CREATE_NEW_LINE
+        //create new Line
         else
         {
-            //Har vi VERKLIGEN INTE EN LINJE? 
+            //Unless that line already exists
             if (lineRenderers.Count > 1)
             {
                 //Checks if there exists a line between these nodes already, if so it destroys the line that was created
@@ -226,37 +205,79 @@ public class PuzzleGrid : MonoBehaviour {
             }
 
             //Line Instantiation
-            GameObject newLineRenderer = Instantiate(linePrefab, transform);
-            newLineRenderer.transform.position = currentNode.transform.position;
-            newLineRenderer.transform.localRotation = Quaternion.Inverse(masterPuzzle.transform.rotation);
-
-            newLineRenderer.GetComponent<PuzzleLine>().SetPosition((
-                node.transform.localPosition - currentNode.transform.localPosition).normalized * 
-                Vector3.Distance(node.transform.localPosition, currentNode.transform.localPosition),
-                masterPuzzle.transform.rotation);
-
-            LineObject line = new LineObject(currentNode, newLineRenderer);
-
-            //ADD LINE
-            node.AddLineToNode(currentNode);
-            currentNode.AddLineToNode(node);
-            lineRenderers.Push(line);
+            CreateNewLine(node);
 
         }
+        #endregion
 
-        //THIS SHOULD BE DONE IN GETSOLUTION()
+        #region ADD_TO_SOLUTION
+
         solution += PuzzleHelper.TranslateLocalInput(node, currentNode);
 
+        //Every time we collide with node. Check if we have solution
         if (SendToPuzzleForEvaluation())
         {
             TurnOffCollision();
             return;
         }
-            
+
+        #endregion
+
+        #region MOVE_CURRENT_NODE
 
         currentNode = node;
         lineNodes.Add(currentNode);
         ActivateNode(node, false);
+
+        #endregion
+    }
+
+    private void CreateNewLine(Node node)
+    {
+        //Instantiate Line
+        GameObject newLineRenderer = Instantiate(linePrefab, transform);
+        newLineRenderer.transform.position = currentNode.transform.position;
+        newLineRenderer.transform.localRotation = Quaternion.Inverse(masterPuzzle.transform.rotation);
+
+
+        //Set position of the particle system
+        newLineRenderer.GetComponent<PuzzleLine>().SetPosition((
+            node.transform.localPosition - currentNode.transform.localPosition).normalized *
+            Vector3.Distance(node.transform.localPosition, currentNode.transform.localPosition),
+            masterPuzzle.transform.rotation);
+
+        LineObject line = new LineObject(currentNode, newLineRenderer);
+
+        //ADD Line to neighbourList and list of lines
+        node.AddLineToNode(currentNode);
+        currentNode.AddLineToNode(node);
+        lineRenderers.Push(line);
+    }
+
+    private void EraseLine(Node node)
+    {
+        //Checks if this was the last line that was drawn, if so delete that line (eraser)
+        LineObject oldLine = lineRenderers.Pop();
+        foreach (Node n in currentNode.neighbours.Keys)
+        {
+            n.RemoveEnablingNode(currentNode);
+        }
+
+        /*
+        if (lineNodes.Contains(currentNode))
+            lineNodes.Remove(currentNode);
+        */
+
+        //REMOVE LAST CHAR IN SOLUTION
+        solution = PuzzleHelper.RemoveLastChar(solution);
+
+        node.RemoveLineToNode(currentNode);
+        currentNode.RemoveLineToNode(node);
+        currentNode = node;
+        ActivateNode(node, true);
+        Destroy(oldLine.line);
+
+        SendToPuzzleForEvaluation();
     }
 
     private void TurnOffCollision()
@@ -299,22 +320,18 @@ public class PuzzleGrid : MonoBehaviour {
         Debug.Log(node);
 
         node.gameObject.SetActive(true);
-
-        if (closestNodes.Count > 0) {
-            foreach(Node closestNode in closestNodes)
-                closestNode.ClearSelectable();
-        }
         
-        foreach(Node n in node.neighbours.Keys)
-        {
-            closestNodes.Add(n);
-        }
+        //MARK CURRENTNODE
+
+        //MARK THE NODES YOU CANT WALK TO
         
         foreach (Node neighbour in node.neighbours.Keys) {
 
+            
             if (neighbour.Drawable == false)
                 continue;
-
+            
+            //SHOW THE NODES THAT YOU CAN WALK TO 
             neighbour.gameObject.SetActive(true);
             neighbour.TurnOnCollider();
             if(!eraser)
@@ -325,14 +342,8 @@ public class PuzzleGrid : MonoBehaviour {
     }
 
     #region TURNING_OFF_GRID
-    public void CompleteGrid()
-    {
-        DestroyNodes();
-        DestroyLines();
-        DestroyCurrentLine();
 
-    }
-
+    #region RESET_GRID
     public void ResetGrid()
     {
         solution = "";
@@ -349,7 +360,7 @@ public class PuzzleGrid : MonoBehaviour {
         foreach (LineObject line in lineRenderers)
         {
             line.line.GetComponent<PuzzleLine>().TurnOffLine();
-            Destroy(line.line, 2);
+            Destroy(line.line, 3);
         }
         lineRenderers.Clear();
     }
@@ -371,6 +382,30 @@ public class PuzzleGrid : MonoBehaviour {
         Invoke("RestartStartNode", 1f);
     }
 
+    private void RestartStartNode()
+    {
+        currentNode = startNode;
+        currentNode.TurnOnCollider();
+        currentNode.ResetNeighbours();
+        Invoke("TellPuzzleGridIsReady", 1.5f);
+    }
+
+    private void TellPuzzleGridIsReady()
+    {
+        masterPuzzle.InitiatePuzzle();
+    }
+    #endregion
+
+    #region COMPLETE_GRID
+
+    public void CompleteGrid()
+    {
+        DestroyNodes();
+        DestroyLines();
+        DestroyCurrentLine();
+
+    }
+
     private void DestroyLines()
     {
         foreach (LineObject line in lineRenderers)
@@ -390,19 +425,8 @@ public class PuzzleGrid : MonoBehaviour {
             Destroy(n.gameObject, 2);
         }
     }
+    #endregion
 
-    private void RestartStartNode()
-    {
-        currentNode = startNode;
-        currentNode.TurnOnCollider();
-        currentNode.ResetNeighbours();
-        Invoke("TellPuzzleGridIsReady", 1.5f);
-    }
-
-    private void TellPuzzleGridIsReady()
-    {
-        masterPuzzle.InitiatePuzzle();
-    }
 
     #endregion
 }

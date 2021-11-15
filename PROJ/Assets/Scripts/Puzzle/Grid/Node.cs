@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class Node : MonoBehaviour {
 
@@ -24,9 +25,10 @@ public class Node : MonoBehaviour {
 
     public bool Drawable { get; set; }
 
-
+    private VisualEffect hitEffect;
     private Animator anim;
     private void Awake() {
+        hitEffect = GetComponent<VisualEffect>();
         anim = GetComponent<Animator>();
         neighbours = new Dictionary<Node, bool>();
         Drawable = true;
@@ -45,6 +47,7 @@ public class Node : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
+        hitEffect.Play();
         OnNodeSelected?.Invoke(this);
     }
 
