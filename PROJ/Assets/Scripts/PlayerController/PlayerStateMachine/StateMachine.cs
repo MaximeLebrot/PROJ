@@ -40,4 +40,18 @@ public class StateMachine
         else
             Debug.Log(typeof(T) + "not found");
     }
+    //Storing previous state when entering airborne
+    public void ChangeState<T>(PlayerState previousState) where T : PlayerState
+    {
+        if (instantiatedStates.ContainsKey(typeof(T)))
+        {
+            PlayerState instance = instantiatedStates[typeof(T)];
+            currentState?.ExitState();
+            currentState = instance;
+            currentState.EnterState(previousState);
+            EventHandler<PlayerStateChangeEvent>.FireEvent(new PlayerStateChangeEvent(currentState));
+        }
+        else
+            Debug.Log(typeof(T) + "not found");
+    }
 }
