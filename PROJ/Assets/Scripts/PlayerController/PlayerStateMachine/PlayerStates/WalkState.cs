@@ -21,7 +21,7 @@ public class WalkState : PlayerState
          SetInput();
 
         if (!player.playerController3D.IsGrounded())
-            stateMachine.ChangeState<AirborneState>();
+            stateMachine.ChangeState<AirborneState>(this);
 
         if (player.physics.velocity.magnitude > player.physics.SurfThreshold + 1
             && player.playerController3D.groundHitAngle < player.playerController3D.GlideMinAngle

@@ -32,6 +32,11 @@ public class PlayerState : ScriptableObject
         if (values)
             player.physics.SetValues(values);
     }
+    public virtual void EnterState(PlayerState previousState)
+    {
+        if (values)
+            player.physics.SetValues(values);
+    }
     public virtual void RunUpdate() { }
     public virtual void ExitState() { }
 }
