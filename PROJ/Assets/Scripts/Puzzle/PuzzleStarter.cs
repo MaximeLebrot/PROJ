@@ -7,8 +7,6 @@ public class PuzzleStarter : MonoBehaviour
 
     public bool Active;
 
-    //[SerializeField] private AudioSource source;
-    //[SerializeField] private GameObject enderText;
     private void Start()
     {
         puzzle = GetComponentInParent<Puzzle>();
@@ -35,8 +33,6 @@ public class PuzzleStarter : MonoBehaviour
 
     public void ResetStarter(ResetPuzzleEvent eve)
     {
-        //Debug.Log("ResetStarter called with reset event");
-        //if (eve.info.ID == puzzle.GetPuzzleID())
         ResetStarter();
     }
 
@@ -49,28 +45,15 @@ public class PuzzleStarter : MonoBehaviour
             EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzle.GetPuzzleID(), GetComponentInParent<Puzzle>().transform)));
             puzzle.SetPlayer(other.transform);
             Active = true;
-            /*
-            source.Play(); //S
-            if (enderText != null)
-                enderText.SetActive(true); //S
-            */
         }
 
-
-        //StartPuzzleEvent skickas även när pusslet är igång, fix plz.
 
     }
 
 
     public void ResetStarter()
     {
-        
             Active = false;
-        /*
-            if (enderText != null)
-                enderText.SetActive(false);
-        */
-
     }
 
 
