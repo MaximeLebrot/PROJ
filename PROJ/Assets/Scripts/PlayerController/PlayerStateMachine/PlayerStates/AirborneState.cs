@@ -34,11 +34,14 @@ public class AirborneState : PlayerState
     private void LeaveAirborneState()
     {
         player.physics.SetNormalGravity();
-
-        if (player.physics.velocity.magnitude < player.physics.SurfThreshold)
-            stateMachine.ChangeState<WalkState>();
-        else
+        //How do we know if we entered airborne state from glide?
+        //In that case, we probably want to skip the angle requirement for entering glide state when touching back down
+        if (player.physics.velocity.magnitude > player.physics.SurfThreshold 
+            && player.playerController3D.groundHitAngle < player.playerController3D.GlideMinAngle
+            && player.playerController3D.groundHitInfo.collider.gameObject.CompareTag("Glideable"))
             stateMachine.ChangeState<GlideState>();
+        else
+            stateMachine.ChangeState<WalkState>();
 
     }
 }

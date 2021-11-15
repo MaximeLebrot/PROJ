@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Text;
+using System;
 
 public class PuzzleTranslator
 {
@@ -34,14 +35,14 @@ public class PuzzleTranslator
             {
                 case 'Q':
                     newString = PuzzleHelper.SkipFirstChar(oldString);
-                    translations[i] = PuzzleHelper.RotateSymbols(newString);
+                    translations[i] = PuzzleHelper.RotateSymbolsTwoStep(newString);
                     break;
 
                 case 'W':
                     newString = PuzzleHelper.SkipFirstChar(oldString);
                     for(int j = 0; j < 2; j++)
                     {
-                        newString = PuzzleHelper.RotateSymbols(newString);
+                        newString = PuzzleHelper.RotateSymbolsTwoStep(newString);
                     }
                     translations[i] = newString;
                     break;
@@ -50,7 +51,7 @@ public class PuzzleTranslator
                     newString = PuzzleHelper.SkipFirstChar(oldString);
                     for (int j = 0; j < 3; j++)
                     {
-                        newString = PuzzleHelper.RotateSymbols(newString);
+                        newString = PuzzleHelper.RotateSymbolsTwoStep(newString);
                     }
                     translations[i] = newString;
                     break;
@@ -70,7 +71,11 @@ public class PuzzleTranslator
                     newString = PuzzleHelper.SkipFirstChar(oldString);
                     translations[i] = PuzzleHelper.MirrorSymbols(newString);
                     break;
-
+                case 'D':
+                    newString = PuzzleHelper.SkipFirstChar(oldString);
+                    translations[i] = PuzzleHelper.DoubleStrokes(newString);
+                    break;
+                    
                 default:
                     break;
             }
@@ -132,7 +137,12 @@ public class PuzzleTranslator
         #endregion
     }
 
-    
+    internal List<string> GetTranslations()
+    {
+        return translations;
+    }
+
+
 
     /*
     private void FindLoop(int index)

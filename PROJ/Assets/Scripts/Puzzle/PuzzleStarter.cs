@@ -45,7 +45,7 @@ public class PuzzleStarter : MonoBehaviour
 
         if (Active == false)
         {
-            Debug.Log("PuzzleStarter Trigger entered");
+            //Debug.Log("PuzzleStarter Trigger entered");
             EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzle.GetPuzzleID(), GetComponentInParent<Puzzle>().transform)));
             puzzle.SetPlayer(other.transform);
             Active = true;

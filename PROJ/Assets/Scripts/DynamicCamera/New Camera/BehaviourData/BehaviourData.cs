@@ -1,12 +1,13 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Camera/Behaviour Data", fileName = "New Behaviour Data")]
+[CreateAssetMenu(menuName = "Camera/Behaviour Data/Default Behaviour Data", fileName = "New Default Behaviour Data")]
 public class BehaviourData : ScriptableObject {
 
     [SerializeField] private Vector3 offset;
     [SerializeField] private float followSpeed;
-
+    [SerializeField] private float rotationSpeed;
     public Vector3 Offset => offset;
     public float FollowSpeed => followSpeed;
+    public float RotationSpeed => rotationSpeed;
 
 }
