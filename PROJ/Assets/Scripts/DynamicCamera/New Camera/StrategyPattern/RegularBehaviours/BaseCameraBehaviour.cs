@@ -9,15 +9,18 @@ namespace NewCamera {
         protected Quaternion previousRotation;
         protected readonly Transform thisTransform;
         protected readonly Transform target;
-        public readonly BehaviourData behaviourValues;
+        protected readonly BehaviourData behaviourValues;
 
 
         public BaseCameraBehaviour(Transform transform, Transform target, BehaviourData behaviourValues) {
             thisTransform = transform;
             this.target = target;
             this.behaviourValues = behaviourValues;
+        }
+
+        public virtual void InitializeBehaviour() {
             previousRotation = target.rotation;
-        } 
+        }
         
         public virtual Vector3 ExecuteMove(Vector3 calculatedOffset) {
             return Vector3.SmoothDamp(thisTransform.position, target.position + calculatedOffset, ref referenceVelocity, behaviourValues.FollowSpeed);
@@ -40,10 +43,10 @@ namespace NewCamera {
             return collisionOffset;
         }
 
-        public virtual void ManipulatePivotTarget(CustomInput input, Vector2 clampValues) {
+        public virtual void ManipulatePivotTarget(CustomInput input) {
             
-            //If no input, use previous rotation
-            if (input.aim == Vector2.zero && (input.movement.x == 0 || Mathf.Abs(input.movement.x) < .11f)) {
+            //If no input or movement.x is 0 OR lower than input dead zone (for controllers). 
+            if (input.aim == Vector2.zero && (input.movement.x == 0 || Mathf.Abs(input.movement.x) < behaviourValues.InputDeadZone)) {
                 target.rotation = previousRotation;
                 return;
             }
@@ -55,11 +58,12 @@ namespace NewCamera {
             if (desiredRotation.y > 180)
                 desiredRotation.y -= 360;
             
-            desiredRotation.x = Mathf.Clamp(desiredRotation.x, clampValues.x, clampValues.y);
+            desiredRotation.x = Mathf.Clamp(desiredRotation.x, behaviourValues.ClampValues.x, behaviourValues.ClampValues.y);
             
             target.eulerAngles = desiredRotation;
             previousRotation = target.rotation;
         }
-        
+
+        protected T BehaviourData<T>() where T : BehaviourData => behaviourValues as T;
     }
 }

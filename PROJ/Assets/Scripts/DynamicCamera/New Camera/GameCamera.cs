@@ -14,7 +14,6 @@ public class GameCamera : MonoBehaviour {
 
     [SerializeField] private Transform followTarget;
     [SerializeField] private Transform shoulderPosition;
-    [SerializeField] private Vector2 clampValues;
     
     private Transform thisTransform;
 
@@ -40,7 +39,7 @@ public class GameCamera : MonoBehaviour {
         behaviours.Add(typeof(IdleBehaviour), new IdleBehaviour(thisTransform, followTarget, idleValues)); 
         behaviours.Add(typeof(StationaryBehaviour), new StationaryBehaviour(thisTransform, followTarget, defaultValues));  
         behaviours.Add(typeof(PuzzleBaseCameraBehaviour), new PuzzleBaseCameraBehaviour(thisTransform, followTarget, puzzleValues ));
-        behaviours.Add(typeof(GlideState), new GlideBaseCameraBehaviour(thisTransform, followTarget, glideValues));
+        behaviours.Add(typeof(GlideState), new GlideCameraBehaviour(thisTransform, followTarget, glideValues));
         behaviours.Add(typeof(WalkState), new BaseCameraBehaviour(transform, followTarget, defaultValues));
         
         //One switch
@@ -60,7 +59,7 @@ public class GameCamera : MonoBehaviour {
 
         CustomInput input = ReadInput();
         
-        currentBaseCameraBehaviour.ManipulatePivotTarget(input, clampValues);
+        currentBaseCameraBehaviour.ManipulatePivotTarget(input);
         
         Vector3 calculatedOffset = currentBaseCameraBehaviour.ExecuteCollision(globalCameraSettings);
         
@@ -148,7 +147,10 @@ public class GameCamera : MonoBehaviour {
         puzzleBaseBehaviour?.AssignRotation(startPuzzleEvent.info.puzzlePos);
     }
     
-    private void ChangeBehaviour(BaseCameraBehaviour newBaseCameraBehaviour) => currentBaseCameraBehaviour = newBaseCameraBehaviour;
+    private void ChangeBehaviour(BaseCameraBehaviour newBaseCameraBehaviour) {
+        currentBaseCameraBehaviour = newBaseCameraBehaviour;
+        currentBaseCameraBehaviour.InitializeBehaviour();
+    }
 
     private async Task PlayTransition(CameraTransition cameraTransition) {
 
