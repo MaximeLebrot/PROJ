@@ -28,7 +28,7 @@ public class WindPuzzle : Puzzle
         }
 
         solution = newString;
-        Debug.Log("THE SOLUTION IS : " + solution);
+        //Debug.Log("THE SOLUTION IS : " + solution);
     }
 
     public override bool EvaluateSolution()

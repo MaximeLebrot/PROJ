@@ -318,7 +318,6 @@ public class Puzzle : MonoBehaviour
             {
                 if(eve.success == false)
                 {
-                    Debug.Log("RESET PUZZLE");
                     grid.ResetGrid();
                 }
                     
