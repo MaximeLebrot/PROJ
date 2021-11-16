@@ -125,24 +125,21 @@ public class Puzzle : MonoBehaviour
 
         currentPuzzleNum++;     
 
-        //Debug.Log("Next puzzle, #" + currentPuzzleNum);
         if(currentPuzzleNum >= puzzleInstances.Count)
         {
-            //no more puzzle instances here
-            //NÅTT SKA HÄNDA HÄR? nån effekt och feedback på att man klarat det här pusslet. Inte spara griden utan stänga av griden typ
-            //Exit puzzle
-            //Debug.Log("Last puzzle instance completed");
-
-            Invoke("CompleteGrid", 2);
-            EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID(masterPuzzleID)), true));
-            GetComponent<Collider>().enabled = false;
+            CompletePuzzle();
             return;
         }
 
         grid.ResetGrid();
         currentPuzzleInstance = puzzleInstances[currentPuzzleNum];
-        //OnComplete instance       
-        //Invoke("InitiatePuzzle", NextPuzzleTimer);
+    }
+
+    private void CompletePuzzle()
+    {
+        Invoke("CompleteGrid", 2);
+        EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID(masterPuzzleID)), true));
+        GetComponent<Collider>().enabled = false;
     }
 
     private void CompleteGrid()
@@ -150,91 +147,7 @@ public class Puzzle : MonoBehaviour
         grid.CompleteGrid();
     }
 
-    #region Place Symbols
-    private void PlaceSymbols()
-    {
-        if(instantiatedSymbols.Count > 0)
-        {
-            UnloadSymbols();
-        }
-
-        
-        //Is this the way we want to fetch the list??
-        foreach(SymbolModPair pair in currentPuzzleInstance.puzzleObjects)
-        {
-            GameObject instance = Instantiate(pair.symbol).gameObject;
-            
-            PuzzleObject objectInstance = instance.GetComponent<PuzzleObject>();
-            instantiatedSymbols.Add(objectInstance);
-            objectInstance.transform.parent = symbolPos;
-            objectInstance.SetModifier(pair.modifier);
-
-        }
-
-        if (instantiatedSymbols.Count % 2 == 0)
-            EvenPlaceSymbols();
-        else
-            UnevenPlaceSymbols();
-    }
-
-    //DONT EVEN LOOK IN HERE
-    private void UnevenPlaceSymbols()
-    {
-        Quaternion emptyQ = new Quaternion(0, 0, 0, 0);
-        int mid = instantiatedSymbols.Count / 2;
-        instantiatedSymbols[mid].transform.localPosition = Vector3.zero;
-        instantiatedSymbols[mid].transform.localRotation = emptyQ;
-
-        for(int i = 1; i <= mid; i++)
-        {
-            Vector3 tempPos = Vector3.zero;
-            tempPos -= i * (symbolOffset * Vector3.right);
-            instantiatedSymbols[mid - i].transform.localPosition = tempPos;
-            instantiatedSymbols[mid - i].transform.rotation = symbolPos.rotation;
-            instantiatedSymbols[mid - i].transform.localPosition = 
-                new Vector3(instantiatedSymbols[mid - i].transform.localPosition.x, 0, 0);
-
-
-
-            tempPos = Vector3.zero;
-            tempPos += i * (symbolOffset * Vector3.right);
-            instantiatedSymbols[mid + i].transform.localPosition = tempPos;
-            instantiatedSymbols[mid + i].transform.rotation = symbolPos.rotation;
-            instantiatedSymbols[mid + i].transform.localPosition = 
-                new Vector3(instantiatedSymbols[mid + i].transform.localPosition.x, 0, 0);
-        }
-    }
-
-    private void EvenPlaceSymbols()
-    {
-       
-
-        int midRight = instantiatedSymbols.Count / 2;
-        int midLeft = midRight - 1;
-
-        Vector3 midLeftPos = (Vector3.left * (symbolOffset / 2));
-        Vector3 midRightPos = (Vector3.right * (symbolOffset / 2));
-
-        instantiatedSymbols[midLeft].transform.localPosition = midLeftPos;
-        instantiatedSymbols[midLeft].transform.localRotation = new Quaternion(0,0,0,0);
-
-        instantiatedSymbols[midRight].transform.localPosition = midRightPos;
-        instantiatedSymbols[midRight].transform.rotation = new Quaternion(0, 0, 0, 0);
-
-        for (int i = 1; i <= midLeft; i++)
-        {
-            Vector3 tempPos = midLeftPos;
-            tempPos -= i * (symbolOffset * Vector3.right);
-            instantiatedSymbols[midLeft - i].transform.localPosition = tempPos;
-            instantiatedSymbols[midLeft - i].transform.rotation = symbolPos.rotation;
-
-            tempPos = midRightPos;
-            tempPos += i * (symbolOffset * Vector3.right);
-            instantiatedSymbols[midRight + i].transform.localPosition = tempPos;
-            instantiatedSymbols[midRight + i].transform.rotation = symbolPos.rotation;
-        }
-    }
-    #endregion    
+   
 
     public void RemoveInput()
     {
@@ -258,14 +171,7 @@ public class Puzzle : MonoBehaviour
     }
     public virtual bool EvaluateSolution()
     {
-        //Debug.Log("EvaluateSolution Called");
-        //Should be in OnEnable but is here for Development and debugging
 
-
-        //Debug.Log("Solution: " + solution + " INPUT : " + grid.GetSolution());
-        //  was the solution correct? 
-
-        Debug.Log(solution);
         if (solution.Equals(grid.GetSolution()))
         {
             //uppdaterar curr puzzle
@@ -420,43 +326,93 @@ public class Puzzle : MonoBehaviour
         }
 
     }
+
+
+    #region Place Symbols
+    private void PlaceSymbols()
+    {
+        if (instantiatedSymbols.Count > 0)
+        {
+            UnloadSymbols();
+        }
+
+
+        //Is this the way we want to fetch the list??
+        foreach (SymbolModPair pair in currentPuzzleInstance.puzzleObjects)
+        {
+            GameObject instance = Instantiate(pair.symbol).gameObject;
+
+            PuzzleObject objectInstance = instance.GetComponent<PuzzleObject>();
+            instantiatedSymbols.Add(objectInstance);
+            objectInstance.transform.parent = symbolPos;
+            objectInstance.SetModifier(pair.modifier);
+
+        }
+
+        if (instantiatedSymbols.Count % 2 == 0)
+            EvenPlaceSymbols();
+        else
+            UnevenPlaceSymbols();
+    }
+
+    private void UnevenPlaceSymbols()
+    {
+        Quaternion emptyQ = new Quaternion(0, 0, 0, 0);
+        int mid = instantiatedSymbols.Count / 2;
+        instantiatedSymbols[mid].transform.localPosition = Vector3.zero;
+        instantiatedSymbols[mid].transform.localRotation = emptyQ;
+
+        for (int i = 1; i <= mid; i++)
+        {
+            Vector3 tempPos = Vector3.zero;
+            tempPos -= i * (symbolOffset * Vector3.right);
+            instantiatedSymbols[mid - i].transform.localPosition = tempPos;
+            instantiatedSymbols[mid - i].transform.rotation = symbolPos.rotation;
+            instantiatedSymbols[mid - i].transform.localPosition =
+                new Vector3(instantiatedSymbols[mid - i].transform.localPosition.x, 0, 0);
+
+
+
+            tempPos = Vector3.zero;
+            tempPos += i * (symbolOffset * Vector3.right);
+            instantiatedSymbols[mid + i].transform.localPosition = tempPos;
+            instantiatedSymbols[mid + i].transform.rotation = symbolPos.rotation;
+            instantiatedSymbols[mid + i].transform.localPosition =
+                new Vector3(instantiatedSymbols[mid + i].transform.localPosition.x, 0, 0);
+        }
+    }
+
+    private void EvenPlaceSymbols()
+    {
+
+
+        int midRight = instantiatedSymbols.Count / 2;
+        int midLeft = midRight - 1;
+
+        Vector3 midLeftPos = (Vector3.left * (symbolOffset / 2));
+        Vector3 midRightPos = (Vector3.right * (symbolOffset / 2));
+
+        instantiatedSymbols[midLeft].transform.localPosition = midLeftPos;
+        instantiatedSymbols[midLeft].transform.localRotation = new Quaternion(0, 0, 0, 0);
+
+        instantiatedSymbols[midRight].transform.localPosition = midRightPos;
+        instantiatedSymbols[midRight].transform.rotation = new Quaternion(0, 0, 0, 0);
+
+        for (int i = 1; i <= midLeft; i++)
+        {
+            Vector3 tempPos = midLeftPos;
+            tempPos -= i * (symbolOffset * Vector3.right);
+            instantiatedSymbols[midLeft - i].transform.localPosition = tempPos;
+            instantiatedSymbols[midLeft - i].transform.rotation = symbolPos.rotation;
+
+            tempPos = midRightPos;
+            tempPos += i * (symbolOffset * Vector3.right);
+            instantiatedSymbols[midRight + i].transform.localPosition = tempPos;
+            instantiatedSymbols[midRight + i].transform.rotation = symbolPos.rotation;
+        }
+    }
+    #endregion    
 }
 
-/*
- * 
- * translation (Lista med varje symbols översättning per index), solution (string), symbools
- * 
- * int solutionIndex = 0;
- * int translationIndex = 0;
- * 
- * for(int i = 0; i < translation.Count; i++){
- * 
- * if(i - 1 > 0 && translation[i - 1] == false)
- *      translation[i] = false;
- *      continue;
- * 
- * for(int j = 0; j <translation[i].Length; j++){
- * 
- * if(solution[solutionIndex] == translation[i][j])
- *      continue;
- *  else
- *  {
- *      symbools[i] = false;
- *      break;
- *  }
- * 
- * }
- * }
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * */
+
 
