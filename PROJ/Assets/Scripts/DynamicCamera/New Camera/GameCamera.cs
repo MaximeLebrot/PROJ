@@ -42,9 +42,11 @@ public class GameCamera : MonoBehaviour {
         behaviours.Add(typeof(PuzzleBaseCameraBehaviour), new PuzzleBaseCameraBehaviour(thisTransform, followTarget, puzzleValues ));
         behaviours.Add(typeof(GlideState), new GlideBaseCameraBehaviour(thisTransform, followTarget, glideValues));
         behaviours.Add(typeof(WalkState), new BaseCameraBehaviour(transform, followTarget, defaultValues));
-        behaviours.Add(typeof(OSSpinState), new OneSwitchCameraBehaviour(transform, followTarget, oneSwitchValues));
+        
+        //One switch
+        /*behaviours.Add(typeof(OSSpinState), new OneSwitchCameraBehaviour(transform, followTarget, oneSwitchValues));
         behaviours.Add(typeof(OSWalkState), behaviours[typeof(OSSpinState)]);
-        behaviours.Add(typeof(OSPuzzleState), behaviours[typeof(PuzzleBaseCameraBehaviour)]);
+        behaviours.Add(typeof(OSPuzzleState), behaviours[typeof(PuzzleBaseCameraBehaviour)]);*/
         
         behaviourQueue = ExecuteCameraBehaviour;
     }
@@ -75,7 +77,7 @@ public class GameCamera : MonoBehaviour {
         input.aim.y = inputDirection.x * globalCameraSettings.MouseSensitivity;
         
         input.movement = inputReference.InputMaster.Movement.ReadValue<Vector2>();
-
+        
         return input;
     }
     

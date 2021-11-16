@@ -6,7 +6,7 @@ namespace NewCamera {
     public class BaseCameraBehaviour {
 
         protected Vector3 referenceVelocity;
-        protected Vector3 previousRotation;
+        protected Quaternion previousRotation;
         protected readonly Transform thisTransform;
         protected readonly Transform target;
         public readonly BehaviourData behaviourValues;
@@ -16,7 +16,7 @@ namespace NewCamera {
             thisTransform = transform;
             this.target = target;
             this.behaviourValues = behaviourValues;
-            previousRotation = target.eulerAngles;
+            previousRotation = target.rotation;
         } 
         
         public virtual Vector3 ExecuteMove(Vector3 calculatedOffset) {
@@ -43,17 +43,8 @@ namespace NewCamera {
         public virtual void ManipulatePivotTarget(CustomInput input, Vector2 clampValues) {
             
             //If no input, use previous rotation
-            if (input.aim == Vector2.zero && input.movement.x == 0) {
-                target.eulerAngles = previousRotation;
-                return;
-            }
-            
-            //If only movement input, move camera to target-parent back.
-            if(input.aim == Vector2.zero && input.movement.x != 0) {
-                Vector3 parentRotation = target.parent.eulerAngles;
-                parentRotation.x = 0;
-                target.rotation = Quaternion.Lerp(target.rotation, Quaternion.Euler(parentRotation), Time.deltaTime * 5);
-                previousRotation = target.eulerAngles;
+            if (input.aim == Vector2.zero && (input.movement.x == 0 || Mathf.Abs(input.movement.x) < .11f)) {
+                target.rotation = previousRotation;
                 return;
             }
             
@@ -67,7 +58,7 @@ namespace NewCamera {
             desiredRotation.x = Mathf.Clamp(desiredRotation.x, clampValues.x, clampValues.y);
             
             target.eulerAngles = desiredRotation;
-            previousRotation = target.eulerAngles;
+            previousRotation = target.rotation;
         }
         
     }
