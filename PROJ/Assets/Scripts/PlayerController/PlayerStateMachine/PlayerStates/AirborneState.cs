@@ -37,8 +37,7 @@ public class AirborneState : PlayerState
     private void LeaveAirborneState()
     {
         player.physics.SetNormalGravity();
-        //How do we know if we entered airborne state from glide?
-        //In that case, we probably want to skip the angle requirement for entering glide state when touching back down
+        
         if(nextState == null || nextState.GetType() == typeof(WalkState))
             stateMachine.ChangeState<WalkState>();
         else
