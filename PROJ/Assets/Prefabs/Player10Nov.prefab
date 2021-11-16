@@ -1307,10 +1307,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
+  m_Radius: 0.3
+  m_Height: 1.9
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: -0.1, z: 0}
 --- !u!114 &8203257626104097638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1346,8 +1346,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2c07b08a6271f944b0a66db3ac5c700, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 10
-  deceleration: 5
+  acceleration: 20
+  deceleration: 12
   maxSpeed: 40
   turnRate: 10
   turnSpeed: 10
@@ -1361,7 +1361,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 183
   groundCheckDistance: 1.1
-  force: {x: 0, y: 0, z: 0}
   dualCameraBehaviour: 0
   inputReference: {fileID: 11400000, guid: 54398b8fed501aa41813fa11036bc179, type: 2}
 --- !u!114 &8203257626104097640
@@ -1386,8 +1385,10 @@ MonoBehaviour:
     m_Bits: 59
   gravityWhenFalling: 25
   glideHeight: 0.5
-  surfThreshold: 4.8
   moveThreshold: 0.002
+  stepHeight: 0.2
+  gravity: 18
+  surfThreshold: 4.8
 --- !u!114 &8203257626104097643
 MonoBehaviour:
   m_ObjectHideFlags: 0

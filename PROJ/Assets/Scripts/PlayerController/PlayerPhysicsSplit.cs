@@ -31,7 +31,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
     [Header("Values set by States")]
     private float maxSpeed = 12f;
-    private float gravity = 9.81f;
+    [SerializeField]private float defaultGravity = 9.81f;
 
     private float smoothingMaxDistance = 3f;
     private int powerOf = 2;
@@ -110,7 +110,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
             GlideHeight = Mathf.Lerp(GlideHeight, values.glideHeight, time * (1 / setValuesLerpSpeed));
             maxSpeed = Mathf.Lerp(maxSpeed, values.maxSpeed, time * (1 / setValuesLerpSpeed));
-            currentGravity = Mathf.Lerp(gravity, values.gravity, time * (1 / setValuesLerpSpeed));          
+            currentGravity = Mathf.Lerp(defaultGravity, values.gravity, time * (1 / setValuesLerpSpeed));          
             
             time += Time.deltaTime;
             yield return null;
@@ -361,7 +361,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     }
     public void SetNormalGravity()
     {
-        currentGravity = gravity;
+        currentGravity = defaultGravity;
     }
 
     private void ApplyAirResistance() { velocity *= Mathf.Pow(airResistance, Time.deltaTime); }

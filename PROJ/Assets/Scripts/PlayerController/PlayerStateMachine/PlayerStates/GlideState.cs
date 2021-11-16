@@ -14,7 +14,6 @@ public class GlideState : PlayerState
         Debug.Log("Entered Glide State");
         player.animator.SetBool("surfing", true);
         player.glideParticle.Play();
-        player.playerController3D.TransitionSurf(true);
         player.physics.SetGlide(true);
         base.EnterState();
     }
