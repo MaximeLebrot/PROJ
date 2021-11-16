@@ -25,7 +25,7 @@ public class WalkState : PlayerState
 
         if (player.physics.velocity.magnitude > player.physics.SurfThreshold + 1
             && player.playerController3D.groundHitAngle < player.playerController3D.GlideMinAngle
-            && player.playerController3D.groundHitInfo.collider.gameObject.CompareTag("Glideable"))
+            && player.playerController3D.groundHitInfo.collider.gameObject.layer == glideableLayer)
             stateMachine.ChangeState<GlideState>();
     }
     public override void ExitState()

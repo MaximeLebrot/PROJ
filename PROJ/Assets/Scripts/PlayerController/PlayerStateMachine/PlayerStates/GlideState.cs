@@ -30,9 +30,6 @@ public class GlideState : PlayerState
             stateMachine.ChangeState<WalkState>();
         }
     }
-        //NOTE
-        //SetGlide(false) & playerController3D.TransitionSurf() would do well in ExitState, but this means that airborne state cannot use the glide camera
-        //If this is changed, make sure to remove the SetGlide(false) in WalkState.EnterState 
     public override void ExitState()
     {
         base.ExitState();
