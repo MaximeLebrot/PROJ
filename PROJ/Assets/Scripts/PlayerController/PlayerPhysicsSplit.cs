@@ -86,6 +86,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     }
     public void SetValues(ControllerValues values)
     {
+        StopCoroutine("LerpValues");
         StartCoroutine("LerpValues", values);
     }
     private IEnumerator LerpValues(ControllerValues values)

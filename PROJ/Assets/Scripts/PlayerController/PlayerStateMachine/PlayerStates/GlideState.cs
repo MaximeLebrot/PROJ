@@ -22,9 +22,14 @@ public class GlideState : PlayerState
         SetInput();
 
         if (!player.playerController3D.IsGrounded())
+        {
             stateMachine.ChangeState<AirborneState>(this);
+            return;
+        }
         
-        if (player.physics.velocity.magnitude < player.physics.SurfThreshold - 1)
+        //GroundhitInfo should be colliding with SOMETHING if we get here
+        if (player.physics.velocity.magnitude < player.physics.SurfThreshold - 1
+            || player.playerController3D.groundHitInfo.collider.gameObject.layer != glideableLayer)
         {
             stateMachine.ChangeState<WalkState>();
         }
