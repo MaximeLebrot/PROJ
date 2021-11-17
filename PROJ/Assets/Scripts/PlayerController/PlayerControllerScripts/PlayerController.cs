@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        //Application.targetFrameRate = 0;
+        Application.targetFrameRate = 60;
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PlayerPhysicsSplit>();
     }

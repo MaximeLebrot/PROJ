@@ -51,6 +51,9 @@ public class GameCamera : MonoBehaviour {
     private void LateUpdate() => behaviourQueue?.Invoke();
 
     private void ExecuteCameraBehaviour() {
+        if (lockInput)
+            return;
+        
         ReadInput();
 
         CustomInput input = ReadInput();
@@ -82,6 +85,7 @@ public class GameCamera : MonoBehaviour {
         EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
         EventHandler<PlayerStateChangeEvent>.RegisterListener(OnPlayerStateChange);
         EventHandler<CameraLookAndMoveToEvent>.RegisterListener(OnLookAndMove);
+        EventHandler<LockInputEvent>.RegisterListener(LockInput);
     }
 
     private void OnDisable() {
@@ -90,6 +94,7 @@ public class GameCamera : MonoBehaviour {
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
         EventHandler<PlayerStateChangeEvent>.UnregisterListener(OnPlayerStateChange);
         EventHandler<CameraLookAndMoveToEvent>.UnregisterListener(OnLookAndMove);
+        EventHandler<LockInputEvent>.UnregisterListener(LockInput);
     }
 
     private void OnAwayFromKeyboard(AwayFromKeyboardEvent e) {
@@ -172,7 +177,10 @@ public class GameCamera : MonoBehaviour {
             EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
         }
     }
-    
+
+    private bool lockInput = false;
+    private void LockInput(LockInputEvent lockInputEvent) => lockInput = lockInputEvent.lockInput;
+
     [ContextMenu("Auto-assign targets", false,0)]
     public void AssignTargets() {
         try {

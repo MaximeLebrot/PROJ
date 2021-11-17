@@ -52,7 +52,7 @@ namespace NewCamera {
             if(input.aim == Vector2.zero && input.movement.x != 0) {
                 Vector3 parentRotation = target.parent.eulerAngles;
                 parentRotation.x = 0;
-                target.eulerAngles = parentRotation;
+                target.rotation = Quaternion.Lerp(target.rotation, Quaternion.Euler(parentRotation), Time.deltaTime * 5);
                 previousRotation = target.eulerAngles;
                 return;
             }
