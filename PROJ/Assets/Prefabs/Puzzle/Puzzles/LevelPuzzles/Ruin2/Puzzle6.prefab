@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7632763366222313946}
   - component: {fileID: 7632763366222313947}
   - component: {fileID: 4781314192369198080}
+  - component: {fileID: -3177015637748640252}
   m_Layer: 10
   m_Name: Puzzle6
   m_TagString: Untagged
@@ -94,9 +95,9 @@ MonoBehaviour:
   - {fileID: 4600488389186637607}
   playerInput: 
   solution: 
-  instantiatedSymbols: []
+  symbolPlacer: {fileID: 0}
   symbolPos: {fileID: 4781314192474671691}
-  symbolOffset: 2
+  placedSymbols: []
   wind: {fileID: 479712434889593652}
   windBurst: {fileID: 714462440587552934}
   windMarkers:
@@ -108,6 +109,20 @@ MonoBehaviour:
   - {fileID: 479712433247706578}
   - {fileID: 479712434055434339}
   - {fileID: 479712433329201159}
+--- !u!114 &-3177015637748640252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4781314192369198083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 103503f21c0dd4b4293450945711d60f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instantiatedSymbols: []
+  symbolOffset: 3
 --- !u!1001 &743298808169030221
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -898,11 +913,6 @@ PrefabInstance:
       objectReference: {fileID: 1165789059226538144, guid: 25ee6cb45ec80f246ba002bd246c9410, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9801f2b66e417634fb39a3290a4975e9, type: 3}
---- !u!4 &4323082657223191270 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8975449277946605010, guid: 9801f2b66e417634fb39a3290a4975e9, type: 3}
-  m_PrefabInstance: {fileID: 5148071040005146420}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4323082657223191273 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8975449277946605021, guid: 9801f2b66e417634fb39a3290a4975e9, type: 3}
@@ -914,6 +924,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db3535f6baf520742890493b26c3045a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &4323082657223191270 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8975449277946605010, guid: 9801f2b66e417634fb39a3290a4975e9, type: 3}
+  m_PrefabInstance: {fileID: 5148071040005146420}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6445878102364581148
 PrefabInstance:
   m_ObjectHideFlags: 0
