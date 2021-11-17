@@ -15,11 +15,10 @@ public class GameCamera : MonoBehaviour {
     [SerializeField] private Transform followTarget;
     [SerializeField] private Transform shoulderPosition;
 
-    [SerializeField] private List<BaseCameraBehaviour> cameraBehaviours;
+    [SerializeField] private List<CompositeCameraBehaviour> cameraBehaviours;
     
     private Transform thisTransform;
-    
-    [SerializeField] private bool oneSwitchMode;
+    private bool lockInput;
     
     private readonly Dictionary<Type, BaseCameraBehaviour> behaviours = new Dictionary<Type, BaseCameraBehaviour>();
 
@@ -29,18 +28,20 @@ public class GameCamera : MonoBehaviour {
     private void Awake() {
         inputReference.Initialize();
         thisTransform = transform;
+        
+        foreach (CompositeCameraBehaviour newBehaviour in cameraBehaviours) {
+            
+            if(newBehaviour.HasMultipleCallbackTypes())
+                AddCallbacks(newBehaviour.GetCallbackTypes(), newBehaviour.cameraBehaviour);
+            else
+                AddCallback(newBehaviour.GetCallbackType(0), newBehaviour.cameraBehaviour);
 
-
-        foreach (BaseCameraBehaviour newBehaviour in cameraBehaviours) {
-            behaviours.Add(newBehaviour.GetType(), newBehaviour);
-            Debug.Log(newBehaviour.GetType());
-            newBehaviour.CreateBehaviour(thisTransform, followTarget);
+            newBehaviour.cameraBehaviour.InjectReferences(thisTransform, followTarget);
         }
 
         currentBaseCameraBehaviour = behaviours[typeof(BaseCameraBehaviour)];
         
         behaviourQueue = ExecuteCameraBehaviour;
-
     }
     private void LateUpdate() => behaviourQueue?.Invoke();
 
@@ -58,6 +59,15 @@ public class GameCamera : MonoBehaviour {
         
         thisTransform.position = currentBaseCameraBehaviour.ExecuteMove(calculatedOffset);
         thisTransform.rotation = currentBaseCameraBehaviour.ExecuteRotate();
+    }
+
+    private void AddCallback(Type type, BaseCameraBehaviour cameraBehaviour) {
+        behaviours.Add(type, cameraBehaviour);
+    }
+
+    private void AddCallbacks(Type[] types, BaseCameraBehaviour cameraBehaviour) {
+        foreach(Type type in types)
+            AddCallback(type, cameraBehaviour);
     }
     
     private CustomInput ReadInput() {
@@ -174,8 +184,7 @@ public class GameCamera : MonoBehaviour {
             EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
         }
     }
-
-    private bool lockInput = false;
+    
     private void LockInput(LockInputEvent lockInputEvent) => lockInput = lockInputEvent.lockInput;
 
     [ContextMenu("Auto-assign targets", false,0)]

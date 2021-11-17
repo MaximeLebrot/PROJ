@@ -1,8 +1,9 @@
+using System;
 using UnityEngine;
 
 namespace NewCamera {
         
-    [System.Serializable]
+    [Serializable]
     [CreateAssetMenu(menuName = "Camera/Camera Behaviours/Base Behaviour", fileName = "Base Behaviour")]
     public class BaseCameraBehaviour : ScriptableObject {
         
@@ -14,7 +15,7 @@ namespace NewCamera {
         protected Transform target;
 
         //"Constructor"
-        public virtual void CreateBehaviour(Transform transform, Transform target) {
+        public virtual void InjectReferences(Transform transform, Transform target) {
             thisTransform = transform;
             this.target = target;
         }
