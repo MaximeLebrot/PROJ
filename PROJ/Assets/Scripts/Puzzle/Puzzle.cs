@@ -14,15 +14,16 @@ public class Puzzle : MonoBehaviour
     protected PuzzleInstance currentPuzzleInstance;
 
     protected PuzzleTranslator translator = new PuzzleTranslator();
+    [SerializeField] private SymbolPlacer symbolPlacer;
 
-    private InputMaster inputMaster;
+    //private InputMaster inputMaster;
     private PuzzleCounter puzzleCounter;
     protected PuzzleGrid grid;
 
-    //Draw symbols
-    [SerializeField] public List<PuzzleObject> instantiatedSymbols = new List<PuzzleObject>();
     [SerializeField] Transform symbolPos;
-    [SerializeField] int symbolOffset;
+    //Draw symbols
+    //should NOT be public, but ModularHintSystem currently relies on this List
+    public List<PuzzleObject> placedSymbols = new List<PuzzleObject>();
 
 
     //FKIN TECH LEEEEEED
@@ -39,6 +40,7 @@ public class Puzzle : MonoBehaviour
 
     void Awake()
     {
+        symbolPlacer = GetComponent<SymbolPlacer>();
         puzzleCounter = GetComponentInChildren<PuzzleCounter>();
         particles = GetComponentInChildren<PuzzleParticles>();
         if (puzzleInstances.Count > 0)
@@ -56,11 +58,6 @@ public class Puzzle : MonoBehaviour
         }
         else
             Debug.LogWarning("NO PUZZLE INSTANCES IN PUZZLE");        
-    }
-    private void Start()
-    {
-        inputMaster = new InputMaster();
-        inputMaster.Enable();
     }
 
     public void Load()
@@ -90,7 +87,6 @@ public class Puzzle : MonoBehaviour
     }
     private void OnDisable()
     {
-        inputMaster.Disable();
         EventHandler<ExitPuzzleEvent>.UnregisterListener(ExitPuzzle);
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
     }
@@ -104,9 +100,7 @@ public class Puzzle : MonoBehaviour
     }
 
     public virtual void InitiatePuzzle()
-    {
-        
-        
+    {       
         EventHandler<LoadPuzzleEvent>.FireEvent(new LoadPuzzleEvent(new PuzzleInfo(GetPuzzleID())));
         
         GetComponentInChildren<PuzzleStarter>().ResetStarter();
@@ -118,11 +112,10 @@ public class Puzzle : MonoBehaviour
         PlaceSymbols();
         solution = Translate();
         translations = translator.GetTranslations();
-
     }
     protected virtual void NextPuzzle()
     {
-        UnloadSymbols();
+        symbolPlacer.UnloadSymbols();
         
         if(particles != null)
             particles.Play();
@@ -132,6 +125,7 @@ public class Puzzle : MonoBehaviour
 
         if(currentPuzzleNum >= puzzleInstances.Count)
         {
+            symbolPlacer.UnloadSymbols();
             EventHandler<ActivatorEvent>.FireEvent(new ActivatorEvent(new PuzzleInfo(masterPuzzleID)));
             puzzleCounter.DeleteMarkers();
             CompletePuzzle();
@@ -167,14 +161,13 @@ public class Puzzle : MonoBehaviour
 
     private string Translate()
     {
-        if (instantiatedSymbols.Count > 0)
-            return translator.CalculateSolution(instantiatedSymbols);
+        if (placedSymbols.Count > 0)
+            return translator.CalculateSolution(placedSymbols);
         else
         {
             Debug.LogWarning("SOLUTION EMPTY, NO INSTANTIATED SYMBOLS");
             return null;
-        }
-            
+        }         
     }
     public virtual bool EvaluateSolution()
     {
@@ -193,14 +186,6 @@ public class Puzzle : MonoBehaviour
         return false;
     }
 
-    private void UnloadSymbols()
-    {
-        foreach(PuzzleObject po in instantiatedSymbols)
-        {
-            po.Unload();
-        }
-        instantiatedSymbols.Clear();
-    }
 
     private void OnTriggerExit(Collider other)
     {
@@ -307,12 +292,12 @@ public class Puzzle : MonoBehaviour
 
         }
 
-        for(int i = 0; i < instantiatedSymbols.Count; i++)
+        for(int i = 0; i < placedSymbols.Count; i++)
         {
             if (clearedSymbols[i] == true)
-                instantiatedSymbols[i].TurnOn();
+                placedSymbols[i].TurnOn();
             else
-                instantiatedSymbols[i].TurnOff();
+                placedSymbols[i].TurnOff();
         }
      }
 
@@ -337,7 +322,8 @@ public class Puzzle : MonoBehaviour
     #region Place Symbols
     private void PlaceSymbols()
     {
-        if (instantiatedSymbols.Count > 0)
+        placedSymbols = symbolPlacer.PlaceSymbols(currentPuzzleInstance, symbolPos);
+        /*if (instantiatedSymbols.Count > 0)
         {
             UnloadSymbols();
         }
@@ -358,33 +344,33 @@ public class Puzzle : MonoBehaviour
         if (instantiatedSymbols.Count % 2 == 0)
             EvenPlaceSymbols();
         else
-            UnevenPlaceSymbols();
+            UnevenPlaceSymbols();*/
     }
 
-    private void UnevenPlaceSymbols()
+   /* private void UnevenPlaceSymbols()
     {
         Quaternion emptyQ = new Quaternion(0, 0, 0, 0);
-        int mid = instantiatedSymbols.Count / 2;
-        instantiatedSymbols[mid].transform.localPosition = Vector3.zero;
-        instantiatedSymbols[mid].transform.localRotation = emptyQ;
+        int mid = placedSymbols.Count / 2;
+        placedSymbols[mid].transform.localPosition = Vector3.zero;
+        placedSymbols[mid].transform.localRotation = emptyQ;
 
         for (int i = 1; i <= mid; i++)
         {
             Vector3 tempPos = Vector3.zero;
             tempPos -= i * (symbolOffset * Vector3.right);
-            instantiatedSymbols[mid - i].transform.localPosition = tempPos;
-            instantiatedSymbols[mid - i].transform.rotation = symbolPos.rotation;
-            instantiatedSymbols[mid - i].transform.localPosition =
-                new Vector3(instantiatedSymbols[mid - i].transform.localPosition.x, 0, 0);
+            placedSymbols[mid - i].transform.localPosition = tempPos;
+            placedSymbols[mid - i].transform.rotation = symbolPos.rotation;
+            placedSymbols[mid - i].transform.localPosition =
+                new Vector3(placedSymbols[mid - i].transform.localPosition.x, 0, 0);
 
 
 
             tempPos = Vector3.zero;
             tempPos += i * (symbolOffset * Vector3.right);
-            instantiatedSymbols[mid + i].transform.localPosition = tempPos;
-            instantiatedSymbols[mid + i].transform.rotation = symbolPos.rotation;
-            instantiatedSymbols[mid + i].transform.localPosition =
-                new Vector3(instantiatedSymbols[mid + i].transform.localPosition.x, 0, 0);
+            placedSymbols[mid + i].transform.localPosition = tempPos;
+            placedSymbols[mid + i].transform.rotation = symbolPos.rotation;
+            placedSymbols[mid + i].transform.localPosition =
+                new Vector3(placedSymbols[mid + i].transform.localPosition.x, 0, 0);
         }
     }
 
@@ -392,31 +378,31 @@ public class Puzzle : MonoBehaviour
     {
 
 
-        int midRight = instantiatedSymbols.Count / 2;
+        int midRight = placedSymbols.Count / 2;
         int midLeft = midRight - 1;
 
         Vector3 midLeftPos = (Vector3.left * (symbolOffset / 2));
         Vector3 midRightPos = (Vector3.right * (symbolOffset / 2));
 
-        instantiatedSymbols[midLeft].transform.localPosition = midLeftPos;
-        instantiatedSymbols[midLeft].transform.localRotation = new Quaternion(0, 0, 0, 0);
+        placedSymbols[midLeft].transform.localPosition = midLeftPos;
+        placedSymbols[midLeft].transform.localRotation = new Quaternion(0, 0, 0, 0);
 
-        instantiatedSymbols[midRight].transform.localPosition = midRightPos;
-        instantiatedSymbols[midRight].transform.rotation = new Quaternion(0, 0, 0, 0);
+        placedSymbols[midRight].transform.localPosition = midRightPos;
+        placedSymbols[midRight].transform.rotation = new Quaternion(0, 0, 0, 0);
 
         for (int i = 1; i <= midLeft; i++)
         {
             Vector3 tempPos = midLeftPos;
             tempPos -= i * (symbolOffset * Vector3.right);
-            instantiatedSymbols[midLeft - i].transform.localPosition = tempPos;
-            instantiatedSymbols[midLeft - i].transform.rotation = symbolPos.rotation;
+            placedSymbols[midLeft - i].transform.localPosition = tempPos;
+            placedSymbols[midLeft - i].transform.rotation = symbolPos.rotation;
 
             tempPos = midRightPos;
             tempPos += i * (symbolOffset * Vector3.right);
-            instantiatedSymbols[midRight + i].transform.localPosition = tempPos;
-            instantiatedSymbols[midRight + i].transform.rotation = symbolPos.rotation;
+            placedSymbols[midRight + i].transform.localPosition = tempPos;
+            placedSymbols[midRight + i].transform.rotation = symbolPos.rotation;
         }
-    }
+    }*/
     #endregion    
 }
 
