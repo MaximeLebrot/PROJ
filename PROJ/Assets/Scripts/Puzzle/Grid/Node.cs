@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class Node : MonoBehaviour {
 
@@ -25,8 +26,12 @@ public class Node : MonoBehaviour {
     public bool Drawable { get; set; }
 
 
+    public PuzzleGrid grid;
+
+    private VisualEffect hitEffect;
     private Animator anim;
     private void Awake() {
+        hitEffect = GetComponent<VisualEffect>();
         anim = GetComponent<Animator>();
         neighbours = new Dictionary<Node, bool>();
         Drawable = true;
@@ -45,9 +50,13 @@ public class Node : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        OnNodeSelected?.Invoke(this);
+        grid.AddSelectedNode(this);
     }
 
+    public void HitNode()
+    {
+        hitEffect.Play();
+    }
 
     private void FindNeighbours() {
         float angle = 0; 
@@ -144,6 +153,7 @@ public class Node : MonoBehaviour {
         //Animate Shit
         anim.SetBool("Off", true);
         enabledBy.Clear();
+        
         //gameObject.SetActive(false);
     }
 
@@ -172,6 +182,11 @@ public class Node : MonoBehaviour {
         enabledBy.Remove(currentNode);
         if (enabledBy.Count == 0 && startNode == false)
             TurnOff();
+    }
+
+    public void Walkable(bool isWalkable)
+    {
+        anim.SetBool("Walkable",isWalkable);
     }
 }
 

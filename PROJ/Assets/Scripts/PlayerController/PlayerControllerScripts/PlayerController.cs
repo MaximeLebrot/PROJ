@@ -30,18 +30,22 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+   
+
+
+    
+    public RaycastHit groundHitInfo;  
+    private float groundCheckBoxSize = 0.1f;
+    private float inputThreshold = 0.1f;
+    private Vector3 input;
+    private Vector3 force;
+
     //Component references
     public PlayerPhysicsSplit physics { get; private set; }
     public Animator animator { get; private set; }
     private Transform cameraTransform;
 
-
-    [HideInInspector] public Vector3 force;
-    public RaycastHit groundHitInfo;  
-    private Vector3 input;
-    private bool surfCamera = false;
-    private float groundCheckBoxSize = 0.1f;
-    private float inputThreshold = 0.1f;
+    //Properties
     public float groundHitAngle { get; private set; }
     public float GlideMinAngle => glideMinAngle;
 
@@ -235,11 +239,6 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-
-    public void TransitionSurf(bool val)
-    {
-        surfCamera = val;
-    }
     /// <summary>
     /// Boxcast to get a little thickness to the groundcheck so as to not get stuck in crevasses or similar geometry. 
     /// </summary>

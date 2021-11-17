@@ -23,12 +23,20 @@ public class PuzzleLine : MonoBehaviour
     {
         //animate something that calls on Stop
         anim.SetTrigger("off");
-        //Invoke("Stop", 1.5f);
+    }
+
+    public void LineErasable(bool isErasable)
+    {
+        anim.SetBool("Erasable", isErasable);
     }
 
     public void Stop()
     {
         lineParticle.Stop();
+    }
+    public void DeleteLine()
+    {
+        Destroy(gameObject);
     }
 
     public void Play()

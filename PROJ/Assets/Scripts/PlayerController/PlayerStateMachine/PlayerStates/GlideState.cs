@@ -14,7 +14,6 @@ public class GlideState : PlayerState
         Debug.Log("Entered Glide State");
         player.animator.SetBool("surfing", true);
         player.glideParticle.Play();
-        player.playerController3D.TransitionSurf(true);
         player.physics.SetGlide(true);
         base.EnterState();
     }
@@ -23,16 +22,18 @@ public class GlideState : PlayerState
         SetInput();
 
         if (!player.playerController3D.IsGrounded())
-            stateMachine.ChangeState<AirborneState>();
+        {
+            stateMachine.ChangeState<AirborneState>(this);
+            return;
+        }
         
-        if (player.physics.velocity.magnitude < player.physics.SurfThreshold - 1)
+        //GroundhitInfo should be colliding with SOMETHING if we get here
+        if (player.physics.velocity.magnitude < player.physics.SurfThreshold - 1
+            || player.playerController3D.groundHitInfo.collider.gameObject.layer != glideableLayer)
         {
             stateMachine.ChangeState<WalkState>();
         }
     }
-        //NOTE
-        //SetGlide(false) & playerController3D.TransitionSurf() would do well in ExitState, but this means that airborne state cannot use the glide camera
-        //If this is changed, make sure to remove the SetGlide(false) in WalkState.EnterState 
     public override void ExitState()
     {
         base.ExitState();
