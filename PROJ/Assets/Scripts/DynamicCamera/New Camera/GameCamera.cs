@@ -30,15 +30,16 @@ public class GameCamera : MonoBehaviour {
         thisTransform = transform;
         
         foreach (CompositeCameraBehaviour newBehaviour in cameraBehaviours) {
-            
-            if(newBehaviour.HasMultipleCallbackTypes())
-                AddCallbacks(newBehaviour.GetCallbackTypes(), newBehaviour.cameraBehaviour);
-            else
-                AddCallback(newBehaviour.GetCallbackType(0), newBehaviour.cameraBehaviour);
 
+            foreach (Type type in newBehaviour.GetTypeList()) 
+                behaviours.Add(type, newBehaviour.cameraBehaviour);
+            
             newBehaviour.cameraBehaviour.InjectReferences(thisTransform, followTarget);
         }
 
+        foreach(KeyValuePair<Type, BaseCameraBehaviour> pairs in behaviours)
+            Debug.LogWarning(pairs);
+        
         currentBaseCameraBehaviour = behaviours[typeof(BaseCameraBehaviour)];
         
         behaviourQueue = ExecuteCameraBehaviour;
@@ -61,15 +62,7 @@ public class GameCamera : MonoBehaviour {
         thisTransform.rotation = currentBaseCameraBehaviour.ExecuteRotate();
     }
 
-    private void AddCallback(Type type, BaseCameraBehaviour cameraBehaviour) {
-        behaviours.Add(type, cameraBehaviour);
-    }
 
-    private void AddCallbacks(Type[] types, BaseCameraBehaviour cameraBehaviour) {
-        foreach(Type type in types)
-            AddCallback(type, cameraBehaviour);
-    }
-    
     private CustomInput ReadInput() {
         Vector2 inputDirection = inputReference.InputMaster.MoveCamera.ReadValue<Vector2>();
 

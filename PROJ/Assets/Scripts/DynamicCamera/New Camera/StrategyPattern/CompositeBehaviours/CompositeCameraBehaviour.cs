@@ -7,7 +7,11 @@ using UnityEngine;
 public class CompositeCameraBehaviour : ScriptableObject {
 
     [SerializeField] public BaseCameraBehaviour cameraBehaviour;
+    
+    [Tooltip("if hasCallbackType is true, any hashmap will use the specified type as key. If false, the camera behaviour type will be used.")]
     [SerializeField] private bool hasCallbackType;
+    [Tooltip("Set as false if the camera behaviour should not be set as a key and value in the same element ")]
+    [SerializeField] private bool addCameraBehaviourTypeAsKey;
     [SerializeField] private List<string> callbackTypeNames;
     [SerializeField] private List<CameraTransition> transitionsToThisBehaviour;
 
@@ -21,24 +25,30 @@ public class CompositeCameraBehaviour : ScriptableObject {
     /// Returns the type that will act as a key in the behaviour dictionary, if hasCallbackType is false this will return the type of the cameraBehaviour.
     /// </summary>
     /// <returns></returns>
-    public Type GetCallbackType(int index) {
-        return hasCallbackType ? CreateCallbackType(index) : cameraBehaviour.GetType();
-    }
     
-    public Type[] GetCallbackTypes() {
-        Type[] types = new Type[callbackTypeNames.Count];
+    public Type[] GetTypeList() {
 
-        for (int i = 0; i < callbackTypeNames.Count; i++) {
-            types[i] = GetCallbackType(i);
+        List<Type> allTypes = new List<Type>();
+
+        
+        if (hasCallbackType == false) {
+            //Does not have callback, return only camera behaviour type.
+            allTypes.Add(cameraBehaviour.GetType());
+            return allTypes.ToArray();
         }
+        
+        for (int i = 0; i < callbackTypeNames.Count; i++)
+            allTypes.Add(CreateCallbackType(i));
 
-        return types;
+        if (addCameraBehaviourTypeAsKey)
+            allTypes.Add(cameraBehaviour.GetType());
+
+        return allTypes.ToArray();
     }
 
     public bool HasMultipleCallbackTypes() {
         return callbackTypeNames.Count > 1;
     }
-    
 }
 
 
