@@ -13,6 +13,7 @@ public class SettingsMenu : MonoBehaviour
     public static SettingsData settings;
     public static SettingsMenu settingsMenuInstance;
 
+    #region Compnent References
     //Audio
     [SerializeField] private Slider musicSlider;
     [SerializeField] private TextMeshProUGUI musicSliderValueText;
@@ -37,8 +38,8 @@ public class SettingsMenu : MonoBehaviour
         ;
     [SerializeField] private TMP_Dropdown quality;
     //[SerializeField]private TMP_Dropdown resolution;
-    [SerializeField] private Toggle fullscreen;
-
+    [SerializeField] private Toggle fullscreen
+    #endregion
 
     private void Awake()
     {
@@ -67,17 +68,13 @@ public class SettingsMenu : MonoBehaviour
         brightness.onValueChanged.AddListener(newValue => {
             brightness.value = newValue;
             brightnessSliderText.text = ((int)(newValue)).ToString();
-        });
-        
-        
+        });       
     }
     
     private void OnEnable()
     {
-
         Debug.Log("Settings menu on enable");
-        LoadSavedSettings();
-        
+        LoadSavedSettings();        
     }
     
     //Called from button in settings menu
