@@ -23,8 +23,18 @@ public class AirborneState : PlayerState
     {
         SetInput();
 
+        if (player.physics.velocity.magnitude < player.physics.SurfThreshold)
+        {
+            stateMachine.ChangeState<WalkState>();
+            return;
+        }
+
         if (player.playerController3D.IsGrounded())
-            LeaveAirborneState();
+        {
+            ReturnToPreviousState();
+            return;
+        }
+
     }
     public override void ExitState()
     {       
@@ -34,7 +44,7 @@ public class AirborneState : PlayerState
     {
         player.playerController3D.InputWalk(player.inputReference.InputMaster.Movement.ReadValue<Vector2>());
     }
-    private void LeaveAirborneState()
+    private void ReturnToPreviousState()
     {
         player.physics.SetNormalGravity();
         
