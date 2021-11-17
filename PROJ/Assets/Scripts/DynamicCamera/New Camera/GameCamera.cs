@@ -14,7 +14,6 @@ public class GameCamera : MonoBehaviour {
 
     [SerializeField] private Transform followTarget;
     [SerializeField] private Transform shoulderPosition;
-    [SerializeField] private Vector2 clampValues;
     
     private Transform thisTransform;
 
@@ -40,22 +39,27 @@ public class GameCamera : MonoBehaviour {
         behaviours.Add(typeof(IdleBehaviour), new IdleBehaviour(thisTransform, followTarget, idleValues)); 
         behaviours.Add(typeof(StationaryBehaviour), new StationaryBehaviour(thisTransform, followTarget, defaultValues));  
         behaviours.Add(typeof(PuzzleBaseCameraBehaviour), new PuzzleBaseCameraBehaviour(thisTransform, followTarget, puzzleValues ));
-        behaviours.Add(typeof(GlideState), new GlideBaseCameraBehaviour(thisTransform, followTarget, glideValues));
+        behaviours.Add(typeof(GlideState), new GlideCameraBehaviour(thisTransform, followTarget, glideValues));
         behaviours.Add(typeof(WalkState), new BaseCameraBehaviour(transform, followTarget, defaultValues));
-        behaviours.Add(typeof(OSSpinState), new OneSwitchCameraBehaviour(transform, followTarget, oneSwitchValues));
+        
+        //One switch
+        /*behaviours.Add(typeof(OSSpinState), new OneSwitchCameraBehaviour(transform, followTarget, oneSwitchValues));
         behaviours.Add(typeof(OSWalkState), behaviours[typeof(OSSpinState)]);
-        behaviours.Add(typeof(OSPuzzleState), behaviours[typeof(PuzzleBaseCameraBehaviour)]);
+        behaviours.Add(typeof(OSPuzzleState), behaviours[typeof(PuzzleBaseCameraBehaviour)]);*/
         
         behaviourQueue = ExecuteCameraBehaviour;
     }
     private void LateUpdate() => behaviourQueue?.Invoke();
 
     private void ExecuteCameraBehaviour() {
+        if (lockInput)
+            return;
+        
         ReadInput();
 
         CustomInput input = ReadInput();
         
-        currentBaseCameraBehaviour.ManipulatePivotTarget(input, clampValues);
+        currentBaseCameraBehaviour.ManipulatePivotTarget(input);
         
         Vector3 calculatedOffset = currentBaseCameraBehaviour.ExecuteCollision(globalCameraSettings);
         
@@ -72,7 +76,7 @@ public class GameCamera : MonoBehaviour {
         input.aim.y = inputDirection.x * globalCameraSettings.MouseSensitivity;
         
         input.movement = inputReference.InputMaster.Movement.ReadValue<Vector2>();
-
+        
         return input;
     }
     
@@ -82,6 +86,7 @@ public class GameCamera : MonoBehaviour {
         EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
         EventHandler<PlayerStateChangeEvent>.RegisterListener(OnPlayerStateChange);
         EventHandler<CameraLookAndMoveToEvent>.RegisterListener(OnLookAndMove);
+        EventHandler<LockInputEvent>.RegisterListener(LockInput);
     }
 
     private void OnDisable() {
@@ -90,6 +95,7 @@ public class GameCamera : MonoBehaviour {
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
         EventHandler<PlayerStateChangeEvent>.UnregisterListener(OnPlayerStateChange);
         EventHandler<CameraLookAndMoveToEvent>.UnregisterListener(OnLookAndMove);
+        EventHandler<LockInputEvent>.UnregisterListener(LockInput);
     }
 
     private void OnAwayFromKeyboard(AwayFromKeyboardEvent e) {
@@ -141,7 +147,10 @@ public class GameCamera : MonoBehaviour {
         puzzleBaseBehaviour?.AssignRotation(startPuzzleEvent.info.puzzlePos);
     }
     
-    private void ChangeBehaviour(BaseCameraBehaviour newBaseCameraBehaviour) => currentBaseCameraBehaviour = newBaseCameraBehaviour;
+    private void ChangeBehaviour(BaseCameraBehaviour newBaseCameraBehaviour) {
+        currentBaseCameraBehaviour = newBaseCameraBehaviour;
+        currentBaseCameraBehaviour.InitializeBehaviour();
+    }
 
     private async Task PlayTransition(CameraTransition cameraTransition) {
 
@@ -172,7 +181,10 @@ public class GameCamera : MonoBehaviour {
             EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
         }
     }
-    
+
+    private bool lockInput = false;
+    private void LockInput(LockInputEvent lockInputEvent) => lockInput = lockInputEvent.lockInput;
+
     [ContextMenu("Auto-assign targets", false,0)]
     public void AssignTargets() {
         try {

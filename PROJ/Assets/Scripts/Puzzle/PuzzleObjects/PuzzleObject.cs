@@ -17,7 +17,7 @@ public abstract class PuzzleObject : MonoBehaviour
     
 
     private ModInfo modInfo;
-    private Image modifierImage; //dekal som ska visas någonstans!?!? HUR GÖR MAN
+    private Image modifierImage; //dekal som ska visas nÃ¥gonstans!?!? HUR GÃ–R MAN
     private GameObject modifier;
     private Animator anim;
 

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 [CreateAssetMenu(menuName = "Input Reference/Controller Input Reference", fileName = "Controller Input Reference")]
 public class ControllerInputReference : ScriptableObject {
@@ -12,7 +11,5 @@ public class ControllerInputReference : ScriptableObject {
         inputMaster = new InputMaster();
         inputMaster.Enable();
     }
-
-    
 }
 

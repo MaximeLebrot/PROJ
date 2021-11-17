@@ -60,6 +60,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Menu",
+                    "type": "Button",
+                    "id": "c480e120-4e87-4ad7-8512-1f825dd22bae",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -123,7 +131,7 @@
                     "id": "39ed72fd-1f47-4b07-9178-73b1dd2d1e78",
                     "path": "<Gamepad>/leftStick",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "NormalizeVector2",
                     "groups": "xboxcontroller",
                     "action": "Movement",
                     "isComposite": false,
@@ -167,7 +175,7 @@
                     "id": "1362b017-5dac-4a05-b539-af7917f1d25b",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
-                    "processors": "ScaleVector2(x=7,y=7)",
+                    "processors": "ScaleVector2(x=13,y=13)",
                     "groups": "Stnd KBM",
                     "action": "MoveCamera",
                     "isComposite": false,
@@ -214,6 +222,17 @@
                     "processors": "",
                     "groups": "Stnd KBM",
                     "action": "Anykey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "90d4db88-97ae-4326-a18b-429a8c16159f",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Stnd KBM",
+                    "action": "Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

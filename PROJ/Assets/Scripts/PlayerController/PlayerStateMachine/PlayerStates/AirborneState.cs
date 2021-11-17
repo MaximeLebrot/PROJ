@@ -23,8 +23,18 @@ public class AirborneState : PlayerState
     {
         SetInput();
 
+        if (player.physics.velocity.magnitude < player.physics.SurfThreshold)
+        {
+            stateMachine.ChangeState<WalkState>();
+            return;
+        }
+
         if (player.playerController3D.IsGrounded())
-            LeaveAirborneState();
+        {
+            ReturnToPreviousState();
+            return;
+        }
+
     }
     public override void ExitState()
     {       
@@ -34,11 +44,10 @@ public class AirborneState : PlayerState
     {
         player.playerController3D.InputWalk(player.inputReference.InputMaster.Movement.ReadValue<Vector2>());
     }
-    private void LeaveAirborneState()
+    private void ReturnToPreviousState()
     {
         player.physics.SetNormalGravity();
-        //How do we know if we entered airborne state from glide?
-        //In that case, we probably want to skip the angle requirement for entering glide state when touching back down
+        
         if(nextState == null || nextState.GetType() == typeof(WalkState))
             stateMachine.ChangeState<WalkState>();
         else

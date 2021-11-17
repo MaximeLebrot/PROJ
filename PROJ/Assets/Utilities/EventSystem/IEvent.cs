@@ -112,6 +112,13 @@ public class LoadPuzzleEvent : IEvent
 public class AwayFromKeyboardEvent : IEvent { }
 #endregion
 
+public readonly struct LockInputEvent : IEvent {
+
+    public readonly bool lockInput;
+
+    public LockInputEvent(bool lockInput) => this.lockInput = lockInput;
+
+}
 public class SaveEvent : IEvent { }
 public class SaveSettingsEvent : IEvent 
 {
