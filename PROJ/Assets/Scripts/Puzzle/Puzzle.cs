@@ -16,6 +16,7 @@ public class Puzzle : MonoBehaviour
     protected PuzzleTranslator translator = new PuzzleTranslator();
 
     private InputMaster inputMaster;
+    private PuzzleCounter puzzleCounter;
     protected PuzzleGrid grid;
 
     //Draw symbols
@@ -38,12 +39,14 @@ public class Puzzle : MonoBehaviour
 
     void Awake()
     {
+        puzzleCounter = GetComponentInChildren<PuzzleCounter>();
         particles = GetComponentInChildren<PuzzleParticles>();
         if (puzzleInstances.Count > 0)
         {
             SetupPuzzleInstances();
             currentPuzzleInstance = puzzleInstances[0];
             numOfPuzzles = puzzleInstances.Count;
+            puzzleCounter.GenerateMarkers(numOfPuzzles);
             grid = GetComponentInChildren<PuzzleGrid>();
             grid.StartGrid();
             
@@ -105,7 +108,7 @@ public class Puzzle : MonoBehaviour
         
         
         EventHandler<LoadPuzzleEvent>.FireEvent(new LoadPuzzleEvent(new PuzzleInfo(GetPuzzleID())));
-        EventHandler<ResetPuzzleEvent>.FireEvent(new ResetPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID(masterPuzzleID))));
+        
         GetComponentInChildren<PuzzleStarter>().ResetStarter();
         //grid.ResetGrid();
 
@@ -120,13 +123,17 @@ public class Puzzle : MonoBehaviour
     protected virtual void NextPuzzle()
     {
         UnloadSymbols();
+        
         if(particles != null)
             particles.Play();
 
+        puzzleCounter.MarkedAsSolved(currentPuzzleNum);
         currentPuzzleNum++;     
 
         if(currentPuzzleNum >= puzzleInstances.Count)
         {
+            EventHandler<ActivatorEvent>.FireEvent(new ActivatorEvent(new PuzzleInfo(masterPuzzleID)));
+            puzzleCounter.DeleteMarkers();
             CompletePuzzle();
             return;
         }
@@ -138,7 +145,7 @@ public class Puzzle : MonoBehaviour
     private void CompletePuzzle()
     {
         Invoke("CompleteGrid", 2);
-        EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID(masterPuzzleID)), true));
+        EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(masterPuzzleID), true));
         GetComponent<Collider>().enabled = false;
     }
 
@@ -223,7 +230,7 @@ public class Puzzle : MonoBehaviour
     }
 
     //Maybe return ID from current PuzzleInstance instead
-    public int GetPuzzleID() { return currentPuzzleInstance.GetPuzzleID(masterPuzzleID);}
+    public int GetPuzzleID() { return currentPuzzleInstance.GetPuzzleID(); }
 
 
 
@@ -314,7 +321,7 @@ public class Puzzle : MonoBehaviour
     {
         if (eve.success != true)
         {
-            if (eve.info.ID == currentPuzzleInstance.GetPuzzleID(masterPuzzleID))
+            if (eve.info.ID == currentPuzzleInstance.GetPuzzleID())
             {
                 if(eve.success == false)
                 {

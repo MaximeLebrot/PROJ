@@ -19,35 +19,21 @@ public class PuzzleInstance : MonoBehaviour
         PuzzleDictionary.AddPuzzle(puzzleID);
     }
 
-    private void OnEnable()
-    {
-        EventHandler<EvaluateSolutionEvent>.RegisterListener(EvaluateSolution);
-    }
-
-    private void OnDisable()
-    {
-        EventHandler<EvaluateSolutionEvent>.UnregisterListener(EvaluateSolution);
-    }
-
-    private void EvaluateSolution(EvaluateSolutionEvent evaluationEvent)
-    {
-        Debug.Log("Instance recieved eval event");
-        if(evaluationEvent.info.ID == puzzleID)
-            masterPuzzle.EvaluateSolution();
-    }
+    
 
     public void SetupPuzzleInstance(Puzzle puzzle, int masterPuzzleID)
     {
         masterPuzzle = puzzle;
         puzzleID = int.Parse(masterPuzzleID.ToString() + puzzleID.ToString());
     }
-    public int GetPuzzleID(int masterPuzzleID) 
+    public int GetPuzzleID()
     {
         return puzzleID;  
     }
 
     public void Solve() 
     { 
+        //Send Event to do something?
         currentState = true; 
         PuzzleDictionary.SetState(puzzleID, currentState); 
     }
