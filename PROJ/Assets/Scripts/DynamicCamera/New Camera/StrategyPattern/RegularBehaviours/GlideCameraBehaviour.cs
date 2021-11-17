@@ -4,11 +4,12 @@ using UnityEngine;
 namespace NewCamera { 
     
     [Serializable]
+    [CreateAssetMenu(menuName = "Camera/Camera Behaviours/Glide Behaviour", fileName = "Glide Behaviour")]
     public class GlideCameraBehaviour : BaseCameraBehaviour {
-
-        public GlideCameraBehaviour(Transform transform, Transform target, BehaviourData behaviourValues) : base(transform, target, behaviourValues) {}
         
         public override Quaternion ExecuteRotate() {
+            
+            Debug.Log("Glide camera");
             
             Quaternion targetRotation = Quaternion.LookRotation(((target.position - thisTransform.position) + BehaviourData<GlideData>().LookRotationOffset));
             

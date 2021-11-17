@@ -14,14 +14,10 @@ public class GameCamera : MonoBehaviour {
 
     [SerializeField] private Transform followTarget;
     [SerializeField] private Transform shoulderPosition;
+
+    [SerializeField] private List<BaseCameraBehaviour> cameraBehaviours;
     
     private Transform thisTransform;
-
-    [SerializeField] private BehaviourData defaultValues;
-    [SerializeField] private BehaviourData glideValues;
-    [SerializeField] private BehaviourData idleValues;
-    [SerializeField] private BehaviourData puzzleValues;
-    [SerializeField] private BehaviourData oneSwitchValues;
     
     [SerializeField] private bool oneSwitchMode;
     
@@ -33,21 +29,18 @@ public class GameCamera : MonoBehaviour {
     private void Awake() {
         inputReference.Initialize();
         thisTransform = transform;
-        
-        currentBaseCameraBehaviour = oneSwitchMode ? new OneSwitchCameraBehaviour(transform, followTarget, oneSwitchValues) : new BaseCameraBehaviour(thisTransform, followTarget, defaultValues);
-        
-        behaviours.Add(typeof(IdleBehaviour), new IdleBehaviour(thisTransform, followTarget, idleValues)); 
-        behaviours.Add(typeof(StationaryBehaviour), new StationaryBehaviour(thisTransform, followTarget, defaultValues));  
-        behaviours.Add(typeof(PuzzleBaseCameraBehaviour), new PuzzleBaseCameraBehaviour(thisTransform, followTarget, puzzleValues ));
-        behaviours.Add(typeof(GlideState), new GlideCameraBehaviour(thisTransform, followTarget, glideValues));
-        behaviours.Add(typeof(WalkState), new BaseCameraBehaviour(transform, followTarget, defaultValues));
-        
-        //One switch
-        /*behaviours.Add(typeof(OSSpinState), new OneSwitchCameraBehaviour(transform, followTarget, oneSwitchValues));
-        behaviours.Add(typeof(OSWalkState), behaviours[typeof(OSSpinState)]);
-        behaviours.Add(typeof(OSPuzzleState), behaviours[typeof(PuzzleBaseCameraBehaviour)]);*/
+
+
+        foreach (BaseCameraBehaviour newBehaviour in cameraBehaviours) {
+            behaviours.Add(newBehaviour.GetType(), newBehaviour);
+            Debug.Log(newBehaviour.GetType());
+            newBehaviour.CreateBehaviour(thisTransform, followTarget);
+        }
+
+        currentBaseCameraBehaviour = behaviours[typeof(BaseCameraBehaviour)];
         
         behaviourQueue = ExecuteCameraBehaviour;
+
     }
     private void LateUpdate() => behaviourQueue?.Invoke();
 
@@ -105,7 +98,7 @@ public class GameCamera : MonoBehaviour {
     }
 
     private void OnReturnToKeyboard(AwayFromKeyboardEvent e) {
-        ChangeBehaviour(behaviours[typeof(StationaryBehaviour)]);
+        ChangeBehaviour(behaviours[typeof(BaseCameraBehaviour)]);
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnReturnToKeyboard);
         EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
     }
@@ -140,16 +133,16 @@ public class GameCamera : MonoBehaviour {
             
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
             
-        ChangeBehaviour(behaviours[typeof(PuzzleBaseCameraBehaviour)]);
+        ChangeBehaviour(behaviours[typeof(PuzzleCameraBehaviour)]);
 
-        PuzzleBaseCameraBehaviour puzzleBaseBehaviour = currentBaseCameraBehaviour as PuzzleBaseCameraBehaviour;
+        PuzzleCameraBehaviour puzzleBehaviour = currentBaseCameraBehaviour as PuzzleCameraBehaviour;
 
-        puzzleBaseBehaviour?.AssignRotation(startPuzzleEvent.info.puzzlePos);
+        puzzleBehaviour?.AssignRotation(startPuzzleEvent.info.puzzlePos);
     }
     
     private void ChangeBehaviour(BaseCameraBehaviour newBaseCameraBehaviour) {
         currentBaseCameraBehaviour = newBaseCameraBehaviour;
-        currentBaseCameraBehaviour.InitializeBehaviour();
+        currentBaseCameraBehaviour.EnterBehaviour();
     }
 
     private async Task PlayTransition(CameraTransition cameraTransition) {

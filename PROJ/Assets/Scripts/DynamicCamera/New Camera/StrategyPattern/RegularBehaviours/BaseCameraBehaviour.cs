@@ -3,22 +3,23 @@ using UnityEngine;
 namespace NewCamera {
         
     [System.Serializable]
-    public class BaseCameraBehaviour {
-
+    [CreateAssetMenu(menuName = "Camera/Camera Behaviours/Base Behaviour", fileName = "Base Behaviour")]
+    public class BaseCameraBehaviour : ScriptableObject {
+        
+        [SerializeField] protected BehaviourData behaviourValues;
+        
         protected Vector3 referenceVelocity;
         protected Quaternion previousRotation;
-        protected readonly Transform thisTransform;
-        protected readonly Transform target;
-        protected readonly BehaviourData behaviourValues;
+        protected Transform thisTransform;
+        protected Transform target;
 
-
-        public BaseCameraBehaviour(Transform transform, Transform target, BehaviourData behaviourValues) {
+        //"Constructor"
+        public virtual void CreateBehaviour(Transform transform, Transform target) {
             thisTransform = transform;
             this.target = target;
-            this.behaviourValues = behaviourValues;
         }
-
-        public virtual void InitializeBehaviour() {
+        
+        public virtual void EnterBehaviour() {
             previousRotation = target.rotation;
         }
         

@@ -4,16 +4,11 @@ using UnityEngine;
 namespace NewCamera
 {
     [Serializable]
+    [CreateAssetMenu(menuName = "Camera/Camera Behaviours/Idle Behaviour", fileName = "Idle Behaviour")]
     public class IdleBehaviour : BaseCameraBehaviour {
         
-        private IdleBehaviourData idleBehaviourData;
-
         private float pointOnCurve;
-        
-        public IdleBehaviour(Transform transform, Transform target, BehaviourData behaviourValues) : base(transform, target, behaviourValues) {
-            idleBehaviourData = behaviourValues as IdleBehaviourData;
-            EventHandler<AwayFromKeyboardEvent>.RegisterListener(ResetCurveCount);
-        }
+        public override void EnterBehaviour() => pointOnCurve = 0;
 
         public override Vector3 ExecuteMove(Vector3 calculatedOffset) {
             return Vector3.SmoothDamp(thisTransform.position, target.parent.position + calculatedOffset, ref referenceVelocity, behaviourValues.FollowSpeed);
@@ -21,15 +16,15 @@ namespace NewCamera
 
         public override Quaternion ExecuteRotate() {
 
-            float newIndex = idleBehaviourData.RotationCurve.Evaluate(pointOnCurve);
-            pointOnCurve +=  Time.deltaTime / idleBehaviourData.FollowSpeed;
+            float newIndex = BehaviourData<IdleBehaviourData>().RotationCurve.Evaluate(pointOnCurve);
+            pointOnCurve +=  Time.deltaTime / BehaviourData<IdleBehaviourData>().FollowSpeed;
             
             return Quaternion.Lerp(thisTransform.rotation, Quaternion.LookRotation(target.parent.forward), newIndex);
         }
 
         public override Vector3 ExecuteCollision(GlobalCameraSettings data) {
             
-            Vector3 collisionOffset = target.parent.rotation * idleBehaviourData.Offset;
+            Vector3 collisionOffset = target.parent.rotation * BehaviourData<IdleBehaviourData>().Offset;
         
             if (Physics.SphereCast(target.position, data.CollisionRadius, collisionOffset.normalized, out var hitInfo, collisionOffset.magnitude, data.CollisionMask))
                 collisionOffset = collisionOffset.normalized * hitInfo.distance;
@@ -38,13 +33,8 @@ namespace NewCamera
             
         }
 
-        private void ResetCurveCount(AwayFromKeyboardEvent e) {
-            pointOnCurve = 0;
-            
-            Debug.Log(pointOnCurve);
-            
-            EventHandler<AwayFromKeyboardEvent>.UnregisterListener(ResetCurveCount);
-        }
+        public override void ManipulatePivotTarget(CustomInput input) => target.rotation = thisTransform.rotation;
+        
     }
 
 }

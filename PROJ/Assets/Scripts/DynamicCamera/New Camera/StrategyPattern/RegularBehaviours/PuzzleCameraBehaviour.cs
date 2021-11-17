@@ -3,12 +3,11 @@ using UnityEngine;
 namespace NewCamera
 {
     [System.Serializable]
-    public class PuzzleBaseCameraBehaviour : BaseCameraBehaviour {
+    [CreateAssetMenu(menuName = "Camera/Camera Behaviours/Puzzle Behaviour", fileName = "Puzzle Behaviour")]
+    public class PuzzleCameraBehaviour : BaseCameraBehaviour {
         
         private readonly Vector3 eulerRotation = new Vector3(50, 0, 0);
         private Transform puzzle;
-        
-        public PuzzleBaseCameraBehaviour(Transform transform, Transform target, BehaviourData behaviourValues) : base(transform, target, behaviourValues) {}
         
         public void AssignRotation(Transform puzzleRotation) => puzzle = puzzleRotation;
 
