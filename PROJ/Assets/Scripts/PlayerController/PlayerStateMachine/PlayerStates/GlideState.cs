@@ -11,7 +11,7 @@ public class GlideState : PlayerState
     }
     public override void EnterState()
     {
-        Debug.Log("Entered Glide State");
+        //Debug.Log("Entered Glide State");
         player.animator.SetBool("surfing", true);
         player.glideParticle.Play();
         player.physics.SetGlide(true);
