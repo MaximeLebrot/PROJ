@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3007054, g: 0.25875083, b: 0.30208462, a: 1}
+  m_IndirectSpecularColor: {r: 0.28633615, g: 0.31202403, b: 0.38944376, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -372,9 +372,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8203257626104097639, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
+      propertyPath: m_Radius
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8203257626104097640, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
+      propertyPath: skinWidth
+      value: 0.002
+      objectReference: {fileID: 0}
+    - target: {fileID: 8203257626104097640, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
+      propertyPath: stepHeight
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 8203257626104097640, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
       propertyPath: surfThreshold
       value: 4.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8203257626104097640, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
+      propertyPath: minimumPenetrationForPenalty
+      value: 0.001
       objectReference: {fileID: 0}
     - target: {fileID: 8203257626104097641, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
       propertyPath: glideMinAngle
@@ -1675,7 +1691,7 @@ PrefabInstance:
     - target: {fileID: 4247769122769687363, guid: 2648f4adccb77c9468ce105025f3f7e2, type: 3}
       propertyPath: glideValues
       value: 
-      objectReference: {fileID: 11400000, guid: 0f726dd075368fb49876d097e646c0c3, type: 2}
+      objectReference: {fileID: 11400000, guid: 1e58154d70b7b974c95af4e20e6d490f, type: 2}
     - target: {fileID: 4247769122769687363, guid: 2648f4adccb77c9468ce105025f3f7e2, type: 3}
       propertyPath: followTarget
       value: 
@@ -1688,6 +1704,10 @@ PrefabInstance:
       propertyPath: defaultValues
       value: 
       objectReference: {fileID: 11400000, guid: 301349ffb4190a84d9cedbaed0935248, type: 2}
+    - target: {fileID: 4247769122769687363, guid: 2648f4adccb77c9468ce105025f3f7e2, type: 3}
+      propertyPath: shoulderPosition
+      value: 
+      objectReference: {fileID: 1692883727}
     - target: {fileID: 4247769122769687363, guid: 2648f4adccb77c9468ce105025f3f7e2, type: 3}
       propertyPath: behaviourCallback
       value: 
@@ -1967,6 +1987,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c0b2ebf1e8273a4f993bc5a169e10aa, type: 3}
+--- !u!4 &1692883727 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1378231909, guid: 926ba1b01ad8fb84aa8385ac3b548a06, type: 3}
+  m_PrefabInstance: {fileID: 47054221}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1709401495
 PrefabInstance:
   m_ObjectHideFlags: 0

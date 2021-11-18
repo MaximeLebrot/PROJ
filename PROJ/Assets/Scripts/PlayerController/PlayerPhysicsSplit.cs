@@ -170,22 +170,24 @@ public class PlayerPhysicsSplit : MonoBehaviour
     {
         //Y-axis normalforce
         //Could use sphere coll here instead of bottomhalf etc
+        Vector3 castOrigin = transform.position + (attachedCollider.center + attachedCollider.height * 0.5f * Vector3.down) + stepHeight * 0.5f * Vector3.up;
         float castLength = velocity.magnitude * Time.deltaTime + skinWidth;
-        Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, Vector3.down, out RaycastHit yHitInfo, castLength, collisionMask);
+        Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, velocity.normalized, out RaycastHit yHitInfo, castLength, collisionMask);
         if (yHitInfo.collider && yHitInfo.collider.isTrigger == false)
         {
             Vector3 smoothingNormalForce;
+            /*
             if (yHitInfo.distance < castLength)
             {
                 smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, yHitInfo.normal);
             }
             else
-            {
+            {*/
                 smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, yHitInfo.normal)
                                         + GlideHeight * Vector3.up;
-            }
+            //}
 
-            ApplyFriction(smoothingNormalForce);
+            //ApplyFriction(smoothingNormalForce);
             velocity += new Vector3(0, smoothingNormalForce.y, 0);
         }
     }
@@ -243,6 +245,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
            
             Vector3? separation = null;
             float maxDistance = 0f;
+            Vector3 direction = Vector3.zero;
             foreach (Collider currentCollider in colliders)
             {
                 if (currentCollider == attachedCollider ||currentCollider.isTrigger)
@@ -255,7 +258,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
                                             currentCollider,
                                             currentCollider.transform.position,
                                             currentCollider.transform.rotation,
-                                            out Vector3 direction,
+                                            out direction,
                                             out float distance);
                 
                 //Compute penetration does not always return true (?), and if it doesnt, we can skip this loop iteration.
@@ -278,8 +281,10 @@ public class PlayerPhysicsSplit : MonoBehaviour
                 velocity += normalForce;
             }
             else
-            {              
-                Debug.Log("Separation has no value!, maxDistance x100 is  " + maxDistance);
+            {
+                Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity * minimumPenetrationForPenalty, direction.normalized);
+                velocity += normalForce;
+                //Debug.Log("Separation has no value!, maxDistance x100 is  " + maxDistance);
                 return;
             }
         }
