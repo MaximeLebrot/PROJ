@@ -11,7 +11,7 @@ public class PuzzleCounter : MonoBehaviour
 
     public void GenerateMarkers(int puzzleAmount)
     {
-        for(int i = 0; i <= puzzleAmount; i++)
+        for(int i = 0; i < puzzleAmount; i++)
         {
             allMarkers.Add(Instantiate(markerPrefab, transform));
         }
