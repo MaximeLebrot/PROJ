@@ -231,7 +231,7 @@ public class PuzzleGrid : MonoBehaviour {
         #endregion
 
         #region MOVE_CURRENT_NODE
-        Debug.Log("AKTIVERA NODE   " + node.gameObject);
+        //Debug.Log("AKTIVERA NODE   " + node.gameObject);
         
         currentNode = node;
         lineNodes.Add(currentNode);
@@ -313,7 +313,7 @@ public class PuzzleGrid : MonoBehaviour {
     {
         if (solution.Length > 0)
         {
-            //masterPuzzle.CheckIfClearedSymbol(solution[0] == '-' ? PuzzleHelper.SkipFirstChar(solution) : solution);
+            masterPuzzle.CheckIfClearedSymbol(solution[0] == '-' ? PuzzleHelper.SkipFirstChar(solution) : solution);
             if (masterPuzzle.EvaluateSolution())
             {
                 DestroyCurrentLine();
@@ -415,7 +415,7 @@ public class PuzzleGrid : MonoBehaviour {
         currentNode = startNode;
         currentNode.TurnOnCollider();
         currentNode.ResetNeighbours();
-        Invoke("TellPuzzleGridIsReady", 1.5f);
+        Invoke("TellPuzzleGridIsReady", 3f);
     }
 
     private void TellPuzzleGridIsReady()
@@ -427,7 +427,7 @@ public class PuzzleGrid : MonoBehaviour {
     {
         if (currentLine != null)
         {
-            Debug.Log("DESTROY CURRENT LINE");
+            //Debug.Log("DESTROY CURRENT LINE");
             currentLine.Stop();
             Destroy(currentLine.gameObject);
             currentLine = null;

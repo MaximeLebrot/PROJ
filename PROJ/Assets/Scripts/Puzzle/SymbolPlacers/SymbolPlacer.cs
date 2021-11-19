@@ -11,6 +11,8 @@ public class SymbolPlacer : MonoBehaviour
     {
         this.symbolPos = symbolPos;
 
+
+
         foreach (SymbolModPair pair in currentPuzzleInstance.puzzleObjects)
         {
             GameObject instance = Instantiate(pair.symbol).gameObject;
