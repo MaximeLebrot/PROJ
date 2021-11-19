@@ -111,9 +111,11 @@ public class Node : MonoBehaviour {
         }
     }
 
+    //Currently doesnt know if the node actually is a neighbour, only checks if there is a line drawn to it - 
+    // meaning you can draw to nodes that are not neighbours
     public bool HasLineToNode(Node n)
     {
-        return neighbours[n];
+        return neighbours.ContainsKey(n) ? neighbours[n] : false;
     }
 
     public void TurnOffCollider()

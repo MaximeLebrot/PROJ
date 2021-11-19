@@ -318,7 +318,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
             {
                 Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity * minimumPenetrationForPenalty, direction.normalized);
                 velocity += normalForce;
-                Debug.Log("Separation has no value!, maxDistance x100 is  " + maxDistance);
+                //Debug.Log("Separation has no value!, maxDistance x100 is  " + maxDistance);
                 return;
             }
         }

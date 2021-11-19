@@ -25,11 +25,8 @@ public class Puzzle : MonoBehaviour
     //should NOT be public, but ModularHintSystem currently relies on this List
     public List<PuzzleObject> placedSymbols = new List<PuzzleObject>();
 
-
-    //FKIN TECH LEEEEEED
     private int numOfPuzzles;
     private int currentPuzzleNum = 0;
-    private int numOfFinishedPuzzles = 0;
 
     private Transform player;
     private PuzzleParticles particles;
@@ -186,15 +183,12 @@ public class Puzzle : MonoBehaviour
         return false;
     }
 
-
     private void OnTriggerExit(Collider other)
     {
-
         //PuzzleInfo info = new PuzzleInfo(currentPuzzleInstance.GetPuzzleID());
         //EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(info, false));
         grid.ResetGrid();
         GetComponentInChildren<PuzzleStarter>().ResetStarter();
-
     }
 
     
