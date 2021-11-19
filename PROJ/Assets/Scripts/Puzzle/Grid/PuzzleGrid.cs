@@ -242,9 +242,7 @@ public class PuzzleGrid : MonoBehaviour {
         ActivateNode(node, false);
 
         #endregion
-        //Hazard
-        EventHandler<UpdateHazardEvent>.FireEvent(new UpdateHazardEvent());
-        Debug.Log("Update hazard event fired");
+
     }
 
     private void CreateNewLine(Node node)
