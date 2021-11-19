@@ -21,7 +21,7 @@ public class PuzzleGrid : MonoBehaviour {
 
     [SerializeField]private string solution;
     //private List<Node> allNodesLIST = new List<Node>();
-    private Node[,] allNodes; 
+    public Node[,] allNodes { get; private set; }
 
 
     private List<Node> unrestrictedNodes = new List<Node>();
@@ -116,6 +116,7 @@ public class PuzzleGrid : MonoBehaviour {
 
     void GenerateGrid()
     {
+        Debug.Log("Generate grid");
         allNodes = new Node[size, size];
         int midIndex = size / 2;
         for (int x = 0; x < size; x++)
@@ -190,6 +191,9 @@ public class PuzzleGrid : MonoBehaviour {
         //If a line already exists with currentNode, erase
         if (lineRenderers.Count > 0 && lineRenderers.Peek().CompareLastLine(newLine))
         {
+            //Hazard
+            EventHandler<UpdateHazardEvent>.FireEvent(new UpdateHazardEvent());
+            Debug.Log("Update hazard event fired");
             EraseLine(node);
             return;
         }
@@ -238,6 +242,9 @@ public class PuzzleGrid : MonoBehaviour {
         ActivateNode(node, false);
 
         #endregion
+        //Hazard
+        EventHandler<UpdateHazardEvent>.FireEvent(new UpdateHazardEvent());
+        Debug.Log("Update hazard event fired");
     }
 
     private void CreateNewLine(Node node)
@@ -381,6 +388,7 @@ public class PuzzleGrid : MonoBehaviour {
 
         DestroyCurrentLine();
 
+        EventHandler<ResetHazardEvent>.FireEvent(new ResetHazardEvent());
 
     }
 

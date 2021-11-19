@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SymbolPlacer : MonoBehaviour
+public abstract class SymbolPlacer : MonoBehaviour
 {
     [SerializeField] protected List<PuzzleObject> instantiatedSymbols = new List<PuzzleObject>();
     [SerializeField] protected float symbolOffset = 3f;

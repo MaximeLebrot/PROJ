@@ -125,3 +125,13 @@ public class SaveSettingsEvent : IEvent
     public SettingsData settingsData;
     public SaveSettingsEvent(SettingsData data) => settingsData = data;
 }
+
+//Hazards
+public class UpdateHazardEvent : IEvent
+{
+
+}
+public class ResetHazardEvent : IEvent
+{
+
+}
