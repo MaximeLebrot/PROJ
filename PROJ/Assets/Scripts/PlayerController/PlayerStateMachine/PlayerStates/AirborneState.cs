@@ -16,15 +16,25 @@ public class AirborneState : PlayerState
     public override void EnterState(PlayerState previousState)
     {
         nextState = previousState;
-        Debug.Log("Entered Airborne State");
+        //Debug.Log("Entered Airborne State");
         player.physics.SetFallingGravity();
     }
     public override void RunUpdate()
     {
         SetInput();
 
+        if (player.physics.velocity.magnitude < player.physics.SurfThreshold)
+        {
+            stateMachine.ChangeState<WalkState>();
+            return;
+        }
+
         if (player.playerController3D.IsGrounded())
-            LeaveAirborneState();
+        {
+            ReturnToPreviousState();
+            return;
+        }
+
     }
     public override void ExitState()
     {       
@@ -34,7 +44,7 @@ public class AirborneState : PlayerState
     {
         player.playerController3D.InputWalk(player.inputReference.InputMaster.Movement.ReadValue<Vector2>());
     }
-    private void LeaveAirborneState()
+    private void ReturnToPreviousState()
     {
         player.physics.SetNormalGravity();
         

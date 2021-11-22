@@ -41,13 +41,12 @@ public class ResetPuzzleEvent : IEvent
     public ResetPuzzleEvent(PuzzleInfo info) { this.info = info; }
 }
 
-
-
-public class EvaluateSolutionEvent : IEvent 
+public class ActivatorEvent : IEvent
 {
     public PuzzleInfo info;
-    public EvaluateSolutionEvent(PuzzleInfo info) { this.info = info; }
+    public ActivatorEvent(PuzzleInfo info) { this.info = info; }
 }
+
 
 public class PuzzleInfo
 {
@@ -125,4 +124,14 @@ public class SaveSettingsEvent : IEvent
 {
     public SettingsData settingsData;
     public SaveSettingsEvent(SettingsData data) => settingsData = data;
+}
+
+//Hazards
+public class UpdateHazardEvent : IEvent
+{
+
+}
+public class ResetHazardEvent : IEvent
+{
+
 }

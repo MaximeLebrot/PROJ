@@ -19,15 +19,16 @@ public class PuzzlePlayerController : MonoBehaviour
     #endregion
 
     [HideInInspector] public Vector3 force;
+    
     //Component references
     public PlayerPhysicsSplit physics { get; private set; }
     public Animator animator { get; private set; }
-    private Vector3 input;
-    private float xMove, zMove;
+
 
     //Input
     private InputAction quitPuzzle;
-
+    private Vector3 input;
+    private float inputThreshold = 0.1f;
 
     public int CurrentPuzzleID { get; set; }
     public Transform PuzzleTransform { get; set; }
@@ -36,7 +37,6 @@ public class PuzzlePlayerController : MonoBehaviour
     private void OnEnable()
     {
         quitPuzzle = metaPlayerController.inputReference.InputMaster.ExitPuzzle;
-        //Does this screw up the build? >>>>> NEW CODE FOR INPUT SYSTEM <<<<
         quitPuzzle.Enable();
 
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
@@ -54,6 +54,8 @@ public class PuzzlePlayerController : MonoBehaviour
     {
         EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(PuzzleTransform.GetComponent<Puzzle>().GetPuzzleID()), false));
     }
+
+    //NOTE! Currently not safe for very low FPS
     private void FixedUpdate()
     {
         physics.AddForce(force);
@@ -69,9 +71,9 @@ public class PuzzlePlayerController : MonoBehaviour
         PuzzleTransform.forward * inp.y ;
 
         RotateCharacterInsidePuzzle();
-        if (input.magnitude < float.Epsilon)
+        if (input.magnitude < inputThreshold)
         {
-              Decelerate();
+            Decelerate();
             return;
         }
         else 
@@ -92,7 +94,10 @@ public class PuzzlePlayerController : MonoBehaviour
 
     private void Decelerate()
     {
-        force = -deceleration * physics.GetXZMovement().normalized;
+        /*Debug.Log("Puzzle player controller decelerate");
+        force = -deceleration * physics.velocity.normalized;*/
+        Vector3 projectedDeceleration = -physics.GetXZMovement() * deceleration;
+        force += projectedDeceleration;
     }
 
     private void RotateCharacterInsidePuzzle()

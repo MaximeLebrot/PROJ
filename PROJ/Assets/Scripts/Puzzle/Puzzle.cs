@@ -1,7 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Text;
+using UnityEngine;
 
 public class Puzzle : MonoBehaviour
 {
@@ -14,14 +13,16 @@ public class Puzzle : MonoBehaviour
     protected PuzzleInstance currentPuzzleInstance;
 
     protected PuzzleTranslator translator = new PuzzleTranslator();
+    private SymbolPlacer symbolPlacer;
 
-    private InputMaster inputMaster;
+    //private InputMaster inputMaster;
+    private PuzzleCounter puzzleCounter;
     protected PuzzleGrid grid;
 
-    //Draw symbols
-    [SerializeField] public List<PuzzleObject> instantiatedSymbols = new List<PuzzleObject>();
     [SerializeField] Transform symbolPos;
-    [SerializeField] int symbolOffset;
+    //Draw symbols
+    //should NOT be public, but ModularHintSystem currently relies on this List
+    public List<PuzzleObject> placedSymbols = new List<PuzzleObject>();
 
 
     //FKIN TECH LEEEEEED
@@ -38,12 +39,15 @@ public class Puzzle : MonoBehaviour
 
     void Awake()
     {
+        symbolPlacer = GetComponent<SymbolPlacer>();
+        puzzleCounter = GetComponentInChildren<PuzzleCounter>();
         particles = GetComponentInChildren<PuzzleParticles>();
         if (puzzleInstances.Count > 0)
         {
             SetupPuzzleInstances();
             currentPuzzleInstance = puzzleInstances[0];
             numOfPuzzles = puzzleInstances.Count;
+            puzzleCounter.GenerateMarkers(numOfPuzzles);
             grid = GetComponentInChildren<PuzzleGrid>();
             grid.StartGrid();
             
@@ -53,11 +57,6 @@ public class Puzzle : MonoBehaviour
         }
         else
             Debug.LogWarning("NO PUZZLE INSTANCES IN PUZZLE");        
-    }
-    private void Start()
-    {
-        inputMaster = new InputMaster();
-        inputMaster.Enable();
     }
 
     public void Load()
@@ -87,7 +86,6 @@ public class Puzzle : MonoBehaviour
     }
     private void OnDisable()
     {
-        inputMaster.Disable();
         EventHandler<ExitPuzzleEvent>.UnregisterListener(ExitPuzzle);
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
     }
@@ -101,9 +99,9 @@ public class Puzzle : MonoBehaviour
     }
 
     public virtual void InitiatePuzzle()
-    {
+    {       
         EventHandler<LoadPuzzleEvent>.FireEvent(new LoadPuzzleEvent(new PuzzleInfo(GetPuzzleID())));
-        EventHandler<ResetPuzzleEvent>.FireEvent(new ResetPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID(masterPuzzleID))));
+        
         GetComponentInChildren<PuzzleStarter>().ResetStarter();
         //grid.ResetGrid();
 
@@ -113,18 +111,24 @@ public class Puzzle : MonoBehaviour
         PlaceSymbols();
         solution = Translate();
         translations = translator.GetTranslations();
-
     }
     protected virtual void NextPuzzle()
     {
-        UnloadSymbols();
-        if(particles != null)
+        symbolPlacer.UnloadSymbols();
+        ResetClearanceVariables();
+
+
+        if (particles != null)
             particles.Play();
 
+        puzzleCounter.MarkedAsSolved(currentPuzzleNum);
         currentPuzzleNum++;     
 
         if(currentPuzzleNum >= puzzleInstances.Count)
         {
+            symbolPlacer.UnloadSymbols();
+            EventHandler<ActivatorEvent>.FireEvent(new ActivatorEvent(new PuzzleInfo(masterPuzzleID)));
+            puzzleCounter.DeleteMarkers();
             CompletePuzzle();
             return;
         }
@@ -136,7 +140,7 @@ public class Puzzle : MonoBehaviour
     private void CompletePuzzle()
     {
         Invoke("CompleteGrid", 2);
-        EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID(masterPuzzleID)), true));
+        EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(masterPuzzleID), true));
         GetComponent<Collider>().enabled = false;
     }
 
@@ -158,14 +162,13 @@ public class Puzzle : MonoBehaviour
 
     private string Translate()
     {
-        if (instantiatedSymbols.Count > 0)
-            return translator.CalculateSolution(instantiatedSymbols);
+        if (placedSymbols.Count > 0)
+            return translator.CalculateSolution(placedSymbols);
         else
         {
             Debug.LogWarning("SOLUTION EMPTY, NO INSTANTIATED SYMBOLS");
             return null;
-        }
-            
+        }         
     }
     public virtual bool EvaluateSolution()
     {
@@ -184,26 +187,17 @@ public class Puzzle : MonoBehaviour
         return false;
     }
 
-    private void UnloadSymbols()
-    {
-        foreach(PuzzleObject po in instantiatedSymbols)
-        {
-            po.Unload();
-        }
-        instantiatedSymbols.Clear();
-    }
 
     private void OnTriggerExit(Collider other)
     {
-
-        //PuzzleInfo info = new PuzzleInfo(currentPuzzleInstance.GetPuzzleID());
-        //EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(info, false));
-        grid.ResetGrid();
+        PuzzleInfo info = new PuzzleInfo(currentPuzzleInstance.GetPuzzleID());
+        EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(info, false));
         GetComponentInChildren<PuzzleStarter>().ResetStarter();
 
     }
 
-    
+
+
     public void StartPuzzle(StartPuzzleEvent eve)
     {
         //Maybe this is dumb, ID comes from PuzzleInstance, but should technically be able to identify itself like this
@@ -221,102 +215,76 @@ public class Puzzle : MonoBehaviour
     }
 
     //Maybe return ID from current PuzzleInstance instead
-    public int GetPuzzleID() { return currentPuzzleInstance.GetPuzzleID(masterPuzzleID);}
+    public int GetPuzzleID() { return currentPuzzleInstance.GetPuzzleID(); }
 
 
-
+    private void ResetClearanceVariables()
+    {
+        solutionOffset = 0;
+        translationIndex = 0;
+        clearedSymbols.Clear();
+    }
 
     private int solutionOffset = 0;
     private int translationIndex = 0;
+    List<bool> clearedSymbols = new List<bool>();
 
-    public void CheckIfClearedSymbol(string currentSolution)
+    public void CheckIfClearedSymbol(string currentSolution) //currentSolution = what the player has drawn
     {
-
-        
-
-        bool symbolComplete = false;
-        int solutionIndex = 0;
-        List<bool> clearedSymbols = new List<bool>();
-        Debug.Log(clearedSymbols.Count + " BOOLS");
-        Debug.Log(translations.Count + " Translations");
-
-
-        foreach(string s in translations)
-        {
-            Debug.Log(s);
-        }
 
 
         //goes through each index of strings in translations
-        for (int i = 0; i < translations.Count; i++)
+        for (int i = translationIndex; i < translations.Count; i++)
         {
-
-            //If the bool before this one is false, this one is false
-            if (i - 1 > 0 && clearedSymbols[i - 1] == false)
+            if(IsEqualRange(solutionOffset, translations[i].Length, currentSolution))
             {
-                clearedSymbols[i] = false;
-                continue;
+                translationIndex++;
+                solutionOffset += translations[i].Length;
+                clearedSymbols.Add(true);
             }
-
-
-
-            //goes through the string at [i] and checks the chars compared to currentSolution
-            for (int j = 0; j < translations[i].Length && solutionIndex + solutionOffset < currentSolution.Length; j++)
-            {
-                Debug.Log("i = " + i + " j = " + j);
-                if (currentSolution[solutionIndex + solutionOffset] == translations[i][j])
-                {
-                    if(solutionIndex + solutionOffset + 1 == translations[i].Length)
-                    {
-                        clearedSymbols.Add(true); //?????????????????
-                        symbolComplete = true;
-                        solutionOffset += solutionIndex + 1;
-                        solutionIndex = 0;
-                        //translationIndex++;
-                        break;
-                    }
-
-                    solutionIndex++;
-                    continue;
-                }  
-                else
-                {
-                    
-                    break;
-                }
-            }
-
-            if(symbolComplete == false)
-            {
-                if (currentSolution.Length - solutionOffset < translations[i].Length)
-                    clearedSymbols.Add(false);
-            }
-            
-
-            //DETTA E FEL VI HAR REDAN LAGT TILL? VI BORDE VETA DETTA I LOOPEN
-            
-
-        }
-
-        for(int i = 0; i < instantiatedSymbols.Count; i++)
-        {
-            if (clearedSymbols[i] == true)
-                instantiatedSymbols[i].TurnOn();
             else
-                instantiatedSymbols[i].TurnOff();
+            {
+                break;
+            }
+
         }
+
+        //Debug.Log(clearedSymbols.Count + " BOOLS");
+
+        for (int i = 0; i < clearedSymbols.Count; i++)
+        {
+            if(placedSymbols[i].Active == false)
+                placedSymbols[i].Activate();
+        }
+
      }
 
+    private bool IsEqualRange(int offset, int length, string currentSolution)
+    {
+        Debug.Log(length);
+
+        if (offset + length > currentSolution.Length)
+        {
+            //Debug.Log("LENGTH IS WRONG");
+            return false;
+        }
+
+        Debug.Log("input: " + currentSolution.Substring(offset, length) + " translation: " + translations[translationIndex]);
+        //Debug.Log("equal = " + currentSolution.Substring(offset, length).Equals(translations[translationIndex]));
+
+        return currentSolution.Substring(offset, length).Equals(translations[translationIndex]);
+        
+    }
 
     public void ExitPuzzle(ExitPuzzleEvent eve)
     {
         if (eve.success != true)
         {
-            if (eve.info.ID == currentPuzzleInstance.GetPuzzleID(masterPuzzleID))
+            if (eve.info.ID == currentPuzzleInstance.GetPuzzleID())
             {
                 if(eve.success == false)
                 {
-                    Debug.Log("RESET PUZZLE");
+                    symbolPlacer.UnloadSymbols();
                     grid.ResetGrid();
                 }
                     
@@ -326,10 +294,11 @@ public class Puzzle : MonoBehaviour
     }
 
 
-    #region Place Symbols
+    
     private void PlaceSymbols()
     {
-        if (instantiatedSymbols.Count > 0)
+        placedSymbols = symbolPlacer.PlaceSymbols(currentPuzzleInstance, symbolPos);
+        /*if (instantiatedSymbols.Count > 0)
         {
             UnloadSymbols();
         }
@@ -350,66 +319,10 @@ public class Puzzle : MonoBehaviour
         if (instantiatedSymbols.Count % 2 == 0)
             EvenPlaceSymbols();
         else
-            UnevenPlaceSymbols();
+            UnevenPlaceSymbols();*/
     }
 
-    private void UnevenPlaceSymbols()
-    {
-        Quaternion emptyQ = new Quaternion(0, 0, 0, 0);
-        int mid = instantiatedSymbols.Count / 2;
-        instantiatedSymbols[mid].transform.localPosition = Vector3.zero;
-        instantiatedSymbols[mid].transform.localRotation = emptyQ;
-
-        for (int i = 1; i <= mid; i++)
-        {
-            Vector3 tempPos = Vector3.zero;
-            tempPos -= i * (symbolOffset * Vector3.right);
-            instantiatedSymbols[mid - i].transform.localPosition = tempPos;
-            instantiatedSymbols[mid - i].transform.rotation = symbolPos.rotation;
-            instantiatedSymbols[mid - i].transform.localPosition =
-                new Vector3(instantiatedSymbols[mid - i].transform.localPosition.x, 0, 0);
-
-
-
-            tempPos = Vector3.zero;
-            tempPos += i * (symbolOffset * Vector3.right);
-            instantiatedSymbols[mid + i].transform.localPosition = tempPos;
-            instantiatedSymbols[mid + i].transform.rotation = symbolPos.rotation;
-            instantiatedSymbols[mid + i].transform.localPosition =
-                new Vector3(instantiatedSymbols[mid + i].transform.localPosition.x, 0, 0);
-        }
-    }
-
-    private void EvenPlaceSymbols()
-    {
-
-
-        int midRight = instantiatedSymbols.Count / 2;
-        int midLeft = midRight - 1;
-
-        Vector3 midLeftPos = (Vector3.left * (symbolOffset / 2));
-        Vector3 midRightPos = (Vector3.right * (symbolOffset / 2));
-
-        instantiatedSymbols[midLeft].transform.localPosition = midLeftPos;
-        instantiatedSymbols[midLeft].transform.localRotation = new Quaternion(0, 0, 0, 0);
-
-        instantiatedSymbols[midRight].transform.localPosition = midRightPos;
-        instantiatedSymbols[midRight].transform.rotation = new Quaternion(0, 0, 0, 0);
-
-        for (int i = 1; i <= midLeft; i++)
-        {
-            Vector3 tempPos = midLeftPos;
-            tempPos -= i * (symbolOffset * Vector3.right);
-            instantiatedSymbols[midLeft - i].transform.localPosition = tempPos;
-            instantiatedSymbols[midLeft - i].transform.rotation = symbolPos.rotation;
-
-            tempPos = midRightPos;
-            tempPos += i * (symbolOffset * Vector3.right);
-            instantiatedSymbols[midRight + i].transform.localPosition = tempPos;
-            instantiatedSymbols[midRight + i].transform.rotation = symbolPos.rotation;
-        }
-    }
-    #endregion    
+     
 }
 
 
