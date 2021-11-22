@@ -11,7 +11,7 @@ public class PuzzleGrid : MonoBehaviour {
     [SerializeField] private int size;
     [SerializeField] private VisualEffect currentNodeEffect;
 
-    private int nodeOffset = 3;
+    public int nodeOffset = 3;
     
     private List<Node> walkableNodes = new List<Node>();
     private List<Node> lineNodes = new List<Node>();
@@ -193,7 +193,6 @@ public class PuzzleGrid : MonoBehaviour {
         {
             //Hazard
             EventHandler<UpdateHazardEvent>.FireEvent(new UpdateHazardEvent());
-            Debug.Log("Update hazard event fired");
             EraseLine(node);
             return;
         }
@@ -242,6 +241,9 @@ public class PuzzleGrid : MonoBehaviour {
         ActivateNode(node, false);
 
         #endregion
+
+        EventHandler<UpdateHazardEvent>.FireEvent(new UpdateHazardEvent());
+        Debug.Log("Update hazard event sent");
 
     }
 
