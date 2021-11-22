@@ -20,7 +20,7 @@ public class HazardObject : MonoBehaviour
     }
     private void Update()
     {
-        timer -= Time.deltaTime;
+        //timer -= Time.deltaTime;
         if (timer <= 0)
         {
             NextState();
@@ -39,8 +39,9 @@ public class HazardObject : MonoBehaviour
     {
         //NextState();
     }
-    private void NextState()
+    public void NextState()
     {
+        Debug.Log("next state from:" + gameObject.name);
         counter++;
         if (counter > 2)
             counter = 0;
