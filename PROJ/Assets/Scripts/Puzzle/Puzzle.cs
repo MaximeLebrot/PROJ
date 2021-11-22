@@ -102,8 +102,6 @@ public class Puzzle : MonoBehaviour
 
     public virtual void InitiatePuzzle()
     {
-        
-        
         EventHandler<LoadPuzzleEvent>.FireEvent(new LoadPuzzleEvent(new PuzzleInfo(GetPuzzleID())));
         EventHandler<ResetPuzzleEvent>.FireEvent(new ResetPuzzleEvent(new PuzzleInfo(currentPuzzleInstance.GetPuzzleID(masterPuzzleID))));
         GetComponentInChildren<PuzzleStarter>().ResetStarter();

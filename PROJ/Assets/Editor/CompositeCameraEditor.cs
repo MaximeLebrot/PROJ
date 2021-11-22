@@ -13,7 +13,6 @@ public class CompositeCameraEditor : Editor {
     private SerializedProperty callbackTypesProperty;
     private SerializedProperty hasCallbackTypeProperty;
     private SerializedProperty addCameraBehaviourTypeProperty;
-    private SerializedProperty transitionListProperty;
     
     private Type currentType;
     
@@ -21,8 +20,10 @@ public class CompositeCameraEditor : Editor {
     private GUIStyle correctTypeStyle;
 
     private ReorderableList typeCallbackList;
+
     
     private void OnEnable() {
+        typeNames = new Dictionary<int, HashSet<string>>();
         
         if(typeNames.ContainsKey(target.GetInstanceID()) == false)
             typeNames.Add(target.GetInstanceID(), new HashSet<string>());
@@ -33,10 +34,9 @@ public class CompositeCameraEditor : Editor {
         
         behaviourProperty = serializedObject.FindProperty("cameraBehaviour");
         callbackTypesProperty = serializedObject.FindProperty("callbackTypeNames");
-        transitionListProperty = serializedObject.FindProperty("transitionsToThisBehaviour");
         hasCallbackTypeProperty = serializedObject.FindProperty("hasCallbackType");
         addCameraBehaviourTypeProperty = serializedObject.FindProperty("addCameraBehaviourTypeAsKey");
-
+        
         wrongTypeStyle = new GUIStyle {
             normal = {
                 textColor = Color.red
@@ -54,10 +54,11 @@ public class CompositeCameraEditor : Editor {
         };
         
         typeCallbackList = new ReorderableList(serializedObject, callbackTypesProperty) {
-            drawElementCallback = DrawElement,
+            drawElementCallback = DrawTypeElement,
             drawHeaderCallback = DrawHeader,
             onRemoveCallback = OnRemoveCallback
         };
+
     }
 
     private void OnRemoveCallback(ReorderableList list) {
@@ -76,12 +77,10 @@ public class CompositeCameraEditor : Editor {
             typeCallbackList.DoLayoutList();
         }
         
-        EditorGUILayout.PropertyField(transitionListProperty);
-        
         serializedObject.ApplyModifiedProperties();
     }
 
-    private void DrawElement(Rect rect, int index, bool isActive, bool isFocused) {
+    private void DrawTypeElement(Rect rect, int index, bool isActive, bool isFocused) {
         SerializedProperty element = typeCallbackList.serializedProperty.GetArrayElementAtIndex(index); 
         
         EditorGUI.PropertyField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), element, GUIContent.none);
@@ -106,6 +105,10 @@ public class CompositeCameraEditor : Editor {
         EditorGUI.LabelField(new Rect(rect.x + 230, rect.y, 200, EditorGUIUtility.singleLineHeight),text, style);
     }
 
+    private void DrawTransitionElement(Rect rect, int index, bool isActive, bool isFocused) {
+        
+    }
+    
     private void DrawHeader(Rect rect) => EditorGUI.LabelField(rect, "Callback Type Names");
 
     private void CheckIfTypeExists(int index) {
