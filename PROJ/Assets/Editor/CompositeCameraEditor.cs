@@ -28,10 +28,6 @@ public class CompositeCameraEditor : Editor {
         if(typeNames.ContainsKey(target.GetInstanceID()) == false)
             typeNames.Add(target.GetInstanceID(), new HashSet<string>());
         
-        foreach(HashSet<string> strings in typeNames.Values)
-            foreach(string s in strings)
-                Debug.Log(s);
-        
         behaviourProperty = serializedObject.FindProperty("cameraBehaviour");
         callbackTypesProperty = serializedObject.FindProperty("callbackTypeNames");
         hasCallbackTypeProperty = serializedObject.FindProperty("hasCallbackType");
@@ -56,15 +52,10 @@ public class CompositeCameraEditor : Editor {
         typeCallbackList = new ReorderableList(serializedObject, callbackTypesProperty) {
             drawElementCallback = DrawTypeElement,
             drawHeaderCallback = DrawHeader,
-            onRemoveCallback = OnRemoveCallback
         };
 
     }
-
-    private void OnRemoveCallback(ReorderableList list) {
-        Debug.Log(list.count);
-    }
-
+    
     public override void OnInspectorGUI() {
         
         serializedObject.Update();
@@ -104,15 +95,11 @@ public class CompositeCameraEditor : Editor {
     private void DrawLabelField(Rect rect, string text, GUIStyle style) {
         EditorGUI.LabelField(new Rect(rect.x + 230, rect.y, 200, EditorGUIUtility.singleLineHeight),text, style);
     }
-
-    private void DrawTransitionElement(Rect rect, int index, bool isActive, bool isFocused) {
-        
-    }
     
     private void DrawHeader(Rect rect) => EditorGUI.LabelField(rect, "Callback Type Names");
 
     private void CheckIfTypeExists(int index) {
-        currentType = (target as CompositeCameraBehaviour).CreateCallbackType(index);
+        currentType = (target as CompositeCameraBehaviour)?.CreateCallbackType(index);
     }
 
     private bool IsTypePresentInList(string newType, int indexToSkip) {

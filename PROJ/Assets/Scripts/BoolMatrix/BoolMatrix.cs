@@ -22,8 +22,8 @@ public class BoolMatrixEditor : Editor {
     private bool[,] bools;
     
     private void OnEnable() {
-        columnsProp = serializedObject.FindProperty("row");
-        rowProp = serializedObject.FindProperty("columns");
+        columnsProp = serializedObject.FindProperty("column");
+        rowProp = serializedObject.FindProperty("row");
         boolsProp = serializedObject.FindProperty("bools");
         
     }

@@ -33,8 +33,11 @@ public class GameCamera : MonoBehaviour {
         
         foreach (CompositeCameraBehaviour newBehaviour in cameraBehaviours) {
 
-            foreach (Type type in newBehaviour.GetTypeList()) 
+            foreach (Type type in newBehaviour.GetTypeList()) {
+                if(behaviours.ContainsKey(type))
+                    Debug.LogError($"{type} already exists (from {newBehaviour}");
                 behaviours.Add(type, newBehaviour.cameraBehaviour);
+            }
             
             newBehaviour.cameraBehaviour.InjectReferences(thisTransform, followTarget);
         }
@@ -119,19 +122,16 @@ public class GameCamera : MonoBehaviour {
     }
 
     private async void OnLookAndMove(CameraLookAndMoveToEvent lookAndMove) {
-
+        
     }
 
     private async void OnPuzzleStart(StartPuzzleEvent startPuzzleEvent) {
             
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
-
-        MoveToTransitionData moveToTransitionData = ScriptableObject.CreateInstance<MoveToTransitionData>();
         
+     //   transitioner.
         
-        MoveTo moveTo = new MoveTo(startPuzzleEvent.info.puzzlePos.position, ScriptableObject.CreateInstance<MoveToTransitionData>());
-        
-        await PlayTransition(moveTo);
+       // await PlayTransition(moveTo);
         
         ChangeBehaviour<PuzzleCameraBehaviour>();
 
@@ -143,6 +143,11 @@ public class GameCamera : MonoBehaviour {
     private void ChangeBehaviour<T>() where T : BaseCameraBehaviour {
         currentBaseCameraBehaviour = behaviours[typeof(T)];
         currentBaseCameraBehaviour.EnterBehaviour();
+    }
+
+    protected void OnGUI() {
+        if(GUILayout.Button("Haha"))
+            Debug.Log("haha");
     }
 
     private void ChangeBehaviour(Type type) {

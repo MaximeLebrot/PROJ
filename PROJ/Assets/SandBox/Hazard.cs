@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,9 +15,9 @@ public class Hazard : MonoBehaviour
     [SerializeField] private List<HazardObject> hazardObjects = new List<HazardObject>();
 
     //Hazard Setup
-    [SerializeField] private bool row;
-    [SerializeField] private bool column;
-    [SerializeField] private List<bool> customPattern = new List<bool>();
+    [SerializeField] private int row;
+    [SerializeField] private int column;
+    [SerializeField] private List<Boolean> customPattern = new List<Boolean>();
     [SerializeField] private bool movingHazard;
     [SerializeField] private bool moveX;
 
