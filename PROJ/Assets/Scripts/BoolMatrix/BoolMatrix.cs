@@ -4,7 +4,8 @@ using UnityEditor;
 using UnityEngine;
 
 public class BoolMatrix : MonoBehaviour {
-    [SerializeField] private int row, columns;
+    [SerializeField] private int row;
+    [SerializeField] private int columns;
 
     [SerializeField] private List<bool> bools = new List<bool>();
 

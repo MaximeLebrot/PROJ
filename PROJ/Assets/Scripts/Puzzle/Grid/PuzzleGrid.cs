@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 
+[Serializable]
 public class PuzzleGrid : MonoBehaviour {
 
     [SerializeField] private GameObject linePrefab;

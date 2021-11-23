@@ -17,7 +17,7 @@ public class Hazard : MonoBehaviour
     //Hazard Setup
     [SerializeField] private int row;
     [SerializeField] private int column;
-    [SerializeField] private List<Boolean> customPattern = new List<Boolean>();
+    [SerializeField] private List<bool> customPattern = new List<bool>();
     [SerializeField] private bool movingHazard;
     [SerializeField] private bool moveX;
 
@@ -25,6 +25,10 @@ public class Hazard : MonoBehaviour
 
     private void OnEnable()
     {
+        
+        foreach(bool h in customPattern)
+            Debug.Log(h);
+        
         EventHandler<UpdateHazardEvent>.RegisterListener(OnUpdateHazard);
         EventHandler<ResetHazardEvent>.RegisterListener(OnResetHazard);      
     }

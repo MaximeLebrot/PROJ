@@ -1,73 +1,101 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(Hazard))]
-[CanEditMultipleObjects]
 public class HazardEditor : Editor {
     
-    private SerializedProperty columnsProp, rowProp, hazardMatrix;
-
-    private Vector2 position;
-    private Vector2 size;
+    private SerializedProperty hazardMatrix;
+    private SerializedProperty hazardObjectProp;
+    private SerializedProperty gridObjectTypeProp;
+    private SerializedProperty baseTimerProp;
+    private SerializedProperty timerOffsetPerObjectProp;
+    private SerializedProperty startingStateProp;
+    private SerializedProperty stateOffsetPerObjectProp;
+    private SerializedProperty hazardObjectsProp;
+    private SerializedProperty movingHazardProp;
+    private SerializedProperty moveXProp;
+    
     private bool drawDefaultInspector;
+
+    private int gridSize;
     
     private void OnEnable() {
-        columnsProp = serializedObject.FindProperty("column");
-        rowProp = serializedObject.FindProperty("row");
         hazardMatrix = serializedObject.FindProperty("customPattern");
+        hazardObjectProp = serializedObject.FindProperty("hazardObj");
+        gridObjectTypeProp = serializedObject.FindProperty("grid");
+        baseTimerProp = serializedObject.FindProperty("baseTimer");
+        timerOffsetPerObjectProp = serializedObject.FindProperty("timerOffsetPerObject");
+        startingStateProp = serializedObject.FindProperty("startingState");
+        stateOffsetPerObjectProp = serializedObject.FindProperty("stateOffsetPerObject");
+        hazardObjectsProp = serializedObject.FindProperty("hazardObjects");
+        movingHazardProp = serializedObject.FindProperty("movingHazard");
+        moveXProp = serializedObject.FindProperty("moveX");
         
+        CalculateGridSize();
         
-        hazardMatrix.arraySize = columnsProp.intValue * rowProp.intValue;
+        Debug.Log(hazardMatrix.arraySize);
+        Debug.Log(gridSize);
         
-        for (int i = 0; i < columnsProp.intValue * rowProp.intValue; i++) {
-
-            Debug.Log(hazardMatrix.arraySize);
-
-        }
+        serializedObject.ApplyModifiedProperties();
         
         drawDefaultInspector = true;
     }
     
     public override void OnInspectorGUI() {
+        serializedObject.Update();
+        
         drawDefaultInspector = EditorGUILayout.Toggle("Draw default inspector", drawDefaultInspector);
-
+        
         if (drawDefaultInspector) {
             DrawDefaultInspector();
             return;
         }
-        serializedObject.Update();
         
-        EditorGUILayout.PropertyField(columnsProp);
-        EditorGUILayout.PropertyField(rowProp);
-        
-        position = EditorGUILayout.Vector2Field("Position", position);
-        DrawMatrix();
-        
-        EditorGUILayout.Space(rowProp.intValue * columnsProp.intValue * 10);
+        EditorGUILayout.PropertyField(hazardObjectProp);
+        EditorGUI.BeginChangeCheck();
+        EditorGUILayout.PropertyField(gridObjectTypeProp);
 
+        if (EditorGUI.EndChangeCheck()) {
+            hazardMatrix.ClearArray();
+            CalculateGridSize();
+        }
+
+
+        EditorGUILayout.PropertyField(baseTimerProp);
+        EditorGUILayout.PropertyField(timerOffsetPerObjectProp);
+        EditorGUILayout.PropertyField(startingStateProp);
+        EditorGUILayout.PropertyField(stateOffsetPerObjectProp);
+        EditorGUILayout.PropertyField(movingHazardProp);
+        EditorGUILayout.PropertyField(moveXProp);
+        
+        DrawMatrix();
+        EditorGUILayout.Space(200);
+        
+        EditorGUILayout.PropertyField(hazardObjectsProp);
         serializedObject.ApplyModifiedProperties();
+        
+        
     }
 
     private void DrawMatrix() {
+        
+        float windowCenter = CalculateInspectorWidth();
 
-        float windowWidth = CalculateInspectorWidth();
+        EditorGUI.LabelField(new Rect(new Vector2(windowCenter + 25, 190), new Vector2(100, 20)), "Hazard Matrix");
         
-        Debug.Log(hazardMatrix.arraySize);
-        
-        for (int i = 0; i < columnsProp.intValue; i++) {
+        for (int i = 0; i < gridSize; i++) {
             
             EditorGUILayout.BeginHorizontal();
 
-            for (int j = 0; j < rowProp.intValue; j++) {
+            for (int j = 0; j < gridSize; j++) {
+
+                SerializedProperty prop = hazardMatrix.GetArrayElementAtIndex(j + i * gridSize);
                 
-                Vector2 newPosition = new Vector2(windowWidth + (20 * i), position.y + (20 * j));
+                Vector2 newPosition = new Vector2(windowCenter + (20 * i),  220 + (20 * j));
                 
                 
+                EditorGUI.PropertyField(new Rect(newPosition, new Vector2(20, 20)), prop, GUIContent.none);
                 
-                //EditorGUI.PropertyField(new Rect(newPosition, size), hazardMatrix.GetArrayElementAtIndex(j + (i * rowProp.intValue)));
-                
-               // EditorGUI.Toggle(new Rect(newPosition, size), true);
             }
             
             EditorGUILayout.EndHorizontal();
@@ -80,4 +108,11 @@ public class HazardEditor : Editor {
         EditorGUILayout.EndHorizontal();
         return GUILayoutUtility.GetLastRect().size.x * .5f;
     }
+    
+    private void CalculateGridSize() {
+        gridSize = new SerializedObject(gridObjectTypeProp.objectReferenceValue).FindProperty("size").intValue;
+        hazardMatrix.arraySize = gridSize * gridSize;
+    }
+    
+    
 }
