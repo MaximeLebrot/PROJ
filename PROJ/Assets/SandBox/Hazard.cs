@@ -5,22 +5,21 @@ using UnityEngine;
 public class Hazard : MonoBehaviour
 {
     [SerializeField] private GameObject hazardObj;
-    [SerializeField] private PuzzleGrid grid; 
+    [SerializeField] private PuzzleGrid grid;
+    [SerializeField] private Vector3 moveDirection;
+    [SerializeField] private bool movingHazard;
+    [SerializeField] private bool diagonal;
 
-    [SerializeField] private float baseTimer;
-    [SerializeField] private float timerOffsetPerObject;
-    [SerializeField] private int startingState;
-    [SerializeField] private int stateOffsetPerObject;
     [SerializeField] private List<HazardObject> hazardObjects = new List<HazardObject>();
 
     //Hazard Setup
-    [SerializeField] private bool row;
-    [SerializeField] private bool column;
-    [SerializeField] private List<bool> customPattern = new List<bool>();
-    [SerializeField] private bool movingHazard;
-    [SerializeField] private bool moveX;
 
-    private bool[,] hazardMatrix = new bool[5, 5]; 
+    [SerializeField] private List<bool> customPattern = new List<bool>();
+
+    private int hazardBoundsMIN;
+    private int hazardBoundsMAX;
+    private bool[,] hazardMatrix = new bool[5, 5];
+    private float hazardOffset;
 
     private void OnEnable()
     {
@@ -47,28 +46,37 @@ public class Hazard : MonoBehaviour
     }
     private void OnUpdateHazard(UpdateHazardEvent eve)
     {
-        //Maybe also cache start position to reset it in OnResetHazard
-        //Or, instead, we could just delete it and instantiate the hazards from next puzzleInstance
-
-        //Something here to decide if the offset relates to y or x-axis, or both
-        Vector3 offsetVector;
-        if (moveX)
-            offsetVector = Vector3.right;
-        else
-            offsetVector = -Vector3.forward;
         if (movingHazard)
         {
-            transform.position += grid.nodeOffset * offsetVector;
-            return;
+            if (eve.reverse == false)
+            {
+                foreach (HazardObject ho in hazardObjects)
+                {
+                    ho.CheckHazardBounds(hazardBoundsMAX, moveDirection, hazardOffset);
+                    ho.UpdateHazard(hazardOffset, moveDirection);
+                }
+            }
+            else
+            {
+                foreach (HazardObject ho in hazardObjects)
+                {
+                    ho.CheckHazardBounds(hazardBoundsMAX, moveDirection, hazardOffset);
+                    ho.ReverseHazard(hazardOffset, moveDirection);
+                }
+            }
+            
         }
-        Debug.Log("OnUpdateHazard event recieved");
-        foreach (HazardObject ho in hazardObjects)
-        {
-            ho.NextState();
-        }
+        
     }
+
+    
+
     private void HazardSetup()
     {
+
+        hazardBoundsMAX = (grid.Size / 2) * grid.NodeOffset;
+
+        //Debug.Log(hazardBoundsMAX + " :: " + hazardBoundsMIN);
         /*hazardMatrix[0, 1] = true;
           hazardMatrix[0, 2] = true;
           hazardMatrix[0, 3] = true;
@@ -97,11 +105,15 @@ public class Hazard : MonoBehaviour
     }
     private void InitializeHazardObjects()
     {
+        if (diagonal == false)
+            hazardOffset = grid.NodeOffset;
+        else
+            hazardOffset = grid.NodeOffset * Mathf.Sqrt(2);
+
         int hazardObjectCounter = 0; 
         foreach (HazardObject ho in hazardObjects)
         {
-            ho.startingState = startingState + (hazardObjectCounter * stateOffsetPerObject);
-            ho.timeToNextState = baseTimer + (hazardObjectCounter * timerOffsetPerObject);
+            ho.StartPos = ho.transform.position;
             hazardObjectCounter++;
         }
     }
