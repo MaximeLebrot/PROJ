@@ -33,9 +33,6 @@ public class HazardEditor : Editor {
         
         CalculateGridSize();
         
-        Debug.Log(hazardMatrix.arraySize);
-        Debug.Log(gridSize);
-        
         serializedObject.ApplyModifiedProperties();
         
         drawDefaultInspector = true;
@@ -81,7 +78,7 @@ public class HazardEditor : Editor {
         
         float windowCenter = CalculateInspectorWidth();
 
-        EditorGUI.LabelField(new Rect(new Vector2(windowCenter + 25, 190), new Vector2(100, 20)), "Hazard Matrix");
+        EditorGUI.LabelField(new Rect(new Vector2(windowCenter + gridSize ,190), new Vector2(100, 20)), "Hazard Matrix");
         
         for (int i = 0; i < gridSize; i++) {
             
@@ -92,7 +89,6 @@ public class HazardEditor : Editor {
                 SerializedProperty prop = hazardMatrix.GetArrayElementAtIndex(j + i * gridSize);
                 
                 Vector2 newPosition = new Vector2(windowCenter + (20 * i),  220 + (20 * j));
-                
                 
                 EditorGUI.PropertyField(new Rect(newPosition, new Vector2(20, 20)), prop, GUIContent.none);
                 
