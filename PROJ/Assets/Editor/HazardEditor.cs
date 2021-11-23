@@ -56,8 +56,7 @@ public class HazardEditor : Editor {
             hazardMatrix.ClearArray();
             CalculateGridSize();
         }
-
-
+        
         EditorGUILayout.PropertyField(baseTimerProp);
         EditorGUILayout.PropertyField(timerOffsetPerObjectProp);
         EditorGUILayout.PropertyField(startingStateProp);
@@ -82,19 +81,16 @@ public class HazardEditor : Editor {
         
         for (int i = 0; i < gridSize; i++) {
             
-            EditorGUILayout.BeginHorizontal();
-
             for (int j = 0; j < gridSize; j++) {
 
                 SerializedProperty prop = hazardMatrix.GetArrayElementAtIndex(j + i * gridSize);
                 
-                Vector2 newPosition = new Vector2(windowCenter + (20 * i),  220 + (20 * j));
+                Vector2 newPosition = new Vector2(windowCenter + (20 * j),  220 + (20 * i));
                 
                 EditorGUI.PropertyField(new Rect(newPosition, new Vector2(20, 20)), prop, GUIContent.none);
                 
             }
             
-            EditorGUILayout.EndHorizontal();
         }
     }
 

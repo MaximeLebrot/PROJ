@@ -32,7 +32,10 @@ public class GameCamera : MonoBehaviour {
         thisTransform = transform;
         
         foreach (CompositeCameraBehaviour newBehaviour in cameraBehaviours) {
-
+            
+            Debug.Log(behaviours);
+            
+            
             foreach (Type type in newBehaviour.GetTypeList()) {
                 if(behaviours.ContainsKey(type))
                     Debug.LogError($"{type} already exists (from {newBehaviour}");
