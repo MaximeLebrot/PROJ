@@ -44,14 +44,6 @@ public class PuzzleGrid : MonoBehaviour {
             return "";
     }
     
-    
-    private void OnEnable() 
-    {
-
-        //StartGrid();
-        
-    }
-
     private void Update()
     {
         if(currentLine != null)
@@ -183,7 +175,7 @@ public class PuzzleGrid : MonoBehaviour {
 
     public void AddSelectedNode(Node node) 
     {
-        if (node == currentNode)
+        if (node == currentNode || !currentNode.neighbours.ContainsKey(node))
             return;
 
         LineObject newLine = new LineObject(node);
