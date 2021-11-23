@@ -10,25 +10,21 @@ public class Puzzle : MonoBehaviour
     [SerializeField] private List<PuzzleInstance> puzzleInstances = new List<PuzzleInstance>();
     [SerializeField] private string playerInput = "";
     [SerializeField] protected string solution;
+    [SerializeField] Transform symbolPos;
+    
     protected PuzzleInstance currentPuzzleInstance;
-
     protected PuzzleTranslator translator = new PuzzleTranslator();
-    private SymbolPlacer symbolPlacer;
-
-    //private InputMaster inputMaster;
-    private PuzzleCounter puzzleCounter;
     protected PuzzleGrid grid;
 
-    [SerializeField] Transform symbolPos;
-    //Draw symbols
+    private SymbolPlacer symbolPlacer;
+ 
     //should NOT be public, but ModularHintSystem currently relies on this List
     public List<PuzzleObject> placedSymbols = new List<PuzzleObject>();
 
-
-    //FKIN TECH LEEEEEED
+    //track progress
+    private PuzzleCounter puzzleCounter;
     private int numOfPuzzles;
     private int currentPuzzleNum = 0;
-    private int numOfFinishedPuzzles = 0;
 
     private Transform player;
     private PuzzleParticles particles;
