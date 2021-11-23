@@ -8,7 +8,6 @@ public class Hazard : MonoBehaviour
     [SerializeField] private PuzzleGrid grid;
     [SerializeField] private Vector3 moveDirection;
     [SerializeField] private bool movingHazard;
-    [SerializeField] private bool diagonal;
 
     [SerializeField] private List<HazardObject> hazardObjects = new List<HazardObject>();
 
@@ -16,9 +15,9 @@ public class Hazard : MonoBehaviour
 
     [SerializeField] private List<bool> customPattern = new List<bool>();
 
-    private int hazardBoundsMIN;
+
     private int hazardBoundsMAX;
-    private bool[,] hazardMatrix = new bool[5, 5];
+
     private float hazardOffset;
 
     private void OnEnable()
@@ -52,7 +51,7 @@ public class Hazard : MonoBehaviour
             {
                 foreach (HazardObject ho in hazardObjects)
                 {
-                    ho.CheckHazardBounds(hazardBoundsMAX, moveDirection, hazardOffset);
+                    ho.CheckHazardBounds(hazardBoundsMAX, moveDirection.normalized, hazardOffset);
                     ho.UpdateHazard(hazardOffset, moveDirection);
                 }
             }
@@ -60,7 +59,7 @@ public class Hazard : MonoBehaviour
             {
                 foreach (HazardObject ho in hazardObjects)
                 {
-                    ho.CheckHazardBounds(hazardBoundsMAX, moveDirection, hazardOffset);
+                    ho.CheckHazardBounds(hazardBoundsMAX, -moveDirection.normalized, hazardOffset);
                     ho.ReverseHazard(hazardOffset, moveDirection);
                 }
             }
@@ -74,41 +73,37 @@ public class Hazard : MonoBehaviour
     private void HazardSetup()
     {
 
-        hazardBoundsMAX = (grid.Size / 2) * grid.NodeOffset;
+        hazardBoundsMAX = grid.Size / 2 * grid.NodeOffset;
 
-        //Debug.Log(hazardBoundsMAX + " :: " + hazardBoundsMIN);
-        /*hazardMatrix[0, 1] = true;
-          hazardMatrix[0, 2] = true;
-          hazardMatrix[0, 3] = true;
-          hazardMatrix[0, 4] = true;
 
-          for (int x = 0; x < 5; x++)
-          {
-              for (int y = 0; y < 5; y++)
-              {
-                  if (hazardMatrix[x, y] == true)
-                  {
-                      GameObject hazardObject = Instantiate(hazardObj, transform);
-                      hazardObjects.Add(hazardObject.GetComponentInChildren<HazardObject>());
-                      //GetCorresponding node position
-                      hazardObject.transform.position = grid.allNodes[x, y].transform.position;
-                      Debug.Log(x + ", " + y + " node is at position: "+  grid.allNodes[x, y].transform.position);
+        for (int i = 0; i < grid.Size; i++)
+        {
 
-                  }
 
-              }
-          }*/
+            for (int j = 0; j < grid.Size; j++)
+            {
+                if(customPattern[j + i * grid.Size] == true)
+                {
+                    Debug.Log(grid.allNodes[i, j]);
+                    //SPAWN SHIT HÄR
+                }
+            }
+        }
+
+
+        /*
         foreach (HazardObject ho in GetComponentsInChildren<HazardObject>())
         {
             hazardObjects.Add(ho);
         }
+        */
     }
     private void InitializeHazardObjects()
     {
-        if (diagonal == false)
-            hazardOffset = grid.NodeOffset;
-        else
-            hazardOffset = grid.NodeOffset * Mathf.Sqrt(2);
+
+        hazardOffset = grid.NodeOffset;
+
+
 
         int hazardObjectCounter = 0; 
         foreach (HazardObject ho in hazardObjects)

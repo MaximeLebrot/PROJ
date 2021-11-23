@@ -127,7 +127,7 @@ public class PuzzleGrid : MonoBehaviour {
                 allNodes[x, y].PosY = y;
                 allNodes[x, y].gameObject.name = "" + x + "|" + y;
                 allNodes[x, y].transform.position = transform.position;
-                allNodes[x,y].transform.localPosition = (x * Vector3.right * nodeOffset) + (y * Vector3.forward * nodeOffset);
+                allNodes[x,y].transform.localPosition = (y * Vector3.right * nodeOffset) + (x * Vector3.forward * nodeOffset);
                 allNodes[x, y].grid = this;
 
                 

@@ -11,7 +11,7 @@ public class HazardObject : MonoBehaviour
 
     //private Animator animator;
     public bool movingBackwards;
-    private int counter;
+
     public Vector3 StartPos { get; set; }
 
     
@@ -24,6 +24,7 @@ public class HazardObject : MonoBehaviour
     
     public void ResetHazardObject()
     {
+        movingBackwards = false;
         transform.position = StartPos;
     }
 
