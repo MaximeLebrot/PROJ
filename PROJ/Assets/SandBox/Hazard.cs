@@ -30,11 +30,13 @@ public class Hazard : MonoBehaviour
         EventHandler<UpdateHazardEvent>.UnregisterListener(OnUpdateHazard);
         EventHandler<ResetHazardEvent>.UnregisterListener(OnResetHazard);
     }
-    private void Start()
+    public void StartHazard(int puzzleID)
     {
+        grid = GetComponentInParent<Puzzle>().grid;
         HazardSetup();
-        InitializeHazardObjects();
+        InitializeHazardObjects(puzzleID);
     }
+
     private void OnResetHazard(ResetHazardEvent eve)
     {
         foreach (HazardObject ho in hazardObjects)
@@ -68,7 +70,15 @@ public class Hazard : MonoBehaviour
         
     }
 
-    
+    internal void DeleteHazardObjects()
+    {
+        for(int i = 0; i < hazardObjects.Count; i++)
+        {
+            //Animate hazardsobject instead
+            Destroy(hazardObjects[i].gameObject);
+        }
+        hazardObjects.Clear();
+    }
 
     private void HazardSetup()
     {
@@ -84,8 +94,10 @@ public class Hazard : MonoBehaviour
             {
                 if(customPattern[j + i * grid.Size] == true)
                 {
-                    Debug.Log(grid.allNodes[i, j]);
+                    
                     //SPAWN SHIT HÄR
+                    GameObject instance = Instantiate(hazardObj, grid.allNodes[i, j].transform.position, Quaternion.identity, transform);
+                    hazardObjects.Add(instance.GetComponentInChildren<HazardObject>());
                 }
             }
         }
@@ -98,7 +110,7 @@ public class Hazard : MonoBehaviour
         }
         */
     }
-    private void InitializeHazardObjects()
+    private void InitializeHazardObjects(int puzzleID)
     {
 
         hazardOffset = grid.NodeOffset;
@@ -109,6 +121,7 @@ public class Hazard : MonoBehaviour
         foreach (HazardObject ho in hazardObjects)
         {
             ho.StartPos = ho.transform.position;
+            ho.PuzzleID = puzzleID;
             hazardObjectCounter++;
         }
     }

@@ -8095,17 +8095,6 @@ Transform:
   m_Father: {fileID: 488812122}
   m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &480607123 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6035661532470186461, guid: 8faa280d026f32649aafb908f368fa25, type: 3}
-  m_PrefabInstance: {fileID: 1281257520}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0cf7bbf4a55b7847bac27eaf9d8424b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &488812121
 GameObject:
   m_ObjectHideFlags: 0
@@ -16357,11 +16346,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!4 &810607795 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5465441103935217696, guid: 8faa280d026f32649aafb908f368fa25, type: 3}
-  m_PrefabInstance: {fileID: 1281257520}
-  m_PrefabAsset: {fileID: 0}
 --- !u!43 &815057240
 Mesh:
   m_ObjectHideFlags: 0
@@ -25217,55 +25201,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1215629890}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1271307072
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1271307074}
-  - component: {fileID: 1271307073}
-  m_Layer: 0
-  m_Name: Hazard
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1271307073
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1271307072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4186a7ff02f087d4e836606f1daaea07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hazardObj: {fileID: 2620287691585698511, guid: fd474c36d98ba2c4db6ad7eba3fff57f, type: 3}
-  grid: {fileID: 480607123}
-  moveDirection: {x: 0, y: 0, z: -1}
-  movingHazard: 1
-  hazardObjects: []
-  customPattern: 01000000000000000100000000000000000000000000000001
---- !u!4 &1271307074
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1271307072}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 810607795}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1271767615
 Mesh:
   m_ObjectHideFlags: 0
@@ -25493,6 +25428,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Puzzle3 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 8496142598892616458, guid: 8faa280d026f32649aafb908f368fa25, type: 3}
+      propertyPath: hazards.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8496142598892616458, guid: 8faa280d026f32649aafb908f368fa25, type: 3}
+      propertyPath: hazards.Array.data[0]
+      value: 
+      objectReference: {fileID: 6233591758801418337, guid: 607f32da79aed0d4d8a80b092ef420b0, type: 3}
+    - target: {fileID: 8496142598892616458, guid: 8faa280d026f32649aafb908f368fa25, type: 3}
+      propertyPath: hazards.Array.data[1]
+      value: 
+      objectReference: {fileID: 6233591758801418337, guid: 3ef94e051a6585744a7cdbbe4b002ce0, type: 3}
+    - target: {fileID: 8525611030972729524, guid: 8faa280d026f32649aafb908f368fa25, type: 3}
+      propertyPath: hazards.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8525611030972729524, guid: 8faa280d026f32649aafb908f368fa25, type: 3}
+      propertyPath: hazards.Array.data[0]
+      value: 
+      objectReference: {fileID: 6233591758801418337, guid: 3a80b42edd4a42e43bc12a31b6053d0b, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8faa280d026f32649aafb908f368fa25, type: 3}
 --- !u!1 &1291185607

@@ -14,7 +14,7 @@ public class Puzzle : MonoBehaviour
     
     protected PuzzleInstance currentPuzzleInstance;
     protected PuzzleTranslator translator = new PuzzleTranslator();
-    protected PuzzleGrid grid;
+    public PuzzleGrid grid;
 
     private SymbolPlacer symbolPlacer;
  
@@ -101,6 +101,8 @@ public class Puzzle : MonoBehaviour
         GetComponentInChildren<PuzzleStarter>().ResetStarter();
         //grid.ResetGrid();
 
+        currentPuzzleInstance.SetUpHazards();
+
         if (currentPuzzleInstance.HasRestrictions())
             grid.SetRestrictions(currentPuzzleInstance.GetRestrictions());
 
@@ -111,6 +113,7 @@ public class Puzzle : MonoBehaviour
     protected virtual void NextPuzzle()
     {
         symbolPlacer.UnloadSymbols();
+        currentPuzzleInstance.DestroyHazards();
         ResetClearanceVariables();
 
 
@@ -280,6 +283,7 @@ public class Puzzle : MonoBehaviour
             {
                 if(eve.success == false)
                 {
+                    Debug.Log("EXIT");
                     symbolPlacer.UnloadSymbols();
                     grid.ResetGrid();
                 }

@@ -13,8 +13,7 @@ public class HazardObject : MonoBehaviour
     public bool movingBackwards;
 
     public Vector3 StartPos { get; set; }
-
-    
+    public int PuzzleID { get; internal set; }
 
     private void Awake()
     {
@@ -48,10 +47,7 @@ public class HazardObject : MonoBehaviour
     {
         //Player has Stepped on Hazard
 
-        //va händer om spelaren står kvar på hazard? 
-        //vi kan inte reset varje gång. Vi måste typ kolla om pusslet är aktivt eller om det håller på att starta om typ?
-
-        //EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(310), false));
+        EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(PuzzleID), false));
     }
 
     public void TurnAround()
