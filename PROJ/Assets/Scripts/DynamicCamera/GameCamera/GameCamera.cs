@@ -15,7 +15,7 @@ public class GameCamera : MonoBehaviour {
     [SerializeField] private Transform followTarget;
     [SerializeField] private Transform shoulderPosition;
 
-    [SerializeField] private List<CompositeCameraBehaviour> cameraBehaviours;
+    [SerializeField] private List<BaseCameraBehaviour> cameraBehaviours;
     [SerializeField] private Transitioner transitioner;
     
     private Transform thisTransform;
@@ -30,34 +30,18 @@ public class GameCamera : MonoBehaviour {
         inputReference.Initialize();
         transitioner.Initialize();
         thisTransform = transform;
-        
-        foreach (CompositeCameraBehaviour newBehaviour in cameraBehaviours) {
-            
-            Debug.Log(behaviours);
-            
-            
-            foreach (Type type in newBehaviour.GetTypeList()) {
-                if (behaviours.ContainsKey(type))
-                    continue;
-                
-                behaviours.Add(type, newBehaviour.cameraBehaviour);
-                
-                if(newBehaviour.AddCameraBehaviourAsKey)
-                    behaviours.Add(newBehaviour.cameraBehaviour.GetType(), newBehaviour.cameraBehaviour);
-                
-            }
-            
-            newBehaviour.cameraBehaviour.InjectReferences(thisTransform, followTarget);
-            
-            foreach(KeyValuePair<Type, BaseCameraBehaviour> a in behaviours)
-                Debug.Log(a);
-            
-        }
 
-        foreach(KeyValuePair<Type, BaseCameraBehaviour> pairs in behaviours)
-            Debug.LogWarning(pairs);
+       
         
+        
+        behaviours.Add(typeof(PuzzleCameraBehaviour),  cameraBehaviours[2]);
+        behaviours.Add(typeof(BaseCameraBehaviour),  cameraBehaviours[0]);
+        behaviours.Add(typeof(IdleBehaviour),  cameraBehaviours[1]);
+        behaviours.Add(typeof(WalkState),  cameraBehaviours[0]);
+
         currentBaseCameraBehaviour = behaviours[typeof(BaseCameraBehaviour)];
+        
+        currentBaseCameraBehaviour.InjectReferences(thisTransform, followTarget);
         
         behaviourQueue = ExecuteCameraBehaviour;
     }
@@ -130,7 +114,7 @@ public class GameCamera : MonoBehaviour {
 
     private void OnPuzzleExit(ExitPuzzleEvent exitPuzzleEvent) {
         EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
-        ChangeBehaviour<StationaryBehaviour>();
+        ChangeBehaviour<BaseCameraBehaviour>();
     }
 
     private void OnLookAndMove(CameraLookAndMoveToEvent lookAndMove) {
@@ -141,10 +125,7 @@ public class GameCamera : MonoBehaviour {
             
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
         
-     //   transitioner.
-        
-       // await PlayTransition(moveTo);
-        
+
         ChangeBehaviour<PuzzleCameraBehaviour>();
 
         PuzzleCameraBehaviour puzzleBehaviour = currentBaseCameraBehaviour as PuzzleCameraBehaviour;
@@ -154,6 +135,7 @@ public class GameCamera : MonoBehaviour {
     
     private void ChangeBehaviour<T>() where T : BaseCameraBehaviour {
         currentBaseCameraBehaviour = behaviours[typeof(T)];
+        currentBaseCameraBehaviour.InjectReferences(thisTransform, followTarget);
         currentBaseCameraBehaviour.EnterBehaviour();
     }
 
