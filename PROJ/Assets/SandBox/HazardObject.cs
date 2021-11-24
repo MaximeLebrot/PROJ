@@ -1,52 +1,47 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class HazardObject : MonoBehaviour
 {
-    [SerializeField] public int startingState = 0;
-    [SerializeField] public float timeToNextState = 2f;
 
 
-    private float timer;
-    private Animator animator;
-    private int counter;
+
+
+    //private Animator animator;
+    public bool movingBackwards;
+
+    public Vector3 StartPos { get; set; }
+
+    
+
     private void Awake()
     {
-        timer = timeToNextState;
-        animator = GetComponent<Animator>();
-        counter = startingState;
-        animator.SetInteger("stateCounter", counter);      
+
+        //animator = GetComponent<Animator>();    
     }
-    private void Update()
-    {
-        //timer -= Time.deltaTime;
-        if (timer <= 0)
-        {
-            NextState();
-            timer = timeToNextState;
-        }
-    }
+    
     public void ResetHazardObject()
     {
-        timer = timeToNextState;
-        counter = startingState;
-        animator.SetInteger("stateCounter", counter);
-        animator.SetTrigger("resetTrigger");
+        movingBackwards = false;
+        transform.position = StartPos;
     }
 
-    public void OnUpdateHazard()
+    public void UpdateHazard(float hazardOffset, Vector3 moveDirection)
     {
-        //NextState();
+        if(movingBackwards == false)
+            transform.parent.position += hazardOffset * moveDirection;
+        else
+            transform.parent.position -= hazardOffset * moveDirection;
     }
-    public void NextState()
-    {
-        Debug.Log("next state from:" + gameObject.name);
-        counter++;
-        if (counter > 2)
-            counter = 0;
 
-        animator.SetInteger("stateCounter", counter);
+    public void ReverseHazard(float hazardOffset, Vector3 moveDirection)
+    {
+        if (movingBackwards == true)
+            transform.parent.position += hazardOffset * moveDirection;
+        else
+            transform.parent.position -= hazardOffset * moveDirection;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -58,4 +53,37 @@ public class HazardObject : MonoBehaviour
 
         //EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(310), false));
     }
+
+    public void TurnAround()
+    {
+        //Debug.Log("TURN AROUND");
+        movingBackwards = !movingBackwards;
+    }
+
+    public void CheckHazardBounds(int boundsMax, Vector3 moveDirection, float hazardOffset)
+    {
+        //Check if this reached the bounds. if so: movingBackwards = true
+
+        Vector3 vec;
+        if (movingBackwards)
+            vec = transform.parent.localPosition + (-moveDirection * hazardOffset);
+        else
+            vec = transform.parent.localPosition + (moveDirection * hazardOffset);
+
+
+
+        if (Mathf.Round(vec.x) > boundsMax || Mathf.Round(vec.z) > boundsMax)
+        {
+            TurnAround();
+            return;
+        }
+
+
+        if (Mathf.Round(vec.x) < -boundsMax || Mathf.Round(vec.z) < -boundsMax)
+        {
+            TurnAround();
+        }
+
+    }
+
 }

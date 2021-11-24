@@ -12,7 +12,7 @@ public class PuzzleGrid : MonoBehaviour {
     [SerializeField] private int size;
     [SerializeField] private VisualEffect currentNodeEffect;
 
-    public int nodeOffset = 3;
+    private int nodeOffset = 3;
     
     private List<Node> walkableNodes = new List<Node>();
     private List<Node> lineNodes = new List<Node>();
@@ -31,6 +31,8 @@ public class PuzzleGrid : MonoBehaviour {
     private PuzzleLine currentLine;
     private GameObject currentLineObject;
 
+    public int NodeOffset => nodeOffset;
+    public int Size => size;
     public Transform Player { get; set; }
 
     private Puzzle masterPuzzle;
@@ -125,7 +127,7 @@ public class PuzzleGrid : MonoBehaviour {
                 allNodes[x, y].PosY = y;
                 allNodes[x, y].gameObject.name = "" + x + "|" + y;
                 allNodes[x, y].transform.position = transform.position;
-                allNodes[x,y].transform.localPosition = (x * Vector3.right * nodeOffset) + (y * Vector3.forward * nodeOffset);
+                allNodes[x,y].transform.localPosition = (y * Vector3.right * nodeOffset) + (x * Vector3.forward * nodeOffset);
                 allNodes[x, y].grid = this;
 
                 
@@ -185,7 +187,7 @@ public class PuzzleGrid : MonoBehaviour {
         if (lineRenderers.Count > 0 && lineRenderers.Peek().CompareLastLine(newLine))
         {
             //Hazard
-            EventHandler<UpdateHazardEvent>.FireEvent(new UpdateHazardEvent());
+            EventHandler<UpdateHazardEvent>.FireEvent(new UpdateHazardEvent(true));
             EraseLine(node);
             return;
         }
@@ -235,7 +237,7 @@ public class PuzzleGrid : MonoBehaviour {
 
         #endregion
 
-        EventHandler<UpdateHazardEvent>.FireEvent(new UpdateHazardEvent());
+        EventHandler<UpdateHazardEvent>.FireEvent(new UpdateHazardEvent(false));
         Debug.Log("Update hazard event sent");
 
     }
@@ -272,7 +274,7 @@ public class PuzzleGrid : MonoBehaviour {
     private void EraseLine(Node node)
     {
 
-        Debug.Log("ERASE");
+        //Debug.Log("ERASE");
         //Checks if this was the last line that was drawn, if so delete that line (eraser)
         LineObject oldLine = lineRenderers.Pop();
         foreach (Node n in currentNode.neighbours.Keys)

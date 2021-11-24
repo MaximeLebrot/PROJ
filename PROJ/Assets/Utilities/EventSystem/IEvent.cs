@@ -129,7 +129,8 @@ public class SaveSettingsEvent : IEvent
 //Hazards
 public class UpdateHazardEvent : IEvent
 {
-
+    public bool reverse;
+    public UpdateHazardEvent (bool isReverse) { reverse = isReverse; }
 }
 public class ResetHazardEvent : IEvent
 {

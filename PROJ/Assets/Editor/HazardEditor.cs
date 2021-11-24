@@ -7,13 +7,10 @@ public class HazardEditor : Editor {
     private SerializedProperty hazardMatrix;
     private SerializedProperty hazardObjectProp;
     private SerializedProperty gridObjectTypeProp;
-    private SerializedProperty baseTimerProp;
-    private SerializedProperty timerOffsetPerObjectProp;
-    private SerializedProperty startingStateProp;
-    private SerializedProperty stateOffsetPerObjectProp;
+    private SerializedProperty moveDirectionProp;
     private SerializedProperty hazardObjectsProp;
     private SerializedProperty movingHazardProp;
-    private SerializedProperty moveXProp;
+
     
     private bool drawDefaultInspector;
 
@@ -23,13 +20,10 @@ public class HazardEditor : Editor {
         hazardMatrix = serializedObject.FindProperty("customPattern");
         hazardObjectProp = serializedObject.FindProperty("hazardObj");
         gridObjectTypeProp = serializedObject.FindProperty("grid");
-        baseTimerProp = serializedObject.FindProperty("baseTimer");
-        timerOffsetPerObjectProp = serializedObject.FindProperty("timerOffsetPerObject");
-        startingStateProp = serializedObject.FindProperty("startingState");
-        stateOffsetPerObjectProp = serializedObject.FindProperty("stateOffsetPerObject");
+        moveDirectionProp = serializedObject.FindProperty("moveDirection");
         hazardObjectsProp = serializedObject.FindProperty("hazardObjects");
         movingHazardProp = serializedObject.FindProperty("movingHazard");
-        moveXProp = serializedObject.FindProperty("moveX");
+
         
         CalculateGridSize();
         
@@ -56,13 +50,11 @@ public class HazardEditor : Editor {
             hazardMatrix.ClearArray();
             CalculateGridSize();
         }
-        
-        EditorGUILayout.PropertyField(baseTimerProp);
-        EditorGUILayout.PropertyField(timerOffsetPerObjectProp);
-        EditorGUILayout.PropertyField(startingStateProp);
-        EditorGUILayout.PropertyField(stateOffsetPerObjectProp);
+
+
+
         EditorGUILayout.PropertyField(movingHazardProp);
-        EditorGUILayout.PropertyField(moveXProp);
+        EditorGUILayout.PropertyField(moveDirectionProp);
         
         DrawMatrix();
         EditorGUILayout.Space(200);
@@ -81,6 +73,8 @@ public class HazardEditor : Editor {
         
         for (int i = 0; i < gridSize; i++) {
             
+            EditorGUILayout.BeginHorizontal();
+
             for (int j = 0; j < gridSize; j++) {
 
                 SerializedProperty prop = hazardMatrix.GetArrayElementAtIndex(j + i * gridSize);
@@ -91,6 +85,7 @@ public class HazardEditor : Editor {
                 
             }
             
+            EditorGUILayout.EndHorizontal();
         }
     }
 

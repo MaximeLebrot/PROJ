@@ -57,7 +57,7 @@ public class PuzzlePlayerController : MonoBehaviour
     }
     private void OnSkipMove(InputAction.CallbackContext obj)
     {
-        EventHandler<UpdateHazardEvent>.FireEvent(new UpdateHazardEvent());
+        //EventHandler<UpdateHazardEvent>.FireEvent(new UpdateHazardEvent());
     }
     private void OnQuitPuzzle(InputAction.CallbackContext obj)
     {

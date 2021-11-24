@@ -257,7 +257,7 @@ public class Puzzle : MonoBehaviour
 
     private bool IsEqualRange(int offset, int length, string currentSolution)
     {
-        Debug.Log(length);
+        //Debug.Log(length);
 
         if (offset + length > currentSolution.Length)
         {
