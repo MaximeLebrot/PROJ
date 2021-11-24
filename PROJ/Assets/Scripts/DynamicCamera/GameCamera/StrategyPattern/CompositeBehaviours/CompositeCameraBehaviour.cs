@@ -6,7 +6,9 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Camera/Composite Camera Behaviour", fileName = "New Composite Camera Behaviour")]
 public class CompositeCameraBehaviour : ScriptableObject {
 
-    [SerializeField] public BaseCameraBehaviour cameraBehaviour;
+    public BaseCameraBehaviour cameraBehaviour;
+
+    [SerializeField] private TypeNameDictionary typeNameDictionary;
     
     [Tooltip("if hasCallbackType is true, any hashmap will use the specified type as key. If false, the camera behaviour type will be used.")]
     [SerializeField] private bool hasCallbackType;
@@ -15,8 +17,8 @@ public class CompositeCameraBehaviour : ScriptableObject {
     [SerializeField] private bool addCameraBehaviourTypeAsKey;
             
     [SerializeField] private List<string> callbackTypeNames;
-    
-    [SerializeField] private bool hasTransitions;
+
+    public bool AddCameraBehaviourAsKey => addCameraBehaviourTypeAsKey;
     
     /// <summary>
     /// Will break if type is in a namespace
