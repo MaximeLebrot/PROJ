@@ -424,6 +424,7 @@ public class PuzzleGrid : MonoBehaviour {
     private void TellPuzzleGridIsReady()
     {
         masterPuzzle.InitiatePuzzle();
+        masterPuzzle.RegisterToResetPuzzleEvent();
     }
 
     private void DestroyCurrentLine()

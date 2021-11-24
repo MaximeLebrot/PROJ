@@ -291,11 +291,11 @@ public class Puzzle : MonoBehaviour
                     
             }
         }
-
     }
 
     private void ResetPuzzle(ResetPuzzleEvent eve)
     {
+        EventHandler<ResetPuzzleEvent>.UnregisterListener(ResetPuzzle);
         if (eve.info.ID == currentPuzzleInstance.GetPuzzleID())
         {
             symbolPlacer.UnloadSymbols();
@@ -304,32 +304,12 @@ public class Puzzle : MonoBehaviour
         }
     }
 
+    public void RegisterToResetPuzzleEvent() => EventHandler<ResetPuzzleEvent>.RegisterListener(ResetPuzzle);
     
     private void PlaceSymbols()
     {
         placedSymbols = symbolPlacer.PlaceSymbols(currentPuzzleInstance, symbolPos);
-        /*if (instantiatedSymbols.Count > 0)
-        {
-            UnloadSymbols();
-        }
-
-
-        //Is this the way we want to fetch the list??
-        foreach (SymbolModPair pair in currentPuzzleInstance.puzzleObjects)
-        {
-            GameObject instance = Instantiate(pair.symbol).gameObject;
-
-            PuzzleObject objectInstance = instance.GetComponent<PuzzleObject>();
-            instantiatedSymbols.Add(objectInstance);
-            objectInstance.transform.parent = symbolPos;
-            objectInstance.SetModifier(pair.modifier);
-
-        }
-
-        if (instantiatedSymbols.Count % 2 == 0)
-            EvenPlaceSymbols();
-        else
-            UnevenPlaceSymbols();*/
+        
     }
 
      

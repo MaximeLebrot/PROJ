@@ -51,11 +51,14 @@ public class PuzzleInstance : MonoBehaviour
     {
         if(hazards.Count > 0)
         {
-            foreach (Hazard h in hazards)
+            if(instantiatedHazards.Count == 0)
             {
-                Hazard instance = Instantiate(h, transform).GetComponent<Hazard>();
-                instantiatedHazards.Add(instance);
-                instance.StartHazard(GetPuzzleID());
+                foreach (Hazard h in hazards)
+                {
+                    Hazard instance = Instantiate(h, transform).GetComponent<Hazard>();
+                    instantiatedHazards.Add(instance);
+                    instance.StartHazard(GetPuzzleID());
+                }
             }
         }
     }
@@ -69,6 +72,7 @@ public class PuzzleInstance : MonoBehaviour
                 h.DeleteHazardObjects();
                 Destroy(h.gameObject);
             }
+            instantiatedHazards.Clear();
         }
     }
   

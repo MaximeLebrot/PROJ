@@ -24,7 +24,7 @@ public class HazardObject : MonoBehaviour
     public void ResetHazardObject()
     {
         movingBackwards = false;
-        transform.position = StartPos;
+        transform.parent.position = StartPos;
     }
 
     public void UpdateHazard(float hazardOffset, Vector3 moveDirection)
