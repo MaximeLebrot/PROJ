@@ -23,7 +23,6 @@ public class CompositeCameraEditor : Editor {
     private ReorderableList typeCallbackList;
     
     private void OnEnable() {
-        
         behaviourProperty = serializedObject.FindProperty("cameraBehaviour");
         callbackTypesProperty = serializedObject.FindProperty("callbackTypeNames");
         hasCallbackTypeProperty = serializedObject.FindProperty("hasCallbackType");
@@ -53,6 +52,8 @@ public class CompositeCameraEditor : Editor {
             drawHeaderCallback = DrawHeader,
         };
         
+        
+        
     }
     
     public override void OnInspectorGUI() {
@@ -76,23 +77,22 @@ public class CompositeCameraEditor : Editor {
         SerializedProperty element = typeCallbackList.serializedProperty.GetArrayElementAtIndex(index); 
         
         EditorGUI.PropertyField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight), element, GUIContent.none);
-        GenerateType(index);
-        
         
         if (GUI.Button((new Rect(rect.x + 230, rect.y, 200, EditorGUIUtility.singleLineHeight)), "Check legit")) {
             
-            if(currentType != null) 
+            currentType = GenerateType(index);
+            
+            Debug.Log(currentType);
+
+            if (currentType != null)
                 typeNameDictionary.AddType(target.GetInstanceID(), currentType.Name);
+
         }
         
-        if(true)
-            EditorGUI.LabelField(new Rect(rect.x + 450, rect.y, 200, EditorGUIUtility.singleLineHeight),"Type already exists in list", wrongTypeStyle);
-        else if (currentType != null) {
-            DrawLabelField(rect, currentType.Name, correctTypeStyle);
-        }
-        else 
-            DrawLabelField(rect, "This type doesn't exist", wrongTypeStyle);
-        
+        if(currentType == null)
+            DrawLabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight),  "Input is not a type", wrongTypeStyle);
+        else
+            DrawLabelField(new Rect(rect.x, rect.y, 200, EditorGUIUtility.singleLineHeight),  currentType.Name, correctTypeStyle);
     }
     private void DrawLabelField(Rect rect, string text, GUIStyle style) {
         EditorGUI.LabelField(new Rect(rect.x + 450, rect.y, 200, EditorGUIUtility.singleLineHeight),text, style);
@@ -100,10 +100,7 @@ public class CompositeCameraEditor : Editor {
     
     private void DrawHeader(Rect rect) => EditorGUI.LabelField(rect, "Callback Type Names");
 
-    private void GenerateType(int index) {
-        currentType = (target as CompositeCameraBehaviour)?.CreateCallbackType(index);
-        Debug.Log(currentType);
-    }
+    private Type GenerateType(int index) =>  (target as CompositeCameraBehaviour)?.CreateCallbackType(index);
 
     private bool IsTypePresentInList(string newType, int ID, bool excludeIDFromSearch) {
 
@@ -119,5 +116,6 @@ public class CompositeCameraEditor : Editor {
 
         return false;
     }
-    
+
+
 }

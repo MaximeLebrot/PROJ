@@ -20,7 +20,6 @@ public class TypeNameDictionary : ScriptableObject {
         if (TypeExists(ID, name)) 
             return typeDictionary[ID].Remove(name);
         
-        
         return false;
     }
     
@@ -43,7 +42,9 @@ public class TypeNameDictionary : ScriptableObject {
         HashSet<string> newSet = new HashSet<string>();
 
         foreach (KeyValuePair<int, HashSet<string>> lists in typeDictionary) {
-            
+
+            if (excludeID && lists.Key == excludedID)
+                continue;
             
             foreach (string name in lists.Value)
                 newSet.Add(name);
@@ -52,3 +53,7 @@ public class TypeNameDictionary : ScriptableObject {
         return newSet;
     }
 }
+
+
+
+

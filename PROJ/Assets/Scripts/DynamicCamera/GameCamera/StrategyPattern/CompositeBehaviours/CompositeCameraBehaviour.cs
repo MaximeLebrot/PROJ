@@ -17,8 +17,8 @@ public class CompositeCameraBehaviour : ScriptableObject {
     [SerializeField] private bool addCameraBehaviourTypeAsKey;
             
     [SerializeField] private List<string> callbackTypeNames;
-    
-    [SerializeField] private bool hasTransitions;
+
+    public bool AddCameraBehaviourAsKey => addCameraBehaviourTypeAsKey;
     
     /// <summary>
     /// Will break if type is in a namespace

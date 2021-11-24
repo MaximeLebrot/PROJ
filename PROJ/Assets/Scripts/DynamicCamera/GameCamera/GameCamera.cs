@@ -37,12 +37,21 @@ public class GameCamera : MonoBehaviour {
             
             
             foreach (Type type in newBehaviour.GetTypeList()) {
-                if(behaviours.ContainsKey(type))
-                    Debug.LogError($"{type} already exists (from {newBehaviour}");
+                if (behaviours.ContainsKey(type))
+                    continue;
+                
                 behaviours.Add(type, newBehaviour.cameraBehaviour);
+                
+                if(newBehaviour.AddCameraBehaviourAsKey)
+                    behaviours.Add(newBehaviour.cameraBehaviour.GetType(), newBehaviour.cameraBehaviour);
+                
             }
             
             newBehaviour.cameraBehaviour.InjectReferences(thisTransform, followTarget);
+            
+            foreach(KeyValuePair<Type, BaseCameraBehaviour> a in behaviours)
+                Debug.Log(a);
+            
         }
 
         foreach(KeyValuePair<Type, BaseCameraBehaviour> pairs in behaviours)
@@ -108,7 +117,7 @@ public class GameCamera : MonoBehaviour {
         EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnReturnToKeyboard);
     }
 
-    private async void OnReturnToKeyboard(AwayFromKeyboardEvent e) {
+    private void OnReturnToKeyboard(AwayFromKeyboardEvent e) {
         ChangeBehaviour<BaseCameraBehaviour>();
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnReturnToKeyboard);
         EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
@@ -124,11 +133,11 @@ public class GameCamera : MonoBehaviour {
         ChangeBehaviour<StationaryBehaviour>();
     }
 
-    private async void OnLookAndMove(CameraLookAndMoveToEvent lookAndMove) {
+    private void OnLookAndMove(CameraLookAndMoveToEvent lookAndMove) {
         
     }
 
-    private async void OnPuzzleStart(StartPuzzleEvent startPuzzleEvent) {
+    private void OnPuzzleStart(StartPuzzleEvent startPuzzleEvent) {
             
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
         
@@ -197,6 +206,7 @@ public class GameCamera : MonoBehaviour {
             shoulderPosition = GameObject.FindWithTag("ShoulderCameraPosition").transform;
         } catch (NullReferenceException e) {
             Debug.Log("Couldn't find one or all targets, check if they have the right tag");
+            Debug.Log(e);
         }
     }
 }
