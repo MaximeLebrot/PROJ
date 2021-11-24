@@ -78,11 +78,13 @@ public class Puzzle : MonoBehaviour
     private void OnEnable()
     {
         EventHandler<ExitPuzzleEvent>.RegisterListener(ExitPuzzle);
+        EventHandler<ResetPuzzleEvent>.RegisterListener(ResetPuzzle);
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
     }
     private void OnDisable()
     {
         EventHandler<ExitPuzzleEvent>.UnregisterListener(ExitPuzzle);
+        EventHandler<ResetPuzzleEvent>.UnregisterListener(ResetPuzzle);
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
     }
     private void SetupPuzzleInstances()
@@ -283,7 +285,6 @@ public class Puzzle : MonoBehaviour
             {
                 if(eve.success == false)
                 {
-                    Debug.Log("EXIT");
                     symbolPlacer.UnloadSymbols();
                     grid.ResetGrid();
                 }
@@ -293,6 +294,15 @@ public class Puzzle : MonoBehaviour
 
     }
 
+    private void ResetPuzzle(ResetPuzzleEvent eve)
+    {
+        if (eve.info.ID == currentPuzzleInstance.GetPuzzleID())
+        {
+            symbolPlacer.UnloadSymbols();
+            grid.ResetGrid();
+
+        }
+    }
 
     
     private void PlaceSymbols()

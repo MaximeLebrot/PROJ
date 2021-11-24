@@ -47,7 +47,7 @@ public class HazardObject : MonoBehaviour
     {
         //Player has Stepped on Hazard
 
-        EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(PuzzleID), false));
+        EventHandler<ResetPuzzleEvent>.FireEvent(new ResetPuzzleEvent(new PuzzleInfo(PuzzleID)));
     }
 
     public void TurnAround()

@@ -398,7 +398,7 @@ public class PuzzleGrid : MonoBehaviour {
 
     private void TurnOffNodes()
     {
-        Debug.Log("TURN OFF NODES");
+        //Debug.Log("TURN OFF NODES");
         foreach (Node n in allNodes)
         {
             if(n.startNode == false)
