@@ -29,8 +29,12 @@ public class ContrastModeObject : MonoBehaviour {
     }
 
     private void DetermineIfContrastModeIsActive() {
-        
-        bool isContrastModeActive = FindObjectOfType<InGameMenu>().SettingsMenu.userSettings.highContrastMode;
+
+        var menu = FindObjectOfType<InGameMenu>();
+        bool isContrastModeActive = false;
+
+        if (menu != null)
+            isContrastModeActive = menu.SettingsMenu.userSettings.highContrastMode;
 
         if (!isContrastModeActive) return;
         
