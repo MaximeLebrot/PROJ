@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4328172287816507838}
   - component: {fileID: 1704445299302775910}
   - component: {fileID: 1704445299302775911}
-  - component: {fileID: -5936449266378397275}
   m_Layer: 10
   m_Name: Puzzle1
   m_TagString: Untagged
@@ -63,9 +62,9 @@ MonoBehaviour:
   - {fileID: 9218029291471408076}
   playerInput: 
   solution: 
-  symbolPlacer: {fileID: 0}
+  instantiatedSymbols: []
   symbolPos: {fileID: 4328172287442391031}
-  placedSymbols: []
+  symbolOffset: 2
 --- !u!54 &1704445299302775910
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -95,20 +94,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 19.63
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-5936449266378397275
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4328172287816507839}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 103503f21c0dd4b4293450945711d60f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  instantiatedSymbols: []
-  symbolOffset: 3
 --- !u!1001 &420874895311806309
 PrefabInstance:
   m_ObjectHideFlags: 0

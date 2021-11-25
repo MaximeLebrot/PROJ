@@ -21,7 +21,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     [SerializeField] private float gravityWhenFalling = 10f;
     [SerializeField] private float glideHeight;
     [SerializeField] private float moveThreshold = 0.05f;
-    /*[SerializeField]*/ private float stepHeight = 0.2f;
+    [SerializeField] private float stepHeight = 0.2f;
    
 
     //Properties
@@ -132,10 +132,9 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
     private void CheckForCollisions(int i)
     {
-        WalkCollision(0);
-        /*collisionMethod = CheckForCollisions;
+        collisionMethod = CheckForCollisions;
         YCollision();
-        XZCollision(i);  */    
+        XZCollision(i);      
     }
 
 
@@ -171,24 +170,22 @@ public class PlayerPhysicsSplit : MonoBehaviour
     {
         //Y-axis normalforce
         //Could use sphere coll here instead of bottomhalf etc
-        Vector3 castOrigin = transform.position + (attachedCollider.center + attachedCollider.height * 0.5f * Vector3.down) + stepHeight * 0.5f * Vector3.up;
         float castLength = velocity.magnitude * Time.deltaTime + skinWidth;
-        Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, velocity.normalized, out RaycastHit yHitInfo, castLength, collisionMask);
+        Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, Vector3.down, out RaycastHit yHitInfo, castLength, collisionMask);
         if (yHitInfo.collider && yHitInfo.collider.isTrigger == false)
         {
             Vector3 smoothingNormalForce;
-            /*
             if (yHitInfo.distance < castLength)
             {
                 smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, yHitInfo.normal);
             }
             else
-            {*/
+            {
                 smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, yHitInfo.normal)
                                         + GlideHeight * Vector3.up;
-            //}
+            }
 
-            //ApplyFriction(smoothingNormalForce);
+            ApplyFriction(smoothingNormalForce);
             velocity += new Vector3(0, smoothingNormalForce.y, 0);
         }
     }
@@ -226,45 +223,12 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
         ApplyAirResistance();
     }
-    private void WalkCollision(int i)
-    {
-        Physics.CapsuleCast(colliderTopHalf, colliderBottomHalf, attachedCollider.radius, velocity.normalized, out RaycastHit hitInfo, velocity.magnitude * Time.deltaTime + skinWidth, collisionMask);
-        if (hitInfo.collider && hitInfo.collider.isTrigger == false)
-        {
-            // Calculate the allowed distance to the collision point
-            float distanceToColliderNeg = skinWidth / Vector3.Dot(velocity.normalized, hitInfo.normal);
-            float allowedMovementDistance = hitInfo.distance + distanceToColliderNeg;
 
-            // Are we allowed to move further than we are able to this frame? 
-            if (allowedMovementDistance > velocity.magnitude * Time.deltaTime)
-            {
-                MoveOutOfGeometry(velocity * Time.deltaTime);
-                return;
-            }
-            if (allowedMovementDistance > 0)
-            {
-                MoveOutOfGeometry(allowedMovementDistance * velocity.normalized);
-            }
-
-            //GlideHeight should be zero when walking, but needs to be added here to get a smooth transition along with the lerp in SetValues
-            Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, hitInfo.normal)
-                                  + GlideHeight * Vector3.up;
-            velocity += normalForce;
-            ApplyFriction(normalForce);
-
-            if (i < MAX_ITER)
-                CheckForCollisions(i + 1);
-        }
-        else
-            MoveOutOfGeometry(velocity * Time.deltaTime);
-
-        ApplyAirResistance();
-    }
     private void MoveOutOfGeometry(Vector3 movement)
     {
         //Debug.Log("movement magnitude is: " + movement.magnitude);
-        
         //Do not move at all if the distance is tiny.
+        //SHOULD not result in a move at all, and therefore shouldnt case trouble..? 
         if (movement.magnitude < moveThreshold)
             return;
 
@@ -279,7 +243,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
            
             Vector3? separation = null;
             float maxDistance = 0f;
-            Vector3 direction = Vector3.zero;
             foreach (Collider currentCollider in colliders)
             {
                 if (currentCollider == attachedCollider ||currentCollider.isTrigger)
@@ -292,7 +255,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
                                             currentCollider,
                                             currentCollider.transform.position,
                                             currentCollider.transform.rotation,
-                                            out direction,
+                                            out Vector3 direction,
                                             out float distance);
                 
                 //Compute penetration does not always return true (?), and if it doesnt, we can skip this loop iteration.
@@ -315,10 +278,8 @@ public class PlayerPhysicsSplit : MonoBehaviour
                 velocity += normalForce;
             }
             else
-            {
-                Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity * minimumPenetrationForPenalty, direction.normalized);
-                velocity += normalForce;
-                //Debug.Log("Separation has no value!, maxDistance x100 is  " + maxDistance);
+            {              
+                Debug.Log("Separation has no value!, maxDistance x100 is  " + maxDistance);
                 return;
             }
         }
