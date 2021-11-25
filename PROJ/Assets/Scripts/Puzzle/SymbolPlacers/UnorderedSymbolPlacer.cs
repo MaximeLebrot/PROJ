@@ -5,13 +5,13 @@ using UnityEngine;
 public class UnorderedSymbolPlacer : SymbolPlacer
 {
     [SerializeField] private List<Transform> symbolPositions = new List<Transform>();
-    public List<PuzzleObject> instantiatedSymbolsClone;
+    //randomizing starting offset between these 2 values, for visual variation
+    [SerializeField]private Vector2 offsetMinMax = new Vector2(45, 90);
+    private List<PuzzleObject> instantiatedSymbolsClone;
 
-    //Angle offset depending on number of symbols? 
+    //Symbol placement
     private float degreeOffset;
-    //Where should the symbol spawn if its only 1?
-    private float startingOffset = 90f;
-    //Some arbitrary size for offset from middle of panel
+    private float startingOffset;
     private float panelSize = 2f;
 
     protected override void UnevenPlaceSymbols()
@@ -21,6 +21,7 @@ public class UnorderedSymbolPlacer : SymbolPlacer
     }
     protected override void EvenPlaceSymbols()
     {
+        startingOffset = Random.Range(offsetMinMax.x, offsetMinMax.y);
         //May be a way to handle this depending on implemenetation, discarding extra symbols or extra positions for instance
         if(instantiatedSymbols.Count != symbolPositions.Count)
             Debug.Log("Wrong number of symbols to symbolPositions");

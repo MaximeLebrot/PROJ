@@ -14,6 +14,8 @@ public class Puzzle : MonoBehaviour
     
     protected PuzzleInstance currentPuzzleInstance;
     protected PuzzleTranslator translator = new PuzzleTranslator();
+    protected List<string> translations;
+
     public PuzzleGrid grid;
 
     private SymbolPlacer symbolPlacer;
@@ -28,7 +30,6 @@ public class Puzzle : MonoBehaviour
 
     private Transform player;
     private PuzzleParticles particles;
-    private List<string> translations;
 
     public float NextPuzzleTimer { get; } = 2.5f;
     public void SetPlayer(Transform t) { player = t; grid.Player = player; }
@@ -230,7 +231,7 @@ public class Puzzle : MonoBehaviour
     private int translationIndex = 0;
     List<bool> clearedSymbols = new List<bool>();
 
-    public void CheckIfClearedSymbol(string currentSolution) //currentSolution = what the player has drawn
+    public virtual void CheckIfClearedSymbol(string currentSolution) //currentSolution = what the player has drawn
     {
 
 
