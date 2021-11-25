@@ -132,13 +132,67 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
     private void CheckForCollisions(int i)
     {
-        WalkCollision(0);
-        /*collisionMethod = CheckForCollisions;
+        collisionMethod = CheckForCollisions;
         YCollision();
-        XZCollision(i);  */    
+        XZCollision(i);
     }
+    private void YCollision()
+    {
+        //Y-axis normalforce
+        //Could use sphere coll here instead of bottomhalf etc
+        float castLength = velocity.magnitude * Time.deltaTime + skinWidth;
+        Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, Vector3.down, out RaycastHit yHitInfo, castLength, collisionMask);
+        if (yHitInfo.collider && yHitInfo.collider.isTrigger == false)
+        {
+            Vector3 smoothingNormalForce;
+            if (yHitInfo.distance < castLength)
+            {
+                smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, yHitInfo.normal);
+            }
+            else
+            {
+                smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, yHitInfo.normal)
+                                        + GlideHeight * Vector3.up;
+            }
+
+            ApplyFriction(smoothingNormalForce);
+            velocity += new Vector3(0, smoothingNormalForce.y, 0);
+        }
+    }
+    private void XZCollision(int i)
+    {
+        Physics.CapsuleCast(colliderTopHalf, colliderBottomHalf + stepHeightDisplacement, attachedCollider.radius, velocity.normalized, out var hitInfo, velocity.magnitude * Time.deltaTime + skinWidth, collisionMask);
+        if (hitInfo.collider && hitInfo.collider.isTrigger == false)
+        {
+            // Calculate the allowed distance to the collision point
+            float distanceToColliderNeg = skinWidth / Vector3.Dot(velocity.normalized, hitInfo.normal);
+            float allowedMovementDistance = hitInfo.distance + distanceToColliderNeg;
+
+            // Are we allowed to move further than we are able to this frame? 
+            if (allowedMovementDistance > velocity.magnitude * Time.deltaTime)
+            {
+                MoveOutOfGeometry(velocity * Time.deltaTime);
+                return;
+            }
+            if (allowedMovementDistance > 0)
+            {
+                MoveOutOfGeometry(allowedMovementDistance * velocity.normalized);
+            }
+
+            //GlideHeight should be zero when walking, but needs to be added here to get a smooth transition along with the lerp in SetValues
+            Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, hitInfo.normal);
+            velocity += new Vector3(normalForce.x, 0, normalForce.z);
+            ApplyFriction(normalForce);
 
 
+            if (i < MAX_ITER)
+                collisionMethod(i + 1);
+        }
+        else
+            MoveOutOfGeometry(velocity * Time.deltaTime);
+
+        ApplyAirResistance();
+    }
     private void YCollisionSmoothing()
     {
         //Y-axis normalforce
@@ -167,7 +221,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
             velocity += new Vector3(0, smoothingNormalForce.y, 0);
         }
     }
-    private void YCollision()
+    /*private void YCollision()
     {
         //Y-axis normalforce
         //Could use sphere coll here instead of bottomhalf etc
@@ -184,7 +238,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
             }
             else
             {*/
-                smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, yHitInfo.normal)
+               /* smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, yHitInfo.normal)
                                         + GlideHeight * Vector3.up;
             //}
 
@@ -225,7 +279,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
             MoveOutOfGeometry(velocity * Time.deltaTime);
 
         ApplyAirResistance();
-    }
+    }*/
     private void WalkCollision(int i)
     {
         Physics.CapsuleCast(colliderTopHalf, colliderBottomHalf, attachedCollider.radius, velocity.normalized, out RaycastHit hitInfo, velocity.magnitude * Time.deltaTime + skinWidth, collisionMask);
