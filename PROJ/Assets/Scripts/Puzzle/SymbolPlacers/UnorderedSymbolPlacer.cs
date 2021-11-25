@@ -23,8 +23,6 @@ public class UnorderedSymbolPlacer : SymbolPlacer
     {
         startingOffset = Random.Range(offsetMinMax.x, offsetMinMax.y);
         //May be a way to handle this depending on implemenetation, discarding extra symbols or extra positions for instance
-        if(instantiatedSymbols.Count != symbolPositions.Count)
-            Debug.Log("Wrong number of symbols to symbolPositions");
 
         instantiatedSymbolsClone = new List<PuzzleObject>(instantiatedSymbols);
         //might not be what we want to do here, actually
@@ -35,18 +33,16 @@ public class UnorderedSymbolPlacer : SymbolPlacer
         {
             float radians = startingOffset + counter * degreeOffset;
             PlaceSymbols(symbolPos.transform.position + new Vector3(Mathf.Cos(radians), Mathf.Sin(radians), 0) * panelSize);
-            Debug.Log("i is " + i + ", counter is : "+counter);
             counter++;
         }        
     }
 
     private void PlaceSymbols(Vector3 newPos)
     {
-        Debug.Log("placing symbol at position:" + newPos);
+
         //Move and REmove instance from list
 
-        PuzzleObject instance = instantiatedSymbolsClone[Random.Range(0, instantiatedSymbolsClone.Count)];
-        Debug.Log("instance is : " + instance.name);
+        PuzzleObject instance = instantiatedSymbolsClone[Random.Range(0, instantiatedSymbolsClone.Count)];       
         instance.transform.position = newPos;
         instantiatedSymbolsClone.Remove(instance);
     }
