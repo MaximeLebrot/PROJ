@@ -81,17 +81,17 @@ public readonly struct CameraLookAtEvent : IEvent {
 
 public readonly struct CameraLookAndMoveToEvent : IEvent {
 
-    public readonly MoveToTransitionData moveToTransitionData;
-    public readonly LookAtTransitionData lookAtTransitionData;
+    public readonly MoveToEventData moveToEventData;
+    public readonly LookAtEventData lookAtEventData;
 
     public readonly Vector3 endPosition;
     public readonly Quaternion endRotation;
     
-    public CameraLookAndMoveToEvent(Vector3 endPosition, Quaternion endRotation, MoveToTransitionData moveToTransitionData, LookAtTransitionData lookAtTransitionData) {
+    public CameraLookAndMoveToEvent(Vector3 endPosition, Quaternion endRotation, MoveToEventData moveToEventData, LookAtEventData lookAtEventData) {
         this.endPosition = endPosition;
         this.endRotation = endRotation;
-        this.moveToTransitionData = moveToTransitionData;
-        this.lookAtTransitionData = lookAtTransitionData;
+        this.moveToEventData = moveToEventData;
+        this.lookAtEventData = lookAtEventData;
     }
 
 }
@@ -124,15 +124,4 @@ public class SaveSettingsEvent : IEvent
 {
     public SettingsData settingsData;
     public SaveSettingsEvent(SettingsData data) => settingsData = data;
-}
-
-//Hazards
-public class UpdateHazardEvent : IEvent
-{
-    public bool reverse;
-    public UpdateHazardEvent (bool isReverse) { reverse = isReverse; }
-}
-public class ResetHazardEvent : IEvent
-{
-
 }

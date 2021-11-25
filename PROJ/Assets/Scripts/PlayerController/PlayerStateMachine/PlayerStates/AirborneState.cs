@@ -16,7 +16,7 @@ public class AirborneState : PlayerState
     public override void EnterState(PlayerState previousState)
     {
         nextState = previousState;
-        //Debug.Log("Entered Airborne State");
+        Debug.Log("Entered Airborne State");
         player.physics.SetFallingGravity();
     }
     public override void RunUpdate()

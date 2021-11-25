@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4163576477779936877}
   - component: {fileID: 1328659217133231029}
   - component: {fileID: 1328659217133231028}
-  - component: {fileID: -1518236004891482064}
   m_Layer: 10
   m_Name: Puzzle5x5
   m_TagString: Untagged
@@ -51,13 +50,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   masterPuzzleID: 0
+  nextPuzzleTimer: 0
   puzzleInstances:
   - {fileID: 310701141720985342}
   playerInput: 
   solution: 
-  symbolPlacer: {fileID: 0}
+  instantiatedSymbols: []
   symbolPos: {fileID: 4163576477414156324}
-  placedSymbols: []
+  symbolOffset: 2
 --- !u!54 &1328659217133231029
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -87,20 +87,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 10.61
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-1518236004891482064
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4163576477779936876}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 103503f21c0dd4b4293450945711d60f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  instantiatedSymbols: []
-  symbolOffset: 3
 --- !u!1001 &1374041919476275703
 PrefabInstance:
   m_ObjectHideFlags: 0
