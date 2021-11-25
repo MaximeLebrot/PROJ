@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -25,6 +26,8 @@ public class MenuController : MonoBehaviour {
     
     public delegate void ActivatePage(int ID);
     public static event ActivatePage OnActivatePage;
+
+    private bool inputSuspended;
     
     private void Awake() {
         controllerInputReference.Initialize();
@@ -63,14 +66,18 @@ public class MenuController : MonoBehaviour {
 
     private void GoBack(InputAction.CallbackContext e) {
 
-        if (depth.Count < 1)
+        if (depth.Count < 1 || inputSuspended)
             return;
         
         int currentLevel = depth.Pop();
         
         animator.SetBool(currentLevel, !animator.GetBool(currentLevel));
-        
     }
     
-    public void OnActivatePageEvent(string name) => OnActivatePage?.Invoke(name.GetHashCode());
+    public void OnActivatePageEvent(string name) {
+        Debug.Log($"{name} has hashcode {name.GetHashCode()}");
+        OnActivatePage?.Invoke(name.GetHashCode());
+    }
+    
+    public void OnSuspendInput(int value) => inputSuspended = value == 1;
 }
