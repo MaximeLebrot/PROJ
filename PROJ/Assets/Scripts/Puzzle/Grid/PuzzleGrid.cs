@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 
+[Serializable]
 public class PuzzleGrid : MonoBehaviour {
 
     [SerializeField] private GameObject linePrefab;
@@ -19,9 +20,9 @@ public class PuzzleGrid : MonoBehaviour {
     private Node currentNode;
     private Node startNode;
 
-    [SerializeField]private string solution;
+    [SerializeField] private string solution;
     //private List<Node> allNodesLIST = new List<Node>();
-    private Node[,] allNodes; 
+    public Node[,] allNodes { get; private set; }
 
 
     private List<Node> unrestrictedNodes = new List<Node>();
@@ -30,6 +31,8 @@ public class PuzzleGrid : MonoBehaviour {
     private PuzzleLine currentLine;
     private GameObject currentLineObject;
 
+    public int NodeOffset => nodeOffset;
+    public int Size => size;
     public Transform Player { get; set; }
 
     private Puzzle masterPuzzle;
@@ -43,14 +46,6 @@ public class PuzzleGrid : MonoBehaviour {
             return "";
     }
     
-    
-    private void OnEnable() 
-    {
-
-        //StartGrid();
-        
-    }
-
     private void Update()
     {
         if(currentLine != null)
@@ -116,6 +111,7 @@ public class PuzzleGrid : MonoBehaviour {
 
     void GenerateGrid()
     {
+        Debug.Log("Generate grid");
         allNodes = new Node[size, size];
         int midIndex = size / 2;
         for (int x = 0; x < size; x++)
@@ -131,7 +127,7 @@ public class PuzzleGrid : MonoBehaviour {
                 allNodes[x, y].PosY = y;
                 allNodes[x, y].gameObject.name = "" + x + "|" + y;
                 allNodes[x, y].transform.position = transform.position;
-                allNodes[x,y].transform.localPosition = (x * Vector3.right * nodeOffset) + (y * Vector3.forward * nodeOffset);
+                allNodes[x,y].transform.localPosition = (y * Vector3.right * nodeOffset) + (x * Vector3.forward * nodeOffset);
                 allNodes[x, y].grid = this;
 
                 
@@ -181,7 +177,7 @@ public class PuzzleGrid : MonoBehaviour {
 
     public void AddSelectedNode(Node node) 
     {
-        if (node == currentNode)
+        if (node == currentNode || !currentNode.neighbours.ContainsKey(node))
             return;
 
         LineObject newLine = new LineObject(node);
@@ -190,6 +186,8 @@ public class PuzzleGrid : MonoBehaviour {
         //If a line already exists with currentNode, erase
         if (lineRenderers.Count > 0 && lineRenderers.Peek().CompareLastLine(newLine))
         {
+            //Hazard
+            EventHandler<UpdateHazardEvent>.FireEvent(new UpdateHazardEvent(true));
             EraseLine(node);
             return;
         }
@@ -231,13 +229,17 @@ public class PuzzleGrid : MonoBehaviour {
         #endregion
 
         #region MOVE_CURRENT_NODE
-        Debug.Log("AKTIVERA NODE   " + node.gameObject);
+        //Debug.Log("AKTIVERA NODE   " + node.gameObject);
         
         currentNode = node;
         lineNodes.Add(currentNode);
         ActivateNode(node, false);
 
         #endregion
+
+        EventHandler<UpdateHazardEvent>.FireEvent(new UpdateHazardEvent(false));
+        Debug.Log("Update hazard event sent");
+
     }
 
     private void CreateNewLine(Node node)
@@ -272,7 +274,7 @@ public class PuzzleGrid : MonoBehaviour {
     private void EraseLine(Node node)
     {
 
-        Debug.Log("ERASE");
+        //Debug.Log("ERASE");
         //Checks if this was the last line that was drawn, if so delete that line (eraser)
         LineObject oldLine = lineRenderers.Pop();
         foreach (Node n in currentNode.neighbours.Keys)
@@ -298,6 +300,7 @@ public class PuzzleGrid : MonoBehaviour {
         if (lineRenderers.Count > 0)
             lineRenderers.Peek().ErasableLine(true);
 
+
         SendToPuzzleForEvaluation();
     }
 
@@ -313,7 +316,7 @@ public class PuzzleGrid : MonoBehaviour {
     {
         if (solution.Length > 0)
         {
-            //masterPuzzle.CheckIfClearedSymbol(solution[0] == '-' ? PuzzleHelper.SkipFirstChar(solution) : solution);
+            masterPuzzle.CheckIfClearedSymbol(solution[0] == '-' ? PuzzleHelper.SkipFirstChar(solution) : solution);
             if (masterPuzzle.EvaluateSolution())
             {
                 DestroyCurrentLine();
@@ -381,6 +384,7 @@ public class PuzzleGrid : MonoBehaviour {
 
         DestroyCurrentLine();
 
+        EventHandler<ResetHazardEvent>.FireEvent(new ResetHazardEvent());
 
     }
 
@@ -395,7 +399,7 @@ public class PuzzleGrid : MonoBehaviour {
 
     private void TurnOffNodes()
     {
-        Debug.Log("TURN OFF NODES");
+        //Debug.Log("TURN OFF NODES");
         foreach (Node n in allNodes)
         {
             if(n.startNode == false)
@@ -415,19 +419,20 @@ public class PuzzleGrid : MonoBehaviour {
         currentNode = startNode;
         currentNode.TurnOnCollider();
         currentNode.ResetNeighbours();
-        Invoke("TellPuzzleGridIsReady", 1.5f);
+        Invoke("TellPuzzleGridIsReady", 3f);
     }
 
     private void TellPuzzleGridIsReady()
     {
         masterPuzzle.InitiatePuzzle();
+        masterPuzzle.RegisterToResetPuzzleEvent();
     }
 
     private void DestroyCurrentLine()
     {
         if (currentLine != null)
         {
-            Debug.Log("DESTROY CURRENT LINE");
+            //Debug.Log("DESTROY CURRENT LINE");
             currentLine.Stop();
             Destroy(currentLine.gameObject);
             currentLine = null;
