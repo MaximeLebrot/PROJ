@@ -7,9 +7,7 @@ public class PortalProgression : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Glideable"))
-        {
+        if(other.CompareTag("Player"))
             SceneManager.LoadScene(portalToScene);
-        } 
     }
 }
