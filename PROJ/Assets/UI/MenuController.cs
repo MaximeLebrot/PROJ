@@ -11,14 +11,11 @@ public class MenuController : MonoBehaviour {
     private Animator animator;
 
     private int onAnyKeyHash;
-    private int showMainMenu;
     private int showSettingsMenu;
     private int showGeneralHash;
     private int showVideoHash;
     private int showAudioHash;
     private int showAccessibilityHash;
-
-    [SerializeField] private GraphicRaycaster raycaster;
     
     private Stack<int> depth = new Stack<int>();
 
@@ -60,6 +57,8 @@ public class MenuController : MonoBehaviour {
     
     public async void SwitchPage(string pageName) {
         animator.SetBool(pageHashes[pageName], true);
+
+        inputSuspended = true;
         
         depth.Push(pageHashes[pageName]);
     }
@@ -79,5 +78,4 @@ public class MenuController : MonoBehaviour {
         OnActivatePage?.Invoke(name.GetHashCode());
     }
     
-    public void OnSuspendInput(int value) => inputSuspended = value == 1;
 }
