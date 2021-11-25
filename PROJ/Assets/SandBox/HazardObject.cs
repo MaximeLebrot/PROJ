@@ -42,11 +42,8 @@ public class HazardObject : MonoBehaviour
         else
             transform.parent.position -= hazardOffset * moveDirection;
     }
-
     private void OnTriggerEnter(Collider other)
     {
-        //Player has Stepped on Hazard
-
         EventHandler<ResetPuzzleEvent>.FireEvent(new ResetPuzzleEvent(new PuzzleInfo(PuzzleID)));
     }
 

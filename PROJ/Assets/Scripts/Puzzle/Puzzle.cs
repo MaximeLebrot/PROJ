@@ -293,10 +293,14 @@ public class Puzzle : MonoBehaviour
             }
         }
     }
-
+    //To manage the number of times ResetPuzzle is subscribed to its event, quick fix dont judge pls
+    private bool registered = true;
     private void ResetPuzzle(ResetPuzzleEvent eve)
     {
+
         EventHandler<ResetPuzzleEvent>.UnregisterListener(ResetPuzzle);
+        registered = false;
+        Debug.Log("Reset puzzle called");
         if (eve.info.ID == currentPuzzleInstance.GetPuzzleID())
         {
             symbolPlacer.UnloadSymbols();
@@ -305,7 +309,15 @@ public class Puzzle : MonoBehaviour
         }
     }
 
-    public void RegisterToResetPuzzleEvent() => EventHandler<ResetPuzzleEvent>.RegisterListener(ResetPuzzle);
+    public void RegisterToResetPuzzleEvent()
+    {
+        if (registered)
+            return;
+
+        Debug.Log("Registered listener to reset puzzle event");
+        EventHandler<ResetPuzzleEvent>.RegisterListener(ResetPuzzle);
+        registered = true;
+    }
     
     private void PlaceSymbols()
     {
