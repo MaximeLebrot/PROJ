@@ -33,8 +33,6 @@ public class WindPuzzle : Puzzle
 
     public override bool EvaluateSolution()
     {
-        
-
         //Debug.Log(solution);
         if (solution.Equals(grid.GetSolution()))
         {

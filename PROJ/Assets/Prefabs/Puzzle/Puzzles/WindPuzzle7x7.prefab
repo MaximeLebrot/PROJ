@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7632763366222313946}
   - component: {fileID: 7632763366222313947}
   - component: {fileID: 4781314192369198080}
+  - component: {fileID: 953148862408059091}
   m_Layer: 10
   m_Name: WindPuzzle7x7
   m_TagString: Untagged
@@ -84,10 +85,11 @@ MonoBehaviour:
   - {fileID: 4323082657223191273}
   playerInput: 
   solution: 
-  instantiatedSymbols: []
+  symbolPlacer: {fileID: 0}
   symbolPos: {fileID: 4781314192474671691}
-  symbolOffset: 2
+  placedSymbols: []
   wind: {fileID: 479712434889593652}
+  windBurst: {fileID: 0}
   windMarkers:
   - {fileID: 479712434645766972}
   - {fileID: 479712433557723940}
@@ -97,6 +99,20 @@ MonoBehaviour:
   - {fileID: 479712433247706578}
   - {fileID: 479712434055434339}
   - {fileID: 479712433329201159}
+--- !u!114 &953148862408059091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4781314192369198083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 103503f21c0dd4b4293450945711d60f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instantiatedSymbols: []
+  symbolOffset: 3
 --- !u!1001 &743298808169030221
 PrefabInstance:
   m_ObjectHideFlags: 0
