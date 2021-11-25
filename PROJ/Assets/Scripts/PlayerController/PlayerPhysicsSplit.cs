@@ -132,53 +132,36 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
     private void CheckForCollisions(int i)
     {
-        StepHeightCollision(i);
-        //WalkCollision(i);
-        /*collisionMethod = CheckForCollisions;
+        collisionMethod = CheckForCollisions;
         YCollision();
-        XZCollision(i);  */    
+        XZCollision(i);
     }
-     private void StepHeightCollision(int i)
-    {
-        StepHeightYCollision();
-        StepHeightXZCollision(0);
-    }
-    private void StepHeightYCollision()
+    private void YCollision()
     {
         //Y-axis normalforce
         //Could use sphere coll here instead of bottomhalf etc
-        Vector3 castOrigin = transform.position + attachedCollider.center + (attachedCollider.height * 0.5f) * Vector3.down + stepHeight * Vector3.up;
-        Vector3 yVelocity = new Vector3(0, velocity.y, 0);
-        Vector3 normalForce = Vector3.zero;
-        float castLength = yVelocity.magnitude * Time.deltaTime + skinWidth;
-        Physics.CapsuleCast(castOrigin, castOrigin, stepHeight, Vector3.down, out RaycastHit yHitInfo, castLength, collisionMask);
+        float castLength = velocity.magnitude * Time.deltaTime + skinWidth;
+        Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, Vector3.down, out RaycastHit yHitInfo, castLength, collisionMask);
         if (yHitInfo.collider && yHitInfo.collider.isTrigger == false)
         {
-            float distanceToColliderNeg = skinWidth / Vector3.Dot(yVelocity.normalized, yHitInfo.normal);
-            float allowedMovementDistance = yHitInfo.distance + distanceToColliderNeg;
-
-            if (allowedMovementDistance > yVelocity.magnitude * Time.deltaTime)
+            Vector3 smoothingNormalForce;
+            if (yHitInfo.distance < castLength)
             {
-                MoveOutOfGeometry(yVelocity * Time.deltaTime);
-                return;
+                smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, yHitInfo.normal);
             }
-            if (allowedMovementDistance > 0)
+            else
             {
-                MoveOutOfGeometry(allowedMovementDistance * yVelocity.normalized);
-            }
-            normalForce = PhysicsFunctions.NormalForce3D(yVelocity, yHitInfo.normal)
+                smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, yHitInfo.normal)
                                         + GlideHeight * Vector3.up;
-            //}
+            }
 
-            velocity += new Vector3(0, normalForce.y, 0);
+            ApplyFriction(smoothingNormalForce);
+            velocity += new Vector3(0, smoothingNormalForce.y, 0);
         }
-        else
-            MoveOutOfGeometry(velocity * Time.deltaTime);
     }
-
-    private void StepHeightXZCollision(int i)
+    private void XZCollision(int i)
     {
-        Physics.CapsuleCast(colliderTopHalf, colliderBottomHalf + stepHeightDisplacement, attachedCollider.radius, GetXZMovement().normalized, out var hitInfo, GetXZMovement().magnitude * Time.deltaTime + skinWidth, collisionMask);
+        Physics.CapsuleCast(colliderTopHalf, colliderBottomHalf + stepHeightDisplacement, attachedCollider.radius, velocity.normalized, out var hitInfo, velocity.magnitude * Time.deltaTime + skinWidth, collisionMask);
         if (hitInfo.collider && hitInfo.collider.isTrigger == false)
         {
             // Calculate the allowed distance to the collision point
@@ -186,27 +169,27 @@ public class PlayerPhysicsSplit : MonoBehaviour
             float allowedMovementDistance = hitInfo.distance + distanceToColliderNeg;
 
             // Are we allowed to move further than we are able to this frame? 
-            if (allowedMovementDistance > GetXZMovement().magnitude * Time.deltaTime)
+            if (allowedMovementDistance > velocity.magnitude * Time.deltaTime)
             {
-                MoveOutOfGeometry(GetXZMovement() * Time.deltaTime);
+                MoveOutOfGeometry(velocity * Time.deltaTime);
                 return;
             }
             if (allowedMovementDistance > 0)
             {
-                MoveOutOfGeometry(allowedMovementDistance * GetXZMovement().normalized);
+                MoveOutOfGeometry(allowedMovementDistance * velocity.normalized);
             }
 
-            //GlideHeight should be zero (or close to it) when walking, but needs to be added here to get a smooth transition along with the lerp in SetValues
-            Vector3 normalForce = PhysicsFunctions.NormalForce3D(GetXZMovement(), hitInfo.normal);
-            ApplyFriction(normalForce);
+            //GlideHeight should be zero when walking, but needs to be added here to get a smooth transition along with the lerp in SetValues
+            Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, hitInfo.normal);
             velocity += new Vector3(normalForce.x, 0, normalForce.z);
+            ApplyFriction(normalForce);
 
 
             if (i < MAX_ITER)
-                CheckForCollisions(i + 1);
+                collisionMethod(i + 1);
         }
         else
-            MoveOutOfGeometry(GetXZMovement() * Time.deltaTime);
+            MoveOutOfGeometry(velocity * Time.deltaTime);
 
         ApplyAirResistance();
     }
@@ -238,7 +221,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
             velocity += new Vector3(0, smoothingNormalForce.y, 0);
         }
     }
-    private void YCollision()
+    /*private void YCollision()
     {
         //Y-axis normalforce
         //Could use sphere coll here instead of bottomhalf etc
@@ -255,7 +238,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
             }
             else
             {*/
-                smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, yHitInfo.normal)
+               /* smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, yHitInfo.normal)
                                         + GlideHeight * Vector3.up;
             //}
 
@@ -296,7 +279,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
             MoveOutOfGeometry(velocity * Time.deltaTime);
 
         ApplyAirResistance();
-    }
+    }*/
     private void WalkCollision(int i)
     {
         Physics.CapsuleCast(colliderTopHalf, colliderBottomHalf, attachedCollider.radius, velocity.normalized, out RaycastHit hitInfo, velocity.magnitude * Time.deltaTime + skinWidth, collisionMask);
