@@ -5,9 +5,7 @@ using System;
 
 public class UnorderedPuzzle : Puzzle
 {
-    private List<bool> clearedSymbols = new List<bool>();
     [SerializeField]private List<string> translationsSorted = new List<string>();
-    private List<string> translationsSortedCleared = new List<string>();
 
     public override bool EvaluateSolution()
     {
