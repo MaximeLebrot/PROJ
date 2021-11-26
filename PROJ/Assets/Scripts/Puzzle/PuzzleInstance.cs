@@ -55,7 +55,7 @@ public class PuzzleInstance : MonoBehaviour
             {
                 foreach (Hazard h in hazards)
                 {
-                    Hazard instance = Instantiate(h, transform).GetComponent<Hazard>();
+                    Hazard instance = Instantiate(h, transform.position, new Quaternion(0,0,0,0), transform).GetComponent<Hazard>();
                     instantiatedHazards.Add(instance);
                     instance.StartHazard(GetPuzzleID());
                 }
