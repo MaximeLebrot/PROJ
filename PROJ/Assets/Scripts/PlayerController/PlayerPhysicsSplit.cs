@@ -139,15 +139,15 @@ public class PlayerPhysicsSplit : MonoBehaviour
     private void YCollision()
     {
         //Y-axis normalforce
-        //Could use sphere coll here instead of bottomhalf etc
         float castLength = velocity.magnitude * Time.deltaTime + skinWidth;
-        Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, Vector3.down, out RaycastHit yHitInfo, castLength, collisionMask);
+        Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, velocity.normalized, out RaycastHit yHitInfo, castLength, collisionMask);
         if (yHitInfo.collider && yHitInfo.collider.isTrigger == false)
         {
             Vector3 smoothingNormalForce;
             if (yHitInfo.distance < castLength)
             {
-                smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, yHitInfo.normal);
+                smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, yHitInfo.normal)
+                                        + GlideHeight * Vector3.up; ;
             }
             else
             {
@@ -155,7 +155,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
                                         + GlideHeight * Vector3.up;
             }
 
-            ApplyFriction(smoothingNormalForce);
             velocity += new Vector3(0, smoothingNormalForce.y, 0);
         }
     }
@@ -316,7 +315,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
     }
     private void MoveOutOfGeometry(Vector3 movement)
     {
-        //Debug.Log("movement magnitude is: " + movement.magnitude);
         
         //Do not move at all if the distance is tiny.
         if (movement.magnitude < moveThreshold)
@@ -348,7 +346,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
                                             currentCollider.transform.rotation,
                                             out direction,
                                             out float distance);
-                
+
                 //Compute penetration does not always return true (?), and if it doesnt, we can skip this loop iteration.
                 if (distance < minimumPenetrationForPenalty)
                     continue;
@@ -372,7 +370,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
             {
                 Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity * minimumPenetrationForPenalty, direction.normalized);
                 velocity += normalForce;
-                //Debug.Log("Separation has no value!, maxDistance x100 is  " + maxDistance);
+                Debug.Log("Separation has no value!, maxDistance is  " + maxDistance);
                 return;
             }
         }
