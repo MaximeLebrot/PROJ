@@ -21,7 +21,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     [SerializeField] private float gravityWhenFalling = 10f;
     [SerializeField] private float glideHeight;
     [SerializeField] private float moveThreshold = 0.05f;
-    /*[SerializeField]*/ private float stepHeight = 0.2f;
+    [SerializeField] private float stepHeight = 0.2f;
    
 
     //Properties
@@ -59,7 +59,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     private CollisionDelegate collisionMethod; 
 
 
-    private void OnEnable()
+    private void Awake()
     {
         pc = GetComponent<PlayerController>();
         attachedCollider = GetComponent<CapsuleCollider>();
@@ -315,7 +315,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     }
     private void MoveOutOfGeometry(Vector3 movement)
     {
-        
+        //Debug.Log("movement magnitude is :" + movement.magnitude);
         //Do not move at all if the distance is tiny.
         if (movement.magnitude < moveThreshold)
             return;

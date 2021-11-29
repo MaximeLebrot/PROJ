@@ -54,7 +54,7 @@ public class PuzzleGrid : MonoBehaviour {
             currentLine.Play();
             currentLine.transform.position = currentNode.transform.position;
             currentLine.transform.localRotation = Quaternion.Inverse(GetComponentInParent<Puzzle>().transform.rotation);
-            currentLine.SetPosition((new Vector3(Player.position.x,currentLine.transform.position.y ,Player.position.z) - currentLine.transform.position));
+            currentLine.SetPosition((new Vector3(Player.position.x,currentLine.transform.position.y, Player.position.z) - currentLine.transform.position));
         }
     }
 
