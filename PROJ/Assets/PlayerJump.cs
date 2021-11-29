@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class PlayerJump : MonoBehaviour
 {
-    public Animator PlayerAnimator;
+    public Animator JumpAnimator;
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.CompareTag("Glideable"))
+        if (col.CompareTag("Player"))
         {
-            PlayerAnimator.SetTrigger("JumpOne");
+            JumpAnimator.SetTrigger("First");
             Debug.Log("Its jumping");
         }
     }
