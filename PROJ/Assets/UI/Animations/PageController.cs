@@ -16,16 +16,12 @@ public class PageController : MonoBehaviour {
             GameObject child = transform.GetChild(i).gameObject;
             
             pageObjects.Add(child.name.GetHashCode(), child);
-            
-            Debug.Log($"{gameObject.name} with code {child.name.GetHashCode()} has added {child} to my list");
         }
         
         MenuController.OnActivatePage += ActivatePage;
     }
 
     private void ActivatePage(int ID) {
-        
-        
         
         if (pageObjects.ContainsKey(ID) == false && currentActivePage != null) {
             
@@ -42,7 +38,6 @@ public class PageController : MonoBehaviour {
             
             currentActivePage = pageObjects[ID];
             currentActivePage.SetActive(true);
-            Debug.Log($"Opening up {pageObjects[ID]} with hashcode {ID}");
         }
     }
 }

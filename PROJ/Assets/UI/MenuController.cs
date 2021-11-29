@@ -1,15 +1,14 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
+
 
 public class MenuController : MonoBehaviour {
 
     [SerializeField] private ControllerInputReference controllerInputReference;
     private Animator animator;
-
+    
     private int onAnyKeyHash;
     private int showSettingsMenu;
     private int showGeneralHash;
@@ -55,27 +54,42 @@ public class MenuController : MonoBehaviour {
         animator.SetTrigger(onAnyKeyHash);
     }
     
-    public async void SwitchPage(string pageName) {
+    public void SwitchPage(string pageName) {
+
+        if (inputSuspended)
+            return;
+        
         animator.SetBool(pageHashes[pageName], true);
 
-        inputSuspended = true;
+        LockInput();
         
         depth.Push(pageHashes[pageName]);
     }
 
-    private void GoBack(InputAction.CallbackContext e) {
-
+    private async void GoBack(InputAction.CallbackContext e) {
+        
         if (depth.Count < 1 || inputSuspended)
             return;
+        
+        LockInput();
         
         int currentLevel = depth.Pop();
         
         animator.SetBool(currentLevel, !animator.GetBool(currentLevel));
     }
     
-    public void OnActivatePageEvent(string name) {
-        Debug.Log($"{name} has hashcode {name.GetHashCode()}");
-        OnActivatePage?.Invoke(name.GetHashCode());
+    public void OnActivatePageEvent(string name) => OnActivatePage?.Invoke(name.GetHashCode());
+
+    private async void LockInput() {
+        inputSuspended = true;
+        inputSuspended = await ReleaseInput();
+    }
+    
+    private async Task<bool> ReleaseInput() {
+        Debug.Log("Input suspended");
+        await Task.Delay(1000);
+        Debug.Log("Input open");
+        return false;
     }
     
 }
