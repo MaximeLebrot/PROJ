@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 240;
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PlayerPhysicsSplit>();
     }
@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour
         if(physics.velocity.magnitude > 0.05f)
             Debug.Log("Decelerating");
         */
-        Vector3 projectedDeceleration = Vector3.ProjectOnPlane(-physics.GetXZMovement().normalized, groundHitInfo.normal) * deceleration;
+        Vector3 projectedDeceleration = Vector3.ProjectOnPlane(-physics.GetXZMovement(), groundHitInfo.normal) * deceleration;
         force += projectedDeceleration;
     }
     private void Accelerate()

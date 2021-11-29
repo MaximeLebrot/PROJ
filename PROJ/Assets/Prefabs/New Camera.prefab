@@ -216,7 +216,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
+  near clip plane: 0.01
   far clip plane: 5000
   field of view: 80
   orthographic: 0
@@ -293,12 +293,11 @@ MonoBehaviour:
   globalCameraSettings: {fileID: 11400000, guid: 178997108c592e743ab86335e4404734, type: 2}
   followTarget: {fileID: 0}
   shoulderPosition: {fileID: 0}
-  defaultValues: {fileID: 11400000, guid: 301349ffb4190a84d9cedbaed0935248, type: 2}
-  glideValues: {fileID: 11400000, guid: 1e58154d70b7b974c95af4e20e6d490f, type: 2}
-  idleValues: {fileID: 11400000, guid: 9db25c71cc5f2584ba704a6d0964df6a, type: 2}
-  puzzleValues: {fileID: 11400000, guid: acb69f4a27ceb6549ab10851fc9e2441, type: 2}
-  oneSwitchValues: {fileID: 11400000, guid: c66b658d79c6c7b44ad5801f5eb243c2, type: 2}
-  oneSwitchMode: 0
+  cameraBehaviours:
+  - {fileID: 11400000, guid: eabfb2596d8f5744fa06e8dd9887687f, type: 2}
+  - {fileID: 11400000, guid: 8c98cd50cc119384f8ed52faab7bf2cd, type: 2}
+  - {fileID: 11400000, guid: 9e10d11396a0e054592cfa7278a3106e, type: 2}
+  transitioner: {fileID: 11400000, guid: c311b583607874a46ae5071fc90e5e0b, type: 2}
 --- !u!114 &3911496624126169352
 MonoBehaviour:
   m_ObjectHideFlags: 0

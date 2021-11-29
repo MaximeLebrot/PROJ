@@ -21,6 +21,8 @@ public abstract class PuzzleObject : MonoBehaviour
     private GameObject modifier;
     private Animator anim;
 
+    public bool Active { get; private set; }
+
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -60,15 +62,19 @@ public abstract class PuzzleObject : MonoBehaviour
 
     internal void Unload()
     {
+        Invoke("DestroyPuzzleObject", 2);
+    }
+
+    private void DestroyPuzzleObject()
+    {
         anim.SetTrigger("off");
 
-        if(modInfo.variant != ModifierVariant.None == true)
+        if (modInfo.variant != ModifierVariant.None == true)
         {
             modifier.GetComponent<Animator>().SetTrigger("off");
         }
         Destroy(gameObject, 2);
     }
-
     internal void TurnOn()
     {
         Debug.Log(gameObject + " ON ");
@@ -76,6 +82,18 @@ public abstract class PuzzleObject : MonoBehaviour
     internal void TurnOff()
     {
         Debug.Log(gameObject + " OFF ");
+    }
+
+    internal void Activate()
+    {
+        Active = true;
+        anim.SetTrigger("activate");
+
+        if (modInfo.variant != ModifierVariant.None == true)
+        {
+            modifier.GetComponent<Animator>().SetTrigger("activate");
+        }
+
     }
 }
 

@@ -178,6 +178,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: New Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 3911496624126169352, guid: 2648f4adccb77c9468ce105025f3f7e2, type: 3}
+      propertyPath: awayTimer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4247769122769687363, guid: 2648f4adccb77c9468ce105025f3f7e2, type: 3}
       propertyPath: glideValues
       value: 
@@ -190,6 +194,26 @@ PrefabInstance:
       propertyPath: shoulderPosition
       value: 
       objectReference: {fileID: 1931958199}
+    - target: {fileID: 4247769122769687363, guid: 2648f4adccb77c9468ce105025f3f7e2, type: 3}
+      propertyPath: cameraBehaviours.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4247769122769687363, guid: 2648f4adccb77c9468ce105025f3f7e2, type: 3}
+      propertyPath: cameraBehaviours.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 926fb345d40d19f4fbc161432402af12, type: 2}
+    - target: {fileID: 4247769122769687363, guid: 2648f4adccb77c9468ce105025f3f7e2, type: 3}
+      propertyPath: cameraBehaviours.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: e8b5232a176bc194599ea021ff330f1c, type: 2}
+    - target: {fileID: 4247769122769687363, guid: 2648f4adccb77c9468ce105025f3f7e2, type: 3}
+      propertyPath: cameraBehaviours.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: dd474e5d92a0bed49941350eef9cf6a1, type: 2}
+    - target: {fileID: 4247769122769687363, guid: 2648f4adccb77c9468ce105025f3f7e2, type: 3}
+      propertyPath: cameraBehaviours.Array.data[3]
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2648f4adccb77c9468ce105025f3f7e2, type: 3}
 --- !u!1001 &44092871
@@ -1184,6 +1208,61 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -8335821846110090769, guid: 78b9d4629167fe648a302b725398c67d, type: 3}
+--- !u!1 &1017543647
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1017543649}
+  - component: {fileID: 1017543648}
+  m_Layer: 0
+  m_Name: Hazard
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1017543648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1017543647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4186a7ff02f087d4e836606f1daaea07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hazardObj: {fileID: 0}
+  grid: {fileID: 0}
+  baseTimer: 0
+  timerOffsetPerObject: 0
+  startingState: 0
+  stateOffsetPerObject: 0
+  hazardObjects: []
+  row: 10
+  column: 10
+  customPattern: 01000000000000000000000000000000000000000000000000000001000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000
+  movingHazard: 0
+  moveX: 0
+--- !u!4 &1017543649
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1017543647}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.1266526, y: 2.6340187, z: 1.3165408}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1029729215
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1825,6 +1904,36 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f81c301d22faf3d44a810cfa9a5140a8, type: 3}
+--- !u!1 &1929409626
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1929409627}
+  m_Layer: 0
+  m_Name: PuzzleGrid
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1929409627
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1929409626}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.1266526, y: 2.6340187, z: 1.3165408}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1931958198
 PrefabInstance:
   m_ObjectHideFlags: 0
