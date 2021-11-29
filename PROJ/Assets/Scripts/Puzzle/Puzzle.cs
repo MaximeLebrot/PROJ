@@ -78,14 +78,14 @@ public class Puzzle : MonoBehaviour
 
     private void OnEnable()
     {
-        EventHandler<ExitPuzzleEvent>.RegisterListener(ExitPuzzle);
-        EventHandler<ResetPuzzleEvent>.RegisterListener(ResetPuzzle);
+        EventHandler<ExitPuzzleEvent>.RegisterListener(OnExitPuzzle);
+        EventHandler<ResetPuzzleEvent>.RegisterListener(OnResetPuzzle);
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
     }
     private void OnDisable()
     {
-        EventHandler<ExitPuzzleEvent>.UnregisterListener(ExitPuzzle);
-        EventHandler<ResetPuzzleEvent>.UnregisterListener(ResetPuzzle);
+        EventHandler<ExitPuzzleEvent>.UnregisterListener(OnExitPuzzle);
+        EventHandler<ResetPuzzleEvent>.UnregisterListener(OnResetPuzzle);
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
     }
     private void SetupPuzzleInstances()
@@ -278,7 +278,7 @@ public class Puzzle : MonoBehaviour
         
     }
 
-    public void ExitPuzzle(ExitPuzzleEvent eve)
+    public void OnExitPuzzle(ExitPuzzleEvent eve)
     {
         if (eve.success != true)
         {
@@ -286,27 +286,33 @@ public class Puzzle : MonoBehaviour
             {
                 if(eve.success == false)
                 {
-                    symbolPlacer.UnloadSymbols();
-                    grid.ResetGrid();
+                    ResetPuzzle();
                 }
                     
             }
         }
     }
+
+
     //To manage the number of times ResetPuzzle is subscribed to its event, quick fix dont judge pls
     private bool registered = true;
-    private void ResetPuzzle(ResetPuzzleEvent eve)
+    private void OnResetPuzzle(ResetPuzzleEvent eve)
     {
 
-        EventHandler<ResetPuzzleEvent>.UnregisterListener(ResetPuzzle);
-        registered = false;
-        Debug.Log("Reset puzzle called");
         if (eve.info.ID == currentPuzzleInstance.GetPuzzleID())
         {
-            symbolPlacer.UnloadSymbols();
-            grid.ResetGrid();
-
+            ResetPuzzle();
         }
+    }
+
+    private void ResetPuzzle()
+    {
+        EventHandler<ResetPuzzleEvent>.UnregisterListener(OnResetPuzzle);
+        registered = false;
+        Debug.Log("Reset puzzle called");
+
+        symbolPlacer.UnloadSymbols();
+        grid.ResetGrid();
     }
 
     public void RegisterToResetPuzzleEvent()
@@ -315,7 +321,7 @@ public class Puzzle : MonoBehaviour
             return;
 
         Debug.Log("Registered listener to reset puzzle event");
-        EventHandler<ResetPuzzleEvent>.RegisterListener(ResetPuzzle);
+        EventHandler<ResetPuzzleEvent>.RegisterListener(OnResetPuzzle);
         registered = true;
     }
     
