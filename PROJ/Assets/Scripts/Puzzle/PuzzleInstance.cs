@@ -8,9 +8,11 @@ public class PuzzleInstance : MonoBehaviour
     [SerializeField] public List<SymbolModPair> puzzleObjects = new List<SymbolModPair>();
 
     [SerializeField] private List<Vector2Int> activeNodes;
+    [SerializeField] private List<Hazard> hazards;
 
     private Puzzle masterPuzzle;
     private bool currentState;
+    private List<Hazard> instantiatedHazards = new List<Hazard>();
 
     public bool IsSolved() => currentState;
 
@@ -43,6 +45,37 @@ public class PuzzleInstance : MonoBehaviour
         currentState = PuzzleDictionary.GetState(puzzleID);
         Debug.Log("Load puzzle " + puzzleID + "    STATE:: " + currentState);
     }
+
+
+    public void SetUpHazards()
+    {
+        if(hazards.Count > 0)
+        {
+            if(instantiatedHazards.Count == 0)
+            {
+                foreach (Hazard h in hazards)
+                {
+                    Hazard instance = Instantiate(h, transform.position, new Quaternion(0,0,0,0), transform).GetComponent<Hazard>();
+                    instantiatedHazards.Add(instance);
+                    instance.StartHazard(GetPuzzleID());
+                }
+            }
+        }
+    }
+
+    public void DestroyHazards()
+    {
+        if (hazards.Count > 0)
+        {
+            foreach (Hazard h in instantiatedHazards)
+            {
+                h.DeleteHazardObjects();
+                Destroy(h.gameObject);
+            }
+            instantiatedHazards.Clear();
+        }
+    }
+  
 
     public bool HasRestrictions()
     {
