@@ -32,9 +32,11 @@ public class UnorderedSymbolPlacer : SymbolPlacer
         for (int i = instantiatedSymbolsClone.Count; i > 0; i--)
         {
             float radians = startingOffset + counter * degreeOffset;
+            //this does not consider symbolPos rotation?
             PlaceSymbols(symbolPos.transform.position + new Vector3(Mathf.Cos(radians), Mathf.Sin(radians), 0) * panelSize);
             counter++;
-        }        
+        } 
+
     }
 
     private void PlaceSymbols(Vector3 newPos)
@@ -43,7 +45,14 @@ public class UnorderedSymbolPlacer : SymbolPlacer
         //Move and REmove instance from list
 
         PuzzleObject instance = instantiatedSymbolsClone[Random.Range(0, instantiatedSymbolsClone.Count)];       
+
         instance.transform.position = newPos;
+        instance.transform.rotation = new Quaternion(0,0,0,0);
+        instance.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+
+        Vector3 pos = new Vector3(instance.transform.localPosition.x, instance.transform.localPosition.y, -2);
+        instance.transform.localPosition = pos;
+
         instantiatedSymbolsClone.Remove(instance);
     }
 

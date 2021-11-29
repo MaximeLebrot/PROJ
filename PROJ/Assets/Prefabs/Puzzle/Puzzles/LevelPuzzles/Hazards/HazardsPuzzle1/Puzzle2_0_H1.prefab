@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8807417656321719224
+--- !u!1 &2797343606922386507
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,44 +8,44 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8807417656321719222}
-  - component: {fileID: 8807417656321719223}
+  - component: {fileID: 2797343606922386505}
+  - component: {fileID: 2797343606922386506}
   m_Layer: 0
-  m_Name: PuzzleInstance
+  m_Name: Puzzle2_0_H1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8807417656321719222
+--- !u!4 &2797343606922386505
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8807417656321719224}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6787567, z: 0}
+  m_GameObject: {fileID: 2797343606922386507}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8807417656321719223
+--- !u!114 &2797343606922386506
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8807417656321719224}
+  m_GameObject: {fileID: 2797343606922386507}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a1c50cf54303e74c9b7b712babcff09, type: 3}
+  m_Script: {fileID: 11500000, guid: 4186a7ff02f087d4e836606f1daaea07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  puzzleID: 10
-  puzzleObjects:
-  - symbol: {fileID: 0}
-    modifier: 0
-  activeNodes: []
-  hazards: []
+  hazardObj: {fileID: 2620287691585698511, guid: fd474c36d98ba2c4db6ad7eba3fff57f, type: 3}
+  grid: {fileID: 3660778828103380576, guid: 74f260980dc419044b61114613930bb4, type: 3}
+  moveDirection: {x: 0, y: 0, z: 1}
+  movingHazard: 0
+  hazardObjects: []
+  customPattern: 00000000000000000000000000000000000001000000000000
