@@ -26,9 +26,17 @@ public class PlayerJump : MonoBehaviour
         GetComponent<SphereCollider>().enabled = false;
         MPC.transform.parent = null;
         MPC.playerController3D.enabled = true;
-        MPC.physics.enabled = true;
-        MPC.physics.velocity = Vector3.zero;
+      //  MPC.physics.enabled = true;
         Debug.Log("Rickard");
     }
+
+    /*
+    public void MovePlayer()
+    {
+        // MPC.transform.position = Vector3.MoveTowards(MPC.transform.position, new Vector3(0, 1, 0), 2f);
+        MPC.transform.position = Vector3.Lerp(MPC.transform.position, this.transform.position, 1555f);
+        Debug.Log("Skickat");
+    }
+    */
 }
 
