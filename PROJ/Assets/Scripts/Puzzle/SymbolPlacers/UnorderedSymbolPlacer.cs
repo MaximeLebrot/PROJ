@@ -16,7 +16,7 @@ public class UnorderedSymbolPlacer : SymbolPlacer
 
     protected override void UnevenPlaceSymbols()
     {
-        //Should probably only relate to the correct number of positions, uneven or even shouldnt matter.
+        //Should probably only relate to the correct number of positions (if we have predefined acceptable positions for placement), uneven or even shouldnt matter.
         EvenPlaceSymbols();
     }
     protected override void EvenPlaceSymbols()
