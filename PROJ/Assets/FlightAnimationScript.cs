@@ -6,13 +6,19 @@ public class FlightAnimationScript : MonoBehaviour
 {
     private Animator jumpAnimator;
     private MetaPlayerController mpc;
+    private new Transform transform;
+
+    private Vector3 adjustedPosition = new Vector3();
     private bool moveToCenter;
+    private float adjustedYValue;
     [SerializeField] private string triggerValue;
 
     private void Awake()
     {
+        transform = GetComponent<Transform>();
         jumpAnimator = GetComponent<Animator>();
     }
+
     void OnTriggerEnter(Collider col)
     {
         if (col.CompareTag("Player"))
@@ -20,11 +26,13 @@ public class FlightAnimationScript : MonoBehaviour
             jumpAnimator.SetTrigger(triggerValue);
             mpc = col.GetComponent<MetaPlayerController>();
             mpc.physics.enabled = false;
-            mpc.transform.parent = this.transform;
+            mpc.transform.parent = transform;
+            adjustedYValue = mpc.transform.localPosition.y;
             mpc.enabled = false;
             moveToCenter = true;
         }
     }
+
     public void ActivateScripts()
     {
         GetComponent<SphereCollider>().enabled = false;
@@ -37,14 +45,14 @@ public class FlightAnimationScript : MonoBehaviour
     {
         if(moveToCenter)
         {
-            if(Vector3.Distance(mpc.transform.position, this.transform.position) < 0.1f)
+            if(Vector3.Distance(mpc.transform.position, this.transform.position) < 0.05f)
                 moveToCenter = false;
-        
-            mpc.transform.position = Vector3.MoveTowards(mpc.transform.position, this.transform.position, Time.deltaTime);
-  
+
+            adjustedPosition = transform.position;
+            adjustedPosition.y += adjustedYValue;
+            mpc.transform.position = Vector3.MoveTowards(mpc.transform.position, adjustedPosition, Time.deltaTime);
         }
     }
     //Maybe we also want to destroy this game object when we're done with it, OR make it part of some type of object pooling. Just leaving it in the scene serves no purpose.
-
 }
 
