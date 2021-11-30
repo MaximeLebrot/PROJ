@@ -65,7 +65,6 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        Debug.Log("Player controller sending " + force.magnitude + " force");
         physics.AddForce(force);
         //force = Vector3.zero;
     }
@@ -78,7 +77,6 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void ResetForceVector()
     {
-        Debug.Log("Resetting force vector");
         force = Vector3.zero;
     }
     #region Movement
@@ -92,8 +90,6 @@ public class PlayerController : MonoBehaviour
     {
         input = inp.x * Vector3.right + 
                 inp.y * Vector3.forward;
-
-        Debug.Log("input is :" + input);
 
         //to stop character rotation when input is 0
         if (input.magnitude < inputThreshold)

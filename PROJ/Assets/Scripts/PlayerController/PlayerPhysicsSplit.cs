@@ -20,10 +20,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     [SerializeField] private LayerMask collisionMask;
     [SerializeField] private float gravityWhenFalling = 10f;
     [SerializeField] private float moveThreshold = 0.05f;
-    [SerializeField] private float stepHeight = 0.2f;
-    //Exposed for debugging
-    [SerializeField] private float glideHeight;
-   
+    [SerializeField] private float stepHeight = 0.2f;   
 
     //Properties
     public float GlideHeight { get; private set; }
@@ -81,10 +78,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
         ClampSpeed();
         
         //Debug
-        Debug.DrawLine(transform.position, transform.position + velocity, Color.red);
-        glideHeight = GlideHeight;
-        Debug.DrawLine(colliderBottomHalf + stepHeightDisplacement, colliderBottomHalf + stepHeightDisplacement + transform.forward, Color.yellow);
-        
+        Debug.DrawLine(transform.position, transform.position + velocity, Color.red);     
     }
 
     public void SetValues(ControllerValues values)
@@ -132,7 +126,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     {
         //Y-axis normalforce
         float castLength = velocity.magnitude * Time.deltaTime + skinWidth;
-        Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, new Vector3(0, velocity.y, 0), out RaycastHit yHitInfo, castLength, collisionMask);
+        Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, velocity.normalized, out RaycastHit yHitInfo, castLength, collisionMask);
         if (yHitInfo.collider && yHitInfo.collider.isTrigger == false)
         {
             Vector3 smoothingNormalForce;
@@ -152,7 +146,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     }
     private void XZCollision(int i)
     {
-        Physics.CapsuleCast(colliderTopHalf, colliderBottomHalf + stepHeightDisplacement, attachedCollider.radius, velocity.normalized, out var hitInfo, velocity.magnitude * Time.deltaTime + skinWidth, collisionMask);
+        Physics.CapsuleCast(colliderTopHalf, colliderBottomHalf + stepHeightDisplacement, attachedCollider.radius, new Vector3(velocity.x, 0 , velocity.z), out var hitInfo, velocity.magnitude * Time.deltaTime + skinWidth, collisionMask);
         if (hitInfo.collider && hitInfo.collider.isTrigger == false)
         {
             // Calculate the allowed distance to the collision point
@@ -172,7 +166,10 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
             //GlideHeight should be zero when walking, but needs to be added here to get a smooth transition along with the lerp in SetValues
             Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, hitInfo.normal);
+            Vector3 xznf = new Vector3(normalForce.x, 0, normalForce.z);
             velocity += new Vector3(normalForce.x, 0, normalForce.z);
+            if (xznf.magnitude > 0.001)
+                Debug.Log("XZ Normalforce applyying : " + xznf.magnitude);
             ApplyFriction(normalForce);
 
 
@@ -229,16 +226,18 @@ public class PlayerPhysicsSplit : MonoBehaviour
             }
             
             //Move out of geometry and apply normalforce since this collision was missed by collisioncheck
+            //Cannot apply the normalforce created in these if-else statements, when using stepheight - it stops the player from crossing over barriers
+            //because it thinks a collision was simply missed, instead of intentionally ignored.
             if (separation.HasValue)
             {
                 transform.position += separation.Value + separation.Value.normalized * skinWidth;
                 Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, separation.Value.normalized);
-                velocity += normalForce;
+                //velocity += normalForce;
             }
             else
             {
                 Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity * minimumPenetrationForPenalty, direction.normalized);
-                velocity += normalForce;
+                //velocity += normalForce;
                 Debug.Log("Separation has no value!");
                 return;
             }
