@@ -2,12 +2,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 
 public class MenuController : MonoBehaviour {
 
     [SerializeField] private ControllerInputReference controllerInputReference;
     private Animator animator;
+    private GraphicRaycaster graphicRaycaster;
     
     private int onAnyKeyHash;
     private int showSettingsMenu;
@@ -27,9 +29,12 @@ public class MenuController : MonoBehaviour {
     
     private void Awake() {
         controllerInputReference.Initialize();
+        graphicRaycaster = GetComponent<GraphicRaycaster>();
         
         animator = GetComponent<Animator>();
 
+        global::InputController.SuspendInputEvent += SuspendInputEvent;
+        
         onAnyKeyHash = Animator.StringToHash("AnyKeyPressed");
         showSettingsMenu = Animator.StringToHash("ShowSettingsMenu");
         showGeneralHash = Animator.StringToHash("ShowGeneral");
@@ -60,8 +65,6 @@ public class MenuController : MonoBehaviour {
             return;
         
         animator.SetBool(pageHashes[pageName], true);
-
-        LockInput();
         
         depth.Push(pageHashes[pageName]);
     }
@@ -71,7 +74,6 @@ public class MenuController : MonoBehaviour {
         if (depth.Count < 1 || inputSuspended)
             return;
         
-        LockInput();
         
         int currentLevel = depth.Pop();
         
@@ -80,16 +82,11 @@ public class MenuController : MonoBehaviour {
     
     public void OnActivatePageEvent(string name) => OnActivatePage?.Invoke(name.GetHashCode());
 
-    private async void LockInput() {
-        inputSuspended = true;
-        inputSuspended = await ReleaseInput();
+    public void SuspendInput(int suspend) => inputSuspended = suspend == 1;
+
+    private void SuspendInputEvent(bool suspend) {
+        inputSuspended = suspend;
+        graphicRaycaster.enabled = !inputSuspended;
+        Debug.Log($"Suspended: {inputSuspended}");
     }
-    
-    private async Task<bool> ReleaseInput() {
-        Debug.Log("Input suspended");
-        await Task.Delay(1000);
-        Debug.Log("Input open");
-        return false;
-    }
-    
 }
