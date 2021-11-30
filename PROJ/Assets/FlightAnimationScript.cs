@@ -47,7 +47,7 @@ public class FlightAnimationScript : MonoBehaviour
     {
         if(moveToCenter)
         {
-            if(Vector3.Distance(mpc.transform.position, this.transform.position) < 0.05f)
+            if(Vector3.Distance(mpc.transform.position, this.transform.position) < 0.1f)
                 moveToCenter = false;
 
             adjustedPosition = transform.position;
