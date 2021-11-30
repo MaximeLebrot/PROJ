@@ -19,9 +19,10 @@ public class PlayerPhysicsSplit : MonoBehaviour
     [SerializeField] private float minimumPenetrationForPenalty = 0.01f;
     [SerializeField] private LayerMask collisionMask;
     [SerializeField] private float gravityWhenFalling = 10f;
-    [SerializeField] private float glideHeight;
     [SerializeField] private float moveThreshold = 0.05f;
     [SerializeField] private float stepHeight = 0.2f;
+    //Exposed for debugging
+    [SerializeField] private float glideHeight;
    
 
     //Properties
@@ -65,7 +66,10 @@ public class PlayerPhysicsSplit : MonoBehaviour
         attachedCollider = GetComponent<CapsuleCollider>();
         stepHeightDisplacement = new Vector3(0, stepHeight, 0);
     }
-
+    private void OnEnable()
+    {
+        velocity = Vector3.zero;
+    }
     private void Update()
     {
         //Add velocity and reset force vector in playercontroller       
@@ -330,7 +334,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
                 return;
            
             Vector3? separation = null;
-            float maxDistance = 0f;
+
             Vector3 direction = Vector3.zero;
             foreach (Collider currentCollider in colliders)
             {
@@ -355,8 +359,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
                 {                   
                     separation = direction * distance;
                 }
-                else if (distance > separation?.magnitude)
-                    maxDistance = distance;
             }
             
             //Move out of geometry and apply normalforce since this collision was missed by collisioncheck
@@ -370,7 +372,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
             {
                 Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity * minimumPenetrationForPenalty, direction.normalized);
                 velocity += normalForce;
-                Debug.Log("Separation has no value!, maxDistance is  " + maxDistance);
+                Debug.Log("Separation has no value!");
                 return;
             }
         }
@@ -423,8 +425,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
     {
         forceInput = Vector3.zero;
         forceInput = input.magnitude < inputThreshold ? Vector3.zero : input;
-        //Obsolete
-        //velocity += input.magnitude < inputThreshold ? Vector3.zero : input * Time.fixedDeltaTime;
     }
     public Vector3 GetXZMovement()
     {
