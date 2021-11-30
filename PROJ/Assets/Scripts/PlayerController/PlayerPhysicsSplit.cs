@@ -132,7 +132,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     {
         //Y-axis normalforce
         float castLength = velocity.magnitude * Time.deltaTime + skinWidth;
-        Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, velocity.normalized, out RaycastHit yHitInfo, castLength, collisionMask);
+        Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, new Vector3(0, velocity.y, 0), out RaycastHit yHitInfo, castLength, collisionMask);
         if (yHitInfo.collider && yHitInfo.collider.isTrigger == false)
         {
             Vector3 smoothingNormalForce;
