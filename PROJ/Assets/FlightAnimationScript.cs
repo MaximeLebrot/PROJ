@@ -11,10 +11,12 @@ public class FlightAnimationScript : MonoBehaviour
     private Vector3 adjustedPosition = new Vector3();
     private bool moveToCenter;
     private float adjustedYValue;
+    private float colSizeOffset;
     [SerializeField] private string triggerValue;
 
     private void Awake()
     {
+        colSizeOffset = GetComponent<SphereCollider>().radius;
         transform = GetComponent<Transform>();
         jumpAnimator = GetComponent<Animator>();
     }
@@ -50,7 +52,7 @@ public class FlightAnimationScript : MonoBehaviour
 
             adjustedPosition = transform.position;
             adjustedPosition.y += adjustedYValue;
-            mpc.transform.position = Vector3.MoveTowards(mpc.transform.position, adjustedPosition, Time.deltaTime);
+            mpc.transform.position = Vector3.MoveTowards(mpc.transform.position, adjustedPosition, colSizeOffset);
         }
     }
     //Maybe we also want to destroy this game object when we're done with it, OR make it part of some type of object pooling. Just leaving it in the scene serves no purpose.
