@@ -6,6 +6,9 @@ public class FlightAnimationScript : MonoBehaviour
 {
     private Animator jumpAnimator;
     private MetaPlayerController mpc;
+    private bool moveToCenter;
+    [SerializeField] private string triggerValue;
+
     private void Awake()
     {
         jumpAnimator = GetComponent<Animator>();
@@ -14,11 +17,12 @@ public class FlightAnimationScript : MonoBehaviour
     {
         if (col.CompareTag("Player"))
         {
-            jumpAnimator.SetTrigger("First");
+            jumpAnimator.SetTrigger(triggerValue);
             mpc = col.GetComponent<MetaPlayerController>();
             mpc.physics.enabled = false;
             mpc.transform.parent = this.transform;
             mpc.enabled = false;
+            moveToCenter = true;
         }
     }
     public void ActivateScripts()
@@ -29,6 +33,17 @@ public class FlightAnimationScript : MonoBehaviour
         mpc.enabled = true;
     }
 
+    private void Update()
+    {
+        if(moveToCenter)
+        {
+            if(Vector3.Distance(mpc.transform.position, this.transform.position) < 0.1f)
+                moveToCenter = false;
+        
+            mpc.transform.position = Vector3.MoveTowards(mpc.transform.position, this.transform.position, Time.deltaTime);
+  
+        }
+    }
     //Maybe we also want to destroy this game object when we're done with it, OR make it part of some type of object pooling. Just leaving it in the scene serves no purpose.
 
 }
