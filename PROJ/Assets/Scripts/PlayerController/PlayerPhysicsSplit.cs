@@ -26,7 +26,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     public float GlideHeight { get; private set; }
     public float SurfThreshold { get => surfThreshold; }
 
-
+    public float velocityMagnitude;
 
     [Header("Values set by States")]
     private float maxSpeed = 12f;
@@ -78,7 +78,8 @@ public class PlayerPhysicsSplit : MonoBehaviour
         ClampSpeed();
         
         //Debug
-        Debug.DrawLine(transform.position, transform.position + velocity, Color.red);     
+        Debug.DrawLine(transform.position, transform.position + velocity, Color.red);
+        velocityMagnitude = velocity.magnitude;
     }
 
     public void SetValues(ControllerValues values)
