@@ -9,7 +9,8 @@ public class FlightAnimationScript : MonoBehaviour
     private new Transform transform;
 
     private Vector3 adjustedPosition = new Vector3();
-    private bool moveToCenter;
+    private Vector2 mpcXZPos, XZPos;
+    public bool moveToCenter;
     private float adjustedYValue;
     private float colSizeOffset;
     [SerializeField] private string triggerValue;
@@ -19,6 +20,7 @@ public class FlightAnimationScript : MonoBehaviour
         colSizeOffset = GetComponent<SphereCollider>().radius;
         transform = GetComponent<Transform>();
         jumpAnimator = GetComponent<Animator>();
+        XZPos = new Vector2(transform.position.x, transform.position.z);
     }
 
     void OnTriggerEnter(Collider col)
@@ -32,6 +34,7 @@ public class FlightAnimationScript : MonoBehaviour
             adjustedYValue = mpc.transform.localPosition.y;
             mpc.enabled = false;
             moveToCenter = true;
+            mpcXZPos = new Vector2(mpc.transform.position.x, mpc.transform.position.z);
         }
     }
 
@@ -47,12 +50,20 @@ public class FlightAnimationScript : MonoBehaviour
     {
         if(moveToCenter)
         {
-            if(Vector3.Distance(mpc.transform.position, this.transform.position) < 0.1f)
+            mpcXZPos.x = mpc.transform.position.x;
+            mpcXZPos.y = mpc.transform.position.z;
+            XZPos.x = transform.position.x;
+            XZPos.y = transform.position.z;
+
+            if (Vector2.Distance(XZPos, mpcXZPos) < 0.05f)
+            {
+                Debug.Log("Detach");
                 moveToCenter = false;
+            }
 
             adjustedPosition = transform.position;
             adjustedPosition.y += adjustedYValue;
-            mpc.transform.position = Vector3.MoveTowards(mpc.transform.position, adjustedPosition, colSizeOffset);
+            mpc.transform.position = Vector3.MoveTowards(mpc.transform.position, adjustedPosition, Time.deltaTime * colSizeOffset);
         }
     }
     //Maybe we also want to destroy this game object when we're done with it, OR make it part of some type of object pooling. Just leaving it in the scene serves no purpose.
