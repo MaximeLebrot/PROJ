@@ -88,7 +88,8 @@ public class PlayerController : MonoBehaviour
     }
     public void InputWalk(Vector3 inp)
     {
-        input = inp.x * Vector3.right + 
+
+        input = inp.x * Vector3.right +
                 inp.y * Vector3.forward;
 
         //to stop character rotation when input is 0
@@ -106,8 +107,8 @@ public class PlayerController : MonoBehaviour
     }
     public void InputAirborne(Vector3 inp)
     {
-        input = inp.x * cameraTransform.right +
-                inp.y * cameraTransform.forward;
+        input =  inp.x * cameraTransform.right+ 
+                 inp.y * cameraTransform.forward;
 
         if (input.magnitude > 1f)
         {
@@ -160,6 +161,7 @@ public class PlayerController : MonoBehaviour
         RotateInVelocityDirection();
         ProjectMovement();
     }
+
     private void RotateInVelocityDirection()
     {
         Vector3 charVelocity = physics.GetXZMovement();
@@ -168,12 +170,12 @@ public class PlayerController : MonoBehaviour
         transform.forward = Vector3.Lerp(transform.forward, charVelocity.normalized, turnSpeed * Time.deltaTime);
     }
     //Obsolete
-    private void RotateTowardsCameraDirection(Vector3 rawInput)
+    private void RotateTowardsCameraDirection()
     {
-        /*transform.localEulerAngles = new Vector3(
+       /*transform.localEulerAngles = new Vector3(
         transform.localEulerAngles.x,
         cameraTransform.localEulerAngles.y,
-        transform.localEulerAngles.z);*/
+        transform.localEulerAngles.z);
 
         //rotation from input
         Vector3 temp = transform.rotation.eulerAngles;
@@ -181,13 +183,14 @@ public class PlayerController : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(temp);
 
         //Add rotation to input
-        //input += rotation * input;
-        /*transform.localEulerAngles = new Vector3(transform.localEulerAngles.x,
+        input += rotation * input;
+        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x,
                                                  input.x,
-                                                 transform.localEulerAngles.z);*/
+                                                 transform.localEulerAngles.z);
         transform.rotation = Quaternion.LookRotation(physics.GetXZMovement().normalized, Vector3.up);
         //transform.Rotate(0, rawInput.x, 0);
         //transform.forward = Vector3.Lerp(transform.forward, new Vector3(transform.forward.x, input.y, transform.forward.z), turnSpeed * Time.deltaTime);
+        */
     }
     //Rotation when using Glide
     private void RotateInDirectionOfMovement(Vector3 rawInput)

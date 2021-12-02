@@ -189,7 +189,6 @@ public class Puzzle : MonoBehaviour
         return false;
     }
 
-
     private void OnTriggerExit(Collider other)
     {
         PuzzleInfo info = new PuzzleInfo(currentPuzzleInstance.GetPuzzleID());
@@ -197,8 +196,6 @@ public class Puzzle : MonoBehaviour
         GetComponentInChildren<PuzzleStarter>().ResetStarter();
 
     }
-
-
 
     public void StartPuzzle(StartPuzzleEvent eve)
     {
