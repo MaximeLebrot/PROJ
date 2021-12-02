@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[CreateAssetMenu(menuName = "PlayerStates/WalkState")]
-public class WalkState : PlayerState
+[CreateAssetMenu(menuName = "PlayerStates/SprintState")]
+public class SprintState : PlayerState
 {
     public InputAction sprint;
     public override void Initialize()
@@ -12,7 +12,9 @@ public class WalkState : PlayerState
         base.Initialize();
         sprint = player.inputReference.InputMaster.Interact;
         sprint.Enable();
+        
     }
+
     public override void EnterState()
     {
         //Debug.Log("Entered Walk State");
@@ -22,7 +24,7 @@ public class WalkState : PlayerState
     }
     public override void RunUpdate()
     {
-         SetInput();
+        SetInput();
 
         if (!player.playerController3D.IsGrounded())
         {
@@ -32,10 +34,10 @@ public class WalkState : PlayerState
 
 
 
-       /* if (player.physics.velocity.magnitude > player.physics.SurfThreshold + 1
-            && player.playerController3D.groundHitAngle < player.playerController3D.GlideMinAngle
-            && player.playerController3D.groundHitInfo.collider.gameObject.layer == glideableLayer)
-            stateMachine.ChangeState<GlideState>();*/
+        /* if (player.physics.velocity.magnitude > player.physics.SurfThreshold + 1
+             && player.playerController3D.groundHitAngle < player.playerController3D.GlideMinAngle
+             && player.playerController3D.groundHitInfo.collider.gameObject.layer == glideableLayer)
+             stateMachine.ChangeState<GlideState>();*/
     }
     public override void ExitState()
     {
@@ -48,6 +50,6 @@ public class WalkState : PlayerState
     }
     private void OnSprintActivate(InputAction.CallbackContext obj)
     {
-       stateMachine.ChangeState<SprintState>();   
+        stateMachine.ChangeState<WalkState>();
     }
 }

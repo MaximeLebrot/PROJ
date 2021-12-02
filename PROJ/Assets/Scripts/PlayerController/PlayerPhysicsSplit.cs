@@ -108,7 +108,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
             GlideHeight = Mathf.Lerp(GlideHeight, values.glideHeight, time * (1 / setValuesLerpSpeed));
             maxSpeed = Mathf.Lerp(maxSpeed, values.maxSpeed, time * (1 / setValuesLerpSpeed));
-            currentGravity = Mathf.Lerp(defaultGravity, values.gravity, time * (1 / setValuesLerpSpeed));          
+            currentGravity = Mathf.Lerp(currentGravity, values.gravity, time * (1 / setValuesLerpSpeed));          
             
             time += Time.deltaTime;
             yield return null;

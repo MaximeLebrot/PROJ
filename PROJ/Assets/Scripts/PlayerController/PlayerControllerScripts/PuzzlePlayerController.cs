@@ -26,7 +26,6 @@ public class PuzzlePlayerController : MonoBehaviour
 
 
     //Input
-    private InputAction skipMove;
     private InputAction quitPuzzle;
     private Vector3 input;
     private float inputThreshold = 0.1f;
@@ -39,11 +38,6 @@ public class PuzzlePlayerController : MonoBehaviour
     {
         quitPuzzle = metaPlayerController.inputReference.InputMaster.ExitPuzzle;
         quitPuzzle.Enable();
-       
-        skipMove = metaPlayerController.inputReference.InputMaster.Interact;
-        skipMove.Enable();
-        metaPlayerController.inputReference.InputMaster.Interact.performed += OnSkipMove;
-
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
     }
     private void OnDisable()
