@@ -128,6 +128,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
         Physics.Raycast(colliderBottomHalf, Vector3.down, out RaycastHit hit, attachedCollider.radius + stepHeight + skinWidth, collisionMask);
 
         //some sort of force inverse to the distance and which the raycast hits the ground
+        //Do we actually want to apply more normalforce if the character is intersecting another collider? Maybe not... in that case, this code is basically fine, in principle
         if (hit.collider && hit.collider.isTrigger == false)
         {
             Vector3 yNormalForce = PhysicsFunctions.NormalForce3D(velocity, hit.normal)
@@ -180,10 +181,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
             //GlideHeight should be zero when walking, but needs to be added here to get a smooth transition along with the lerp in SetValues
             Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, hitInfo.normal);
-            Vector3 xznf = new Vector3(normalForce.x, 0, normalForce.z);
             velocity += new Vector3(normalForce.x, 0, normalForce.z);
-            if (xznf.magnitude > 0.001)
-                Debug.Log("XZ Normalforce applyying : " + xznf.magnitude);
             ApplyFriction(normalForce);
 
 
@@ -216,8 +214,9 @@ public class PlayerPhysicsSplit : MonoBehaviour
             Vector3 direction = Vector3.zero;
             foreach (Collider currentCollider in colliders)
             {
-                if (currentCollider == attachedCollider ||currentCollider.isTrigger)
+                if (currentCollider == attachedCollider || currentCollider.isTrigger)
                     continue;
+                Debug.Log("Colloiding with :" + currentCollider.gameObject.name);
 
                 bool overlap = Physics.ComputePenetration(
                                             attachedCollider,
@@ -245,13 +244,14 @@ public class PlayerPhysicsSplit : MonoBehaviour
             if (separation.HasValue)
             {
                 transform.position += separation.Value + separation.Value.normalized * skinWidth;
-                Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, separation.Value.normalized);
+                //Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, separation.Value.normalized);
                 //velocity += normalForce;
             }
             else
             {
-                Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity * minimumPenetrationForPenalty, direction.normalized);
+                //Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity * minimumPenetrationForPenalty, direction.normalized);
                 //velocity += normalForce;
+                //This can also happen if the player intersects only colliders that are not valid, such as attachedCollider or if the collider is a trigger
                 Debug.Log("Separation has no value!");
                 return;
             }
