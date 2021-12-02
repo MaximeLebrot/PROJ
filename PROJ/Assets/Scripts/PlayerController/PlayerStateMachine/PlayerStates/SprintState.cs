@@ -7,37 +7,32 @@ using UnityEngine.InputSystem;
 public class SprintState : PlayerState
 {
     public InputAction sprint;
+    private float sprintThreshold = 3f;
     public override void Initialize()
     {
         base.Initialize();
         sprint = player.inputReference.InputMaster.Interact;
-        sprint.Enable();
-        
+        sprint.Enable();    
     }
 
     public override void EnterState()
     {
-        //Debug.Log("Entered Walk State");
+        //Debug.Log("Entered Sprint State");
         base.EnterState();
-        player.physics.SetGlide(false);
         player.inputReference.InputMaster.Interact.performed += OnSprintActivate;
     }
     public override void RunUpdate()
     {
         SetInput();
-
         if (!player.playerController3D.IsGrounded())
         {
             stateMachine.ChangeState<AirborneState>(this);
             return;
         }
+        //if the player stops while sprinting, we probably want to cancel the sprint.. but this is maybe not the way to do that
+        if (player.physics.velocity.magnitude < sprintThreshold)
+            stateMachine.ChangeState<WalkState>();
 
-
-
-        /* if (player.physics.velocity.magnitude > player.physics.SurfThreshold + 1
-             && player.playerController3D.groundHitAngle < player.playerController3D.GlideMinAngle
-             && player.playerController3D.groundHitInfo.collider.gameObject.layer == glideableLayer)
-             stateMachine.ChangeState<GlideState>();*/
     }
     public override void ExitState()
     {
@@ -50,6 +45,7 @@ public class SprintState : PlayerState
     }
     private void OnSprintActivate(InputAction.CallbackContext obj)
     {
+        Debug.Log("Exiting Sprint State");
         stateMachine.ChangeState<WalkState>();
     }
 }

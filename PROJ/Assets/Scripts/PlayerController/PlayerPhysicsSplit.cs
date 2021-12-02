@@ -404,9 +404,11 @@ ApplyAirResistance();
     }
     public void SetFallingGravity()
     {
+        defaultGravity = currentGravity;
         currentGravity = gravityWhenFalling;
+
     }
-    public void SetNormalGravity()
+    public void RestoreGravity()
     {
         currentGravity = defaultGravity;
     }

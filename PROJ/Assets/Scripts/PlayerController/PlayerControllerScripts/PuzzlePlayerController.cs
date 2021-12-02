@@ -49,10 +49,6 @@ public class PuzzlePlayerController : MonoBehaviour
     {
         physics = GetComponent<PlayerPhysicsSplit>();
     }
-    private void OnSkipMove(InputAction.CallbackContext obj)
-    {
-        //EventHandler<UpdateHazardEvent>.FireEvent(new UpdateHazardEvent());
-    }
     private void OnQuitPuzzle(InputAction.CallbackContext obj)
     {
         EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(PuzzleTransform.GetComponent<Puzzle>().GetPuzzleID()), false));
@@ -110,8 +106,5 @@ public class PuzzlePlayerController : MonoBehaviour
 
     #endregion
 
-    public float GetMaxSpeed()
-    {
-        return maxSpeed;
-    }
+
 }
