@@ -1260,7 +1260,7 @@ GameObject:
   - component: {fileID: 8203257626104097642}
   - component: {fileID: 8203257626104097645}
   m_Layer: 6
-  m_Name: Player10Nov
+  m_Name: Player12Dec
   m_TagString: Glideable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1304,9 +1304,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.3
-  m_Height: 1.9
+  m_Height: 1.7
   m_Direction: 1
-  m_Center: {x: 0, y: -0.1, z: 0}
+  m_Center: {x: 0, y: -0.05, z: 0}
 --- !u!114 &8203257626104097638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1319,7 +1319,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 138f47bdd9d93a840b2ca12c44125d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  glideParticle: {fileID: 489970052}
   states:
   - {fileID: 11400000, guid: 8a2538c6844338c459f3063ce4b0af1c, type: 2}
   - {fileID: 11400000, guid: 809ef362b0242f649a680c9ee0f859d7, type: 2}
@@ -1348,7 +1347,7 @@ MonoBehaviour:
   turnRate: 10
   turnSpeed: 10
   retainedSpeedWhenTurning: 2
-  airControl: 0.2
+  airControl: 0.33
   slopeMaxAngle: 140
   decelerationSlopeAngle: 110
   slopeDecelerationMultiplier: 20
@@ -1381,7 +1380,7 @@ MonoBehaviour:
     m_Bits: 16435
   gravityWhenFalling: 25
   moveThreshold: 0.002
-  stepHeight: 0.1
+  stepHeight: 0.2
   defaultGravity: 9.81
   surfThreshold: 4.8
 --- !u!114 &8203257626104097643

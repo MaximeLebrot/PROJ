@@ -119,8 +119,22 @@ public class PlayerPhysicsSplit : MonoBehaviour
     private void CheckForCollisions(int i)
     {
         collisionMethod = CheckForCollisions;
-        YCollision();
+        YCollisionRayCast();
         XZCollision(i);
+    }
+    private void YCollisionRayCast()
+    {
+        Debug.DrawLine(colliderBottomHalf, colliderBottomHalf + (Vector3.down * (attachedCollider.radius + stepHeight + skinWidth)), Color.green);
+        Physics.Raycast(colliderBottomHalf, Vector3.down, out RaycastHit hit, attachedCollider.radius + stepHeight + skinWidth, collisionMask);
+
+        //some sort of force inverse to the distance and which the raycast hits the ground
+        if (hit.collider && hit.collider.isTrigger == false)
+        {
+            Vector3 yNormalForce = PhysicsFunctions.NormalForce3D(velocity, hit.normal)
+                                        + GlideHeight * Vector3.up;
+
+            velocity += new Vector3(0, yNormalForce.y, 0);
+        }
     }
     private void YCollision()
     {

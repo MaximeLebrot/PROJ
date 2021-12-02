@@ -11,10 +11,6 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     public PuzzlePlayerController puzzleController { get; private set; }
     public Animator animator { get; private set; }
 
-
-    //Particles
-    public VisualEffect glideParticle;
-
     //StateMachine
     private StateMachine stateMachine;
     [SerializeField] private PlayerState[] states;

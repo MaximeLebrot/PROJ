@@ -105,7 +105,6 @@ public class PlayerController : MonoBehaviour
             Accelerate();
         }
     }
-    public float rightAxisScale = 1f;
     public void InputAirborne(Vector3 inp)
     {
         input =  inp.x * cameraTransform.right+ 
