@@ -125,17 +125,23 @@ public class PlayerPhysicsSplit : MonoBehaviour
     }
     private void YCollisionRayCast()
     {
-        Debug.DrawLine(colliderBottomHalf, colliderBottomHalf + (Vector3.down * (attachedCollider.radius + stepHeight + skinWidth)), Color.green);
-        Physics.Raycast(colliderBottomHalf, Vector3.down, out RaycastHit hit, attachedCollider.radius + stepHeight + skinWidth, collisionMask);
+        float castLength = attachedCollider.radius + stepHeight + skinWidth;
+        Debug.DrawLine(colliderBottomHalf, colliderBottomHalf + (Vector3.down * castLength), Color.green);
+        Physics.Raycast(colliderBottomHalf, Vector3.down, out RaycastHit hit, castLength, collisionMask);
 
         //some sort of force inverse to the distance and which the raycast hits the ground
         //Do we actually want to apply more normalforce if the character is intersecting another collider? Maybe not... in that case, this code is basically fine, in principle
         if (hit.collider && hit.collider.isTrigger == false)
         {
-            Vector3 yNormalForce = PhysicsFunctions.NormalForce3D(velocity, hit.normal)
-                                        + GlideHeight * Vector3.up;
+            //Debug.Log("Raycast hit at height: " + hit.point.y);
+            float partDistanceHit = hit.distance / castLength; // => 0.75 / 1 = 0.75 1 + (1 - hit.distance / castLength)
+            Vector3 yNormalForce = PhysicsFunctions.NormalForce3D(velocity /** (1 + (1 - partDistanceHit))*/, hit.normal)
+                                        + (1 - partDistanceHit
+                                        + GlideHeight)* Vector3.up;
 
-            velocity += new Vector3(0, yNormalForce.y, 0);
+            velocity += yNormalForce;
+            ApplyFriction(yNormalForce);
+                //new Vector3(0, yNormalForce.y, 0);
         }
     }
     private void YCollision()
