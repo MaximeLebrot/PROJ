@@ -46,8 +46,10 @@ public class WalkState : PlayerState
     {
         player.playerController3D.InputWalk(player.inputReference.InputMaster.Movement.ReadValue<Vector2>());
     }
+    private float sprintThreshold = 3f;
     private void OnSprintActivate(InputAction.CallbackContext obj)
     {
-       stateMachine.ChangeState<SprintState>();   
+        if (player.physics.velocity.magnitude > sprintThreshold)
+            stateMachine.ChangeState<SprintState>();
     }
 }

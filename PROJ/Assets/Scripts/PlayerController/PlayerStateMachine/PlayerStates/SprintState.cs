@@ -17,7 +17,7 @@ public class SprintState : PlayerState
 
     public override void EnterState()
     {
-        //Debug.Log("Entered Sprint State");
+        Debug.Log("Entered Sprint State");
         player.animator.SetTrigger("Sprint");
         base.EnterState();
         player.inputReference.InputMaster.Sprint.canceled += OnSprintActivate;
@@ -31,12 +31,12 @@ public class SprintState : PlayerState
             return;
         }
         //if the player stops while sprinting, we probably want to cancel the sprint.. but this is maybe not the way to do that
-        if (player.physics.velocity.magnitude < sprintThreshold)
-            stateMachine.ChangeState<WalkState>();
+
 
     }
     public override void ExitState()
     {
+        Debug.Log("Exiting Sprint State");
         player.animator.SetTrigger("Walk");
         base.ExitState();
         player.inputReference.InputMaster.Sprint.canceled -= OnSprintActivate;
@@ -47,7 +47,7 @@ public class SprintState : PlayerState
     }
     private void OnSprintActivate(InputAction.CallbackContext obj)
     {
-        //Debug.Log("Exiting Sprint State");
+
         stateMachine.ChangeState<WalkState>();
     }
 }
