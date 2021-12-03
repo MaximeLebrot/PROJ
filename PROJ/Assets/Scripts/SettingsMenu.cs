@@ -48,6 +48,8 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] private TextMeshProUGUI lineSizeText;
     [SerializeField] private Toggle animatedNodes;
     [SerializeField] private Toggle animatedLines;
+    [SerializeField] private Toggle showClearedSymbols;
+    [SerializeField] private Toggle easyPuzzleControls;
     */
     #endregion
 
@@ -160,6 +162,8 @@ public class SettingsMenu : MonoBehaviour
         userSettings.animatedLines = animatedLines.isOn;
         userSettings.animatedNodes = animatedNodes.isOn;
         userSettings.currentNodeMarker = currentNodeMarker.isOn;
+        userSettings.showClearedSymbols = showClearedSymbols.isOn;
+        userSettings.easyPuzzleControls = easyPuzzleControls.isOn;
         */
     }
     private void SetValues(SettingsData settings)
@@ -188,6 +192,8 @@ public class SettingsMenu : MonoBehaviour
         animatedLines.isOn = settings.animatedLines;
         animatedNodes.isOn = settings.animatedNodes;
         currentNodeMarker.isOn = settings.currentNodeMarker;
+        showClearedSymbols.isOn = settings.ShowClearedSymbols;
+        easyPuzzleControls.isOn = settings.easyPuzzleControls;
         */
     }
 
