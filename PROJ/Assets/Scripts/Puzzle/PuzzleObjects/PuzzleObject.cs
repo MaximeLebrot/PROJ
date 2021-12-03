@@ -84,15 +84,35 @@ public abstract class PuzzleObject : MonoBehaviour
         Debug.Log(gameObject + " OFF ");
     }
 
-    internal void Activate()
+    internal void Activate(bool hasBeenSolved)
     {
-        Active = true;
-        anim.SetTrigger("activate");
-
-        if (modInfo.variant != ModifierVariant.None == true)
+        if(Active != hasBeenSolved)
         {
-            modifier.GetComponent<Animator>().SetTrigger("activate");
+            Debug.Log(gameObject + "  " + hasBeenSolved);
+            Active = hasBeenSolved;
+
+            if(hasBeenSolved == true)
+            {
+                anim.SetTrigger("activate");
+
+                if (modInfo.variant != ModifierVariant.None == true)
+                {
+                    modifier.GetComponent<Animator>().SetTrigger("activate");
+                }
+            }
+            else
+            {
+                anim.SetTrigger("deactivate");
+
+                if (modInfo.variant != ModifierVariant.None == true)
+                {
+                    modifier.GetComponent<Animator>().SetTrigger("deactivate");
+                }
+            }
+            
         }
+
+        
 
     }
 }

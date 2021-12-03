@@ -26,6 +26,14 @@ public class SettingsData
     //public GraphicsQuality Quality;
     public bool fullscreen;
     //private Resolution screenRes? 
+
+
+    //Puzzle Settings
+    public bool currentNodeMarker;
+    public float nodeSize;
+    public float lineSize;
+    public bool animatedNodes;
+    public bool animatedLines;
 }
 
 [Serializable]
