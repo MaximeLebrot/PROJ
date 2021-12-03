@@ -13,7 +13,6 @@ public class GlideState : PlayerState
     {
         //Debug.Log("Entered Glide State");
         player.animator.SetBool("surfing", true);
-        player.glideParticle.Play();
         player.physics.SetGlide(true);
         base.EnterState();
     }
@@ -38,7 +37,6 @@ public class GlideState : PlayerState
     {
         base.ExitState();
         player.animator.SetBool("surfing", false);
-        player.glideParticle.Stop();
     }
     private void SetInput()
     {

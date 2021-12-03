@@ -20,16 +20,13 @@ public class PlayerPhysicsSplit : MonoBehaviour
     [SerializeField] private LayerMask collisionMask;
     [SerializeField] private float gravityWhenFalling = 10f;
     [SerializeField] private float moveThreshold = 0.05f;
-    [SerializeField] private float stepHeight = 0.2f;
-    //Exposed for debugging
-    [SerializeField] private float glideHeight;
-   
+    [SerializeField] private float stepHeight = 0.2f;   
 
     //Properties
     public float GlideHeight { get; private set; }
     public float SurfThreshold { get => surfThreshold; }
 
-
+    public float velocityMagnitude;
 
     [Header("Values set by States")]
     private float maxSpeed = 12f;
@@ -82,9 +79,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
         
         //Debug
         Debug.DrawLine(transform.position, transform.position + velocity, Color.red);
-        glideHeight = GlideHeight;
-        Debug.DrawLine(colliderBottomHalf + stepHeightDisplacement, colliderBottomHalf + stepHeightDisplacement + transform.forward, Color.yellow);
-        
+        velocityMagnitude = velocity.magnitude;
     }
 
     public void SetValues(ControllerValues values)
@@ -114,7 +109,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
             GlideHeight = Mathf.Lerp(GlideHeight, values.glideHeight, time * (1 / setValuesLerpSpeed));
             maxSpeed = Mathf.Lerp(maxSpeed, values.maxSpeed, time * (1 / setValuesLerpSpeed));
-            currentGravity = Mathf.Lerp(defaultGravity, values.gravity, time * (1 / setValuesLerpSpeed));          
+            currentGravity = Mathf.Lerp(currentGravity, values.gravity, time * (1 / setValuesLerpSpeed));          
             
             time += Time.deltaTime;
             yield return null;
@@ -125,14 +120,35 @@ public class PlayerPhysicsSplit : MonoBehaviour
     private void CheckForCollisions(int i)
     {
         collisionMethod = CheckForCollisions;
-        YCollision();
+        YCollisionRayCast();
         XZCollision(i);
+    }
+    private void YCollisionRayCast()
+    {
+        float castLength = attachedCollider.radius + stepHeight + skinWidth;
+        Debug.DrawLine(colliderBottomHalf, colliderBottomHalf + (Vector3.down * castLength), Color.green);
+        Physics.Raycast(colliderBottomHalf, Vector3.down, out RaycastHit hit, castLength, collisionMask);
+
+        //some sort of force inverse to the distance and which the raycast hits the ground
+        //Do we actually want to apply more normalforce if the character is intersecting another collider? Maybe not... in that case, this code is basically fine, in principle
+        if (hit.collider && hit.collider.isTrigger == false)
+        {
+            //Debug.Log("Raycast hit at height: " + hit.point.y);
+            float partDistanceHit = hit.distance / castLength; // => 0.75 / 1 = 0.75 1 + (1 - hit.distance / castLength)
+            Vector3 yNormalForce = PhysicsFunctions.NormalForce3D(velocity /** (1 + (1 - partDistanceHit))*/, hit.normal)
+                                        + (1 - partDistanceHit
+                                        + GlideHeight)* Vector3.up;
+
+            velocity += yNormalForce;
+            ApplyFriction(yNormalForce);
+                //new Vector3(0, yNormalForce.y, 0);
+        }
     }
     private void YCollision()
     {
         //Y-axis normalforce
         float castLength = velocity.magnitude * Time.deltaTime + skinWidth;
-        Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, new Vector3(0, velocity.y, 0), out RaycastHit yHitInfo, castLength, collisionMask);
+        Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, velocity.normalized, out RaycastHit yHitInfo, castLength, collisionMask);
         if (yHitInfo.collider && yHitInfo.collider.isTrigger == false)
         {
             Vector3 smoothingNormalForce;
@@ -152,7 +168,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     }
     private void XZCollision(int i)
     {
-        Physics.CapsuleCast(colliderTopHalf, colliderBottomHalf + stepHeightDisplacement, attachedCollider.radius, velocity.normalized, out var hitInfo, velocity.magnitude * Time.deltaTime + skinWidth, collisionMask);
+        Physics.CapsuleCast(colliderTopHalf, colliderBottomHalf + stepHeightDisplacement, attachedCollider.radius, new Vector3(velocity.x, 0 , velocity.z), out var hitInfo, velocity.magnitude * Time.deltaTime + skinWidth, collisionMask);
         if (hitInfo.collider && hitInfo.collider.isTrigger == false)
         {
             // Calculate the allowed distance to the collision point
@@ -205,7 +221,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
             Vector3 direction = Vector3.zero;
             foreach (Collider currentCollider in colliders)
             {
-                if (currentCollider == attachedCollider ||currentCollider.isTrigger)
+                if (currentCollider == attachedCollider || currentCollider.isTrigger)
                     continue;
 
                 bool overlap = Physics.ComputePenetration(
@@ -229,16 +245,19 @@ public class PlayerPhysicsSplit : MonoBehaviour
             }
             
             //Move out of geometry and apply normalforce since this collision was missed by collisioncheck
+            //Cannot apply the normalforce created in these if-else statements, when using stepheight - it stops the player from crossing over barriers
+            //because it thinks a collision was simply missed, instead of intentionally ignored.
             if (separation.HasValue)
             {
                 transform.position += separation.Value + separation.Value.normalized * skinWidth;
-                Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, separation.Value.normalized);
-                velocity += normalForce;
+                //Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, separation.Value.normalized);
+                //velocity += normalForce;
             }
             else
             {
-                Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity * minimumPenetrationForPenalty, direction.normalized);
-                velocity += normalForce;
+                //Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity * minimumPenetrationForPenalty, direction.normalized);
+                //velocity += normalForce;
+                //This can also happen if the player intersects only colliders that are not valid, such as attachedCollider or if the collider is a trigger
                 Debug.Log("Separation has no value!");
                 return;
             }
@@ -405,9 +424,11 @@ ApplyAirResistance();
     }
     public void SetFallingGravity()
     {
+        defaultGravity = currentGravity;
         currentGravity = gravityWhenFalling;
+
     }
-    public void SetNormalGravity()
+    public void RestoreGravity()
     {
         currentGravity = defaultGravity;
     }
