@@ -18,6 +18,7 @@ public class SprintState : PlayerState
     public override void EnterState()
     {
         //Debug.Log("Entered Sprint State");
+        player.animator.SetTrigger("Sprint");
         base.EnterState();
         player.inputReference.InputMaster.Sprint.canceled += OnSprintActivate;
     }
@@ -36,6 +37,7 @@ public class SprintState : PlayerState
     }
     public override void ExitState()
     {
+        player.animator.SetTrigger("Walk");
         base.ExitState();
         player.inputReference.InputMaster.Sprint.canceled -= OnSprintActivate;
     }
