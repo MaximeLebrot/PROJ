@@ -11,7 +11,7 @@ public class SprintState : PlayerState
     public override void Initialize()
     {
         base.Initialize();
-        sprint = player.inputReference.InputMaster.Interact;
+        sprint = player.inputReference.InputMaster.Sprint;
         sprint.Enable();    
     }
 
@@ -19,7 +19,7 @@ public class SprintState : PlayerState
     {
         //Debug.Log("Entered Sprint State");
         base.EnterState();
-        player.inputReference.InputMaster.Interact.performed += OnSprintActivate;
+        player.inputReference.InputMaster.Sprint.canceled += OnSprintActivate;
     }
     public override void RunUpdate()
     {
@@ -37,7 +37,7 @@ public class SprintState : PlayerState
     public override void ExitState()
     {
         base.ExitState();
-        player.inputReference.InputMaster.Interact.performed -= OnSprintActivate;
+        player.inputReference.InputMaster.Sprint.canceled -= OnSprintActivate;
     }
     private void SetInput()
     {
@@ -45,7 +45,7 @@ public class SprintState : PlayerState
     }
     private void OnSprintActivate(InputAction.CallbackContext obj)
     {
-        Debug.Log("Exiting Sprint State");
+        //Debug.Log("Exiting Sprint State");
         stateMachine.ChangeState<WalkState>();
     }
 }

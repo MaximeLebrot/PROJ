@@ -10,7 +10,7 @@ public class WalkState : PlayerState
     public override void Initialize()
     {
         base.Initialize();
-        sprint = player.inputReference.InputMaster.Interact;
+        sprint = player.inputReference.InputMaster.Sprint;
         sprint.Enable();
     }
     public override void EnterState()
@@ -18,7 +18,7 @@ public class WalkState : PlayerState
         //Debug.Log("Entered Walk State");
         base.EnterState();
         player.physics.SetGlide(false);
-        player.inputReference.InputMaster.Interact.performed += OnSprintActivate;
+        player.inputReference.InputMaster.Sprint.performed += OnSprintActivate;
     }
     public override void RunUpdate()
     {
@@ -40,7 +40,7 @@ public class WalkState : PlayerState
     public override void ExitState()
     {
         base.ExitState();
-        player.inputReference.InputMaster.Interact.performed -= OnSprintActivate;
+        player.inputReference.InputMaster.Sprint.performed -= OnSprintActivate;
     }
     private void SetInput()
     {
