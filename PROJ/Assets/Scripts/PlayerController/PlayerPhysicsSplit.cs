@@ -223,7 +223,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
             {
                 if (currentCollider == attachedCollider || currentCollider.isTrigger)
                     continue;
-                Debug.Log("Colloiding with :" + currentCollider.gameObject.name);
 
                 bool overlap = Physics.ComputePenetration(
                                             attachedCollider,

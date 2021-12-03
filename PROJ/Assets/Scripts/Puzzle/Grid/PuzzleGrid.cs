@@ -111,7 +111,6 @@ public class PuzzleGrid : MonoBehaviour {
 
     void GenerateGrid()
     {
-        Debug.Log("Generate grid");
         allNodes = new Node[size, size];
         int midIndex = size / 2;
         for (int x = 0; x < size; x++)

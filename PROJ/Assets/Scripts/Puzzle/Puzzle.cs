@@ -317,7 +317,6 @@ public class Puzzle : MonoBehaviour
         if (registered)
             return;
 
-        Debug.Log("Registered listener to reset puzzle event");
         EventHandler<ResetPuzzleEvent>.RegisterListener(OnResetPuzzle);
         registered = true;
     }
