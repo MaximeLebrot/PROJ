@@ -59,13 +59,17 @@ public class PlayerController : MonoBehaviour
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PlayerPhysicsSplit>();
     }
-    
+    private void OnEnable()
+    {
+        force = Vector3.zero;
+    }
     private void FixedUpdate()
     {
+        Debug.Log("Player controller sending " + force.magnitude + " force");
         physics.AddForce(force);
-        //Debug.Log("Player controller sending " + force.magnitude + " force");
         //force = Vector3.zero;
     }
+
     /// <summary>
     /// If FPS dips below 50 (fixed update tick), resetting the value locally - as in, inside FixedUpdate - 
     /// will result in input values that are actually captured by the state machine being discarded. Input must be allowed to accumulate in that case,
@@ -74,6 +78,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void ResetForceVector()
     {
+        Debug.Log("Resetting force vector");
         force = Vector3.zero;
     }
     #region Movement
@@ -87,6 +92,8 @@ public class PlayerController : MonoBehaviour
     {
         input = inp.x * Vector3.right + 
                 inp.y * Vector3.forward;
+
+        Debug.Log("input is :" + input);
 
         //to stop character rotation when input is 0
         if (input.magnitude < inputThreshold)
@@ -111,23 +118,12 @@ public class PlayerController : MonoBehaviour
             input.Normalize();
         }
 
-        CalcDirection(inp);
+        PlayerDirection(inp);
         input *= airControl;
         //Cannot decelerate when airborne
         Accelerate();
     }
-    private void CalcDirection(Vector3 inp)
-    {
-       /* if (dualCameraBehaviour)
-        {
-            if (surfCamera)
-                RotateInDirectionOfMovement(inp);
-            else
-                PlayerDirection(inp);
-        }
-        else*/
-            PlayerDirection(inp);
-    }
+
     private void Decelerate()
     {
         //Debug
