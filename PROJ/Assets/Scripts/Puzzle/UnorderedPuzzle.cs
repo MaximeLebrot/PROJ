@@ -5,7 +5,7 @@ using System;
 
 public class UnorderedPuzzle : Puzzle
 {
-    [SerializeField]private List<string> translationsSorted = new List<string>();
+    [SerializeField]private List<TranslationAndObject> translationsSorted = new List<TranslationAndObject>();
 
     public override bool EvaluateSolution()
     {
@@ -25,28 +25,34 @@ public class UnorderedPuzzle : Puzzle
         base.InitiatePuzzle();
         SortTranslations(translations);
     }
+
+
     private int playerSolutionOffset = 0;
     public override void CheckIfClearedSymbol(string currentSolution)
     {
         //nada
     }
+
     private bool CheckWhichSymbolsAreCleared(string currentSolution)
     {
         string currentSolutionCopy = currentSolution;
 
-        foreach (string translation in translationsSorted)
+        foreach (TranslationAndObject pair in translationsSorted)
         {
-            if (currentSolutionCopy.Contains(translation))
+            if (currentSolutionCopy.Contains(pair.translation))
             {
                 //make symbol glow
+                pair.pObj.Activate(true);
                 //remove it from comparison string
-                currentSolutionCopy = currentSolutionCopy.Remove(currentSolutionCopy.IndexOf(translation), translation.Length);
+                currentSolutionCopy = currentSolutionCopy.Remove(currentSolutionCopy.IndexOf(pair.translation), pair.translation.Length);
                 //Debug.Log(currentSolutionCopy[currentSolutionCopy.IndexOf(translation)]+ ", length : " + translation.Length);
             }
+            else
+                pair.pObj.Activate(false);
         }
-        Debug.Log("currentSolutionCopy length is:" + currentSolutionCopy.Length);
-        Debug.Log("currentSolution length is:" + currentSolution.Length);
-        Debug.Log("solution length is:" + solution.Length);
+
+        
+
         if (currentSolution.Length == solution.Length && currentSolutionCopy.Length == 0)
         {
           
@@ -56,10 +62,13 @@ public class UnorderedPuzzle : Puzzle
         return false;
 
     }
+
+
+
     //called when we initiate a puzzle, probably
-    private void SortTranslations(List<string> listToSort)
+    private void SortTranslations(List<TranslationAndObject> listToSort)
     {
-        listToSort.Sort((a, b) => b.Length.CompareTo(a.Length));
+        listToSort.Sort((a, b) => b.translation.Length.CompareTo(a.translation.Length));
         translationsSorted = listToSort;
     }
 

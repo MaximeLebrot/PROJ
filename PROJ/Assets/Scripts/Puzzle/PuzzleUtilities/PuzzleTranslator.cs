@@ -9,7 +9,7 @@ public class PuzzleTranslator
 
     
     private string solution;
-    protected List<string> translations = new List<string>();
+    protected List<TranslationAndObject> translations = new List<TranslationAndObject>();
 
    
 
@@ -20,22 +20,25 @@ public class PuzzleTranslator
 
         //bygg först en array med alla symbolers översättningar. så streck upp blir bara en 8 t.ex
         foreach(PuzzleObject obj in objects)
-        {          
-            translations.Add(obj.GetTranslation());
+        {
+            TranslationAndObject newPair = new TranslationAndObject();
+            newPair.translation = obj.GetTranslation();
+            newPair.pObj = obj;
+            translations.Add(newPair);
         }
 
         //gå igenom array och översätt med switchcase t.ex. logiska operatorer blir något annat här t.ex. case R så roteras den
         for (int i = 0; i < translations.Count; i++)
         {
             string newString = "";
-            string oldString = translations[i];
+            string oldString = translations[i].translation;
             StringBuilder sb = new StringBuilder();
 
-            switch (translations[i][0])
+            switch (translations[i].translation[0])
             {
                 case 'Q':
                     newString = PuzzleHelper.SkipFirstChar(oldString);
-                    translations[i] = PuzzleHelper.RotateSymbolsTwoStep(newString);
+                    translations[i].translation = PuzzleHelper.RotateSymbolsTwoStep(newString);
                     break;
 
                 case 'W':
@@ -44,7 +47,7 @@ public class PuzzleTranslator
                     {
                         newString = PuzzleHelper.RotateSymbolsTwoStep(newString);
                     }
-                    translations[i] = newString;
+                    translations[i].translation = newString;
                     break;
 
                 case 'E':
@@ -53,27 +56,30 @@ public class PuzzleTranslator
                     {
                         newString = PuzzleHelper.RotateSymbolsTwoStep(newString);
                     }
-                    translations[i] = newString;
+                    translations[i].translation = newString;
                     break;
-
+                    /*
                 case 'R':
                     newString = PuzzleHelper.SkipFirstChar(oldString);
-                    translations[i] = newString;
+                    translations[i].translation = newString;
+                    TranslationAndObject newPair = new TranslationAndObject();
+                    newPair.translation = obj.GetTranslation();
+                    newPair.pObj = translations[i].pObj;
                     translations.Insert(i + 1, newString);
                     i++;
                     break;
-
+                    */
                 case 'X':
                     translations.RemoveAt(i);
                     break;
 
                 case 'M':
                     newString = PuzzleHelper.SkipFirstChar(oldString);
-                    translations[i] = PuzzleHelper.MirrorSymbols(newString);
+                    translations[i].translation = PuzzleHelper.MirrorSymbols(newString);
                     break;
                 case 'D':
                     newString = PuzzleHelper.SkipFirstChar(oldString);
-                    translations[i] = PuzzleHelper.DoubleStrokes(newString);
+                    translations[i].translation = PuzzleHelper.DoubleStrokes(newString);
                     break;
                     
                 default:
@@ -113,9 +119,9 @@ public class PuzzleTranslator
         }
         */
 
-        foreach (string s in translations)
+        foreach (TranslationAndObject to in translations)
         {
-            solution += s;
+            solution += to.translation;
         }
 
         return solution;
@@ -137,7 +143,7 @@ public class PuzzleTranslator
         #endregion
     }
 
-    internal List<string> GetTranslations()
+    internal List<TranslationAndObject> GetTranslations()
     {
         return translations;
     }

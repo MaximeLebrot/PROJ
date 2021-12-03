@@ -96,7 +96,7 @@ public class Hazard : MonoBehaviour
                 {
                     
                     //SPAWN SHIT HÄR
-                    GameObject instance = Instantiate(hazardObj, grid.allNodes[i, j].transform.position, Quaternion.identity, transform);
+                    GameObject instance = Instantiate(hazardObj, grid.allNodes[i, j].transform.position, new Quaternion(0,0,0,0), transform);
                     hazardObjects.Add(instance.GetComponentInChildren<HazardObject>());
                 }
             }

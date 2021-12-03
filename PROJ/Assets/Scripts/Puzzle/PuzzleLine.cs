@@ -8,7 +8,6 @@ public class PuzzleLine : MonoBehaviour
     [SerializeField] private VisualEffect lineParticle;
     [SerializeField] private Animator anim;
 
-
     public void SetPosition(Vector3 pos, Quaternion puzzleRot)
     {
         pos = puzzleRot * pos;
