@@ -14,7 +14,7 @@ public class Puzzle : MonoBehaviour
     
     protected PuzzleInstance currentPuzzleInstance;
     protected PuzzleTranslator translator = new PuzzleTranslator();
-    protected List<string> translations;
+    protected List<TranslationAndObject> translations;
 
     public PuzzleGrid grid;
 
@@ -22,6 +22,7 @@ public class Puzzle : MonoBehaviour
  
     //should NOT be public, but ModularHintSystem currently relies on this List
     public List<PuzzleObject> placedSymbols = new List<PuzzleObject>();
+    [SerializeField] private List<TranslationAndObject> translationsSorted = new List<TranslationAndObject>();
 
     //track progress
     private PuzzleCounter puzzleCounter;
@@ -219,46 +220,52 @@ public class Puzzle : MonoBehaviour
 
     private void ResetClearanceVariables()
     {
-        solutionOffset = 0;
-        translationIndex = 0;
-        clearedSymbols.Clear();
+
     }
 
-    private int solutionOffset = 0;
-    private int translationIndex = 0;
-    List<bool> clearedSymbols = new List<bool>();
+    
+    protected List<bool> clearedSymbols = new List<bool>();
 
     public virtual void CheckIfClearedSymbol(string currentSolution) //currentSolution = what the player has drawn
     {
+        Debug.Log("CHECK");
 
+        int solutionOffset = 0;
+
+        //Checks for empty solution
+        if(currentSolution.Length > 0 == false)
+        {
+            foreach(var pair in translations)
+            {
+                pair.pObj.Activate(false);
+            }
+        }
 
         //goes through each index of strings in translations
-        for (int i = translationIndex; i < translations.Count; i++)
+        for (int i = 0; i < translations.Count; i++)
         {
-            if(IsEqualRange(solutionOffset, translations[i].Length, currentSolution))
+
+            if (IsEqualRange(solutionOffset, translations[i].translation.Length, currentSolution, i))
             {
-                translationIndex++;
-                solutionOffset += translations[i].Length;
-                clearedSymbols.Add(true);
+                solutionOffset += translations[i].translation.Length;
+
+                translations[i].pObj.Activate(true);
             }
             else
             {
-                break;
+                
+                translations[i].pObj.Activate(false);
             }
 
         }
 
-        //Debug.Log(clearedSymbols.Count + " BOOLS");
 
-        for (int i = 0; i < clearedSymbols.Count; i++)
-        {
-            if(placedSymbols[i].Active == false)
-                placedSymbols[i].Activate();
-        }
+        //ApplyClearedSymbols();
 
-     }
+    }
 
-    private bool IsEqualRange(int offset, int length, string currentSolution)
+
+    private bool IsEqualRange(int offset, int length, string currentSolution, int translationIndex)
     {
         //Debug.Log(length);
 
@@ -268,10 +275,10 @@ public class Puzzle : MonoBehaviour
             return false;
         }
 
-        Debug.Log("input: " + currentSolution.Substring(offset, length) + " translation: " + translations[translationIndex]);
+        Debug.Log("input: " + currentSolution.Substring(offset, length) + " translation: " + translations[translationIndex].translation);
         //Debug.Log("equal = " + currentSolution.Substring(offset, length).Equals(translations[translationIndex]));
 
-        return currentSolution.Substring(offset, length).Equals(translations[translationIndex]);
+        return currentSolution.Substring(offset, length).Equals(translations[translationIndex].translation);
         
     }
 
@@ -327,7 +334,18 @@ public class Puzzle : MonoBehaviour
         
     }
 
-     
+    protected void SortTranslations(List<TranslationAndObject> listToSort)
+    {
+        listToSort.Sort((a, b) => b.translation.Length.CompareTo(a.translation.Length));
+        translationsSorted = listToSort;
+    }
+
+}
+
+public class TranslationAndObject
+{
+    public string translation;
+    public PuzzleObject pObj;
 }
 
 
