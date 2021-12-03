@@ -11,10 +11,6 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     public PuzzlePlayerController puzzleController { get; private set; }
     public Animator animator { get; private set; }
 
-
-    //Particles
-    public VisualEffect glideParticle;
-
     //StateMachine
     private StateMachine stateMachine;
     [SerializeField] private PlayerState[] states;
@@ -35,12 +31,10 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     private void OnEnable()
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
-        EventHandler<ExitPuzzleEvent>.RegisterListener(ExitPuzzle);
     }
     private void OnDisable()
     {
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
-        EventHandler<ExitPuzzleEvent>.UnregisterListener(ExitPuzzle);
     }
     private void StartPuzzle(StartPuzzleEvent spe)
     {
@@ -49,10 +43,6 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         stateMachine.ChangeState<PuzzleState>();
     }
 
-    public void ExitPuzzle(ExitPuzzleEvent eve)
-    {
-        stateMachine.ChangeState<WalkState>();
-    }
 
     public void ChangeStateToOSPuzzle(StartPuzzleEvent eve) => stateMachine.ChangeState<OSPuzzleState>();
 

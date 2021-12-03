@@ -41,7 +41,7 @@ public class PuzzleGrid : MonoBehaviour {
     {
         //Debug.Log(solution);
         if (solution.Length > 0)
-            return solution[0] == '-' ? PuzzleHelper.SkipFirstChar(solution) : solution;
+            return solution;
         else
             return "";
     }
@@ -58,14 +58,6 @@ public class PuzzleGrid : MonoBehaviour {
         }
     }
 
-    private char SnapDirection(float angle)
-    {
-        float distance;
-        char c = '0';
-
-
-        throw new NotImplementedException();
-    }
 
     //Setup puzzle from Puzzle
     public void StartGrid()
@@ -111,7 +103,6 @@ public class PuzzleGrid : MonoBehaviour {
 
     void GenerateGrid()
     {
-        Debug.Log("Generate grid");
         allNodes = new Node[size, size];
         int midIndex = size / 2;
         for (int x = 0; x < size; x++)
@@ -238,7 +229,7 @@ public class PuzzleGrid : MonoBehaviour {
         #endregion
 
         EventHandler<UpdateHazardEvent>.FireEvent(new UpdateHazardEvent(false));
-        Debug.Log("Update hazard event sent");
+
 
     }
 
@@ -273,7 +264,7 @@ public class PuzzleGrid : MonoBehaviour {
 
     private void EraseLine(Node node)
     {
-
+  
         //Debug.Log("ERASE");
         //Checks if this was the last line that was drawn, if so delete that line (eraser)
         LineObject oldLine = lineRenderers.Pop();
@@ -314,15 +305,11 @@ public class PuzzleGrid : MonoBehaviour {
 
     private bool SendToPuzzleForEvaluation()
     {
-        if (solution.Length > 0)
+        masterPuzzle.CheckIfClearedSymbol(solution);
+        if (masterPuzzle.EvaluateSolution())
         {
-            masterPuzzle.CheckIfClearedSymbol(solution[0] == '-' ? PuzzleHelper.SkipFirstChar(solution) : solution);
-            if (masterPuzzle.EvaluateSolution())
-            {
-                DestroyCurrentLine();
-                return true;
-            }
-                
+            DestroyCurrentLine();
+            return true;
         }
 
         return false;
