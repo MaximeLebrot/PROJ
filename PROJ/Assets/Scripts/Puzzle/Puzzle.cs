@@ -190,7 +190,6 @@ public class Puzzle : MonoBehaviour
         return false;
     }
 
-
     private void OnTriggerExit(Collider other)
     {
         PuzzleInfo info = new PuzzleInfo(currentPuzzleInstance.GetPuzzleID());
@@ -198,8 +197,6 @@ public class Puzzle : MonoBehaviour
         GetComponentInChildren<PuzzleStarter>().ResetStarter();
 
     }
-
-
 
     public void StartPuzzle(StartPuzzleEvent eve)
     {
@@ -327,7 +324,6 @@ public class Puzzle : MonoBehaviour
         if (registered)
             return;
 
-        Debug.Log("Registered listener to reset puzzle event");
         EventHandler<ResetPuzzleEvent>.RegisterListener(OnResetPuzzle);
         registered = true;
     }

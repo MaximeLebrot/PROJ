@@ -6,21 +6,38 @@ public class FlightAnimationScript : MonoBehaviour
 {
     private Animator jumpAnimator;
     private MetaPlayerController mpc;
+    private new Transform transform;
+
+    private Vector3 adjustedPosition = new Vector3();
+    private Vector2 mpcXZPos, XZPos;
+    public bool moveToCenter;
+    private float adjustedYValue;
+    private float colSizeOffset;
+    [SerializeField] private string triggerValue;
+
     private void Awake()
     {
+        colSizeOffset = GetComponent<SphereCollider>().radius;
+        transform = GetComponent<Transform>();
         jumpAnimator = GetComponent<Animator>();
+        XZPos = new Vector2(transform.position.x, transform.position.z);
     }
+
     void OnTriggerEnter(Collider col)
     {
         if (col.CompareTag("Player"))
         {
-            jumpAnimator.SetTrigger("First");
+            jumpAnimator.SetTrigger(triggerValue);
             mpc = col.GetComponent<MetaPlayerController>();
             mpc.physics.enabled = false;
-            mpc.transform.parent = this.transform;
+            mpc.transform.parent = transform;
+            adjustedYValue = mpc.transform.localPosition.y;
             mpc.enabled = false;
+            moveToCenter = true;
+            mpcXZPos = new Vector2(mpc.transform.position.x, mpc.transform.position.z);
         }
     }
+
     public void ActivateScripts()
     {
         GetComponent<SphereCollider>().enabled = false;
@@ -29,7 +46,26 @@ public class FlightAnimationScript : MonoBehaviour
         mpc.enabled = true;
     }
 
-    //Maybe we also want to destroy this game object when we're done with it, OR make it part of some type of object pooling. Just leaving it in the scene serves no purpose.
+    private void Update()
+    {
+        if(moveToCenter)
+        {
+            mpcXZPos.x = mpc.transform.position.x;
+            mpcXZPos.y = mpc.transform.position.z;
+            XZPos.x = transform.position.x;
+            XZPos.y = transform.position.z;
 
+            if (Vector2.Distance(XZPos, mpcXZPos) < 0.05f)
+            {
+                Debug.Log("Detach");
+                moveToCenter = false;
+            }
+
+            adjustedPosition = transform.position;
+            adjustedPosition.y += adjustedYValue;
+            mpc.transform.position = Vector3.MoveTowards(mpc.transform.position, adjustedPosition, Time.deltaTime * colSizeOffset);
+        }
+    }
+    //Maybe we also want to destroy this game object when we're done with it, OR make it part of some type of object pooling. Just leaving it in the scene serves no purpose.
 }
 
