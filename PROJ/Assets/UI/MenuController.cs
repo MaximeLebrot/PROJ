@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -33,7 +32,7 @@ public class MenuController : MonoBehaviour {
         
         animator = GetComponent<Animator>();
 
-        global::InputController.SuspendInputEvent += SuspendInputEvent;
+        InputController.SuspendInputEvent += SuspendInputEvent;
         
         onAnyKeyHash = Animator.StringToHash("AnyKeyPressed");
         showSettingsMenu = Animator.StringToHash("ShowSettingsMenu");
@@ -69,11 +68,10 @@ public class MenuController : MonoBehaviour {
         depth.Push(pageHashes[pageName]);
     }
 
-    private async void GoBack(InputAction.CallbackContext e) {
+    private void GoBack(InputAction.CallbackContext e) {
         
         if (depth.Count < 1 || inputSuspended)
             return;
-        
         
         int currentLevel = depth.Pop();
         
@@ -81,12 +79,9 @@ public class MenuController : MonoBehaviour {
     }
     
     public void OnActivatePageEvent(string name) => OnActivatePage?.Invoke(name.GetHashCode());
-
-    public void SuspendInput(int suspend) => inputSuspended = suspend == 1;
-
+    
     private void SuspendInputEvent(bool suspend) {
         inputSuspended = suspend;
         graphicRaycaster.enabled = !inputSuspended;
-        Debug.Log($"Suspended: {inputSuspended}");
     }
 }

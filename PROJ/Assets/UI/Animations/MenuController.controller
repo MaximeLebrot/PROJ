@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 984e6b720d5a87d43bdec8839e03a6eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowInputOnEnter: 0
-  allowInputOnExit: 0
+  onStateEnter: 1
+  onStateExit: 0
+  suspendInputOnEnter: 1
+  suspendInputOnExit: 0
 --- !u!1101 &-9073292916164456166
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -82,8 +84,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 984e6b720d5a87d43bdec8839e03a6eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowInputOnEnter: 0
-  allowInputOnExit: 1
+  onStateEnter: 1
+  onStateExit: 1
+  suspendInputOnEnter: 1
+  suspendInputOnExit: 0
 --- !u!1102 &-8453850611907816264
 AnimatorState:
   serializedVersion: 6
@@ -124,7 +128,8 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -962464228422722143}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 911385195920624636}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 0
@@ -276,8 +281,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 984e6b720d5a87d43bdec8839e03a6eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowInputOnEnter: 0
-  allowInputOnExit: 0
+  onStateEnter: 1
+  onStateExit: 0
+  suspendInputOnEnter: 1
+  suspendInputOnExit: 0
 --- !u!1101 &-6111450533975013954
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -897,8 +904,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 984e6b720d5a87d43bdec8839e03a6eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowInputOnEnter: 0
-  allowInputOnExit: 0
+  onStateEnter: 1
+  onStateExit: 0
+  suspendInputOnEnter: 1
+  suspendInputOnExit: 0
 --- !u!114 &-1443911361865407462
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -911,8 +920,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 984e6b720d5a87d43bdec8839e03a6eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowInputOnEnter: 0
-  allowInputOnExit: 0
+  onStateEnter: 1
+  onStateExit: 0
+  suspendInputOnEnter: 1
+  suspendInputOnExit: 0
 --- !u!1101 &-962464228422722143
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -1000,8 +1011,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 984e6b720d5a87d43bdec8839e03a6eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowInputOnEnter: 0
-  allowInputOnExit: 0
+  onStateEnter: 0
+  onStateExit: 1
+  suspendInputOnEnter: 0
+  suspendInputOnExit: 0
 --- !u!114 &-386711529067576992
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1014,8 +1027,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 984e6b720d5a87d43bdec8839e03a6eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowInputOnEnter: 0
-  allowInputOnExit: 0
+  onStateEnter: 1
+  onStateExit: 0
+  suspendInputOnEnter: 1
+  suspendInputOnExit: 0
 --- !u!1101 &-164832457584480453
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -1215,6 +1230,22 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &911385195920624636
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 984e6b720d5a87d43bdec8839e03a6eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onStateEnter: 1
+  onStateExit: 0
+  suspendInputOnEnter: 1
+  suspendInputOnExit: 0
 --- !u!1102 &1020357633636385614
 AnimatorState:
   serializedVersion: 6
@@ -1575,8 +1606,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 984e6b720d5a87d43bdec8839e03a6eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowInputOnEnter: 0
-  allowInputOnExit: 1
+  onStateEnter: 0
+  onStateExit: 1
+  suspendInputOnEnter: 0
+  suspendInputOnExit: 0
 --- !u!1101 &4775075187369299298
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -1689,8 +1722,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 984e6b720d5a87d43bdec8839e03a6eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowInputOnEnter: 0
-  allowInputOnExit: 1
+  onStateEnter: 0
+  onStateExit: 1
+  suspendInputOnEnter: 0
+  suspendInputOnExit: 0
 --- !u!1101 &5963808986600975972
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -1761,8 +1796,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 984e6b720d5a87d43bdec8839e03a6eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowInputOnEnter: 0
-  allowInputOnExit: 0
+  onStateEnter: 1
+  onStateExit: 0
+  suspendInputOnEnter: 1
+  suspendInputOnExit: 1
 --- !u!1101 &6593543745980382418
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -1824,8 +1861,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 984e6b720d5a87d43bdec8839e03a6eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowInputOnEnter: 0
-  allowInputOnExit: 0
+  onStateEnter: 0
+  onStateExit: 1
+  suspendInputOnEnter: 0
+  suspendInputOnExit: 0
 --- !u!1102 &7066479012921836887
 AnimatorState:
   serializedVersion: 6
@@ -1936,5 +1975,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 984e6b720d5a87d43bdec8839e03a6eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowInputOnEnter: 0
-  allowInputOnExit: 1
+  onStateEnter: 0
+  onStateExit: 1
+  suspendInputOnEnter: 0
+  suspendInputOnExit: 0
