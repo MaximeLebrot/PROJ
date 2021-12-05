@@ -246,6 +246,12 @@ public static class PuzzleHelper
         {
             switch (c)
             {
+                case '8':
+                rotatedString += '8';
+                    break;
+                case '2':
+                    rotatedString += '2';
+                    break;
                 case '6':
                     rotatedString += '4';
                     break;
