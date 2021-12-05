@@ -131,18 +131,22 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
         //some sort of force inverse to the distance and which the raycast hits the ground
         //Do we actually want to apply more normalforce if the character is intersecting another collider? Maybe not... in that case, this code is basically fine, in principle
+        Vector3 yNormalForce;
         if (hit.collider && hit.collider.isTrigger == false)
         {
             //Debug.Log("Raycast hit at height: " + hit.point.y);
             float partDistanceHit = hit.distance / castLength; // => 0.75 / 1 = 0.75 1 + (1 - hit.distance / castLength)
-            Vector3 yNormalForce = PhysicsFunctions.NormalForce3D(velocity /** (1 + (1 - partDistanceHit))*/, hit.normal)
+            yNormalForce = PhysicsFunctions.NormalForce3D(velocity /** (1 + (1 - partDistanceHit))*/, hit.normal)
                                         + (1 - partDistanceHit
-                                        + GlideHeight)* Vector3.up;
-
-            velocity += yNormalForce;
-            ApplyFriction(yNormalForce);
-                //new Vector3(0, yNormalForce.y, 0);
+                                        + GlideHeight)* Vector3.up;            
         }
+        else
+        {
+            Vector3 yVelocity = new Vector3(0, velocity.y, 0);
+            yNormalForce = PhysicsFunctions.NormalForce(yVelocity, Vector3.down);
+        }
+        velocity += yNormalForce;
+        ApplyFriction(yNormalForce);
     }
     private void YCollision()
     {
