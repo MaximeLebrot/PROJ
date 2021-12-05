@@ -10,11 +10,16 @@ public class InGameMenu : MonoBehaviour {
     public SettingsMenu SettingsMenu => settingsMenu;
 
     private void Awake() {
+        // AJJA BAJJA
+        panel = GameObject.Find("InGameMenuPanel");
         panel.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
-
     }
-
+    private void OnDestroy()
+    {
+        inputReference.InputMaster.Menu.performed -= CloseMenu;
+        inputReference.InputMaster.Menu.performed -= OpenMenu;
+    }
     private void Start() {
         inputReference.InputMaster.Menu.performed += OpenMenu;
     }
