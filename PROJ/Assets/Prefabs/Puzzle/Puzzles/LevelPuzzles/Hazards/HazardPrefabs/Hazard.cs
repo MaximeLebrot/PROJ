@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Hazard : MonoBehaviour
 {
-    [SerializeField] private GameObject hazardObj;
+    [SerializeField] private GameObject staticHazardObject;
+    [SerializeField] private GameObject movingHazardObject;
     [SerializeField] private PuzzleGrid grid;
     [SerializeField] private Vector3 moveDirection;
     [SerializeField] private bool movingHazard;
@@ -88,15 +89,12 @@ public class Hazard : MonoBehaviour
 
         for (int i = 0; i < grid.Size; i++)
         {
-
-
             for (int j = 0; j < grid.Size; j++)
             {
                 if(customPattern[j + i * grid.Size] == true)
                 {
-                    
-                    //SPAWN SHIT HÄR
-                    GameObject instance = Instantiate(hazardObj, grid.allNodes[i, j].transform.position, new Quaternion(0,0,0,0), transform);
+                    GameObject hazardReference = movingHazard ? movingHazardObject : staticHazardObject;
+                    GameObject instance = Instantiate(hazardReference, grid.allNodes[i, j].transform.position, new Quaternion(0,0,0,0), transform);
                     hazardObjects.Add(instance.GetComponentInChildren<HazardObject>());
                 }
             }

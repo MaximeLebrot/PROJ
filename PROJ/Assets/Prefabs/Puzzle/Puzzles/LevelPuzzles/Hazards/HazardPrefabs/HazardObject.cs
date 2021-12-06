@@ -5,22 +5,15 @@ using UnityEngine;
 
 public class HazardObject : MonoBehaviour
 {
-
-
-
-
-    //private Animator animator;
-    public bool movingBackwards;
-
+   //private Animator animator;
     public Vector3 StartPos { get; set; }
     public int PuzzleID { get; internal set; }
 
     private void Awake()
     {
-
         //animator = GetComponent<Animator>();    
     }
-    
+    public bool movingBackwards;
     public void ResetHazardObject()
     {
         movingBackwards = false;
@@ -29,7 +22,7 @@ public class HazardObject : MonoBehaviour
 
     public void UpdateHazard(float hazardOffset, Vector3 moveDirection)
     {
-        if(movingBackwards == false)
+        if (movingBackwards == false)
             transform.parent.position += hazardOffset * moveDirection;
         else
             transform.parent.position -= hazardOffset * moveDirection;
@@ -41,16 +34,6 @@ public class HazardObject : MonoBehaviour
             transform.parent.position += hazardOffset * moveDirection;
         else
             transform.parent.position -= hazardOffset * moveDirection;
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        EventHandler<ResetPuzzleEvent>.FireEvent(new ResetPuzzleEvent(new PuzzleInfo(PuzzleID)));
-    }
-
-    public void TurnAround()
-    {
-        //Debug.Log("TURN AROUND");
-        movingBackwards = !movingBackwards;
     }
 
     public void CheckHazardBounds(int boundsMax, Vector3 moveDirection, float hazardOffset)
@@ -77,6 +60,15 @@ public class HazardObject : MonoBehaviour
             TurnAround();
         }
 
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        EventHandler<ResetPuzzleEvent>.FireEvent(new ResetPuzzleEvent(new PuzzleInfo(PuzzleID)));
+    }
+    private void TurnAround()
+    {
+        //Debug.Log("TURN AROUND");
+        movingBackwards = !movingBackwards;
     }
 
 }
