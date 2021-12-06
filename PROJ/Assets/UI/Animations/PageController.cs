@@ -16,9 +16,11 @@ public class PageController : MonoBehaviour {
             GameObject child = transform.GetChild(i).gameObject;
             
             pageObjects.Add(child.name.GetHashCode(), child);
+            
         }
         
         MenuController.OnActivatePage += ActivatePage;
+
     }
 
     private void ActivatePage(int ID) {

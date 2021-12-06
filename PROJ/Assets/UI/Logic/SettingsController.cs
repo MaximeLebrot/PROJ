@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 
 public class SettingsController : MonoBehaviour {
@@ -10,32 +7,29 @@ public class SettingsController : MonoBehaviour {
     [SerializeField] private SettingsData userSettings;
 
     [SerializeField] private List<GameObject> settingObjects;
+
+    private Dictionary<int, UIMenuItem> menuOptions;
     
-    private List<UIMenuItem> menuItems;
+    private void Start() {
+        menuOptions = new Dictionary<int, UIMenuItem>();
+        
+        foreach (GameObject settingsObject in settingObjects) {
 
-    private void Awake() {
+            if(settingsObject.activeInHierarchy == false)
+                    settingsObject.SetActive(true);
 
-        try {
-            foreach (GameObject settingsObject in settingObjects) {
-                settingsObject.SetActive(true);
-                menuItems.AddRange(settingsObject.GetComponentsInChildren<UIMenuItem>());
-                settingsObject.SetActive(false);
-            }
+            List<UIMenuItem> menuItems = settingsObject.GetComponent<UIMenuManager>().GetMenuItems();
+
+            foreach (UIMenuItem item in menuItems) 
+                menuOptions.Add(item.ID, item);
             
-            foreach(UIMenuItem menuItem in menuItems)
-                Debug.Log($"{menuItem.name} is {menuItem.GetValue()}");
-        }
-        catch (NullReferenceException e) {
-            Debug.Log(e.StackTrace);
+            settingsObject.SetActive(false);
         }
         
-        
-        
-       
-        
+        LoadSavedSettings();
     }
     
-    private void OnEnable() => LoadSavedSettings();
+ //   private void OnEnable() => 
 
     //Called from button in settings menu
     public void RestoreDefaultValues(string json) => SetValues(JsonUtility.FromJson<SettingsData>(json));
@@ -67,14 +61,14 @@ public class SettingsController : MonoBehaviour {
         SetValues(savedSettings);
     }
     
-    private void UpdateUserSettings()
-    {
-        //Audio
-         /*userSettings.musicVolume = musicSlider.value;
-        userSettings.voiceVolume = voiceSlider.value;
-        userSettings.soundEffectsVolume = sfxSlider.value;
-        userSettings.mute = mute.isOn;
-        userSettings.highContrastMode = highContrastMode.isOn;
+    private void UpdateUserSettings() {
+
+
+        userSettings.musicVolume = GetMenuItem("Music").GetValue();
+        userSettings.voiceVolume = GetMenuItem("Voice").GetValue();
+        userSettings.soundEffectsVolume = GetMenuItem("SFX").GetValue();
+        userSettings.mute = GetMenuItem("Mute").GetValue();
+        userSettings.highContrastMode = GetMenuItem("Use_HighContrastMode").GetValue();
 
         //Ease of use
         //userSettings.fontSize = (int)fontSize.value;
@@ -83,11 +77,11 @@ public class SettingsController : MonoBehaviour {
         //userSettings.blindMode = blindMode.isOn;
 
         //Display                    
-        userSettings.fieldOfView = fieldOfView.value;
-        userSettings.brightness = brightness.value;
+        userSettings.fieldOfView = GetMenuItem("Field of View").GetValue();
+        userSettings.brightness = GetMenuItem("Brightness").GetValue();
         //quality = settings.Quality;
         //resolution  = settings.
-        userSettings.fullscreen = fullscreen.isOn;*/
+        userSettings.fullscreen = GetMenuItem("Fullscreen").GetValue();
     }
     
     private void SetValues(SettingsData settings)
@@ -109,5 +103,7 @@ public class SettingsController : MonoBehaviour {
         //resolution  = settings.
         fullscreen.isOn = settings.fullscreen;*/
     }
-    
+
+    //Might want to store the hashed values instead of hashing them at runtime.
+    private UIMenuItem GetMenuItem(string menuName) => menuOptions[menuName.GetHashCode()];
 }

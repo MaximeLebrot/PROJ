@@ -41,7 +41,7 @@ public class MenuController : MonoBehaviour {
         showAudioHash = Animator.StringToHash("ShowAudio");    
         showAccessibilityHash = Animator.StringToHash("ShowAccessibility");
         
-        pageHashes.Add("SettingsMenu", showSettingsMenu);
+        pageHashes.Add("MenuButtons", showSettingsMenu);
         pageHashes.Add("General", showGeneralHash);
         pageHashes.Add("Video", showVideoHash);
         pageHashes.Add("Audio", showAudioHash);
