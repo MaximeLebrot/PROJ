@@ -35,6 +35,8 @@ public class Puzzle : MonoBehaviour
     public float NextPuzzleTimer { get; } = 2.5f;
     public void SetPlayer(Transform t) { player = t; grid.Player = player; }
 
+    private FMOD.Studio.EventInstance PuzzleSolved;
+
     void Awake()
     {
         symbolPlacer = GetComponent<SymbolPlacer>();

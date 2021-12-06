@@ -8,14 +8,16 @@ public class HazardObject : MonoBehaviour
    //private Animator animator;
     public Vector3 StartPos { get; set; }
     public int PuzzleID { get; internal set; }
-
+    public bool movingBackwards;
+    public float moveTime = 1.2f;
     private void Awake()
     {
         //animator = GetComponent<Animator>();    
     }
-    public bool movingBackwards;
+
     public void ResetHazardObject()
     {
+        StopAllCoroutines();
         movingBackwards = false;
         transform.parent.position = StartPos;
     }
@@ -23,19 +25,34 @@ public class HazardObject : MonoBehaviour
     public void UpdateHazard(float hazardOffset, Vector3 moveDirection)
     {
         if (movingBackwards == false)
-            transform.parent.position += hazardOffset * moveDirection;
+            MoveHazard(transform.parent.position + hazardOffset * moveDirection);
         else
-            transform.parent.position -= hazardOffset * moveDirection;
+            MoveHazard(transform.parent.position - hazardOffset * moveDirection);
     }
 
     public void ReverseHazard(float hazardOffset, Vector3 moveDirection)
     {
         if (movingBackwards == true)
-            transform.parent.position += hazardOffset * moveDirection;
+            MoveHazard(transform.parent.position + hazardOffset * moveDirection);
         else
-            transform.parent.position -= hazardOffset * moveDirection;
+            MoveHazard(transform.parent.position - hazardOffset * moveDirection);
+    }
+    private void MoveHazard(Vector3 targetPosition)
+    {
+        StopAllCoroutines();
+        StartCoroutine(ExecuteMove(targetPosition));
     }
 
+    private IEnumerator ExecuteMove(Vector3 targetPosition)
+    {
+        float time = 0f;
+        while (time < moveTime)
+        {
+            transform.parent.position = Vector3.Lerp(transform.parent.position, targetPosition, time * (1 / moveTime));
+            time += Time.deltaTime;
+            yield return null;
+        }
+    }
     public void CheckHazardBounds(int boundsMax, Vector3 moveDirection, float hazardOffset)
     {
         //Check if this reached the bounds. if so: movingBackwards = true
