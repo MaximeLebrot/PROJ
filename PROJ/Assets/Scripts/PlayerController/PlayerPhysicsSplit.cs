@@ -11,26 +11,25 @@ public class PlayerPhysicsSplit : MonoBehaviour
     public Vector3 velocity;
     public RaycastHit groundHitInfo { get; private set; }
 
-    [Header("Values")]
-
+    [Header("Collision")]
     [SerializeField] protected float skinWidth = 0.05f;
-    [SerializeField] private float inputThreshold = 0.1f;
-    [SerializeField] private float currentGravity;
     [SerializeField] private float minimumPenetrationForPenalty = 0.01f;
     [SerializeField] private LayerMask collisionMask;
-    [SerializeField] private float gravityWhenFalling = 10f;
+    [SerializeField] private float stepHeight = 0.2f;
+
+    [Header("Movement Restraints")]
     [SerializeField] private float moveThreshold = 0.05f;
-    [SerializeField] private float stepHeight = 0.2f;   
+    [SerializeField] private float inputThreshold = 0.1f;
+    [SerializeField] private float gravityWhenFalling = 10f;
+    [SerializeField] private float currentGravity;
 
     //Properties
     public float GlideHeight { get; private set; }
-    public float SurfThreshold { get => surfThreshold; }
+    private float defaultGravity = 9.81f;
 
-    public float velocityMagnitude;
-
-    [Header("Values set by States")]
+    #region Values from States
+    //Values set from States
     private float maxSpeed = 12f;
-    [SerializeField]private float defaultGravity = 9.81f;
 
     private float smoothingMaxDistance = 3f;
     private int powerOf = 2;
@@ -39,7 +38,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     private float staticFrictionCoefficient = 0.5f;
     private float kineticFrictionCoefficient = 0.35f;
     private float airResistance = 0.35f;
-
+    #endregion
     //Collision
     private CapsuleCollider attachedCollider;
     private Vector3 colliderTopHalf, colliderBottomHalf;
@@ -76,10 +75,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
         AddGravity();
         CheckForCollisions(0);
         ClampSpeed();
-        
-        //Debug
-        Debug.DrawLine(transform.position, transform.position + velocity, Color.red);
-        velocityMagnitude = velocity.magnitude;
     }
 
     public void SetValues(ControllerValues values)
@@ -147,28 +142,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
         }
         velocity += yNormalForce;
         ApplyFriction(yNormalForce);
-    }
-    private void YCollision()
-    {
-        //Y-axis normalforce
-        float castLength = velocity.magnitude * Time.deltaTime + skinWidth;
-        Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, velocity.normalized, out RaycastHit yHitInfo, castLength, collisionMask);
-        if (yHitInfo.collider && yHitInfo.collider.isTrigger == false)
-        {
-            Vector3 smoothingNormalForce;
-            if (yHitInfo.distance < castLength)
-            {
-                smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, yHitInfo.normal)
-                                        + GlideHeight * Vector3.up; ;
-            }
-            else
-            {
-                smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, yHitInfo.normal)
-                                        + GlideHeight * Vector3.up;
-            }
-
-            velocity += new Vector3(0, smoothingNormalForce.y, 0);
-        }
     }
     private void XZCollision(int i)
     {
