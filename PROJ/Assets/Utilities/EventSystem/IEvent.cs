@@ -132,7 +132,11 @@ public class UpdateHazardEvent : IEvent
     public bool reverse;
     public UpdateHazardEvent (bool isReverse) { reverse = isReverse; }
 }
-public class ResetHazardEvent : IEvent
-{
+public class ResetHazardEvent : IEvent{}
 
+public class LoadSceneEvent : IEvent 
+{
+    public string sceneToLoad;
+
+    public LoadSceneEvent(string scene) { sceneToLoad = scene; }
 }
