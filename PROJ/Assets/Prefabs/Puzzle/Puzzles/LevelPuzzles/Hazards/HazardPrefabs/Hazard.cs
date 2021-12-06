@@ -83,9 +83,7 @@ public class Hazard : MonoBehaviour
 
     private void HazardSetup()
     {
-
         hazardBoundsMAX = grid.Size / 2 * grid.NodeOffset;
-
 
         for (int i = 0; i < grid.Size; i++)
         {
@@ -99,14 +97,6 @@ public class Hazard : MonoBehaviour
                 }
             }
         }
-
-
-        /*
-        foreach (HazardObject ho in GetComponentsInChildren<HazardObject>())
-        {
-            hazardObjects.Add(ho);
-        }
-        */
     }
     private void InitializeHazardObjects(int puzzleID)
     {
