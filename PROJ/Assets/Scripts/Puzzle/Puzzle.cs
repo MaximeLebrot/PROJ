@@ -147,10 +147,6 @@ public class Puzzle : MonoBehaviour
         Invoke("CompleteGrid", 2);
         EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(masterPuzzleID), true));
         GetComponent<Collider>().enabled = false;
-        PuzzleSolved = FMODUnity.RuntimeManager.CreateInstance("event:/Game/PuzzleSolved");
-        PuzzleSolved.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-        PuzzleSolved.start();
-        PuzzleSolved.release();
     }
 
     private void CompleteGrid()
