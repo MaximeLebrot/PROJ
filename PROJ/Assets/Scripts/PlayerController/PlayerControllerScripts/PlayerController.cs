@@ -38,11 +38,11 @@ public class PlayerController : MonoBehaviour
 
     //Component references
     public PlayerPhysicsSplit physics { get; private set; }
+    public Transform cameraTransform { get; private set; }
     public ControllerInputReference inputReference;
-    private Transform cameraTransform;
 
     //Properties
-    public float groundHitAngle { get; private set; }
+    private float groundHitAngle;
 
 
     void Awake()
@@ -113,11 +113,11 @@ public class PlayerController : MonoBehaviour
             input = inp.x * Vector3.right +
                     inp.y * Vector3.forward;
         }
-        //Another way of steering
+        //Independent of camera rotation
         else
         {
             input = inp.x * transform.right +
-                   inp.y * transform.forward;
+                    inp.y * transform.forward;
         }
     }
 
