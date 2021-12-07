@@ -39,6 +39,7 @@ public class SettingsData
     
     //Accessibility
     public bool dyslexiaFont;
+    public bool oneHandMode;
 }
 
 [Serializable]

@@ -5,6 +5,7 @@ public class AccessibilitySettings : MenuSettings {
         menuOptions[ExtractMenuItem("Use_DyslexiaFont").ID].SetValue(settingsData.dyslexiaFont);
         menuOptions[ExtractMenuItem("Use_HighContrastMode").ID].SetValue(settingsData.highContrastMode);
         menuOptions[ExtractMenuItem("BlindMode").ID].SetValue(settingsData.blindMode);
+        menuOptions[ExtractMenuItem("OneHandMode").ID].SetValue(settingsData.oneHandMode);
     }
     
     public override void ExtractMenuItemValues(ref SettingsData settingsData) {
@@ -12,5 +13,6 @@ public class AccessibilitySettings : MenuSettings {
         settingsData.dyslexiaFont = menuOptions[ExtractMenuItem("Use_DyslexiaFont").ID].GetValue();
         settingsData.highContrastMode = menuOptions[ExtractMenuItem("Use_HighContrastMode").ID].GetValue();
         settingsData.blindMode = menuOptions[ExtractMenuItem("BlindMode").ID].GetValue();
+        settingsData.oneHandMode = menuOptions[ExtractMenuItem("OneHandMode").ID].GetValue();
     }
 }

@@ -16,10 +16,12 @@ public class SettingsController : MonoBehaviour {
     }
     
     //Called from button in settings menu
-    public void RestoreDefaultValues(string json) => SetValues(JsonUtility.FromJson<SettingsData>(json));
-    
+    private void RestoreDefaultValues(string json) {
+        SetValues(JsonUtility.FromJson<SettingsData>(json));
+    }
+
     //Called from button in settings menu
-    public void SaveSettings() {
+    private void SaveSettings() {
         UpdateUserSettings();
         EventHandler<SaveSettingsEvent>.FireEvent(new SaveSettingsEvent(userSettings));
     }
@@ -37,6 +39,8 @@ public class SettingsController : MonoBehaviour {
             {
                 json = streamReader.ReadToEnd();
                 RestoreDefaultValues(json);
+                
+                Debug.Log(json);
                 SaveSettings();
             }
         }
