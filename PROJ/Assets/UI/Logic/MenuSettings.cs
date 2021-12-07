@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-//SAVE HASHES
+//HASH STRINGS
 public abstract class MenuSettings : MonoBehaviour {
  
     protected Dictionary<int, UIMenuItem> menuOptions;
@@ -21,8 +20,8 @@ public abstract class MenuSettings : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    public abstract void UpdateSettings(SettingsData settingsData);
+    public abstract void UpdateMenuItems(SettingsData settingsData);
 
-    public abstract void SaveSettings(ref SettingsData settingsData);
+    public abstract void ExtractMenuItemValues(ref SettingsData settingsData);
     protected UIMenuItem ExtractMenuItem(string menuName) => menuOptions[menuName.GetHashCode()];
 }

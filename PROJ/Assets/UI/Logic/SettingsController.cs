@@ -5,9 +5,7 @@ using UnityEngine;
 public class SettingsController : MonoBehaviour {
 
     [SerializeField] private SettingsData userSettings;
-
     [SerializeField] private List<MenuSettings> settingObjects;
-
     
     private void Start() {
 
@@ -15,13 +13,8 @@ public class SettingsController : MonoBehaviour {
             menuSettings.Initialize();
         
         LoadSavedSettings();
-        UpdateUserSettings();
-        SetValues(userSettings);
-        SaveSettings();
     }
     
- //   private void OnEnable() => 
-
     //Called from button in settings menu
     public void RestoreDefaultValues(string json) => SetValues(JsonUtility.FromJson<SettingsData>(json));
     
@@ -55,47 +48,12 @@ public class SettingsController : MonoBehaviour {
     private void UpdateUserSettings() {
 
         foreach(MenuSettings menuSettings in settingObjects)
-            menuSettings.SaveSettings(ref userSettings);
-        /* userSettings.musicVolume = GetMenuItem("Music").GetValue();
-         userSettings.voiceVolume = GetMenuItem("Voice").GetValue();
-         userSettings.soundEffectsVolume = GetMenuItem("SFX").GetValue();
-         userSettings.mute = GetMenuItem("Mute").GetValue();
-         userSettings.highContrastMode = GetMenuItem("Use_HighContrastMode").GetValue();
- 
-         //Ease of use
-         //userSettings.fontSize = (int)fontSize.value;
-         //userSettings.pointerSize = pointerSize.value;
-         //userSettings.showDesktop = showDesktop.isOn;
-         //userSettings.blindMode = blindMode.isOn;
- 
-         //Display                    
-         userSettings.fieldOfView = GetMenuItem("Field of View").GetValue();
-         userSettings.brightness = GetMenuItem("Brightness").GetValue();
-         //quality = settings.Quality;
-         //resolution  = settings.
-         userSettings.fullscreen = GetMenuItem("Fullscreen").GetValue();
-         */
-    }
-    
-    private void SetValues(SettingsData settings)
-    {
-        
-        foreach(MenuSettings menuSettings in settingObjects)
-            menuSettings.UpdateSettings(settings);
-
-        //Display                    
-        
-        /*
-        menuOptions[GetMenuItem("Use_HighContrastMode").ID].SetValue(settings.highContrastMode);
-        fieldOfView.value = settings.fieldOfView;
-        brightness.value = settings.brightness;
-        //quality = settings.Quality;
-        //resolution  = settings.
-        fullscreen.isOn = settings.fullscreen;*/
-            
-        //Accessibility
-        
+            menuSettings.ExtractMenuItemValues(ref userSettings);
     }
 
-    //Might want to store the hashed values instead of hashing them at runtime.
+    private void SetValues(SettingsData settings) {
+
+        foreach (MenuSettings menuSettings in settingObjects)
+            menuSettings.UpdateMenuItems(settings);
+    }
 }

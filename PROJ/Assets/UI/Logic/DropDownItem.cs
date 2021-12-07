@@ -9,6 +9,9 @@ public class DropDownItem : UIMenuItem {
 
     public override dynamic GetValue() => dropdownList.options[dropdownList.value].text;
     public override void SetValue(dynamic value) {
-        dropdownList.value = dropdownList.options[value];
+        
+        Debug.Log(value);
+        
+       // dropdownList.value = value;
     }
 }
