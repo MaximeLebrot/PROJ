@@ -6,25 +6,13 @@ public class SettingsController : MonoBehaviour {
 
     [SerializeField] private SettingsData userSettings;
 
-    [SerializeField] private List<GameObject> settingObjects;
+    [SerializeField] private List<MenuSettings> settingObjects;
 
-    private Dictionary<int, UIMenuItem> menuOptions;
     
     private void Start() {
-        menuOptions = new Dictionary<int, UIMenuItem>();
-        
-        foreach (GameObject settingsObject in settingObjects) {
 
-            if(settingsObject.activeInHierarchy == false)
-                    settingsObject.SetActive(true);
-
-            List<UIMenuItem> menuItems = settingsObject.GetComponent<UIMenuManager>().GetMenuItems();
-
-            foreach (UIMenuItem item in menuItems) 
-                menuOptions.Add(item.ID, item);
-            
-            settingsObject.SetActive(false);
-        }
+        foreach (MenuSettings menuSettings in settingObjects)
+            menuSettings.Initialize();
         
         LoadSavedSettings();
         UpdateUserSettings();
@@ -67,7 +55,7 @@ public class SettingsController : MonoBehaviour {
     private void UpdateUserSettings() {
 
 
-        userSettings.musicVolume = GetMenuItem("Music").GetValue();
+       /* userSettings.musicVolume = GetMenuItem("Music").GetValue();
         userSettings.voiceVolume = GetMenuItem("Voice").GetValue();
         userSettings.soundEffectsVolume = GetMenuItem("SFX").GetValue();
         userSettings.mute = GetMenuItem("Mute").GetValue();
@@ -85,30 +73,16 @@ public class SettingsController : MonoBehaviour {
         //quality = settings.Quality;
         //resolution  = settings.
         userSettings.fullscreen = GetMenuItem("Fullscreen").GetValue();
+        */
     }
     
     private void SetValues(SettingsData settings)
     {
-        //Audio
-        menuOptions[GetMenuItem("Mute").ID].SetValue(settings.mute);
-        menuOptions[GetMenuItem("Master").ID].SetValue(settings.masterVolume);
-        menuOptions[GetMenuItem("Music").ID].SetValue(settings.musicVolume);
-        menuOptions[GetMenuItem("Ambience").ID].SetValue(settings.ambience);
-        menuOptions[GetMenuItem("SFX").ID].SetValue(settings.soundEffectsVolume);
-        menuOptions[GetMenuItem("Voice").ID].SetValue(settings.voiceVolume);
         
-        
-        
-        /*blindMode.isOn = settings.blindMode;
-        highContrastMode.isOn = settings.highContrastMode;
-        */
-        
+        foreach(MenuSettings menuSettings in settingObjects)
+            menuSettings.UpdateSettings(settings);
+
         //Display                    
-        menuOptions[GetMenuItem("Field of View").ID].SetValue(settings.fieldOfView);
-        menuOptions[GetMenuItem("Brightness").ID].SetValue(settings.brightness);
-        menuOptions[GetMenuItem("Quality").ID].SetValue(settings.quality);
-        menuOptions[GetMenuItem("Fullscreen").ID].SetValue(settings.fullscreen);
-        menuOptions[GetMenuItem("Resolution").ID].SetValue(settings.screenResolution);
         
         /*
         menuOptions[GetMenuItem("Use_HighContrastMode").ID].SetValue(settings.highContrastMode);
@@ -119,12 +93,8 @@ public class SettingsController : MonoBehaviour {
         fullscreen.isOn = settings.fullscreen;*/
             
         //Accessibility
-        menuOptions[GetMenuItem("ChangeFontSize").ID].SetValue(settings.fontSize);
-        menuOptions[GetMenuItem("Use_DyslexiaFont").ID].SetValue(settings.dyslexiaFont);
-        menuOptions[GetMenuItem("Use_HighContrastMode").ID].SetValue(settings.highContrastMode);
-        menuOptions[GetMenuItem("BlindMode").ID].SetValue(settings.blindMode);
+        
     }
 
     //Might want to store the hashed values instead of hashing them at runtime.
-    private UIMenuItem GetMenuItem(string menuName) => menuOptions[menuName.GetHashCode()];
 }

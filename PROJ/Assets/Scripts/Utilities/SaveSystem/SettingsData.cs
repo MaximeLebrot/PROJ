@@ -32,6 +32,11 @@ public class SettingsData
     
     //private Resolution screenRes? 
     
+    //General
+    public float mouseSensitivity;
+    public bool holdToSprint;
+    public bool pressToSprint;
+    
     //Accessibility
     public bool dyslexiaFont;
 }
