@@ -35,6 +35,11 @@ public class PlayerFragments : MonoBehaviour
         return false;
 
     }
+
+    public bool CheckForFragment(string fragmentToCheck)
+    {
+        return collectedFragments[fragmentToCheck];
+    }
 }
 
 
