@@ -54,26 +54,27 @@ public class SettingsController : MonoBehaviour {
     
     private void UpdateUserSettings() {
 
-
-       /* userSettings.musicVolume = GetMenuItem("Music").GetValue();
-        userSettings.voiceVolume = GetMenuItem("Voice").GetValue();
-        userSettings.soundEffectsVolume = GetMenuItem("SFX").GetValue();
-        userSettings.mute = GetMenuItem("Mute").GetValue();
-        userSettings.highContrastMode = GetMenuItem("Use_HighContrastMode").GetValue();
-
-        //Ease of use
-        //userSettings.fontSize = (int)fontSize.value;
-        //userSettings.pointerSize = pointerSize.value;
-        //userSettings.showDesktop = showDesktop.isOn;
-        //userSettings.blindMode = blindMode.isOn;
-
-        //Display                    
-        userSettings.fieldOfView = GetMenuItem("Field of View").GetValue();
-        userSettings.brightness = GetMenuItem("Brightness").GetValue();
-        //quality = settings.Quality;
-        //resolution  = settings.
-        userSettings.fullscreen = GetMenuItem("Fullscreen").GetValue();
-        */
+        foreach(MenuSettings menuSettings in settingObjects)
+            menuSettings.SaveSettings(ref userSettings);
+        /* userSettings.musicVolume = GetMenuItem("Music").GetValue();
+         userSettings.voiceVolume = GetMenuItem("Voice").GetValue();
+         userSettings.soundEffectsVolume = GetMenuItem("SFX").GetValue();
+         userSettings.mute = GetMenuItem("Mute").GetValue();
+         userSettings.highContrastMode = GetMenuItem("Use_HighContrastMode").GetValue();
+ 
+         //Ease of use
+         //userSettings.fontSize = (int)fontSize.value;
+         //userSettings.pointerSize = pointerSize.value;
+         //userSettings.showDesktop = showDesktop.isOn;
+         //userSettings.blindMode = blindMode.isOn;
+ 
+         //Display                    
+         userSettings.fieldOfView = GetMenuItem("Field of View").GetValue();
+         userSettings.brightness = GetMenuItem("Brightness").GetValue();
+         //quality = settings.Quality;
+         //resolution  = settings.
+         userSettings.fullscreen = GetMenuItem("Fullscreen").GetValue();
+         */
     }
     
     private void SetValues(SettingsData settings)

@@ -23,5 +23,6 @@ public abstract class MenuSettings : MonoBehaviour {
 
     public abstract void UpdateSettings(SettingsData settingsData);
 
+    public abstract void SaveSettings(ref SettingsData settingsData);
     protected UIMenuItem ExtractMenuItem(string menuName) => menuOptions[menuName.GetHashCode()];
 }

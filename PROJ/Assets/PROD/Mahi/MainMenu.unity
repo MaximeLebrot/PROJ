@@ -2571,7 +2571,6 @@ GameObject:
   m_Component:
   - component: {fileID: 459638854}
   - component: {fileID: 459638855}
-  - component: {fileID: 459638856}
   m_Layer: 5
   m_Name: General
   m_TagString: Untagged
@@ -2601,18 +2600,6 @@ RectTransform:
   m_SizeDelta: {x: 960, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &459638855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 459638853}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f06dc83a2e6f96d4c98214c83050c8b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &459638856
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2922,7 +2909,6 @@ GameObject:
   m_Component:
   - component: {fileID: 508942827}
   - component: {fileID: 508942828}
-  - component: {fileID: 508942829}
   m_Layer: 5
   m_Name: Video_Settings
   m_TagString: Untagged
@@ -2980,18 +2966,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &508942829
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 508942826}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f06dc83a2e6f96d4c98214c83050c8b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &516785770
 GameObject:
   m_ObjectHideFlags: 0
@@ -3322,7 +3296,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 546650352}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f06dc83a2e6f96d4c98214c83050c8b9, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e77a02f7c02cae45b3e116b794877dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &570287779
@@ -6507,7 +6481,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1113368278}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f06dc83a2e6f96d4c98214c83050c8b9, type: 3}
+  m_Script: {fileID: 11500000, guid: 09fe8c7091f140f4a9f52b37ed90069d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1152866484
@@ -8112,7 +8086,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1436597762}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f06dc83a2e6f96d4c98214c83050c8b9, type: 3}
+  m_Script: {fileID: 11500000, guid: 33da3b0c9b5200d429501d6ee925cd3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1444198398
@@ -10087,12 +10061,15 @@ MonoBehaviour:
     brightness: 0
     fullscreen: 0
     quality: 
+    mouseSensitivity: 0
+    holdToSprint: 0
+    pressToSprint: 0
     dyslexiaFont: 0
   settingObjects:
-  - {fileID: 459638853}
-  - {fileID: 1113368278}
-  - {fileID: 546650352}
-  - {fileID: 1436597762}
+  - {fileID: 459638855}
+  - {fileID: 1113368280}
+  - {fileID: 546650354}
+  - {fileID: 1436597764}
 --- !u!1 &1740636107
 GameObject:
   m_ObjectHideFlags: 0
@@ -12523,7 +12500,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2118744084}
   - component: {fileID: 2118744086}
-  - component: {fileID: 2118744085}
   m_Layer: 5
   m_Name: General_Settings
   m_TagString: Untagged
@@ -12553,18 +12529,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 50}
   m_SizeDelta: {x: 960, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2118744085
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2118744083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f06dc83a2e6f96d4c98214c83050c8b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2118744086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15862,6 +15826,9 @@ MonoBehaviour:
     brightness: 0
     fullscreen: 0
     quality: 
+    mouseSensitivity: 0
+    holdToSprint: 0
+    pressToSprint: 0
     dyslexiaFont: 0
   musicSlider: {fileID: 2572627953091116378}
   musicSliderValueText: {fileID: 2312458201171492538}

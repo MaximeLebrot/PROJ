@@ -7,4 +7,10 @@ public class GeneralSettings : MenuSettings {
         menuOptions[ExtractMenuItem("PressToSprint").ID].SetValue(settingsData.pressToSprint);
         
     }
+
+    public override void SaveSettings(ref SettingsData settingsData) {
+        settingsData.mouseSensitivity = menuOptions[ExtractMenuItem("MouseSensitivity").ID].GetValue();
+        settingsData.holdToSprint = menuOptions[ExtractMenuItem("HoldToSprint").ID].GetValue();
+        settingsData.pressToSprint = menuOptions[ExtractMenuItem("PressToSprint").ID].GetValue();
+    }
 }
