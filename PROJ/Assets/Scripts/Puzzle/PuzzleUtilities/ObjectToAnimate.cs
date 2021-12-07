@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ObjectToAnimate : ObjectToActivate
 {
-
     [SerializeField] private Animator anim;
     public override void Activate(ActivatorEvent eve)
     {
