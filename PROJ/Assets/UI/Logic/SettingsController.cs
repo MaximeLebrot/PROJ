@@ -39,8 +39,6 @@ public class SettingsController : MonoBehaviour {
             {
                 json = streamReader.ReadToEnd();
                 RestoreDefaultValues(json);
-                
-                Debug.Log(json);
                 SaveSettings();
             }
         }
