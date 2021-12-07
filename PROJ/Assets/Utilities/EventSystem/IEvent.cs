@@ -134,9 +134,19 @@ public class UpdateHazardEvent : IEvent
 }
 public class ResetHazardEvent : IEvent{}
 
-public class LoadSceneEvent : IEvent 
+public class UnLoadSceneEvent : IEvent 
 {
     public string sceneToLoad;
 
-    public LoadSceneEvent(string scene) { sceneToLoad = scene; }
+    public UnLoadSceneEvent(string scene) { sceneToLoad = scene; }
+}
+
+public class LoadSceneEvent : IEvent{}
+
+public class SetUpCameraEvent : IEvent
+{
+    public Transform followTarget;
+    public Transform shoulderPos;
+
+    public SetUpCameraEvent(Transform f, Transform s) { followTarget = f; shoulderPos = s; }
 }

@@ -16,15 +16,15 @@ public class LoadScreen : MonoBehaviour
 
     private void OnEnable()
     {
-        EventHandler<LoadSceneEvent>.RegisterListener(StartLoading);
+        EventHandler<UnLoadSceneEvent>.RegisterListener(StartLoading);
     }
 
     private void OnDisable()
     {
-        EventHandler<LoadSceneEvent>.UnregisterListener(StartLoading);
+        EventHandler<UnLoadSceneEvent>.UnregisterListener(StartLoading);
     }
 
-    private void StartLoading(LoadSceneEvent eve)
+    private void StartLoading(UnLoadSceneEvent eve)
     {
         sceneToLoad = eve.sceneToLoad;
         anim.SetTrigger("load");
@@ -33,6 +33,11 @@ public class LoadScreen : MonoBehaviour
     public void LoadScene()
     {
         SceneManager.LoadScene(sceneToLoad);
+    }
+
+    public void SendLoadEvent()
+    {
+        EventHandler<LoadSceneEvent>.FireEvent(new LoadSceneEvent());
     }
 
 
