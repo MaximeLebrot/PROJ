@@ -7,10 +7,12 @@ using System;
 public class SettingsData
 {
     //Audio
+    public float masterVolume;
     public float musicVolume;
     public float voiceVolume;
     public float soundEffectsVolume;
     public bool mute;
+    public float ambience;
 
     //Easy of Access
     public int fontSize;
@@ -25,7 +27,13 @@ public class SettingsData
     public float brightness;
     //public GraphicsQuality Quality;
     public bool fullscreen;
+    public Resolution screenResolution;
+    public string quality;
+    
     //private Resolution screenRes? 
+    
+    //Accessibility
+    public bool dyslexiaFont;
 }
 
 [Serializable]

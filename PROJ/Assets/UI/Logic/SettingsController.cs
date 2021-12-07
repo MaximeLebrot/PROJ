@@ -27,6 +27,9 @@ public class SettingsController : MonoBehaviour {
         }
         
         LoadSavedSettings();
+        UpdateUserSettings();
+        SetValues(userSettings);
+        SaveSettings();
     }
     
  //   private void OnEnable() => 
@@ -87,21 +90,39 @@ public class SettingsController : MonoBehaviour {
     private void SetValues(SettingsData settings)
     {
         //Audio
-        /*musicSlider.value = settings.musicVolume;
-        voiceSlider.value = settings.voiceVolume;
-        sfxSlider.value = settings.soundEffectsVolume;
-        mute.isOn = settings.mute;
-
-        //Ease of use
-        blindMode.isOn = settings.blindMode;
+        menuOptions[GetMenuItem("Mute").ID].SetValue(settings.mute);
+        menuOptions[GetMenuItem("Master").ID].SetValue(settings.masterVolume);
+        menuOptions[GetMenuItem("Music").ID].SetValue(settings.musicVolume);
+        menuOptions[GetMenuItem("Ambience").ID].SetValue(settings.ambience);
+        menuOptions[GetMenuItem("SFX").ID].SetValue(settings.soundEffectsVolume);
+        menuOptions[GetMenuItem("Voice").ID].SetValue(settings.voiceVolume);
+        
+        
+        
+        /*blindMode.isOn = settings.blindMode;
         highContrastMode.isOn = settings.highContrastMode;
-
+        */
+        
         //Display                    
+        menuOptions[GetMenuItem("Field of View").ID].SetValue(settings.fieldOfView);
+        menuOptions[GetMenuItem("Brightness").ID].SetValue(settings.brightness);
+        menuOptions[GetMenuItem("Quality").ID].SetValue(settings.quality);
+        menuOptions[GetMenuItem("Fullscreen").ID].SetValue(settings.fullscreen);
+        menuOptions[GetMenuItem("Resolution").ID].SetValue(settings.screenResolution);
+        
+        /*
+        menuOptions[GetMenuItem("Use_HighContrastMode").ID].SetValue(settings.highContrastMode);
         fieldOfView.value = settings.fieldOfView;
         brightness.value = settings.brightness;
         //quality = settings.Quality;
         //resolution  = settings.
         fullscreen.isOn = settings.fullscreen;*/
+            
+        //Accessibility
+        menuOptions[GetMenuItem("ChangeFontSize").ID].SetValue(settings.fontSize);
+        menuOptions[GetMenuItem("Use_DyslexiaFont").ID].SetValue(settings.dyslexiaFont);
+        menuOptions[GetMenuItem("Use_HighContrastMode").ID].SetValue(settings.highContrastMode);
+        menuOptions[GetMenuItem("BlindMode").ID].SetValue(settings.blindMode);
     }
 
     //Might want to store the hashed values instead of hashing them at runtime.

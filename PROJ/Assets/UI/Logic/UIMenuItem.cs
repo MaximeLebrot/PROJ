@@ -11,4 +11,5 @@ public abstract class UIMenuItem : MonoBehaviour {
     protected virtual void Initialize() {}
 
     public abstract dynamic GetValue();
+    public abstract void SetValue(dynamic value);
 }
