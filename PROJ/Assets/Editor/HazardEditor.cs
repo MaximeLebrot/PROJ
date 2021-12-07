@@ -65,23 +65,25 @@ public class HazardEditor : Editor {
         
     }
 
-    //Need to be drawn as coordinateSystem
-    private void DrawMatrix() {
-        
+    private void DrawMatrix()
+    {
+
         float windowCenter = CalculateInspectorWidth();
 
         float maxHeight = 220 + 20 * gridSize;
-        
-        EditorGUI.LabelField(new Rect(new Vector2(windowCenter + gridSize ,190), new Vector2(100, 20)), "Hazard Matrix");
-        
-        for (int i = 0; i < gridSize; i++) {
-            
-            for (int j = 0; j < gridSize; j++) {
+
+        EditorGUI.LabelField(new Rect(new Vector2(windowCenter + gridSize, 190), new Vector2(100, 20)), "Hazard Matrix");
+
+        for (int i = 0; i < gridSize; i++)
+        {
+
+            for (int j = 0; j < gridSize; j++)
+            {
 
                 SerializedProperty prop = hazardMatrix.GetArrayElementAtIndex(j + i * gridSize);
-                
-                Vector2 newPosition = new Vector2(windowCenter + 20 * j,  maxHeight - 20 * i);
-                
+
+                Vector2 newPosition = new Vector2(windowCenter + 20 * j, maxHeight - 20 * i);
+
                 EditorGUI.PropertyField(new Rect(newPosition, new Vector2(30, 30)), prop, GUIContent.none);
             }
         }
@@ -98,4 +100,6 @@ public class HazardEditor : Editor {
         gridSize = new SerializedObject(gridObjectTypeProp.objectReferenceValue).FindProperty("size").intValue;
         hazardMatrix.arraySize = gridSize * gridSize;
     }
+    
+    
 }

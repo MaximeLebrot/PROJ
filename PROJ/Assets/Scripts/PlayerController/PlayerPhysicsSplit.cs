@@ -11,28 +11,25 @@ public class PlayerPhysicsSplit : MonoBehaviour
     public Vector3 velocity;
     public RaycastHit groundHitInfo { get; private set; }
 
-    [Header("Values")]
-
+    [Header("Collision")]
     [SerializeField] protected float skinWidth = 0.05f;
-    [SerializeField] private float inputThreshold = 0.1f;
-    [SerializeField] private float currentGravity;
     [SerializeField] private float minimumPenetrationForPenalty = 0.01f;
     [SerializeField] private LayerMask collisionMask;
-    [SerializeField] private float gravityWhenFalling = 10f;
-    [SerializeField] private float glideHeight;
+    [SerializeField] private float stepHeight = 0.2f;
+
+    [Header("Movement Restraints")]
     [SerializeField] private float moveThreshold = 0.05f;
-    /*[SerializeField]*/ private float stepHeight = 0.2f;
-   
+    [SerializeField] private float inputThreshold = 0.1f;
+    [SerializeField] private float gravityWhenFalling = 10f;
+    [SerializeField] private float currentGravity;
 
     //Properties
     public float GlideHeight { get; private set; }
-    public float SurfThreshold { get => surfThreshold; }
+    private float defaultGravity = 9.81f;
 
-
-
-    [Header("Values set by States")]
+    #region Values from States
+    //Values set from States
     private float maxSpeed = 12f;
-    [SerializeField]private float defaultGravity = 9.81f;
 
     private float smoothingMaxDistance = 3f;
     private int powerOf = 2;
@@ -41,7 +38,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     private float staticFrictionCoefficient = 0.5f;
     private float kineticFrictionCoefficient = 0.35f;
     private float airResistance = 0.35f;
-
+    #endregion
     //Collision
     private CapsuleCollider attachedCollider;
     private Vector3 colliderTopHalf, colliderBottomHalf;
@@ -59,13 +56,16 @@ public class PlayerPhysicsSplit : MonoBehaviour
     private CollisionDelegate collisionMethod; 
 
 
-    private void OnEnable()
+    private void Awake()
     {
         pc = GetComponent<PlayerController>();
         attachedCollider = GetComponent<CapsuleCollider>();
         stepHeightDisplacement = new Vector3(0, stepHeight, 0);
     }
-
+    private void OnEnable()
+    {
+        velocity = Vector3.zero;
+    }
     private void Update()
     {
         //Add velocity and reset force vector in playercontroller       
@@ -73,21 +73,10 @@ public class PlayerPhysicsSplit : MonoBehaviour
         pc.ResetForceVector();
 
         AddGravity();
-        CollisionCheck();
+        CheckForCollisions(0);
         ClampSpeed();
-        
-        //Debug
-        Debug.DrawLine(transform.position, transform.position + velocity, Color.red);
-        glideHeight = GlideHeight;
-        
     }
-    public void CollisionCheck()
-    {
-        if (isGliding)
-            SmoothingCollisionCheck(0);
-        else
-            CheckForCollisions(0);
-    }
+
     public void SetValues(ControllerValues values)
     {
         StopCoroutine("LerpValues");
@@ -115,7 +104,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
             GlideHeight = Mathf.Lerp(GlideHeight, values.glideHeight, time * (1 / setValuesLerpSpeed));
             maxSpeed = Mathf.Lerp(maxSpeed, values.maxSpeed, time * (1 / setValuesLerpSpeed));
-            currentGravity = Mathf.Lerp(defaultGravity, values.gravity, time * (1 / setValuesLerpSpeed));          
+            currentGravity = Mathf.Lerp(currentGravity, values.gravity, time * (1 / setValuesLerpSpeed));          
             
             time += Time.deltaTime;
             yield return null;
@@ -123,45 +112,40 @@ public class PlayerPhysicsSplit : MonoBehaviour
        
     }
 
-    private void SmoothingCollisionCheck(int i)
-    {
-        collisionMethod = SmoothingCollisionCheck;
-        YCollisionSmoothing();
-        XZCollision(i);
-    }
-
     private void CheckForCollisions(int i)
     {
         collisionMethod = CheckForCollisions;
-        YCollision();
+        YCollisionRayCast();
         XZCollision(i);
     }
-    private void YCollision()
+    private void YCollisionRayCast()
     {
-        //Y-axis normalforce
-        //Could use sphere coll here instead of bottomhalf etc
-        float castLength = velocity.magnitude * Time.deltaTime + skinWidth;
-        Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, Vector3.down, out RaycastHit yHitInfo, castLength, collisionMask);
-        if (yHitInfo.collider && yHitInfo.collider.isTrigger == false)
-        {
-            Vector3 smoothingNormalForce;
-            if (yHitInfo.distance < castLength)
-            {
-                smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, yHitInfo.normal);
-            }
-            else
-            {
-                smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, yHitInfo.normal)
-                                        + GlideHeight * Vector3.up;
-            }
+        float castLength = attachedCollider.radius + stepHeight + skinWidth;
+        Debug.DrawLine(colliderBottomHalf, colliderBottomHalf + (Vector3.down * castLength), Color.green);
+        Physics.Raycast(colliderBottomHalf, Vector3.down, out RaycastHit hit, castLength, collisionMask);
 
-            ApplyFriction(smoothingNormalForce);
-            velocity += new Vector3(0, smoothingNormalForce.y, 0);
+        //some sort of force inverse to the distance and which the raycast hits the ground
+        //Do we actually want to apply more normalforce if the character is intersecting another collider? Maybe not... in that case, this code is basically fine, in principle
+        Vector3 yNormalForce;
+        if (hit.collider && hit.collider.isTrigger == false)
+        {
+            //Debug.Log("Raycast hit at height: " + hit.point.y);
+            float partDistanceHit = hit.distance / castLength; // => 0.75 / 1 = 0.75 1 + (1 - hit.distance / castLength)
+            yNormalForce = PhysicsFunctions.NormalForce3D(velocity /** (1 + (1 - partDistanceHit))*/, hit.normal)
+                                        + (1 - partDistanceHit
+                                        + GlideHeight)* Vector3.up;            
         }
+        else
+        {
+            Vector3 yVelocity = new Vector3(0, velocity.y, 0);
+            yNormalForce = PhysicsFunctions.NormalForce(yVelocity, Vector3.down);
+        }
+        velocity += yNormalForce;
+        ApplyFriction(yNormalForce);
     }
     private void XZCollision(int i)
     {
-        Physics.CapsuleCast(colliderTopHalf, colliderBottomHalf + stepHeightDisplacement, attachedCollider.radius, velocity.normalized, out var hitInfo, velocity.magnitude * Time.deltaTime + skinWidth, collisionMask);
+        Physics.CapsuleCast(colliderTopHalf, colliderBottomHalf + stepHeightDisplacement, attachedCollider.radius, new Vector3(velocity.x, 0 , velocity.z), out var hitInfo, velocity.magnitude * Time.deltaTime + skinWidth, collisionMask);
         if (hitInfo.collider && hitInfo.collider.isTrigger == false)
         {
             // Calculate the allowed distance to the collision point
@@ -192,6 +176,90 @@ public class PlayerPhysicsSplit : MonoBehaviour
             MoveOutOfGeometry(velocity * Time.deltaTime);
 
         ApplyAirResistance();
+    }  
+    private void MoveOutOfGeometry(Vector3 movement)
+    {
+        //Debug.Log("movement magnitude is :" + movement.magnitude);
+        //Do not move at all if the distance is tiny.
+        if (movement.magnitude < moveThreshold)
+            return;
+
+        transform.position += movement;    
+       
+        for (int i = 0; i < MOVE_OUT_ITERATIONS && velocity.magnitude > 0.001f; i++) 
+        {
+            Collider[] colliders = OverlapCast(transform.position);
+
+            if (colliders.Length < 1)
+                return;
+           
+            Vector3? separation = null;
+
+            Vector3 direction = Vector3.zero;
+            foreach (Collider currentCollider in colliders)
+            {
+                if (currentCollider == attachedCollider || currentCollider.isTrigger)
+                    continue;
+
+                bool overlap = Physics.ComputePenetration(
+                                            attachedCollider,
+                                            transform.position,
+                                            transform.rotation,
+                                            currentCollider,
+                                            currentCollider.transform.position,
+                                            currentCollider.transform.rotation,
+                                            out direction,
+                                            out float distance);
+
+                //Compute penetration does not always return true (?), and if it doesnt, we can skip this loop iteration.
+                if (distance < minimumPenetrationForPenalty)
+                    continue;
+
+                if (distance < (separation?.magnitude ?? float.MaxValue))
+                {                   
+                    separation = direction * distance;
+                }
+            }
+            
+            //Move out of geometry and apply normalforce since this collision was missed by collisioncheck
+            //Cannot apply the normalforce created in these if-else statements, when using stepheight - it stops the player from crossing over barriers
+            //because it thinks a collision was simply missed, instead of intentionally ignored.
+            if (separation.HasValue)
+            {
+                transform.position += separation.Value + separation.Value.normalized * skinWidth;
+                //Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, separation.Value.normalized);
+                //velocity += normalForce;
+            }
+            else
+            {
+                //Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity * minimumPenetrationForPenalty, direction.normalized);
+                //velocity += normalForce;
+                //This can also happen if the player intersects only colliders that are not valid, such as attachedCollider or if the collider is a trigger
+                Debug.Log("Separation has no value!");
+                return;
+            }
+        }
+        //The move fails, or the character has no velocity
+        if(velocity.magnitude > 0.001f)
+            Debug.Log("Didnt trigger exit condition");
+        //transform.position = cachedPosition;
+    }
+    
+    //Obsolete, gliding is removed
+    #region Glide
+    private void SmoothingCollisionCheck(int i)
+    {
+        collisionMethod = SmoothingCollisionCheck;
+        YCollisionSmoothing();
+        XZCollision(i);
+    }
+
+    public void CollisionCheck()
+    {
+        if (isGliding)
+            SmoothingCollisionCheck(0);
+        else
+            CheckForCollisions(0);
     }
     private void YCollisionSmoothing()
     {
@@ -221,65 +289,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
             velocity += new Vector3(0, smoothingNormalForce.y, 0);
         }
     }
-    /*private void YCollision()
-    {
-        //Y-axis normalforce
-        //Could use sphere coll here instead of bottomhalf etc
-        Vector3 castOrigin = transform.position + (attachedCollider.center + attachedCollider.height * 0.5f * Vector3.down) + stepHeight * 0.5f * Vector3.up;
-        float castLength = velocity.magnitude * Time.deltaTime + skinWidth;
-        Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, velocity.normalized, out RaycastHit yHitInfo, castLength, collisionMask);
-        if (yHitInfo.collider && yHitInfo.collider.isTrigger == false)
-        {
-            Vector3 smoothingNormalForce;
-            /*
-            if (yHitInfo.distance < castLength)
-            {
-                smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, yHitInfo.normal);
-            }
-            else
-            {*/
-               /* smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, yHitInfo.normal)
-                                        + GlideHeight * Vector3.up;
-            //}
-
-            //ApplyFriction(smoothingNormalForce);
-            velocity += new Vector3(0, smoothingNormalForce.y, 0);
-        }
-    }
-    private void XZCollision(int i  )
-    {
-        Physics.CapsuleCast(colliderTopHalf, colliderBottomHalf + stepHeightDisplacement, attachedCollider.radius, velocity.normalized, out var hitInfo, velocity.magnitude * Time.deltaTime + skinWidth, collisionMask);
-        if (hitInfo.collider && hitInfo.collider.isTrigger == false)
-        {
-            // Calculate the allowed distance to the collision point
-            float distanceToColliderNeg = skinWidth / Vector3.Dot(velocity.normalized, hitInfo.normal);
-            float allowedMovementDistance = hitInfo.distance + distanceToColliderNeg;
-
-            // Are we allowed to move further than we are able to this frame? 
-            if (allowedMovementDistance > velocity.magnitude * Time.deltaTime)
-            {
-                MoveOutOfGeometry(velocity * Time.deltaTime);
-                return;
-            }
-            if (allowedMovementDistance > 0)
-            {
-                MoveOutOfGeometry(allowedMovementDistance * velocity.normalized);
-            }
-
-            //GlideHeight should be zero when walking, but needs to be added here to get a smooth transition along with the lerp in SetValues
-            Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, hitInfo.normal);
-            velocity += new Vector3(normalForce.x, 0, normalForce.z);
-            ApplyFriction(normalForce);
-
-
-            if (i < MAX_ITER)
-                collisionMethod(i + 1);
-        }
-        else
-            MoveOutOfGeometry(velocity * Time.deltaTime);
-
-        ApplyAirResistance();
-    }*/
+    public void SetGlide(bool gliding) { isGliding = gliding; }
     private void WalkCollision(int i)
     {
         Physics.CapsuleCast(colliderTopHalf, colliderBottomHalf, attachedCollider.radius, velocity.normalized, out RaycastHit hitInfo, velocity.magnitude * Time.deltaTime + skinWidth, collisionMask);
@@ -314,74 +324,66 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
         ApplyAirResistance();
     }
-    private void MoveOutOfGeometry(Vector3 movement)
-    {
-        //Debug.Log("movement magnitude is: " + movement.magnitude);
-        
-        //Do not move at all if the distance is tiny.
-        if (movement.magnitude < moveThreshold)
-            return;
+    /*private void YCollision()
+  {
+      //Y-axis normalforce
+      //Could use sphere coll here instead of bottomhalf etc
+      Vector3 castOrigin = transform.position + (attachedCollider.center + attachedCollider.height * 0.5f * Vector3.down) + stepHeight * 0.5f * Vector3.up;
+      float castLength = velocity.magnitude * Time.deltaTime + skinWidth;
+      Physics.SphereCast(colliderBottomHalf, attachedCollider.radius, velocity.normalized, out RaycastHit yHitInfo, castLength, collisionMask);
+      if (yHitInfo.collider && yHitInfo.collider.isTrigger == false)
+      {
+          Vector3 smoothingNormalForce;
+          /*
+          if (yHitInfo.distance < castLength)
+          {
+              smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, yHitInfo.normal);
+          }
+          else
+          {
+     smoothingNormalForce = PhysicsFunctions.NormalForce3D(velocity, yHitInfo.normal)
+                             + GlideHeight * Vector3.up;
+ //}
 
-        transform.position += movement;    
-       
-        for (int i = 0; i < MOVE_OUT_ITERATIONS && velocity.magnitude > 0.001f; i++) 
-        {
-            Collider[] colliders = OverlapCast(transform.position);
+ //ApplyFriction(smoothingNormalForce);
+ velocity += new Vector3(0, smoothingNormalForce.y, 0);
+}
+}
+private void XZCollision(int i  )
+{
+Physics.CapsuleCast(colliderTopHalf, colliderBottomHalf + stepHeightDisplacement, attachedCollider.radius, velocity.normalized, out var hitInfo, velocity.magnitude * Time.deltaTime + skinWidth, collisionMask);
+if (hitInfo.collider && hitInfo.collider.isTrigger == false)
+{
+ // Calculate the allowed distance to the collision point
+ float distanceToColliderNeg = skinWidth / Vector3.Dot(velocity.normalized, hitInfo.normal);
+ float allowedMovementDistance = hitInfo.distance + distanceToColliderNeg;
 
-            if (colliders.Length < 1)
-                return;
-           
-            Vector3? separation = null;
-            float maxDistance = 0f;
-            Vector3 direction = Vector3.zero;
-            foreach (Collider currentCollider in colliders)
-            {
-                if (currentCollider == attachedCollider ||currentCollider.isTrigger)
-                    continue;
+ // Are we allowed to move further than we are able to this frame? 
+ if (allowedMovementDistance > velocity.magnitude * Time.deltaTime)
+ {
+     MoveOutOfGeometry(velocity * Time.deltaTime);
+     return;
+ }
+ if (allowedMovementDistance > 0)
+ {
+     MoveOutOfGeometry(allowedMovementDistance * velocity.normalized);
+ }
 
-                bool overlap = Physics.ComputePenetration(
-                                            attachedCollider,
-                                            transform.position,
-                                            transform.rotation,
-                                            currentCollider,
-                                            currentCollider.transform.position,
-                                            currentCollider.transform.rotation,
-                                            out direction,
-                                            out float distance);
-                
-                //Compute penetration does not always return true (?), and if it doesnt, we can skip this loop iteration.
-                if (distance < minimumPenetrationForPenalty)
-                    continue;
+ //GlideHeight should be zero when walking, but needs to be added here to get a smooth transition along with the lerp in SetValues
+ Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, hitInfo.normal);
+ velocity += new Vector3(normalForce.x, 0, normalForce.z);
+ ApplyFriction(normalForce);
 
-                if (distance < (separation?.magnitude ?? float.MaxValue))
-                {                   
-                    separation = direction * distance;
-                }
-                else if (distance > separation?.magnitude)
-                    maxDistance = distance;
-            }
-            
-            //Move out of geometry and apply normalforce since this collision was missed by collisioncheck
-            if (separation.HasValue)
-            {
-                transform.position += separation.Value + separation.Value.normalized * skinWidth;
-                Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, separation.Value.normalized);
-                velocity += normalForce;
-            }
-            else
-            {
-                Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity * minimumPenetrationForPenalty, direction.normalized);
-                velocity += normalForce;
-                //Debug.Log("Separation has no value!, maxDistance x100 is  " + maxDistance);
-                return;
-            }
-        }
-        //The move fails, or the character has no velocity
-        if(velocity.magnitude > 0.001f)
-            Debug.Log("Didnt trigger exit condition");
-        //transform.position = cachedPosition;
-    }
 
+ if (i < MAX_ITER)
+     collisionMethod(i + 1);
+}
+else
+ MoveOutOfGeometry(velocity * Time.deltaTime);
+
+ApplyAirResistance();
+}*/
+    #endregion
     #region Friction, Resistance and Gravity
     private void AddGravity()
     {
@@ -399,9 +401,11 @@ public class PlayerPhysicsSplit : MonoBehaviour
     }
     public void SetFallingGravity()
     {
+        defaultGravity = currentGravity;
         currentGravity = gravityWhenFalling;
+
     }
-    public void SetNormalGravity()
+    public void RestoreGravity()
     {
         currentGravity = defaultGravity;
     }
@@ -425,8 +429,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
     {
         forceInput = Vector3.zero;
         forceInput = input.magnitude < inputThreshold ? Vector3.zero : input;
-        //Obsolete
-        //velocity += input.magnitude < inputThreshold ? Vector3.zero : input * Time.fixedDeltaTime;
     }
     public Vector3 GetXZMovement()
     {
@@ -445,41 +447,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
         colliderBottomHalf = (currentPosition + attachedCollider.center) + Vector3.down * (attachedCollider.height * 0.5f - attachedCollider.radius);
     }
     #endregion
-    public void SetGlide(bool gliding){ isGliding = gliding; }
-    //Walk collision
-    /*private void CheckForCollisions(int i)
-    {
-        RaycastHit hitInfo = CastCollision(transform.position, velocity.normalized, velocity.magnitude * Time.deltaTime + skinWidth);
-        if (hitInfo.collider && hitInfo.collider.isTrigger == false)
-        {
-            // Calculate the allowed distance to the collision point
-            float distanceToColliderNeg = skinWidth / Vector3.Dot(velocity.normalized, hitInfo.normal);
-            float allowedMovementDistance = hitInfo.distance + distanceToColliderNeg;
-
-            // Are we allowed to move further than we are able to this frame? 
-            if (allowedMovementDistance > velocity.magnitude * Time.deltaTime)
-            {
-                MoveOutOfGeometry(velocity * Time.deltaTime);
-                return;
-            }
-            if (allowedMovementDistance > 0)
-            {
-                MoveOutOfGeometry(allowedMovementDistance* velocity.normalized);
-            }
-
-            //GlideHeight should be zero when walking, but needs to be added here to get a smooth transition along with the lerp in SetValues
-            Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity, hitInfo.normal)
-                                  + GlideHeight * Vector3.up;
-            velocity += normalForce;
-            ApplyFriction(normalForce);
-
-            if (i < MAX_ITER)
-                CheckForCollisions(i + 1);
-        }
-        else 
-            MoveOutOfGeometry(velocity * Time.deltaTime);
-        
-     ApplyAirResistance();
-    }*/
+    
+    
 }
 

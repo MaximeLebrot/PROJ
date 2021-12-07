@@ -23,11 +23,11 @@ public class AirborneState : PlayerState
     {
         SetInput();
 
-        if (player.physics.velocity.magnitude < player.physics.SurfThreshold)
+        /*if (player.physics.velocity.magnitude < player.physics.SurfThreshold)
         {
             stateMachine.ChangeState<WalkState>();
             return;
-        }
+        }*/
 
         if (player.playerController3D.IsGrounded())
         {
@@ -44,15 +44,18 @@ public class AirborneState : PlayerState
     {
         player.playerController3D.InputWalk(player.inputReference.InputMaster.Movement.ReadValue<Vector2>());
     }
+
+    //No longer needed to differentiate between walk and glide, since glide is removed
     private void ReturnToPreviousState()
     {
-        player.physics.SetNormalGravity();
+        player.physics.RestoreGravity();
         
-        if(nextState == null || nextState.GetType() == typeof(WalkState))
-            stateMachine.ChangeState<WalkState>();
+        if(nextState.GetType() == typeof(SprintState))
+            stateMachine.ChangeState<SprintState>();
         else
+            stateMachine.ChangeState<WalkState>();
             //Else if**, we probably want some other requirement to remain here, be it speed or glideable material/tag
-            stateMachine.ChangeState<GlideState>();
+            
             
 
     }

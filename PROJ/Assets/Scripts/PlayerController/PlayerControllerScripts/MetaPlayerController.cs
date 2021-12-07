@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.VFX;
 
 public class MetaPlayerController : MonoBehaviour, IPersist
@@ -10,10 +11,6 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     public PlayerController playerController3D { get; private set; }
     public PuzzlePlayerController puzzleController { get; private set; }
     public Animator animator { get; private set; }
-
-
-    //Particles
-    public VisualEffect glideParticle;
 
     //StateMachine
     private StateMachine stateMachine;
@@ -34,14 +31,22 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     }
     private void OnEnable()
     {
+        inputReference.Initialize();
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
-        EventHandler<ExitPuzzleEvent>.RegisterListener(ExitPuzzle);
+        inputReference.InputMaster.Interact.performed += OnHub;
     }
     private void OnDisable()
     {
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
-        EventHandler<ExitPuzzleEvent>.UnregisterListener(ExitPuzzle);
+        inputReference.InputMaster.Interact.performed -= OnHub;
     }
+
+    //TEMPORARY
+    private void OnHub(InputAction.CallbackContext obj)
+    {
+        transform.position = new Vector3(871.52002f, 13.1800003f, 608.859985f);
+    }
+
     private void StartPuzzle(StartPuzzleEvent spe)
     {
         puzzleController.CurrentPuzzleID = spe.info.ID;
@@ -49,10 +54,6 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         stateMachine.ChangeState<PuzzleState>();
     }
 
-    public void ExitPuzzle(ExitPuzzleEvent eve)
-    {
-        stateMachine.ChangeState<WalkState>();
-    }
 
     public void ChangeStateToOSPuzzle(StartPuzzleEvent eve) => stateMachine.ChangeState<OSPuzzleState>();
 
@@ -60,6 +61,7 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     private void Update()
     {
+        
         stateMachine.RunUpdate();
     }
 

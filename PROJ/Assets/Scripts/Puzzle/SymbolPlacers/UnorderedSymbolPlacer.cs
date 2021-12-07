@@ -4,26 +4,33 @@ using UnityEngine;
 
 public class UnorderedSymbolPlacer : SymbolPlacer
 {
-    [SerializeField] private List<Transform> symbolPositions = new List<Transform>();
-    public List<PuzzleObject> instantiatedSymbolsClone;
+    //randomizing starting offset between these 2 values, for visual variation
+    [SerializeField]private Vector2 offsetMinMax = new Vector2(45, 90);
+    private List<PuzzleObject> instantiatedSymbolsClone;
 
-    //Angle offset depending on number of symbols? 
+    //Symbol placement
+    [SerializeField] private float panelSize = 2f;
     private float degreeOffset;
-    //Where should the symbol spawn if its only 1?
-    private float startingOffset = 90f;
-    //Some arbitrary size for offset from middle of panel
-    private float panelSize = 2f;
+    private float startingOffset;
+    private float panelPlacementDepthOffset = 0.1f;
 
     protected override void UnevenPlaceSymbols()
     {
-        //Should probably only relate to the correct number of positions, uneven or even shouldnt matter.
+        //Should probably only relate to the correct number of positions (if we have predefined acceptable positions for placement), uneven or even shouldnt matter.
+        CalculateSymbolPosition();
         EvenPlaceSymbols();
     }
+
+    private void CalculateSymbolPosition()
+    {
+        Physics.Raycast(transform.position + Vector3.up * 2, Vector3.forward, out RaycastHit panelHit);
+        Quaternion.Euler(panelHit.normal);
+    }
+
     protected override void EvenPlaceSymbols()
     {
+        startingOffset = Random.Range(offsetMinMax.x, offsetMinMax.y);
         //May be a way to handle this depending on implemenetation, discarding extra symbols or extra positions for instance
-        if(instantiatedSymbols.Count != symbolPositions.Count)
-            Debug.Log("Wrong number of symbols to symbolPositions");
 
         instantiatedSymbolsClone = new List<PuzzleObject>(instantiatedSymbols);
         //might not be what we want to do here, actually
@@ -33,20 +40,24 @@ public class UnorderedSymbolPlacer : SymbolPlacer
         for (int i = instantiatedSymbolsClone.Count; i > 0; i--)
         {
             float radians = startingOffset + counter * degreeOffset;
+            //this does not consider symbolPos rotation?
             PlaceSymbols(symbolPos.transform.position + new Vector3(Mathf.Cos(radians), Mathf.Sin(radians), 0) * panelSize);
-            Debug.Log("i is " + i + ", counter is : "+counter);
             counter++;
-        }        
+        } 
+
     }
 
     private void PlaceSymbols(Vector3 newPos)
     {
-        Debug.Log("placing symbol at position:" + newPos);
         //Move and REmove instance from list
+        PuzzleObject instance = instantiatedSymbolsClone[Random.Range(0, instantiatedSymbolsClone.Count)];       
 
-        PuzzleObject instance = instantiatedSymbolsClone[Random.Range(0, instantiatedSymbolsClone.Count)];
-        Debug.Log("instance is : " + instance.name);
         instance.transform.position = newPos;
+        instance.transform.rotation = symbolPos.rotation;
+
+        Vector3 pos = new Vector3(instance.transform.localPosition.x, instance.transform.localPosition.y, panelPlacementDepthOffset);
+        instance.transform.localPosition = pos;
+
         instantiatedSymbolsClone.Remove(instance);
     }
 
