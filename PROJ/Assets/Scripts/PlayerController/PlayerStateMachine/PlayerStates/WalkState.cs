@@ -29,13 +29,6 @@ public class WalkState : PlayerState
             stateMachine.ChangeState<AirborneState>(this);
             return;
         }
-
-
-
-       /* if (player.physics.velocity.magnitude > player.physics.SurfThreshold + 1
-            && player.playerController3D.groundHitAngle < player.playerController3D.GlideMinAngle
-            && player.playerController3D.groundHitInfo.collider.gameObject.layer == glideableLayer)
-            stateMachine.ChangeState<GlideState>();*/
     }
     public override void ExitState()
     {
@@ -46,8 +39,10 @@ public class WalkState : PlayerState
     {
         player.playerController3D.InputWalk(player.inputReference.InputMaster.Movement.ReadValue<Vector2>());
     }
+    private float sprintThreshold = 3f;
     private void OnSprintActivate(InputAction.CallbackContext obj)
     {
-       stateMachine.ChangeState<SprintState>();   
+        //if (player.physics.velocity.magnitude > sprintThreshold)
+            stateMachine.ChangeState<SprintState>();
     }
 }

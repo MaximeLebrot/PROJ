@@ -9,10 +9,11 @@ public class WindTeleport : MonoBehaviour
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.CompareTag("Glideable"))
+        if (col.CompareTag("Player"))
         {
+            Player = col.gameObject;
             Player.transform.position = TeleportTarget.transform.position;
-            Debug.Log("It fcking works ma dude");
+            //Debug.Log("It fcking works ma dude");
         }
     }
 }

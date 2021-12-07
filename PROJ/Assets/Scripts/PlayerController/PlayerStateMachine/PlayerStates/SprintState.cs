@@ -6,21 +6,31 @@ using UnityEngine.InputSystem;
 [CreateAssetMenu(menuName = "PlayerStates/SprintState")]
 public class SprintState : PlayerState
 {
-    public InputAction sprint;
-    private float sprintThreshold = 3f;
+    private InputAction sprint; 
     public override void Initialize()
     {
         base.Initialize();
         sprint = player.inputReference.InputMaster.Sprint;
-        sprint.Enable();    
+        sprint.Enable();      
     }
-
+    private void SetupInputs()
+    {
+        //Hold to Sprint
+        player.inputReference.InputMaster.Sprint.canceled += OnSprintActivate;
+        //Press to sprint
+        //player.inputReference.InputMaster.Sprint.performed += OnSprintActivate;
+    }
+    private void UnloadInputs()
+    {
+        player.inputReference.InputMaster.Sprint.canceled -= OnSprintActivate;
+    }
     public override void EnterState()
     {
-        //Debug.Log("Entered Sprint State");
+        Debug.Log("Entered Sprint State");
+        SetupInputs();
         player.animator.SetTrigger("Sprint");
         base.EnterState();
-        player.inputReference.InputMaster.Sprint.canceled += OnSprintActivate;
+        
     }
     public override void RunUpdate()
     {
@@ -30,16 +40,13 @@ public class SprintState : PlayerState
             stateMachine.ChangeState<AirborneState>(this);
             return;
         }
-        //if the player stops while sprinting, we probably want to cancel the sprint.. but this is maybe not the way to do that
-        if (player.physics.velocity.magnitude < sprintThreshold)
-            stateMachine.ChangeState<WalkState>();
-
     }
     public override void ExitState()
     {
+        Debug.Log("Exiting Sprint State");
         player.animator.SetTrigger("Walk");
         base.ExitState();
-        player.inputReference.InputMaster.Sprint.canceled -= OnSprintActivate;
+        UnloadInputs();   
     }
     private void SetInput()
     {
@@ -47,7 +54,7 @@ public class SprintState : PlayerState
     }
     private void OnSprintActivate(InputAction.CallbackContext obj)
     {
-        //Debug.Log("Exiting Sprint State");
         stateMachine.ChangeState<WalkState>();
+        
     }
 }
