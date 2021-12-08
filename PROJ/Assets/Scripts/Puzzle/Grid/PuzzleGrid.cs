@@ -20,7 +20,7 @@ public class PuzzleGrid : MonoBehaviour {
     private Node currentNode;
     private Node startNode;
 
-    [SerializeField] private string solution;
+    [SerializeField]private string solution;
     //private List<Node> allNodesLIST = new List<Node>();
     public Node[,] allNodes { get; private set; }
 
@@ -291,7 +291,6 @@ public class PuzzleGrid : MonoBehaviour {
         if (lineRenderers.Count > 0)
             lineRenderers.Peek().ErasableLine(true);
 
-
         SendToPuzzleForEvaluation();
     }
 
@@ -386,7 +385,7 @@ public class PuzzleGrid : MonoBehaviour {
 
     private void TurnOffNodes()
     {
-        //Debug.Log("TURN OFF NODES");
+        Debug.Log("TURN OFF NODES");
         foreach (Node n in allNodes)
         {
             if(n.startNode == false)
@@ -412,7 +411,6 @@ public class PuzzleGrid : MonoBehaviour {
     private void TellPuzzleGridIsReady()
     {
         masterPuzzle.InitiatePuzzle();
-        masterPuzzle.RegisterToResetPuzzleEvent();
     }
 
     private void DestroyCurrentLine()

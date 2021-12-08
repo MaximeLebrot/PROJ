@@ -75,6 +75,8 @@ public class PlayerPhysicsSplit : MonoBehaviour
         AddGravity();
         CheckForCollisions(0);
         ClampSpeed();
+        
+        Debug.DrawLine(transform.position, transform.position + velocity, Color.red);
     }
 
     public void SetValues(ControllerValues values)

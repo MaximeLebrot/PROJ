@@ -48,13 +48,27 @@ namespace NewCamera {
 
         public virtual void ManipulatePivotTarget(CustomInput input) {
             
-            //If no input or movement.x is 0 OR lower than input dead zone (for controllers). 
+           /* //If no input or movement.x is 0 OR lower than input dead zone (for controllers). 
             if (input.aim == Vector2.zero && (input.movement.x == 0 || Mathf.Abs(input.movement.x) < behaviourValues.InputDeadZone)) {
                 target.rotation = previousRotation;
                 return;
             }
-            
-            Vector3 desiredRotation  = target.eulerAngles + (Vector3)input.aim;
+            */
+
+           //If no input is given, don't rotate with parent 
+           if (input.aim == Vector2.zero && input.movement.y != 0) {
+               target.rotation = previousRotation;
+               return;
+           }
+
+           if (input.aim == Vector2.zero && input.movement.x != 0 && input.movement.y == 0) {
+               Vector3 rotation = target.eulerAngles + new Vector3(0, input.movement.x * .1f, 0);
+               target.eulerAngles = rotation;
+               previousRotation = target.rotation;
+           } 
+
+           
+           Vector3 desiredRotation  = target.eulerAngles + (Vector3)input.aim;
             
             if (desiredRotation.x > 180)
                 desiredRotation.x -= 360;
