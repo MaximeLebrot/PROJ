@@ -6,7 +6,6 @@ public class ControllerInputReference : ScriptableObject {
     private InputMaster inputMaster;
     public InputMaster.PlayerActions InputMaster => inputMaster.Player;
     public InputMaster.OneSwitchActions OneSwitchInputMaster => inputMaster.OneSwitch;
- 
 
     public void Initialize() {
         inputMaster = new InputMaster();

@@ -25,9 +25,6 @@ public class InGameMenu : MonoBehaviour {
     }
 
     private void OpenMenu(InputAction.CallbackContext e) {
-        
-        
-        
         Cursor.lockState = CursorLockMode.None;
         panel.transform.gameObject.SetActive(true);
         EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(true));

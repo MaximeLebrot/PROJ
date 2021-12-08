@@ -30,6 +30,9 @@ public class GameCamera : MonoBehaviour {
         inputReference.Initialize();
         transitioner.Initialize();
         thisTransform = transform;
+
+       
+        
         
         behaviours.Add(typeof(PuzzleCameraBehaviour),  cameraBehaviours[2]);
         behaviours.Add(typeof(BaseCameraBehaviour),  cameraBehaviours[0]);
@@ -188,7 +191,6 @@ public class GameCamera : MonoBehaviour {
             Debug.Log(e);
         }
     }
-    
 }
 
 public struct CustomInput {
