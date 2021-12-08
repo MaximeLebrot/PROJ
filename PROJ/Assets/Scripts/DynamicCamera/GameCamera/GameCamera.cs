@@ -188,6 +188,7 @@ public class GameCamera : MonoBehaviour {
             Debug.Log(e);
         }
     }
+    
 }
 
 public struct CustomInput {

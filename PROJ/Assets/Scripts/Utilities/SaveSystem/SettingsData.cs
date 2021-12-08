@@ -1,11 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 
 [Serializable]
 public class SettingsData
 {
+    //General
+    public float mouseSensitivity;
+    public bool holdToSprint;
+    public bool pressToSprint;
+    
     //Audio
     public float masterVolume;
     public float musicVolume;
@@ -13,31 +16,18 @@ public class SettingsData
     public float soundEffectsVolume;
     public bool mute;
     public float ambience;
-
-    //Easy of Access
-    public int fontSize;
-    public float pointerSize;
-    public bool showDesktop; //What is this? 
-    public bool blindMode;
-    public bool highContrastMode;
     
-
     //Display
     public float fieldOfView;
     public float brightness;
-    //public GraphicsQuality Quality;
     public bool fullscreen;
     public Resolution screenResolution;
     public string quality;
     
-    //private Resolution screenRes? 
-    
-    //General
-    public float mouseSensitivity;
-    public bool holdToSprint;
-    public bool pressToSprint;
-    
     //Accessibility
+    public int fontSize;
+    public bool blindMode;
+    public bool highContrastMode;
     public bool dyslexiaFont;
     public bool oneHandMode;
 }

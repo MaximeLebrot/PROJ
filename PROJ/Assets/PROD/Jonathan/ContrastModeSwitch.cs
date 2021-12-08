@@ -17,8 +17,6 @@ public class ContrastModeSwitch : MonoBehaviour {
     [SerializeField] private LayerMask contrastModeRenderLayers;
     private LayerMask mainRegularRenderLayers;
     
-    //Will be IEvent later, this is only for testing
-    
     private void Awake() {
         
         mainCamera = Camera.main;
@@ -33,7 +31,6 @@ public class ContrastModeSwitch : MonoBehaviour {
     private void OnEnable() => EventHandler<SaveSettingsEvent>.RegisterListener(SwitchToContrastMode);
     private void OnDisable() => EventHandler<SaveSettingsEvent>.UnregisterListener(SwitchToContrastMode);
     
-
     private void SwitchToContrastMode(SaveSettingsEvent settings) {
         overlayCamera.gameObject.SetActive(settings.settingsData.highContrastMode);
         mainCamera.cullingMask = settings.settingsData.highContrastMode ? contrastModeRenderLayers : mainRegularRenderLayers; 
