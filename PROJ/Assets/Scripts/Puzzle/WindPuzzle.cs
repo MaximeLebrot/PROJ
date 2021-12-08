@@ -51,9 +51,6 @@ public class WindPuzzle : Puzzle
         return false;
     }
 
-
-
-
     protected override void NextPuzzle()
     {
         wind.Stop();
