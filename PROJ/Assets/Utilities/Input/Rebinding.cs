@@ -8,13 +8,14 @@ public class Rebinding : MonoBehaviour
     private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
     public void RebindAction(InputActionReference action)
     {
-       rebindingOperation = action.action.PerformInteractiveRebinding()
-                                         .WithControlsExcluding("Mouse")
-                                         .OnMatchWaitForAnother(0.1f)
-                                         .OnComplete(operation => BindFinished(action))
-                                         .Start();
+        rebindingOperation = action.action.PerformInteractiveRebinding()
+                                           .WithControlsExcluding("Mouse")
+                                           .OnMatchWaitForAnother(0.1f)
+                                           .OnComplete(operation => BindFinished(action))
+                                           .Start();
 
     }
+
     private void BindFinished(InputActionReference action)
     {
         rebindingOperation.Dispose();
