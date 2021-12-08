@@ -13,5 +13,5 @@ public class DropDownSceneChanger : MonoBehaviour {
         
     }
 
-    private void ChangeSceneOnSelected(int index) => SceneManager.LoadScene(dropDownList.options[index].text);
+    private void ChangeSceneOnSelected(int index) => EventHandler<UnLoadSceneEvent>.FireEvent(new UnLoadSceneEvent(dropDownList.options[index].text));
 }

@@ -19,6 +19,10 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     
     public ControllerInputReference inputReference;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
 
     private void Start()
     {        

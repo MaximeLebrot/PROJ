@@ -10,10 +10,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.06
+  m_Radius: 0.15
   m_Height: 0.28
   m_Direction: 1
-  m_Center: {x: 0, y: 0.03, z: 0}
+  m_Center: {x: 0, y: -0.03, z: 0}
 --- !u!114 &7965016139997691212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -395,8 +395,8 @@ CapsuleCollider:
   m_GameObject: {fileID: 2407846072444869007}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.16
+  m_Enabled: 0
+  m_Radius: 0.06
   m_Height: 0.44
   m_Direction: 1
   m_Center: {x: -0.000030519754, y: 0.16, z: 0}
@@ -484,7 +484,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2407846072444869007}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6757b231cedd544c583ef8aeaf773b2a, type: 3}
   m_Name: 
@@ -760,10 +760,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.06
+  m_Radius: 0.15
   m_Height: 0.28
   m_Direction: 1
-  m_Center: {x: 0, y: 0.03, z: 0}
+  m_Center: {x: 0, y: -0.03, z: 0}
 --- !u!114 &7965016140136469526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -791,7 +791,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.16
+  m_Radius: 0.14
   m_Height: 0.53
   m_Direction: 1
   m_Center: {x: 0, y: 0.24, z: 0}
@@ -1614,7 +1614,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.16
+  m_Radius: 0.14
   m_Height: 0.53
   m_Direction: 1
   m_Center: {x: 0, y: 0.24, z: 0}
@@ -1787,14 +1787,11 @@ MonoBehaviour:
   retainedSpeedWhenTurning: 2
   airControl: 0.33
   slopeMaxAngle: 140
-  decelerationSlopeAngle: 110
-  slopeDecelerationMultiplier: 20
-  glideMinAngle: 85
   groundCheckMask:
     serializedVersion: 2
     m_Bits: 16567
   groundCheckDistance: 1.1
-  dualCameraBehaviour: 0
+  usingCameraRotation: 0
   inputReference: {fileID: 11400000, guid: 54398b8fed501aa41813fa11036bc179, type: 2}
 --- !u!114 &7633219187445847148
 MonoBehaviour:
@@ -1810,17 +1807,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocity: {x: 0, y: 0, z: 0}
   skinWidth: 0.001
-  inputThreshold: 0.1
-  currentGravity: 0
   minimumPenetrationForPenalty: 0.001
   collisionMask:
     serializedVersion: 2
     m_Bits: 16435
-  gravityWhenFalling: 25
-  moveThreshold: 0.002
   stepHeight: 0.2
-  velocityMagnitude: 0
-  defaultGravity: 9.81
+  moveThreshold: 0.002
+  inputThreshold: 0.1
+  gravityWhenFalling: 25
+  currentGravity: 0
   surfThreshold: 4.8
 --- !u!114 &7633219187445847151
 MonoBehaviour:
@@ -3376,8 +3371,8 @@ CapsuleCollider:
   m_GameObject: {fileID: 8493785377910697173}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.16
+  m_Enabled: 0
+  m_Radius: 0.06
   m_Height: 0.44
   m_Direction: 1
   m_Center: {x: -0.000030519754, y: 0.16, z: 0}
@@ -3465,7 +3460,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8493785377910697173}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6757b231cedd544c583ef8aeaf773b2a, type: 3}
   m_Name: 
