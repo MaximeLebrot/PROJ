@@ -14,14 +14,19 @@ public abstract class MenuSettings : MonoBehaviour {
 
         List<UIMenuItem> childOptions = GetComponentsInChildren<UIMenuItem>().ToList();
 
-        foreach (UIMenuItem menuItem in childOptions)
+        foreach (UIMenuItem menuItem in childOptions) {
             menuOptions.Add(menuItem.ID, menuItem);
+        }
+        
+        SubMenuInitialize();
         
         gameObject.SetActive(false);
     }
 
-    public abstract void UpdateMenuItems(SettingsData settingsData);
+    protected virtual void SubMenuInitialize() {}
+    
+    public abstract void SetMenuItems(SettingsData settingsData);
 
-    public abstract void ExtractMenuItemValues(ref SettingsData settingsData);
+    public abstract void ApplyItemValues(ref SettingsData settingsData);
     protected UIMenuItem ExtractMenuItem(string menuName) => menuOptions[menuName.GetHashCode()];
 }
