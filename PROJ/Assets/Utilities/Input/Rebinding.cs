@@ -107,7 +107,7 @@ public class Rebinding : MonoBehaviour
 
     public static void LoadBindingOverride(string actionName)
     {
-        if (inputActions == null)
+        /*if (inputActions == null)
             inputActions = new RebindJumping();
 
         InputAction action = inputActions.asset.FindAction(actionName);
@@ -116,7 +116,7 @@ public class Rebinding : MonoBehaviour
         {
             if (!string.IsNullOrEmpty(PlayerPrefs.GetString(action.actionMap + action.name + i)))
                 action.ApplyBindingOverride(i, PlayerPrefs.GetString(action.actionMap + action.name + i));
-        }
+        }*/
     }
     #region Methods Called from buttons
     public void RebindSprint(RebindUIButton calledFrom)
