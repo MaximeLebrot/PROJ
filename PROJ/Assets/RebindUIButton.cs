@@ -12,6 +12,6 @@ public class RebindUIButton : MonoBehaviour
     public Text bindingButtonText;
 
     private ControllerInputReference inputReference;
-    private InputAction action;
+    public InputActionReference action;
 
 }

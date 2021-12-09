@@ -150,7 +150,7 @@ public class SettingsMenu : MonoBehaviour
         userSettings.brightness = brightness.value;
         //quality = settings.Quality;
         //resolution  = settings.
-        userSettings.fullscreen = fullscreen.isOn;
+        //userSettings.fullscreen = fullscreen.isOn;
 
 
         //PuzzleSettings
@@ -179,7 +179,7 @@ public class SettingsMenu : MonoBehaviour
         brightness.value = settings.brightness;
         //quality = settings.Quality;
         //resolution  = settings.
-        fullscreen.isOn = settings.fullscreen;
+        //fullscreen.isOn = settings.fullscreen;
 
         //PuzzleSettings
         /*
