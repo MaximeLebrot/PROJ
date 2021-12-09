@@ -21,13 +21,16 @@ public class PlayerAnimation : MonoBehaviour
     }
     PlayerController pc;
     PlayerPhysicsSplit physics;
+
     float rotationThreshold = -0.7f;
     private void Update()
     {
         input = inputReference.InputMaster.Movement.ReadValue<Vector2>();
-        float dot = Vector3.Dot(pc.cameraTransform.forward, transform.forward) < rotationThreshold ? -1f : 1f;
-
+        //float dot = Vector3.Dot(pc.cameraTransform.forward, transform.forward) < rotationThreshold ? -1f : 1f;
+        float dot = Vector3.Dot(transform.forward, physics.GetXZMovement()) < rotationThreshold ? -1f : 1f;
         anim.SetFloat(x, input.x * dot);
-        anim.SetFloat(y, input.y * dot);
+
+        //Obviously not exactly what we want to do, but in principle this sort of calculation should go into feeding the animator controller.
+        anim.SetFloat(y, dot);
     }
 }
