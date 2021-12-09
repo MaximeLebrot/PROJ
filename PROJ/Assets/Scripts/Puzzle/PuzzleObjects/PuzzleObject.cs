@@ -14,20 +14,37 @@ public abstract class PuzzleObject : MonoBehaviour
 
     //[HideInInspector]
     [SerializeField] private ModifierVariant modVariant;
+
+    [SerializeField] private List<Material> materials_EASY_MEDIUM_HARD = new List<Material>();
+    private Dictionary<string, Material> materialsByDifficulty = new Dictionary<string, Material>();
     
 
     private ModInfo modInfo;
     private Image modifierImage; //dekal som ska visas någonstans!?!? HUR GÖR MAN
     private GameObject modifier;
     private Animator anim;
-
+    private MeshRenderer mesh;
     public bool Active { get; private set; }
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
+        mesh = GetComponent<MeshRenderer>();
+        //SetUpMaterials();
+        Debug.Log(mesh.material);
     }
 
+    private void SetUpMaterials()
+    {
+        materialsByDifficulty.Add("easy", materials_EASY_MEDIUM_HARD[0]);
+        materialsByDifficulty.Add("medium", materials_EASY_MEDIUM_HARD[1]);
+        materialsByDifficulty.Add("hard", materials_EASY_MEDIUM_HARD[2]);
+    }
+
+    private void SetMaterialBasedOnDifficulty(string difficulty)
+    {
+        mesh.material = materialsByDifficulty[difficulty];
+    }
 
     public string GetTranslation()
     {
