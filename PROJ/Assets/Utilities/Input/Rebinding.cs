@@ -110,6 +110,7 @@ public class Rebinding : MonoBehaviour
         }
     }
 
+    //without reference to the correct button, we wont be able to load the right text/char for each binding, making this more confusing than useful
     public void LoadBindingOverrides()
     {
         foreach (InputAction action in inputReference.inputMaster.asset.FindActionMap("Player"))
