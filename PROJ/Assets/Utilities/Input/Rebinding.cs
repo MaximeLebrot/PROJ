@@ -38,6 +38,7 @@ public class Rebinding : MonoBehaviour
         }
     }
 
+
     private void Rebind(InputAction action, int currentBindingIndex, bool composite = false)
     {
         rebindingOperation?.Cancel();
@@ -132,7 +133,9 @@ public class Rebinding : MonoBehaviour
     public void RebindSprint(RebindUIButton calledFrom)
     {
         currentButton = calledFrom;
-        RebindAction(inputReference.InputMaster.Sprint);      
+
+        RebindAction(inputReference.inputMaster.asset.FindAction(calledFrom.action.action.name));
+        //RebindAction(inputReference.InputMaster.Sprint);      
     }
     public void RebindExitPuzzle(RebindUIButton calledFrom)
     {
