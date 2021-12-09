@@ -1,6 +1,6 @@
 public class AudioSettings : MenuSettings {
     
-    public override void UpdateMenuItems(SettingsData settingsData) {
+    public override void SetMenuItems(SettingsData settingsData) {
         
         menuOptions[ExtractMenuItem("Mute").ID].SetValue(settingsData.mute);
         menuOptions[ExtractMenuItem("Master").ID].SetValue(settingsData.masterVolume);
@@ -11,7 +11,7 @@ public class AudioSettings : MenuSettings {
         
     }
 
-    public override void ExtractMenuItemValues(ref SettingsData settingsData) {
+    public override void ApplyItemValues(ref SettingsData settingsData) {
         settingsData.mute = menuOptions[ExtractMenuItem("Mute").ID].GetValue();
         settingsData.masterVolume = menuOptions[ExtractMenuItem("Master").ID].GetValue();
         settingsData.musicVolume = menuOptions[ExtractMenuItem("Music").ID].GetValue();

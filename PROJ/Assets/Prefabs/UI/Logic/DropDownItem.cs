@@ -8,10 +8,5 @@ public class DropDownItem : UIMenuItem {
     protected override void Initialize() {}
 
     public override dynamic GetValue() => dropdownList.options[dropdownList.value].text;
-    public override void SetValue(dynamic value) {
-        
-        Debug.Log(value);
-        
-       // dropdownList.value = value;
-    }
+    public override void SetValue(dynamic value) => dropdownList.value = dropdownList.options.FindIndex(resolutionOption => resolutionOption.text.Equals(value.ToString()));
 }
