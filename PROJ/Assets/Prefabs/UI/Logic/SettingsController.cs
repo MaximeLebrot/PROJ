@@ -53,12 +53,12 @@ public class SettingsController : MonoBehaviour {
     private void UpdateUserSettings() {
 
         foreach(MenuSettings menuSettings in settingObjects)
-            menuSettings.ExtractMenuItemValues(ref userSettings);
+            menuSettings.ApplyItemValues(ref userSettings);
     }
 
     private void SetValues(SettingsData settings) {
 
         foreach (MenuSettings menuSettings in settingObjects)
-            menuSettings.UpdateMenuItems(settings);
+            menuSettings.SetMenuItems(settings);
     }
 }
