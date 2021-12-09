@@ -6,31 +6,35 @@ using UnityEngine.InputSystem;
 [CreateAssetMenu(menuName = "PlayerStates/SprintState")]
 public class SprintState : PlayerState
 {
-    private InputAction sprint; 
+    private InputAction sprint;
+    private bool holdToSprint = false;
     public override void Initialize()
     {
         base.Initialize();
+        EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
         sprint = player.inputReference.InputMaster.Sprint;
         sprint.Enable();      
     }
-    private void SetupInputs()
+    private void LoadInputs()
     {
-        //Hold to Sprint
-        player.inputReference.InputMaster.Sprint.canceled += OnSprintActivate;
-        //Press to sprint
-        //player.inputReference.InputMaster.Sprint.performed += OnSprintActivate;
+        if(holdToSprint)
+            player.inputReference.InputMaster.Sprint.canceled += OnSprintActivate;
+        else
+            player.inputReference.InputMaster.Sprint.performed += OnSprintActivate;
     }
     private void UnloadInputs()
     {
-        player.inputReference.InputMaster.Sprint.canceled -= OnSprintActivate;
+        if(holdToSprint)
+            player.inputReference.InputMaster.Sprint.canceled -= OnSprintActivate;
+        else
+            player.inputReference.InputMaster.Sprint.performed -= OnSprintActivate;
     }
     public override void EnterState()
     {
         Debug.Log("Entered Sprint State");
-        SetupInputs();
+        LoadInputs();
         player.animator.SetTrigger("Sprint");
-        base.EnterState();
-        
+        base.EnterState();        
     }
     public override void RunUpdate()
     {
@@ -54,7 +58,10 @@ public class SprintState : PlayerState
     }
     private void OnSprintActivate(InputAction.CallbackContext obj)
     {
-        stateMachine.ChangeState<WalkState>();
-        
+        stateMachine.ChangeState<WalkState>();      
+    }
+    private void OnSaveSettings(SaveSettingsEvent eve)
+    {
+        holdToSprint = eve.settingsData.holdToSprint;
     }
 }

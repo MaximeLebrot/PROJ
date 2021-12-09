@@ -102,6 +102,8 @@ public class Rebinding : MonoBehaviour
             action.bindings[bindingIndex].effectivePath, 
             InputControlPath.HumanReadableStringOptions.OmitDevice);
     }
+
+
     private static void SaveBindingOverride(InputAction action)
     {
         for (int i = 0; i < action.bindings.Count; i++)
@@ -109,7 +111,6 @@ public class Rebinding : MonoBehaviour
             PlayerPrefs.SetString(action.actionMap + action.name + i, action.bindings[i].overridePath);
         }
     }
-
     //without reference to the correct button, we wont be able to load the right text/char for each binding, making this more confusing than useful
     public void LoadBindingOverrides()
     {
@@ -126,6 +127,7 @@ public class Rebinding : MonoBehaviour
             }
         }
     }
+
     #region Methods Called from buttons
     public void RebindSprint(RebindUIButton calledFrom)
     {
