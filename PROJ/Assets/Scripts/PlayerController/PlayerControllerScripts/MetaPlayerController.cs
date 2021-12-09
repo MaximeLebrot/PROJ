@@ -18,11 +18,10 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     [SerializeField] public List<ControllerValues> controllerValues = new List<ControllerValues>();
     
     public ControllerInputReference inputReference;
-    public PlayerInput playerInput;
+
     private void Awake()
     {
         DontDestroyOnLoad(this);
-        playerInput = GetComponent<PlayerInput>();
     }
 
     private void Start()
