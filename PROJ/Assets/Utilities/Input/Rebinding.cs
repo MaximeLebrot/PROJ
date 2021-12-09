@@ -9,8 +9,12 @@ public class Rebinding : MonoBehaviour
     private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
     private RebindUIButton currentButton;
     private string compositeName = "";
-    
-    
+
+
+    private void Start()
+    {
+        //LoadBindingOverrides();
+    }
     /// <summary>
     /// Currently doesn't support rebinding multiple bindings, hard coded to use the
     /// top one, and any others wont be accessible from here.
@@ -77,6 +81,7 @@ public class Rebinding : MonoBehaviour
                 else
                     UpdateUIButton(action);
 
+                //SaveBindingOverride(action);
                 action.Enable();
             })           
             .Start();
@@ -105,18 +110,20 @@ public class Rebinding : MonoBehaviour
         }
     }
 
-    public static void LoadBindingOverride(string actionName)
+    public void LoadBindingOverrides()
     {
-        /*if (inputActions == null)
-            inputActions = new RebindJumping();
-
-        InputAction action = inputActions.asset.FindAction(actionName);
-
-        for (int i = 0; i < action.bindings.Count; i++)
+        foreach (InputAction action in inputReference.inputMaster.asset.FindActionMap("Player"))
         {
-            if (!string.IsNullOrEmpty(PlayerPrefs.GetString(action.actionMap + action.name + i)))
-                action.ApplyBindingOverride(i, PlayerPrefs.GetString(action.actionMap + action.name + i));
-        }*/
+            for (int i = 0; i < action.bindings.Count; i++)
+            {
+                if (!string.IsNullOrEmpty(PlayerPrefs.GetString(action.actionMap + action.name + i)))
+                {
+                    action.ApplyBindingOverride(i, PlayerPrefs.GetString(action.actionMap + action.name + i));
+                    //UpdateUIButton(action);
+                }
+
+            }
+        }
     }
     #region Methods Called from buttons
     public void RebindSprint(RebindUIButton calledFrom)
