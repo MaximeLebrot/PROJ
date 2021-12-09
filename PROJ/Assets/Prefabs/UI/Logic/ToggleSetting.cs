@@ -7,4 +7,5 @@ public class ToggleSetting : UIMenuItem {
     
     public override dynamic GetValue() => toggle.isOn;
     public override void SetValue(dynamic value) => toggle.isOn = value;
+    
 }

@@ -20,7 +20,7 @@ public class SettingsData
     //Display
     public float fieldOfView;
     public float brightness;
-    public FullScreenMode fullscreen;
+    public bool fullscreen;
     public Resolution screenResolution;
     public string quality;
     

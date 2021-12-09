@@ -11,8 +11,8 @@ public class Resolutioner {
         this.resolutionList = resolutionList;
         AddResolutionOptions();
         
-        if(autoDetectResolution)
-            AutoDetectResolution();
+        //if(autoDetectResolution)
+          //  AutoDetectResolution();
     }
 
     private void AutoDetectResolution() {
