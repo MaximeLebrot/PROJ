@@ -14,18 +14,10 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Interact",
+                    "name": "Sprint",
                     "type": "Button",
-                    "id": "b4de5da9-c326-427e-8001-67ca6e0e5b2c",
+                    "id": "3952ba76-ed8a-467f-9bff-86fc569f298b",
                     "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Tap"
-                },
-                {
-                    "name": "MoveCamera",
-                    "type": "Value",
-                    "id": "2b897f4b-fc28-43c5-a522-c69442704706",
-                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
                 },
@@ -38,18 +30,10 @@
                     "interactions": ""
                 },
                 {
-                    "name": "evaluateSolution",
-                    "type": "Button",
-                    "id": "7e46c209-a5f4-4ece-8eb5-edd6dcd61968",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
-                    "name": "ContrastMode",
-                    "type": "Button",
-                    "id": "19fab7fd-e07d-45de-9389-2916cd53a3b4",
-                    "expectedControlType": "Button",
+                    "name": "MoveCamera",
+                    "type": "Value",
+                    "id": "2b897f4b-fc28-43c5-a522-c69442704706",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
                 },
@@ -70,17 +54,9 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Sprint",
+                    "name": "ContrastMode",
                     "type": "Button",
-                    "id": "3952ba76-ed8a-467f-9bff-86fc569f298b",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
-                    "name": "HUB",
-                    "type": "Button",
-                    "id": "b61d00c3-b7bc-41db-8858-c2aed65116d3",
+                    "id": "19fab7fd-e07d-45de-9389-2916cd53a3b4",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -110,9 +86,9 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "left",
-                    "id": "8c9540d2-1729-4ac3-a9ca-ec27cae85a1f",
-                    "path": "<Keyboard>/a",
+                    "name": "down",
+                    "id": "8466c131-468d-478a-99ab-b6dd2966b57e",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "Stnd KBM",
@@ -121,9 +97,9 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "down",
-                    "id": "8466c131-468d-478a-99ab-b6dd2966b57e",
-                    "path": "<Keyboard>/s",
+                    "name": "left",
+                    "id": "8c9540d2-1729-4ac3-a9ca-ec27cae85a1f",
+                    "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "Stnd KBM",
@@ -155,28 +131,6 @@
                 },
                 {
                     "name": "",
-                    "id": "5300fa11-f126-4697-8ccb-5020722b0397",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Stnd KBM",
-                    "action": "Interact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "afcc40d2-e23f-4323-bd0a-d6918a3ee0b6",
-                    "path": "<Keyboard>/i",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Stnd KBM",
-                    "action": "Interact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "125b7564-f804-44d0-aeb7-1768ea5c58d0",
                     "path": "<Mouse>/delta",
                     "interactions": "",
@@ -194,50 +148,6 @@
                     "processors": "ScaleVector2(x=13,y=13)",
                     "groups": "Stnd KBM",
                     "action": "MoveCamera",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "45eb080b-dbfe-4265-9a68-72645599fb2e",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Stnd KBM",
-                    "action": "ExitPuzzle",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "bb07d486-b9d5-4fe1-81af-abc8e0bcc3ad",
-                    "path": "<Gamepad>/buttonEast",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "xboxcontroller",
-                    "action": "ExitPuzzle",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f9774996-7d0f-40a0-a8e5-722c86a490d3",
-                    "path": "<Keyboard>/c",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Stnd KBM",
-                    "action": "evaluateSolution",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "6141eb4b-b7ae-4c77-bd9e-e6a046f7387d",
-                    "path": "<Keyboard>/k",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Stnd KBM",
-                    "action": "ContrastMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -276,6 +186,28 @@
                 },
                 {
                     "name": "",
+                    "id": "45eb080b-dbfe-4265-9a68-72645599fb2e",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Stnd KBM",
+                    "action": "ExitPuzzle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bb07d486-b9d5-4fe1-81af-abc8e0bcc3ad",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "xboxcontroller",
+                    "action": "ExitPuzzle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "750247f7-5076-44b9-ab2b-3fd65e39e2d0",
                     "path": "<Keyboard>/leftShift",
                     "interactions": "Press",
@@ -298,12 +230,12 @@
                 },
                 {
                     "name": "",
-                    "id": "f7a014a6-39ca-4316-9bee-754842c8cbbb",
-                    "path": "<Keyboard>/h",
+                    "id": "6141eb4b-b7ae-4c77-bd9e-e6a046f7387d",
+                    "path": "<Keyboard>/k",
                     "interactions": "",
                     "processors": "",
                     "groups": "Stnd KBM",
-                    "action": "HUB",
+                    "action": "ContrastMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
