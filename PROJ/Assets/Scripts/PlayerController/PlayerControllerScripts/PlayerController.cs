@@ -6,52 +6,44 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     #region Parameters exposed in the inspector
+
     [Header("Player Control")]  
     [SerializeField] private float acceleration = 5f;
-    [SerializeField] private float deceleration = 2f;
-    
+    [SerializeField] private float deceleration = 2f;   
     [SerializeField] private float maxSpeed = 5f;
     [SerializeField] private float turnRate = 4f;
     [SerializeField] private float turnSpeed; 
     [SerializeField] private float retainedSpeedWhenTurning = 0.33f;
     [SerializeField] private float airControl = 0.2f;
-    //[SerializeField] private float jumpHeight = 5f;
     
     [Header("Slopes")]
     [SerializeField] private float slopeMaxAngle = 140;
-    [SerializeField] private float decelerationSlopeAngle = 110f;
-    [SerializeField] private float slopeDecelerationMultiplier = 2f;
-    [SerializeField] private float glideMinAngle = 80f;
 
     [Header("GroundCheck")]
     [SerializeField] private LayerMask groundCheckMask;
     [SerializeField] private float groundCheckDistance = 0.05f;
-
+    private RaycastHit groundHitInfo;
+    private float groundCheckBoxSize = 0.1f;
 
     #endregion
 
-   
-
-
+    //Steering
+    //exposed for debug
+    [SerializeField]private bool usingCameraRotation;   
     
-    public RaycastHit groundHitInfo;  
-    private float groundCheckBoxSize = 0.1f;
+    //Input
     private float inputThreshold = 0.1f;
     private Vector3 input;
     private Vector3 force;
 
     //Component references
     public PlayerPhysicsSplit physics { get; private set; }
-    public Animator animator { get; private set; }
-    private Transform cameraTransform;
+    public Transform cameraTransform { get; private set; }
+    public ControllerInputReference inputReference;
 
     //Properties
-    public float groundHitAngle { get; private set; }
-    public float GlideMinAngle => glideMinAngle;
+    private float groundHitAngle;
 
-    //Camera Test/Debug
-    public bool dualCameraBehaviour = true;
-    public ControllerInputReference inputReference;
 
     void Awake()
     {
@@ -66,7 +58,6 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         physics.AddForce(force);
-        //force = Vector3.zero;
     }
 
     /// <summary>
@@ -81,16 +72,10 @@ public class PlayerController : MonoBehaviour
     }
     #region Movement
 
-    public void InputGlide(Vector3 inp)
-    {
-        SlopeDeceleration();
-        InputWalk(inp);
-    }
     public void InputWalk(Vector3 inp)
     {
-
-        input = inp.x * Vector3.right +
-                inp.y * Vector3.forward;
+        ModeOfInput(inp);
+        
 
         //to stop character rotation when input is 0
         if (input.magnitude < inputThreshold)
@@ -107,8 +92,7 @@ public class PlayerController : MonoBehaviour
     }
     public void InputAirborne(Vector3 inp)
     {
-        input =  inp.x * cameraTransform.right+ 
-                 inp.y * cameraTransform.forward;
+        ModeOfInput(inp);
 
         if (input.magnitude > 1f)
         {
@@ -121,13 +105,24 @@ public class PlayerController : MonoBehaviour
         Accelerate();
     }
 
+    private void ModeOfInput(Vector3 inp)
+    {
+        //One way of steering
+        if (usingCameraRotation)
+        {
+            input = inp.x * Vector3.right +
+                    inp.y * Vector3.forward;
+        }
+        //Independent of camera rotation
+        else
+        {
+            input = inp.x * transform.right +
+                    inp.y * transform.forward;
+        }
+    }
+
     private void Decelerate()
     {
-        //Debug
-        /*
-        if(physics.velocity.magnitude > 0.05f)
-            Debug.Log("Decelerating");
-        */
         Vector3 projectedDeceleration = Vector3.ProjectOnPlane(-physics.GetXZMovement(), groundHitInfo.normal) * deceleration;
         force += projectedDeceleration;
     }
@@ -151,71 +146,25 @@ public class PlayerController : MonoBehaviour
     
     private void PlayerDirection(Vector3 rawInput)
     {
-        Vector3 temp = cameraTransform.rotation.eulerAngles;
-        temp.x = 0;
-        Quaternion camRotation = Quaternion.Euler(temp);
+        if (usingCameraRotation)
+        {
+            Vector3 temp = cameraTransform.rotation.eulerAngles;
+            temp.x = 0;
+            Quaternion camRotation = Quaternion.Euler(temp);
 
-        input = camRotation * input;
-        input.y = 0;
+            input = camRotation * input;
+            input.y = 0;
+        }
 
         RotateInVelocityDirection();
         ProjectMovement();
     }
-
     private void RotateInVelocityDirection()
     {
         Vector3 charVelocity = physics.GetXZMovement();
         if (charVelocity.magnitude < inputThreshold)
             return;
         transform.forward = Vector3.Lerp(transform.forward, charVelocity.normalized, turnSpeed * Time.deltaTime);
-    }
-    //Obsolete
-    private void RotateTowardsCameraDirection()
-    {
-       /*transform.localEulerAngles = new Vector3(
-        transform.localEulerAngles.x,
-        cameraTransform.localEulerAngles.y,
-        transform.localEulerAngles.z);
-
-        //rotation from input
-        Vector3 temp = transform.rotation.eulerAngles;
-        temp.x = 0;
-        Quaternion rotation = Quaternion.Euler(temp);
-
-        //Add rotation to input
-        input += rotation * input;
-        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x,
-                                                 input.x,
-                                                 transform.localEulerAngles.z);
-        transform.rotation = Quaternion.LookRotation(physics.GetXZMovement().normalized, Vector3.up);
-        //transform.Rotate(0, rawInput.x, 0);
-        //transform.forward = Vector3.Lerp(transform.forward, new Vector3(transform.forward.x, input.y, transform.forward.z), turnSpeed * Time.deltaTime);
-        */
-    }
-    //Rotation when using Glide
-    private void RotateInDirectionOfMovement(Vector3 rawInput)
-    {
-        //Create rotation
-        Vector3 temp = transform.rotation.eulerAngles;
-        temp.x = 0;
-        Quaternion rotation = Quaternion.Euler(temp);
-
-        //Add rotation to input
-        input = rotation * input;
-
-        ProjectMovement();
-        transform.Rotate(0, rawInput.x * turnSpeed, 0);
-
-    }
-    private void SlopeDeceleration()
-    {     
-        float slopeDecelerationFactor = ((groundHitAngle - decelerationSlopeAngle) / (slopeMaxAngle - decelerationSlopeAngle));
-        if (groundHitAngle > decelerationSlopeAngle)
-        {
-            //Debug.Log("Using slope deceleration");
-            //force = slopeDecelerationFactor * -physics.velocity * slopeDecelerationMultiplier;
-            force = slopeDecelerationFactor * slopeDecelerationMultiplier * -physics.velocity.normalized;
-        }
     }
     private void ProjectMovement()
     {

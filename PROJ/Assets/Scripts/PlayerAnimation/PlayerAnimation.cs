@@ -14,13 +14,23 @@ public class PlayerAnimation : MonoBehaviour
     {
         x = Animator.StringToHash("speed");
         y = Animator.StringToHash("direction");
-        anim = GetComponent<Animator>(); 
+        anim = GetComponent<Animator>();
+
+        physics = GetComponent<PlayerPhysicsSplit>();
+        pc = GetComponent<PlayerController>(); 
     }
-    
+    PlayerController pc;
+    PlayerPhysicsSplit physics;
+
+    float rotationThreshold = -0.7f;
     private void Update()
     {
         input = inputReference.InputMaster.Movement.ReadValue<Vector2>();
-        anim.SetFloat(x, input.x);
-        anim.SetFloat(y, input.y);
+        //float dot = Vector3.Dot(pc.cameraTransform.forward, transform.forward) < rotationThreshold ? -1f : 1f;
+        float dot = Vector3.Dot(transform.forward, physics.GetXZMovement()) < rotationThreshold ? -1f : 1f;
+        anim.SetFloat(x, input.x * dot);
+
+        //Obviously not exactly what we want to do, but in principle this sort of calculation should go into feeding the animator controller.
+        anim.SetFloat(y, dot);
     }
 }
