@@ -1,10 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using NewCamera;
 using UnityEngine;
 [System.Serializable]
 [CreateAssetMenu(menuName = "Camera/Camera Behaviours/One Hand Camera Behaviour", fileName = "One Hand Camera Behaviour")]
 public class OneHandCameraBehaviour : BaseCameraBehaviour {
+    
     public override void ManipulatePivotTarget(CustomInput input) {
         //If no input or movement.x is 0 OR lower than input dead zone (for controllers). 
         if (input.aim == Vector2.zero && (input.movement.x == 0 || Mathf.Abs(input.movement.x) < behaviourValues.InputDeadZone)) {

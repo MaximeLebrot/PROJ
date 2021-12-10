@@ -1,7 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
-using System;
 
 public class Rebinding : MonoBehaviour
 {

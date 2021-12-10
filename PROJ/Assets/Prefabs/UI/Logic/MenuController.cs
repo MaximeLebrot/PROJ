@@ -1,61 +1,29 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(MenuAnimator))]
+public abstract class MenuController : MonoBehaviour {
 
-public class MenuController : MonoBehaviour {
-
-    [SerializeField] private ControllerInputReference controllerInputReference;
-    private Animator animator;
-    private GraphicRaycaster graphicRaycaster;
-    
-    private int onAnyKeyHash;
-    private int showSettingsMenu;
-    private int showGeneralHash;
-    private int showVideoHash;
-    private int showAudioHash;
-    private int showAccessibilityHash;
-    
-    private Stack<int> depth = new Stack<int>();
-
-    private Dictionary<string, int> pageHashes = new Dictionary<string, int>();
-    
+    [SerializeField] protected ControllerInputReference controllerInputReference;
     public delegate void ActivatePage(int ID);
-    public static event ActivatePage OnActivatePage;
+    public event ActivatePage OnActivatePage;
 
-    private bool inputSuspended;
-    
-    private void Awake() {
+    protected MenuAnimator menuAnimator;
+    protected bool inputSuspended;
+
+    private GraphicRaycaster graphicRaycaster;
+
+    protected void Awake() {
         controllerInputReference.Initialize();
-        graphicRaycaster = GetComponent<GraphicRaycaster>();
         
-        animator = GetComponent<Animator>();
-
+        graphicRaycaster = GetComponentInParent<GraphicRaycaster>();
+        menuAnimator = GetComponent<MenuAnimator>();
+        
         InputController.SuspendInputEvent += SuspendInputEvent;
         
-        onAnyKeyHash = Animator.StringToHash("AnyKeyPressed");
-        showSettingsMenu = Animator.StringToHash("ShowSettingsMenu");
-        showGeneralHash = Animator.StringToHash("ShowGeneral");
-        showVideoHash = Animator.StringToHash("ShowVideo");    
-        showAudioHash = Animator.StringToHash("ShowAudio");    
-        showAccessibilityHash = Animator.StringToHash("ShowAccessibility");
-        
-        pageHashes.Add("MenuButtons", showSettingsMenu);
-        pageHashes.Add("General", showGeneralHash);
-        pageHashes.Add("Video", showVideoHash);
-        pageHashes.Add("Audio", showAudioHash);
-        pageHashes.Add("Accessibility", showAccessibilityHash);
-        
-        controllerInputReference.InputMaster.Anykey.performed += OnAnyKeyPressed;
-        controllerInputReference.InputMaster.Menu.performed += GoBack;
-       
-    }
-    
-    private void OnAnyKeyPressed(InputAction.CallbackContext e) {
-        controllerInputReference.InputMaster.Anykey.performed -= OnAnyKeyPressed;
-        
-        animator.SetTrigger(onAnyKeyHash);
+        Initialize();
     }
     
     public void SwitchPage(string pageName) {
@@ -63,25 +31,18 @@ public class MenuController : MonoBehaviour {
         if (inputSuspended)
             return;
         
-        animator.SetBool(pageHashes[pageName], true);
-        
-        depth.Push(pageHashes[pageName]);
+        menuAnimator.SetBool(pageName, true);
     }
 
-    private void GoBack(InputAction.CallbackContext e) {
-        
-        if (depth.Count < 1 || inputSuspended)
-            return;
-        
-        int currentLevel = depth.Pop();
-        
-        animator.SetBool(currentLevel, !animator.GetBool(currentLevel));
-    }
-    
-    public void OnActivatePageEvent(string name) => OnActivatePage?.Invoke(name.GetHashCode());
+
+    protected abstract void Initialize();
     
     private void SuspendInputEvent(bool suspend) {
         inputSuspended = suspend;
         graphicRaycaster.enabled = !inputSuspended;
+    }
+    
+    public void OnActivatePageEvent(string name) {
+        OnActivatePage?.Invoke(name.GetHashCode());
     }
 }

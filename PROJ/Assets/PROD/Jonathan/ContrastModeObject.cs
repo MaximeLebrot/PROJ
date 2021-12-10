@@ -30,11 +30,11 @@ public class ContrastModeObject : MonoBehaviour {
 
     private void DetermineIfContrastModeIsActive() {
         
-        bool isContrastModeActive = FindObjectOfType<InGameMenu>().SettingsMenu.userSettings.highContrastMode;
+       // bool isContrastModeActive = FindObjectOfType<InGameMenu>().SettingsMenu.userSettings.highContrastMode;
 
-        if (!isContrastModeActive) return;
+     //   if (!isContrastModeActive) return;
         
-        SwapMaterials(true);
+    //    SwapMaterials(true);
 
     }
     

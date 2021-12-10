@@ -36,7 +36,8 @@ public class GameCamera : MonoBehaviour {
         behaviours.Add(typeof(BaseCameraBehaviour),  cameraBehaviours[0]);
         behaviours.Add(typeof(IdleBehaviour),  cameraBehaviours[1]);
         behaviours.Add(typeof(WalkState),  cameraBehaviours[0]);
-
+        behaviours.Add(typeof(OneHandCameraBehaviour),  cameraBehaviours[3]);
+        
         currentBaseCameraBehaviour = behaviours[typeof(BaseCameraBehaviour)];
         
         currentBaseCameraBehaviour.InjectReferences(thisTransform, followTarget);
@@ -82,6 +83,7 @@ public class GameCamera : MonoBehaviour {
         EventHandler<PlayerStateChangeEvent>.RegisterListener(OnPlayerStateChange);
         EventHandler<CameraLookAndMoveToEvent>.RegisterListener(OnLookAndMove);
         EventHandler<LockInputEvent>.RegisterListener(LockInput);
+        EventHandler<SaveSettingsEvent>.RegisterListener(UpdateSettings);
     }
 
     private void OnDisable() {
@@ -91,6 +93,7 @@ public class GameCamera : MonoBehaviour {
         EventHandler<PlayerStateChangeEvent>.UnregisterListener(OnPlayerStateChange);
         EventHandler<CameraLookAndMoveToEvent>.UnregisterListener(OnLookAndMove);
         EventHandler<LockInputEvent>.UnregisterListener(LockInput);
+        EventHandler<SaveSettingsEvent>.UnregisterListener(UpdateSettings);
     }
 
     private void OnAwayFromKeyboard(AwayFromKeyboardEvent e) {
@@ -119,11 +122,19 @@ public class GameCamera : MonoBehaviour {
         
     }
 
+    private void UpdateSettings(SaveSettingsEvent saveEvent) {
+
+        bool oneHandMode = saveEvent.settingsData.oneHandMode;
+        
+        if(oneHandMode)
+            ChangeBehaviour<OneHandCameraBehaviour>();
+
+    }
+
     private void OnPuzzleStart(StartPuzzleEvent startPuzzleEvent) {
             
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
         
-
         ChangeBehaviour<PuzzleCameraBehaviour>();
 
         PuzzleCameraBehaviour puzzleBehaviour = currentBaseCameraBehaviour as PuzzleCameraBehaviour;
@@ -137,11 +148,7 @@ public class GameCamera : MonoBehaviour {
         currentBaseCameraBehaviour.EnterBehaviour();
     }
 
-    protected void OnGUI() {
-        if(GUILayout.Button("Haha"))
-            Debug.Log("haha");
-    }
-
+    
     private void ChangeBehaviour(Type type) {
         currentBaseCameraBehaviour = behaviours[type];
         currentBaseCameraBehaviour.EnterBehaviour();
