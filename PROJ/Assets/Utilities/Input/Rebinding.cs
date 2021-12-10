@@ -15,7 +15,7 @@ public class Rebinding : MonoBehaviour
 
     private void Start()
     {
-        //PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteAll();
         LoadBindingOverrides();
     }
     /// <summary>
