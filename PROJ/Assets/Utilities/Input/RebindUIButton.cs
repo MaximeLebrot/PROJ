@@ -10,8 +10,6 @@ public class RebindUIButton : MonoBehaviour
     public Button resetToDefault;
     public Button bindingButton;
     public Text bindingButtonText;
-
-    private ControllerInputReference inputReference;
     public InputActionReference action;
 
 }
