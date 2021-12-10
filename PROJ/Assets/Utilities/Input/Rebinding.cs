@@ -2,10 +2,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using System;
+using System.Collections.Generic;
 
 public class Rebinding : MonoBehaviour
 {
     public ControllerInputReference inputReference;
+    [SerializeField] private List<RebindUIButton> rebindButtons = new List<RebindUIButton>();
     private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
     private RebindUIButton currentButton;
     private string compositeName = "";
@@ -13,7 +15,8 @@ public class Rebinding : MonoBehaviour
 
     private void Start()
     {
-        //LoadBindingOverrides();
+        //PlayerPrefs.DeleteAll();
+        LoadBindingOverrides();
     }
     /// <summary>
     /// Currently doesn't support rebinding multiple bindings, hard coded to use the
@@ -82,7 +85,7 @@ public class Rebinding : MonoBehaviour
                 else
                     UpdateUIButton(action);
 
-                //SaveBindingOverride(action);
+                SaveBindingOverride(action);
                 action.Enable();
             })           
             .Start();
@@ -112,46 +115,34 @@ public class Rebinding : MonoBehaviour
             PlayerPrefs.SetString(action.actionMap + action.name + i, action.bindings[i].overridePath);
         }
     }
-    //without reference to the correct button, we wont be able to load the right text/char for each binding, making this more confusing than useful
+ 
     public void LoadBindingOverrides()
     {
-        foreach (InputAction action in inputReference.inputMaster.asset.FindActionMap("Player"))
+        foreach (RebindUIButton btn in rebindButtons)
         {
+            InputAction action = inputReference.inputMaster.asset.FindAction(btn.action.action.name);
+            Debug.Assert(action != null);
+            string bindingName = "";
             for (int i = 0; i < action.bindings.Count; i++)
-            {
+            {               
                 if (!string.IsNullOrEmpty(PlayerPrefs.GetString(action.actionMap + action.name + i)))
                 {
-                    action.ApplyBindingOverride(i, PlayerPrefs.GetString(action.actionMap + action.name + i));
-                    //UpdateUIButton(action);
+                    string loadedBindingName = PlayerPrefs.GetString(action.actionMap + action.name + i);
+                    action.ApplyBindingOverride(i, loadedBindingName);
+                    bindingName += InputControlPath.ToHumanReadableString(loadedBindingName, InputControlPath.HumanReadableStringOptions.OmitDevice);
+                    bindingName += i != 0 ? "/" : "";
                 }
-
             }
+            if(!string.IsNullOrEmpty(bindingName))
+                btn.bindingButtonText.text = bindingName; 
         }
     }
 
-    #region Methods Called from buttons
-    public void RebindSprint(RebindUIButton calledFrom)
+    public void RebindButton(RebindUIButton calledFrom)
     {
         currentButton = calledFrom;
+        RebindAction(inputReference.inputMaster.asset.FindAction(calledFrom.action.action.name));    
+    }
 
-        RebindAction(inputReference.inputMaster.asset.FindAction(calledFrom.action.action.name));
-        //RebindAction(inputReference.InputMaster.Sprint);      
-    }
-    public void RebindExitPuzzle(RebindUIButton calledFrom)
-    {
-        currentButton = calledFrom;
-        RebindAction(inputReference.InputMaster.ExitPuzzle);
-    }
-    public void RebindMove(RebindUIButton calledFrom)
-    {
-        currentButton = calledFrom;
-        RebindAction(inputReference.InputMaster.Movement);
-    }
-    public void RebindResetPuzzle(RebindUIButton calledFrom)
-    {
-        currentButton = calledFrom;
-        //RebindAction(inputReference.InputMaster.ResetPuzzle);
-    }
-    #endregion
     
 }
