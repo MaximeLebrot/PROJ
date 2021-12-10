@@ -73,7 +73,7 @@ public class Puzzle : MonoBehaviour
         while(currentPuzzleInstance.IsSolved() && 
             currentPuzzleNum + 1 <= puzzleInstances.Count)
         {
-            Debug.Log("LOAD NEXT PUZZLE");
+            //Debug.Log("LOAD NEXT PUZZLE");
             NextPuzzle();
         }
 
@@ -230,7 +230,14 @@ public class Puzzle : MonoBehaviour
 
     public virtual void CheckIfClearedSymbol(string currentSolution) //currentSolution = what the player has drawn
     {
-        Debug.Log("CHECK");
+
+        /*
+         * 
+         * if(settings.showClearedSymbols == false)
+         *      return;
+         * 
+         */
+
 
         int solutionOffset = 0;
 
@@ -277,7 +284,7 @@ public class Puzzle : MonoBehaviour
             return false;
         }
 
-        Debug.Log("input: " + currentSolution.Substring(offset, length) + " translation: " + translations[translationIndex].translation);
+        //Debug.Log("input: " + currentSolution.Substring(offset, length) + " translation: " + translations[translationIndex].translation);
         //Debug.Log("equal = " + currentSolution.Substring(offset, length).Equals(translations[translationIndex]));
 
         return currentSolution.Substring(offset, length).Equals(translations[translationIndex].translation);
@@ -315,7 +322,6 @@ public class Puzzle : MonoBehaviour
     {
         EventHandler<ResetPuzzleEvent>.UnregisterListener(OnResetPuzzle);
         registered = false;
-        Debug.Log("Reset puzzle called");
 
         symbolPlacer.UnloadSymbols();
         grid.ResetGrid();

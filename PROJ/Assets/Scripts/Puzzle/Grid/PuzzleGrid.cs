@@ -39,7 +39,6 @@ public class PuzzleGrid : MonoBehaviour {
 
     public string GetSolution() 
     {
-        //Debug.Log(solution);
         if (solution.Length > 0)
             return solution;
         else
@@ -133,6 +132,9 @@ public class PuzzleGrid : MonoBehaviour {
         allNodes[midIndex, midIndex].SetStartNode();
         startNode = currentNode = allNodes[midIndex, midIndex];
         transform.localPosition = (Vector3.right * -midIndex * nodeOffset) + (Vector3.forward * -midIndex * nodeOffset);
+        
+        //Move up the grid
+        transform.localPosition += Vector3.up * 0.5f;
     }
 
 
@@ -159,7 +161,6 @@ public class PuzzleGrid : MonoBehaviour {
         
         foreach(Vector2Int vInt in unrestricted)
         {
-            //Debug.Log(vInt);
             allNodes[vInt.x + midIndex, vInt.y + midIndex].Drawable = true;
         }
 
@@ -194,7 +195,6 @@ public class PuzzleGrid : MonoBehaviour {
                 //Checks if there exists a line between these nodes already, if so it destroys the line that was created
                 if (node.HasLineToNode(currentNode))
                 {
-                    Debug.Log("This line already exists");
                     return;
                 }
             }
@@ -213,14 +213,12 @@ public class PuzzleGrid : MonoBehaviour {
         if (SendToPuzzleForEvaluation())
         {
             TurnOffCollision();
-            Debug.Log("RÄTT   " + node.gameObject);
             return;
         }
 
         #endregion
 
         #region MOVE_CURRENT_NODE
-        //Debug.Log("AKTIVERA NODE   " + node.gameObject);
         
         currentNode = node;
         lineNodes.Add(currentNode);
@@ -265,7 +263,6 @@ public class PuzzleGrid : MonoBehaviour {
     private void EraseLine(Node node)
     {
   
-        //Debug.Log("ERASE");
         //Checks if this was the last line that was drawn, if so delete that line (eraser)
         LineObject oldLine = lineRenderers.Pop();
         foreach (Node n in currentNode.neighbours.Keys)
@@ -386,7 +383,6 @@ public class PuzzleGrid : MonoBehaviour {
 
     private void TurnOffNodes()
     {
-        //Debug.Log("TURN OFF NODES");
         foreach (Node n in allNodes)
         {
             if(n.startNode == false)
@@ -419,7 +415,6 @@ public class PuzzleGrid : MonoBehaviour {
     {
         if (currentLine != null)
         {
-            //Debug.Log("DESTROY CURRENT LINE");
             currentLine.Stop();
             Destroy(currentLine.gameObject);
             currentLine = null;
