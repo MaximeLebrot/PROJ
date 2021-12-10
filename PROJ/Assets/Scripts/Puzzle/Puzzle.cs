@@ -79,6 +79,8 @@ public class Puzzle : MonoBehaviour
 
     }
 
+    public void GoToNextPuzzle() { if (currentPuzzleNum+1 <= puzzleInstances.Count) { Debug.Log("Pushing to next puzzle"); NextPuzzle(); } }
+
     private void OnEnable()
     {
         EventHandler<ExitPuzzleEvent>.RegisterListener(OnExitPuzzle);
@@ -116,6 +118,7 @@ public class Puzzle : MonoBehaviour
         solution = Translate();
         translations = translator.GetTranslations();
     }
+
     protected virtual void NextPuzzle()
     {
         symbolPlacer.UnloadSymbols();
@@ -144,6 +147,7 @@ public class Puzzle : MonoBehaviour
 
     private void CompletePuzzle()
     {
+        Debug.Log("Klar, exit event skickas");
         Invoke("CompleteGrid", 2);
         EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(masterPuzzleID), true));
         GetComponent<Collider>().enabled = false;
@@ -153,8 +157,6 @@ public class Puzzle : MonoBehaviour
     {
         grid.CompleteGrid();
     }
-
-   
 
     public void RemoveInput()
     {
