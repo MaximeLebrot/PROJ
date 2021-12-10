@@ -31,8 +31,6 @@ public class GameCamera : MonoBehaviour {
         transitioner.Initialize();
         thisTransform = transform;
 
-       
-        
         
         behaviours.Add(typeof(PuzzleCameraBehaviour),  cameraBehaviours[2]);
         behaviours.Add(typeof(BaseCameraBehaviour),  cameraBehaviours[0]);
