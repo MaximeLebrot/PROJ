@@ -12,6 +12,5 @@ public class ControllerValues : ScriptableObject
 
     public float maxSpeed;
     public float gravity = 9.81f;
-    public float glideHeight; 
     
 }

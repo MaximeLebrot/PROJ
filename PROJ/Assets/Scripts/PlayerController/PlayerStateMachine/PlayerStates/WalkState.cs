@@ -17,7 +17,6 @@ public class WalkState : PlayerState
     {
         //Debug.Log("Entered Walk State");
         base.EnterState();
-        player.physics.SetGlide(false);
         player.inputReference.InputMaster.Sprint.performed += OnSprintActivate;
     }
     public override void RunUpdate()

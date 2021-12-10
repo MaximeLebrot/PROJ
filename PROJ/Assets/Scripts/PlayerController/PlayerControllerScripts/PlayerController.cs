@@ -203,7 +203,7 @@ public class PlayerController : MonoBehaviour
     /// <returns></returns>
     public bool IsGrounded()
     {
-        bool grounded = Physics.BoxCast(transform.position, Vector3.one * groundCheckBoxSize, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance + physics.GlideHeight, groundCheckMask);
+        bool grounded = Physics.BoxCast(transform.position, Vector3.one * groundCheckBoxSize, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance, groundCheckMask);
 
         return grounded; 
     }
