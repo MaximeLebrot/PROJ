@@ -30,13 +30,14 @@ public class GameCamera : MonoBehaviour {
         inputReference.Initialize();
         transitioner.Initialize();
         thisTransform = transform;
-
         
         behaviours.Add(typeof(PuzzleCameraBehaviour),  cameraBehaviours[2]);
         behaviours.Add(typeof(BaseCameraBehaviour),  cameraBehaviours[0]);
         behaviours.Add(typeof(IdleBehaviour),  cameraBehaviours[1]);
         behaviours.Add(typeof(WalkState),  cameraBehaviours[0]);
         behaviours.Add(typeof(OneHandCameraBehaviour),  cameraBehaviours[3]);
+        behaviours.Add(typeof(InGameMenuCameraBehaviour),  cameraBehaviours[4]);
+        behaviours.Add(typeof(TransportationBegunEvent),  cameraBehaviours[5]);
         
         currentBaseCameraBehaviour = behaviours[typeof(BaseCameraBehaviour)];
         
@@ -47,12 +48,10 @@ public class GameCamera : MonoBehaviour {
     private void LateUpdate() => behaviourQueue?.Invoke();
 
     private void ExecuteCameraBehaviour() {
-        if (lockInput)
-            return;
+        CustomInput input = new CustomInput();
         
-        ReadInput();
-
-        CustomInput input = ReadInput();
+        if (lockInput == false) 
+            input = ReadInput();
         
         currentBaseCameraBehaviour.ManipulatePivotTarget(input);
         
@@ -84,6 +83,8 @@ public class GameCamera : MonoBehaviour {
         EventHandler<CameraLookAndMoveToEvent>.RegisterListener(OnLookAndMove);
         EventHandler<LockInputEvent>.RegisterListener(LockInput);
         EventHandler<SaveSettingsEvent>.RegisterListener(UpdateSettings);
+        EventHandler<InGameMenuEvent>.RegisterListener(ActivateMenuCamera);
+        EventHandler<TransportationBegunEvent>.RegisterListener(OnTransportationEvent);
     }
 
     private void OnDisable() {
@@ -94,6 +95,8 @@ public class GameCamera : MonoBehaviour {
         EventHandler<CameraLookAndMoveToEvent>.UnregisterListener(OnLookAndMove);
         EventHandler<LockInputEvent>.UnregisterListener(LockInput);
         EventHandler<SaveSettingsEvent>.UnregisterListener(UpdateSettings);
+        EventHandler<InGameMenuEvent>.UnregisterListener(ActivateMenuCamera);
+        EventHandler<TransportationBegunEvent>.UnregisterListener(OnTransportationEvent);
     }
 
     private void OnAwayFromKeyboard(AwayFromKeyboardEvent e) {
@@ -151,6 +154,7 @@ public class GameCamera : MonoBehaviour {
     
     private void ChangeBehaviour(Type type) {
         currentBaseCameraBehaviour = behaviours[type];
+        currentBaseCameraBehaviour.InjectReferences(thisTransform, followTarget);
         currentBaseCameraBehaviour.EnterBehaviour();
     }
     
@@ -186,6 +190,26 @@ public class GameCamera : MonoBehaviour {
     
     private void LockInput(LockInputEvent lockInputEvent) => lockInput = lockInputEvent.lockInput;
 
+    private void ActivateMenuCamera(InGameMenuEvent inGameMenuEvent) {
+        if(inGameMenuEvent.Activate)
+            ChangeBehaviour<InGameMenuCameraBehaviour>();
+        else 
+            ChangeBehaviour<BaseCameraBehaviour>();
+    }
+
+    private void OnTransportationEvent(TransportationBegunEvent transportationBegunEvent) {
+        ChangeBehaviour(typeof(TransportationBegunEvent));
+        EventHandler<TransportationEndedEvent>.RegisterListener(OnTransportationEvent);
+        EventHandler<TransportationBegunEvent>.UnregisterListener(OnTransportationEvent);
+        
+    }
+    
+    private void OnTransportationEvent(TransportationEndedEvent transportationBegunEvent) {
+        ChangeBehaviour<BaseCameraBehaviour>();
+        EventHandler<TransportationEndedEvent>.UnregisterListener(OnTransportationEvent);
+        EventHandler<TransportationBegunEvent>.RegisterListener(OnTransportationEvent);
+    }
+    
     [ContextMenu("Auto-assign targets", false,0)]
     public void AssignTargets() {
         try {

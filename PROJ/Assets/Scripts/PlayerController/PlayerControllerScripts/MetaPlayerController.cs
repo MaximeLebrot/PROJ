@@ -37,6 +37,7 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     {
         inputReference.Initialize();
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
+        EventHandler<InGameMenuEvent>.RegisterListener(EnterInGameMenuState);
         inputReference.InputMaster.Interact.performed += OnHub;
     }
     private void OnDisable()
@@ -59,6 +60,18 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     }
 
 
+    private void EnterInGameMenuState(InGameMenuEvent inGameMenuEvent) {
+        if(inGameMenuEvent.Activate)
+            stateMachine.ChangeState<MenuState>();
+        else {
+            stateMachine.ChangeState<WalkState>();
+            Debug.Log("Walk");
+        }
+        
+        Debug.Log(stateMachine.currentState);
+            
+    }
+    
     public void ChangeStateToOSPuzzle(StartPuzzleEvent eve) => stateMachine.ChangeState<OSPuzzleState>();
 
     public void ChangeStateToOSWalk(ExitPuzzleEvent eve) => stateMachine.ChangeState<OSWalkState>();

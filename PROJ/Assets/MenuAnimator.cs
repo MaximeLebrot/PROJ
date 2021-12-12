@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,18 +24,23 @@ public class MenuAnimator : MonoBehaviour {
         subMenuDepth.Push(pageHashes[parameterName]);
     }
 
-    public bool Back() {
-        
-        if (subMenuDepth.Count < 1) 
-            return false;
+    public void Back() {
+
+        if (InsideSubMenu() == false)
+            return;
         
         int currentLevel = subMenuDepth.Pop();
         
         animator.SetBool(currentLevel, !animator.GetBool(currentLevel));
-
-        return true;
     }
 
-    public void EnableAnimator(bool value) => animator.enabled = value;
+    public void EnableAnimator(bool enable) {
+        if(enable)
+           animator.Rebind();
+        
+        animator.enabled = enable;
+    }
+
+    public bool InsideSubMenu() => subMenuDepth.Count > 0;
 
 }

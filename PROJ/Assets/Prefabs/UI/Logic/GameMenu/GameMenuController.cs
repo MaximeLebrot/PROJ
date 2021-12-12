@@ -3,36 +3,50 @@ using UnityEngine.InputSystem;
 
 public class GameMenuController : MenuController {
 
-    public GameObject gameObject;
-    
+    public GameObject settingsMenuObject;
+
+    private System.Action onBackInput; 
+
     protected override void Initialize() {
-        controllerInputReference.InputMaster.Menu.performed += OpenMenu;
-        menuAnimator.EnableAnimator(false);
-        gameObject.SetActive(false);
+        onBackInput = OpenMenu;
         
+        controllerInputReference.InputMaster.Menu.performed += HandleBackInput;
+        ActivateComponents(false);
     }
-    
-    private void OpenMenu(InputAction.CallbackContext e) {
-        gameObject.SetActive(true);
-        menuAnimator.EnableAnimator(true);
+
+    private void HandleBackInput(InputAction.CallbackContext e) => onBackInput?.Invoke();
+
+    private void OpenMenu() {
+        
+        ActivateComponents(true);
         SwitchPage("MenuButtons");
-        Cursor.lockState = CursorLockMode.None;
-        EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(true));
-        controllerInputReference.InputMaster.Menu.performed -= OpenMenu;
-        controllerInputReference.InputMaster.Menu.performed += CloseMenu;
+        onBackInput = Back;
     }
 
-    private void CloseMenu(InputAction.CallbackContext e) {
+    private void Back() {
 
-        bool insideSubMenu = menuAnimator.Back();
+        if (inputSuspended)
+            return;
+        
+        menuAnimator.Back();
 
-        if (insideSubMenu) {
-            
-        }
+        if (menuAnimator.InsideSubMenu())
+            return; //Player still inside a submenu 
+        
+        //No more submenus, close game menu
+        CloseMenu();
+        
+        onBackInput = OpenMenu;
+    }
 
-        EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(false));
-        controllerInputReference.InputMaster.Menu.performed -= CloseMenu;
-        controllerInputReference.InputMaster.Menu.performed += OpenMenu;
-        Cursor.lockState = CursorLockMode.Locked;
+    private void CloseMenu() => ActivateComponents(false);
+
+    private void ActivateComponents(bool activate) {
+        Cursor.lockState = activate ? CursorLockMode.None : CursorLockMode.None;
+        menuAnimator.EnableAnimator(activate); 
+        settingsMenuObject.SetActive(activate);
+        EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(activate));
+        EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(activate));
+
     }
 }
