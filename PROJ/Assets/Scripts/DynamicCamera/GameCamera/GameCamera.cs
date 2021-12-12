@@ -45,6 +45,9 @@ public class GameCamera : MonoBehaviour {
         
         behaviourQueue = ExecuteCameraBehaviour;
     }
+
+    private void Start() => EventHandler<RequestSettingsEvent>.FireEvent(null);
+
     private void LateUpdate() => behaviourQueue?.Invoke();
 
     private void ExecuteCameraBehaviour() {
@@ -60,8 +63,6 @@ public class GameCamera : MonoBehaviour {
         thisTransform.position = currentBaseCameraBehaviour.ExecuteMove(calculatedOffset);
         thisTransform.rotation = currentBaseCameraBehaviour.ExecuteRotate();
     }
-
-
     private CustomInput ReadInput() {
         Vector2 inputDirection = inputReference.InputMaster.MoveCamera.ReadValue<Vector2>();
 
@@ -85,6 +86,7 @@ public class GameCamera : MonoBehaviour {
         EventHandler<SaveSettingsEvent>.RegisterListener(UpdateSettings);
         EventHandler<InGameMenuEvent>.RegisterListener(ActivateMenuCamera);
         EventHandler<TransportationBegunEvent>.RegisterListener(OnTransportationEvent);
+        EventHandler<SaveSettingsEvent>.RegisterListener(OnSettingsChanged);
     }
 
     private void OnDisable() {
@@ -97,6 +99,7 @@ public class GameCamera : MonoBehaviour {
         EventHandler<SaveSettingsEvent>.UnregisterListener(UpdateSettings);
         EventHandler<InGameMenuEvent>.UnregisterListener(ActivateMenuCamera);
         EventHandler<TransportationBegunEvent>.UnregisterListener(OnTransportationEvent);
+        EventHandler<SaveSettingsEvent>.UnregisterListener(OnSettingsChanged);
     }
 
     private void OnAwayFromKeyboard(AwayFromKeyboardEvent e) {
@@ -208,6 +211,10 @@ public class GameCamera : MonoBehaviour {
         ChangeBehaviour<BaseCameraBehaviour>();
         EventHandler<TransportationEndedEvent>.UnregisterListener(OnTransportationEvent);
         EventHandler<TransportationBegunEvent>.RegisterListener(OnTransportationEvent);
+    }
+
+    private void OnSettingsChanged(SaveSettingsEvent settingsEvent) {
+        Debug.Log($"One hand mode is set to: {settingsEvent.settingsData.oneHandMode}");
     }
     
     [ContextMenu("Auto-assign targets", false,0)]

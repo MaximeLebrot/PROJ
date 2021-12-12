@@ -19,6 +19,7 @@ public class GameMenuController : MenuController {
     private void OpenMenu() {
         
         ActivateComponents(true);
+        EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(true));
         SwitchPage("MenuButtons");
         onBackInput = Back;
     }
@@ -39,14 +40,15 @@ public class GameMenuController : MenuController {
         onBackInput = OpenMenu;
     }
 
-    private void CloseMenu() => ActivateComponents(false);
+    private void CloseMenu() {
+        ActivateComponents(false);
+        EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(false));
+    }
 
     private void ActivateComponents(bool activate) {
         Cursor.lockState = activate ? CursorLockMode.None : CursorLockMode.None;
         menuAnimator.EnableAnimator(activate); 
         settingsMenuObject.SetActive(activate);
         EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(activate));
-        EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(activate));
-
     }
 }

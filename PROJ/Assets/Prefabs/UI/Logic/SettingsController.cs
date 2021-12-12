@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -6,7 +7,11 @@ public class SettingsController : MonoBehaviour {
 
     [SerializeField] private SettingsData userSettings;
     [SerializeField] private List<MenuSettings> settingObjects;
-    
+
+    private void Awake() => EventHandler<RequestSettingsEvent>.RegisterListener(SendOutUserSettingsData);
+
+    private void OnDisable() => EventHandler<RequestSettingsEvent>.UnregisterListener(SendOutUserSettingsData);
+
     private void Start() {
 
         foreach (MenuSettings menuSettings in settingObjects)
@@ -18,14 +23,17 @@ public class SettingsController : MonoBehaviour {
     //Called from button in settings menu
     public void RestoreDefaultValues(string json) {
         SetValues(JsonUtility.FromJson<SettingsData>(json));
+        SendOutUserSettingsData(null);
     }
 
     //Called from button in settings menu
     public void SaveSettings() {
         UpdateUserSettings();
-        EventHandler<SaveSettingsEvent>.FireEvent(new SaveSettingsEvent(userSettings));
+        SendOutUserSettingsData(null);
     }
-    
+
+    private void SendOutUserSettingsData(RequestSettingsEvent requestSettingsEvent) => EventHandler<SaveSettingsEvent>.FireEvent(new SaveSettingsEvent(userSettings));
+
     private void LoadSavedSettings()
     {
         string json = PlayerPrefs.GetString("SavedSettings");

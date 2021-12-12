@@ -20,8 +20,6 @@ public class AccessibilitySettings : MenuSettings {
         settingsData.highContrastMode = menuOptions[ExtractMenuItem("Use_HighContrastMode").ID].GetValue();
         settingsData.blindMode = menuOptions[ExtractMenuItem("BlindMode").ID].GetValue();
         settingsData.oneHandMode = menuOptions[ExtractMenuItem("OneHandMode").ID].GetValue();
-        settingsData.nodeSize = menuOptions[ExtractMenuItem("NodeSize").ID].GetValue();
-        settingsData.lineSize = menuOptions[ExtractMenuItem("LineSize").ID] .GetValue(); 
         settingsData.currentNodeMarker = menuOptions[ExtractMenuItem("CurrentNodeMarker").ID].GetValue();
         settingsData.showClearedSymbols = menuOptions[ExtractMenuItem("ShowClearedSymbols").ID].GetValue();
         settingsData.easyPuzzleControls = menuOptions[ExtractMenuItem("EasyPuzzleControls").ID].GetValue();

@@ -64,6 +64,7 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         if(inGameMenuEvent.Activate)
             stateMachine.ChangeState<MenuState>();
         else {
+            Debug.Log(stateMachine);
             stateMachine.ChangeState<WalkState>();
             Debug.Log("Walk");
         }
