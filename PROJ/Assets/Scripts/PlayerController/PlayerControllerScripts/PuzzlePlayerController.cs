@@ -37,6 +37,7 @@ public class PuzzlePlayerController : MonoBehaviour
     private void OnEnable()
     {
         quitPuzzle = metaPlayerController.inputReference.InputMaster.ExitPuzzle;
+        EventHandler<SaveSettingsEvent>.RegisterListener(ApplySettings);
         quitPuzzle.Enable();
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
     }
@@ -44,7 +45,14 @@ public class PuzzlePlayerController : MonoBehaviour
     {
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle;
         quitPuzzle.Disable();
+        EventHandler<SaveSettingsEvent>.UnregisterListener(ApplySettings);
     }
+
+    private void ApplySettings(SaveSettingsEvent obj)
+    {
+        EasyPuzzleControls(obj.settingsData.easyPuzzleControls);
+    }
+
     void Start()
     {
         physics = GetComponent<PlayerPhysicsSplit>();
@@ -104,5 +112,15 @@ public class PuzzlePlayerController : MonoBehaviour
 
     #endregion
 
+
+    private void EasyPuzzleControls(bool isTrue)
+    {
+        if (isTrue)
+        {
+            acceleration = 50;
+            deceleration = 100;
+            turnSpeed = 100;
+        }
+    }
 
 }

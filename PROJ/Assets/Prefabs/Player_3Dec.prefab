@@ -1767,7 +1767,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0e8eeddb97404b74da397e77cc60b72a, type: 2}
   - {fileID: 11400000, guid: b13653734636c2a438782ec4917610f9, type: 2}
   inputReference: {fileID: 11400000, guid: 54398b8fed501aa41813fa11036bc179, type: 2}
-  playerInput: {fileID: 0}
+  storedVelocity: {x: 0, y: 0, z: 0}
+  decelerationValueForCoroutine: 5
 --- !u!114 &7633219187445847149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1784,7 +1785,7 @@ MonoBehaviour:
   deceleration: 12
   maxSpeed: 40
   turnRate: 10
-  turnSpeed: 14
+  turnSpeed: 3
   retainedSpeedWhenTurning: 2
   airControl: 0.33
   slopeMaxAngle: 140
@@ -1792,7 +1793,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16567
   groundCheckDistance: 1.1
-  usingCameraRotation: 0
+  usingCameraRotation: 1
   inputReference: {fileID: 11400000, guid: 54398b8fed501aa41813fa11036bc179, type: 2}
 --- !u!114 &7633219187445847148
 MonoBehaviour:
@@ -1817,7 +1818,6 @@ MonoBehaviour:
   inputThreshold: 0.1
   gravityWhenFalling: 25
   currentGravity: 0
-  surfThreshold: 4.8
 --- !u!114 &7633219187445847151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1825,15 +1825,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7633219187445847144}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 52d3210336e582042bec90ca6a2097e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 30
-  deceleration: 5
-  maxSpeed: 10
-  turnRate: 10
+  acceleration: 100
+  deceleration: 1
+  maxSpeed: 15
+  turnRate: 30
   turnSpeed: 30
   force: {x: 0, y: 0, z: 0}
   metaPlayerController: {fileID: 7633219187445847138}
