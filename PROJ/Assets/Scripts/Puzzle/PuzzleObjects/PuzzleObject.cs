@@ -29,7 +29,7 @@ public abstract class PuzzleObject : MonoBehaviour
     private void Awake()
     {
         anim = GetComponent<Animator>();
-        mesh = GetComponent<MeshRenderer>();
+        mesh = GetComponentInChildren<MeshRenderer>();
 
         SetUpMaterials();
         SetMaterialBasedOnDifficulty("Medium"/*send the strings based on settings.symbolDiffculty*/);
