@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        Application.targetFrameRate = 240;
+        Application.targetFrameRate = 250;
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PlayerPhysicsSplit>();
     }
@@ -209,9 +209,6 @@ public class PlayerController : MonoBehaviour
     }
 
     //Gets & Sets
-    public float GetMaxSpeed()
-    {
-        return maxSpeed;
-    }
-
+    public void SetDeceleration(float val) => deceleration = val;
+    public float GetDeceleration() => deceleration;
 }

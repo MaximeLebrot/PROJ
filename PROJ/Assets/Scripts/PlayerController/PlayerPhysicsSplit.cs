@@ -61,7 +61,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     }
     private void Update()
     {
-        //Add velocity and reset force vector in playercontroller       
+        //Add velocity and reset force vector in playercontroller
         velocity += forceInput * Time.deltaTime;
         pc.ResetForceVector();
 

@@ -13,7 +13,7 @@ public class SprintState : PlayerState
         base.Initialize();
         EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
         sprint = player.inputReference.InputMaster.Sprint;
-        sprint.Enable();      
+        sprint.Enable();
     }
     private void LoadInputs()
     {
@@ -31,7 +31,7 @@ public class SprintState : PlayerState
     }
     public override void EnterState()
     {
-        //Debug.Log("Entered Sprint State");
+        Debug.Log("Entered Sprint State");
         LoadInputs();
         player.animator.SetTrigger("Sprint");
         base.EnterState();        
@@ -41,13 +41,14 @@ public class SprintState : PlayerState
         SetInput();
         if (!player.playerController3D.IsGrounded())
         {
+            Debug.Log("no longer grounded from sprint state!");
             stateMachine.ChangeState<AirborneState>(this);
             return;
         }
     }
     public override void ExitState()
     {
-        //Debug.Log("Exiting Sprint State");
+        Debug.Log("Exiting Sprint State");
         player.animator.SetTrigger("Walk");
         base.ExitState();
         UnloadInputs();   
@@ -58,6 +59,7 @@ public class SprintState : PlayerState
     }
     private void OnSprintActivate(InputAction.CallbackContext obj)
     {
+        Debug.Log("On sprint activate");
         stateMachine.ChangeState<WalkState>();      
     }
     private void OnSaveSettings(SaveSettingsEvent eve)
