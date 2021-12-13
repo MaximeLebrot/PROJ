@@ -30,21 +30,65 @@ public class Node : MonoBehaviour {
 
     private VisualEffect hitEffect;
     private Animator anim;
+    private SphereCollider coll;
+    private int sizeMultiplier = 1;
+    private float colliderRadius = 1.2f;
+    private Vector3 size = new Vector3(0.4f, 0.4f, 0.4f);
+
     private void Awake() {
         hitEffect = GetComponent<VisualEffect>();
         anim = GetComponent<Animator>();
+        coll = GetComponent<SphereCollider>();
         neighbours = new Dictionary<Node, bool>();
         Drawable = true;
         TurnOn();
+        SetSizeMultiplier();
+        SetSize();
         //FindNeighbours();
         //PosX = transform.localPosition.x;
         //PosY = transform.localPosition.y;
     }
 
+
+
+    private void SetSizeMultiplier()
+    {
+        //Get big Nodes bool from settings
+
+        /*
+         * if settings.bigNode
+            sizeMultiplier = 2;
+
+            else
+         *      sizeMultiplier = 1; 
+         */
+    }
+
+    private void SetSize()
+    {
+        transform.localScale = size * sizeMultiplier;
+        //Make collider smaller also
+        coll.radius = colliderRadius / sizeMultiplier;
+        
+    }
+
+    
+
+    private void ApplySettings(SaveSettingsEvent obj)
+    {
+        SetSizeMultiplier();
+        SetSize();
+    }
     private void OnEnable()
     {
+        EventHandler<SaveSettingsEvent>.RegisterListener(ApplySettings);
         gameObject.SetActive(true);
         TurnOn();
+    }
+
+    private void OnDisable()
+    {
+        EventHandler<SaveSettingsEvent>.UnregisterListener(ApplySettings);
     }
 
 
@@ -85,10 +129,8 @@ public class Node : MonoBehaviour {
 
         if (hit.collider)
         {
-            Debug.Log("hit " + hit.collider.gameObject.name);
             return hit.transform.GetComponent<Node>();
         }
-        Debug.Log("hit nothing");
 
         return null;
     }
@@ -139,7 +181,6 @@ public class Node : MonoBehaviour {
     {
         foreach(Node n in list)
         {
-            //Debug.Log(n.PosX + "   " + n.PosY);
             neighbours.Add(n, false);
         }
     }

@@ -8,11 +8,12 @@ public class WindPuzzle : Puzzle
 
     [SerializeField] private VisualEffect wind;
     [SerializeField] private Animator windBurst;
-    [SerializeField] List<GameObject> windMarkers;
+
+  
 
     public override void InitiatePuzzle()
     {
-        windMarkers[currentPuzzleInstance.GetComponent<WindPuzzleInstance>().GetWindRotations()].GetComponentInChildren<Animator>().SetTrigger("on");
+
         //Start Wind
         wind.Play();
         wind.SetVector3("Direction", currentPuzzleInstance.GetComponent<WindPuzzleInstance>().GetWindDirection());
@@ -25,6 +26,10 @@ public class WindPuzzle : Puzzle
         for (int j = 0; j < currentPuzzleInstance.GetComponent<WindPuzzleInstance>().GetWindRotations(); j++)
         {
             newString = PuzzleHelper.RotateSymbolsOneStep(newString);
+            for(int i = 0; i < translations.Count; i++)
+            {
+                translations[i].translation = PuzzleHelper.RotateSymbolsOneStep(translations[i].translation);
+            }
         }
 
         solution = newString;
@@ -33,13 +38,10 @@ public class WindPuzzle : Puzzle
 
     public override bool EvaluateSolution()
     {
-        //Debug.Log(solution);
+
         if (solution.Equals(grid.GetSolution()))
         {
-
-            windMarkers[currentPuzzleInstance.GetComponent<WindPuzzleInstance>().GetWindRotations()].GetComponentInChildren<Animator>().SetTrigger("off");
             
-            //uppdaterar curr puzzle
             currentPuzzleInstance.Solve();
             EventHandler<SaveEvent>.FireEvent(new SaveEvent());
             EventHandler<ClearPuzzleEvent>.FireEvent(new ClearPuzzleEvent(new PuzzleInfo(GetPuzzleID())));
@@ -50,9 +52,6 @@ public class WindPuzzle : Puzzle
 
         return false;
     }
-
-
-
 
     protected override void NextPuzzle()
     {
