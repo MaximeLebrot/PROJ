@@ -211,7 +211,11 @@ public class GameCamera : MonoBehaviour {
     }
 
     private void OnSettingsChanged(SaveSettingsEvent settingsEvent) {
-        
+        if(settingsEvent.settingsData.oneHandMode)
+            ChangeBehaviour<OneHandCameraBehaviour>();
+        else {
+            ChangeBehaviour<BaseCameraBehaviour>();
+        }
     }
     
     [ContextMenu("Auto-assign targets", false,0)]
