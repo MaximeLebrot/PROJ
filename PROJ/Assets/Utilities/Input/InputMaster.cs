@@ -347,6 +347,15 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SolvePuzzle"",
+                    ""type"": ""Button"",
+                    ""id"": ""cba23c7b-edf4-48dd-a3a9-9fb7a118578b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -413,6 +422,17 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Stnd KBM"",
                     ""action"": ""ToggleFullAutopilot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""01547e72-e7ae-493f-bdfd-57a1438751b9"",
+                    ""path"": ""<Keyboard>/h"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Stnd KBM"",
+                    ""action"": ""SolvePuzzle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -563,6 +583,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         m_PuzzleDEBUGGER_BlindMode = m_PuzzleDEBUGGER.FindAction("BlindMode", throwIfNotFound: true);
         m_PuzzleDEBUGGER_AutoPilotPuzzle = m_PuzzleDEBUGGER.FindAction("AutoPilotPuzzle", throwIfNotFound: true);
         m_PuzzleDEBUGGER_ToggleFullAutopilot = m_PuzzleDEBUGGER.FindAction("ToggleFullAutopilot", throwIfNotFound: true);
+        m_PuzzleDEBUGGER_SolvePuzzle = m_PuzzleDEBUGGER.FindAction("SolvePuzzle", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_BackToMain = m_UI.FindAction("BackToMain", throwIfNotFound: true);
@@ -725,6 +746,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     private readonly InputAction m_PuzzleDEBUGGER_BlindMode;
     private readonly InputAction m_PuzzleDEBUGGER_AutoPilotPuzzle;
     private readonly InputAction m_PuzzleDEBUGGER_ToggleFullAutopilot;
+    private readonly InputAction m_PuzzleDEBUGGER_SolvePuzzle;
     public struct PuzzleDEBUGGERActions
     {
         private @InputMaster m_Wrapper;
@@ -735,6 +757,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         public InputAction @BlindMode => m_Wrapper.m_PuzzleDEBUGGER_BlindMode;
         public InputAction @AutoPilotPuzzle => m_Wrapper.m_PuzzleDEBUGGER_AutoPilotPuzzle;
         public InputAction @ToggleFullAutopilot => m_Wrapper.m_PuzzleDEBUGGER_ToggleFullAutopilot;
+        public InputAction @SolvePuzzle => m_Wrapper.m_PuzzleDEBUGGER_SolvePuzzle;
         public InputActionMap Get() { return m_Wrapper.m_PuzzleDEBUGGER; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -762,6 +785,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @ToggleFullAutopilot.started -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnToggleFullAutopilot;
                 @ToggleFullAutopilot.performed -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnToggleFullAutopilot;
                 @ToggleFullAutopilot.canceled -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnToggleFullAutopilot;
+                @SolvePuzzle.started -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnSolvePuzzle;
+                @SolvePuzzle.performed -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnSolvePuzzle;
+                @SolvePuzzle.canceled -= m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface.OnSolvePuzzle;
             }
             m_Wrapper.m_PuzzleDEBUGGERActionsCallbackInterface = instance;
             if (instance != null)
@@ -784,6 +810,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @ToggleFullAutopilot.started += instance.OnToggleFullAutopilot;
                 @ToggleFullAutopilot.performed += instance.OnToggleFullAutopilot;
                 @ToggleFullAutopilot.canceled += instance.OnToggleFullAutopilot;
+                @SolvePuzzle.started += instance.OnSolvePuzzle;
+                @SolvePuzzle.performed += instance.OnSolvePuzzle;
+                @SolvePuzzle.canceled += instance.OnSolvePuzzle;
             }
         }
     }
@@ -907,6 +936,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         void OnBlindMode(InputAction.CallbackContext context);
         void OnAutoPilotPuzzle(InputAction.CallbackContext context);
         void OnToggleFullAutopilot(InputAction.CallbackContext context);
+        void OnSolvePuzzle(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
