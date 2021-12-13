@@ -14,5 +14,6 @@ public class Portal : MonoBehaviour
     public void Open()
     {
         //anim.SetTrigger("open");
+        Debug.Log("Portal opened");
     }
 }

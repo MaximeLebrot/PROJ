@@ -9,7 +9,8 @@ public class Fragment : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        other.GetComponent<PlayerFragments>().AddFragment(nameOfFragment);
+        if (other.CompareTag("Player"))
+            other.GetComponent<PlayerFragments>().AddFragment(nameOfFragment);
         //Start a cutscene or whatevs?
     }
 
