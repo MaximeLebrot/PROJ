@@ -13,14 +13,11 @@ public class Portal : MonoBehaviour
     }
     public void Open()
     {
-        anim.SetTrigger("open");
+        anim.SetTrigger("Open");
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            Open();
-            EventHandler<UnLoadSceneEvent>.FireEvent(new UnLoadSceneEvent(sceneToLoad));
-        }
+        Open();
+        EventHandler<UnLoadSceneEvent>.FireEvent(new UnLoadSceneEvent(sceneToLoad));
     }
 }
