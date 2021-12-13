@@ -10,7 +10,6 @@ namespace NewCamera {
         [SerializeField] protected BehaviourData behaviourValues;
         
         protected Vector3 referenceVelocity;
-        protected Vector3 previousPosition;
         protected Quaternion previousRotation;
         protected Transform thisTransform;
         protected Transform target;
@@ -47,9 +46,11 @@ namespace NewCamera {
 
         public virtual void ManipulatePivotTarget(CustomInput input) {
 
+            Vector3 desiredRotation = previousRotation.eulerAngles;
+            
             if (input.aim != Vector2.zero) {
 
-                Vector3 desiredRotation = target.eulerAngles + (Vector3)input.aim;
+                desiredRotation = target.eulerAngles + (Vector3)input.aim;
 
                 if (desiredRotation.x > 180)
                     desiredRotation.x -= 360;
@@ -57,14 +58,13 @@ namespace NewCamera {
                     desiredRotation.y -= 360;
 
                 desiredRotation.x = Mathf.Clamp(desiredRotation.x, behaviourValues.ClampValues.x, behaviourValues.ClampValues.y);
-
-                target.eulerAngles = desiredRotation;
-                previousRotation = target.rotation;
             }
             else {
-                target.rotation = previousRotation;
+                desiredRotation = previousRotation.eulerAngles;
             }
-               
+            
+            target.eulerAngles = desiredRotation;
+            previousRotation = target.rotation;
         }
 
         protected T BehaviourData<T>() where T : BehaviourData => behaviourValues as T;
