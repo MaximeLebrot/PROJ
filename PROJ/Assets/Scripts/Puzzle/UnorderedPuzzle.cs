@@ -42,13 +42,18 @@ public class UnorderedPuzzle : Puzzle
             if (currentSolutionCopy.Contains(pair.translation))
             {
                 //make symbol glow
+                //if(settings.showClearedSymbols)
                 pair.pObj.Activate(true);
                 //remove it from comparison string
                 currentSolutionCopy = currentSolutionCopy.Remove(currentSolutionCopy.IndexOf(pair.translation), pair.translation.Length);
                 //Debug.Log(currentSolutionCopy[currentSolutionCopy.IndexOf(translation)]+ ", length : " + translation.Length);
             }
             else
+            {
+                //if(settings.showClearedSymbols)
                 pair.pObj.Activate(false);
+            }
+            
         }
 
         
@@ -56,7 +61,7 @@ public class UnorderedPuzzle : Puzzle
         if (currentSolution.Length == solution.Length && currentSolutionCopy.Length == 0)
         {
           
-            Debug.Log("should return true to evaluate solution");
+            //Debug.Log("should return true to evaluate solution");
             return true;
         }
         return false;

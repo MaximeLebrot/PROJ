@@ -21,6 +21,7 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     private void Awake()
     {
+        inputReference.Initialize();
         DontDestroyOnLoad(this);
     }
 
@@ -34,15 +35,13 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         stateMachine = new StateMachine(this, states);
     }
     private void OnEnable()
-    {
-        inputReference.Initialize();
+    {        
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
-        inputReference.InputMaster.Interact.performed += OnHub;
+        EventHandler<InGameMenuEvent>.RegisterListener(EnterInGameMenuState);
     }
     private void OnDisable()
     {
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
-        inputReference.InputMaster.Interact.performed -= OnHub;
     }
 
     //TEMPORARY
@@ -58,7 +57,39 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         stateMachine.ChangeState<PuzzleState>();
     }
 
-
+    Vector3 storedVelocity; 
+    private void EnterInGameMenuState(InGameMenuEvent inGameMenuEvent) {
+     
+        Debug.Log("Enter int game menu");
+        if (inGameMenuEvent.Activate)
+        {
+            storedVelocity = physics.velocity;
+            physics.velocity = Vector3.zero;
+            this.enabled = false;
+            animator.enabled = false;
+        }
+        else
+        {
+            StartCoroutine(SetDeceleration());
+            physics.velocity = storedVelocity;
+            this.enabled = true;
+            animator.enabled = true;
+        }                
+    }
+    public float decelerationValueForCoroutine = 5;
+    IEnumerator SetDeceleration()
+    {
+        float storedDeceleration = playerController3D.GetDeceleration();
+        playerController3D.SetDeceleration(decelerationValueForCoroutine);
+        float time = 1.5f;
+        while (time > 0)
+        {
+            time -= Time.deltaTime;
+            yield return null;
+        }
+        playerController3D.SetDeceleration(storedDeceleration);
+    }
+    
     public void ChangeStateToOSPuzzle(StartPuzzleEvent eve) => stateMachine.ChangeState<OSPuzzleState>();
 
     public void ChangeStateToOSWalk(ExitPuzzleEvent eve) => stateMachine.ChangeState<OSWalkState>();

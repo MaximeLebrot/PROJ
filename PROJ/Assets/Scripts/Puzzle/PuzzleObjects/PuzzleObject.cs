@@ -30,20 +30,45 @@ public abstract class PuzzleObject : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         mesh = GetComponent<MeshRenderer>();
-        //SetUpMaterials();
-        Debug.Log(mesh.material);
+
+        SetUpMaterials();
+        SetMaterialBasedOnDifficulty("Medium"/*send the strings based on settings.symbolDiffculty*/);
+    }
+
+    private void OnEnable()
+    {
+        EventHandler<SaveSettingsEvent>.RegisterListener(ApplyDificulty);
+    }
+
+    private void OnDisable()
+    {
+        EventHandler<SaveSettingsEvent>.UnregisterListener(ApplyDificulty);
+    }
+
+    private void ApplyDificulty(SaveSettingsEvent obj)
+    {
+        if (materials_EASY_MEDIUM_HARD.Count > 0)
+        {
+            //SetMaterialBasedOnDifficulty(send the strings based on obj.settings.symbolDiffculty);
+
+        }
     }
 
     private void SetUpMaterials()
     {
-        materialsByDifficulty.Add("easy", materials_EASY_MEDIUM_HARD[0]);
-        materialsByDifficulty.Add("medium", materials_EASY_MEDIUM_HARD[1]);
-        materialsByDifficulty.Add("hard", materials_EASY_MEDIUM_HARD[2]);
+        if(materials_EASY_MEDIUM_HARD.Count > 0)
+        {
+            materialsByDifficulty.Add("Easy", materials_EASY_MEDIUM_HARD[0]);
+            materialsByDifficulty.Add("Medium", materials_EASY_MEDIUM_HARD[1]);
+            materialsByDifficulty.Add("Hard", materials_EASY_MEDIUM_HARD[2]);
+        }
+        
     }
 
     private void SetMaterialBasedOnDifficulty(string difficulty)
     {
-        mesh.material = materialsByDifficulty[difficulty];
+        if(materials_EASY_MEDIUM_HARD.Count > 0)
+            mesh.material = materialsByDifficulty[difficulty];
     }
 
     public string GetTranslation()

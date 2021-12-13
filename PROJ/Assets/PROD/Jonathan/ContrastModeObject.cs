@@ -20,17 +20,16 @@ public class ContrastModeObject : MonoBehaviour {
 
         swapMaterials = contrastMaterials;
 
-        DetermineIfContrastModeIsActive();
     }
 
     private void OnEnable() {
-        EventHandler<SaveSettingsEvent>.RegisterListener(OnContrastModeEvent);
-        DetermineIfContrastModeIsActive();
+        EventHandler<SaveSettingsEvent>.RegisterListener(DetermineIfContrastModeIsActive);
+        EventHandler<RequestSettingsEvent>.FireEvent(null);
     }
 
-    private void DetermineIfContrastModeIsActive() {
-        
-        bool isContrastModeActive = FindObjectOfType<InGameMenu>().SettingsMenu.userSettings.highContrastMode;
+    private void DetermineIfContrastModeIsActive(SaveSettingsEvent requestSettingsEvent) {
+
+        bool isContrastModeActive = requestSettingsEvent.settingsData.highContrastMode;
 
         if (!isContrastModeActive) return;
         
@@ -38,9 +37,8 @@ public class ContrastModeObject : MonoBehaviour {
 
     }
     
-    private void OnDisable() => EventHandler<SaveSettingsEvent>.UnregisterListener(OnContrastModeEvent);
+    private void OnDisable() => EventHandler<SaveSettingsEvent>.UnregisterListener(DetermineIfContrastModeIsActive);
 
     private void SwapMaterials(bool isContrastModeActive) => meshRenderer.materials = isContrastModeActive ? swapMaterials.ToArray() : defaultMaterials.ToArray();
-
-    private void OnContrastModeEvent(SaveSettingsEvent settings) => SwapMaterials(settings.settingsData.highContrastMode);
+    
 }
