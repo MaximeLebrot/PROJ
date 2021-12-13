@@ -14,6 +14,7 @@ public class FlightAnimationScript : MonoBehaviour
     public bool moveToCenter;
     private float adjustedYValue;
     private float colSizeOffset;
+
     [SerializeField] private string triggerValue;
     
     private void Awake()
@@ -36,6 +37,8 @@ public class FlightAnimationScript : MonoBehaviour
             mpc.enabled = false;
             moveToCenter = true;
             mpcXZPos = new Vector2(mpc.transform.position.x, mpc.transform.position.z);
+            col.GetComponentInChildren<Obi.ObiCloth>().enabled = false;
+
             EventHandler<TransportationBegunEvent>.FireEvent(null);
             
         }
@@ -51,6 +54,8 @@ public class FlightAnimationScript : MonoBehaviour
         mpc.physics.enabled = true;
         mpc.enabled = true;
         EventHandler<TransportationEndedEvent>.FireEvent(null);
+        mpc.GetComponentInChildren<Obi.ObiCloth>().enabled = true;
+
     }
 
     private void Update()
