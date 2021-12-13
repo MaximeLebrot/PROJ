@@ -12,12 +12,12 @@ public class ContrastModeSwitch : MonoBehaviour {
     [SerializeField] private Volume postProcess;
     
     private ColorAdjustments colorAdjustments;
+
+    private bool contrastModeActive;
     
     [Header("Layers to render when in contrast mode")]
     [SerializeField] private LayerMask contrastModeRenderLayers;
     private LayerMask mainRegularRenderLayers;
-    
-    //Will be IEvent later, this is only for testing
     
     private void Awake() {
         
@@ -35,9 +35,10 @@ public class ContrastModeSwitch : MonoBehaviour {
     
 
     private void SwitchToContrastMode(SaveSettingsEvent settings) {
-        overlayCamera.gameObject.SetActive(settings.settingsData.highContrastMode);
-        mainCamera.cullingMask = settings.settingsData.highContrastMode ? contrastModeRenderLayers : mainRegularRenderLayers; 
-        colorAdjustments.saturation.value = settings.settingsData.highContrastMode ? colorAdjustments.saturation.min : 0;
+        contrastModeActive = settings.settingsData.highContrastMode;
+        overlayCamera.gameObject.SetActive(contrastModeActive);
+        mainCamera.cullingMask = contrastModeActive ? contrastModeRenderLayers : mainRegularRenderLayers; 
+        colorAdjustments.saturation.value = contrastModeActive ? colorAdjustments.saturation.min : 0;
     }
     
 }
