@@ -74,8 +74,7 @@ public class PlayerController : MonoBehaviour
 
     public void InputWalk(Vector3 inp)
     {
-        ModeOfInput(inp);
-        
+        ModeOfInput(inp);      
 
         //to stop character rotation when input is 0
         if (input.magnitude < inputThreshold)
