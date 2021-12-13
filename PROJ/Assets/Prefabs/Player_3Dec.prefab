@@ -1767,7 +1767,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0e8eeddb97404b74da397e77cc60b72a, type: 2}
   - {fileID: 11400000, guid: b13653734636c2a438782ec4917610f9, type: 2}
   inputReference: {fileID: 11400000, guid: 54398b8fed501aa41813fa11036bc179, type: 2}
-  playerInput: {fileID: 0}
 --- !u!114 &7633219187445847149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1849,7 +1848,7 @@ Animator:
   m_Avatar: {fileID: 9000000, guid: 2e591cd5ef67bc84590aa3e5169a641c, type: 3}
   m_Controller: {fileID: 9100000, guid: 09facee0f00d71d488555e4513a569f5, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 1
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -2001,7 +2000,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7965016139684172269}
   - component: {fileID: 7965016139684172271}
-  - component: {fileID: 7965016139684172270}
+  - component: {fileID: 1070154430}
+  - component: {fileID: 1070154431}
   m_Layer: 16
   m_Name: Cape Solver
   m_TagString: Untagged
@@ -2037,7 +2037,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   simulateWhenInvisible: 1
-  m_Backend: 1
+  m_Backend: 0
   parameters:
     mode: 0
     interpolation: 0
@@ -2133,7 +2133,22 @@ MonoBehaviour:
     iterations: 1
     SORFactor: 1
     enabled: 0
---- !u!114 &7965016139684172270
+--- !u!114 &1070154430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7965016139684172268}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 434d88f9b3534406382ff56c0e74bd9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  solvers:
+  - {fileID: 7965016139684172271}
+  deltaSmoothing: 0.95
+--- !u!114 &1070154431
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2142,7 +2157,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7965016139684172268}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d9704d540ac448439a425526f6b2986, type: 3}
+  m_Script: {fileID: 11500000, guid: 434ec3c1822e84ae79a7f64f950b1bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   solvers:
@@ -2494,7 +2509,7 @@ MonoBehaviour:
   m_SelfCollisions: 0
   m_OneSided: 0
   _distanceConstraintsEnabled: 1
-  _stretchingScale: 1
+  _stretchingScale: 0.84
   _stretchCompliance: 0
   _maxCompression: 0
   _bendConstraintsEnabled: 1
@@ -3977,9 +3992,9 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 5866666021909216657, guid: 2e591cd5ef67bc84590aa3e5169a641c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2e591cd5ef67bc84590aa3e5169a641c, type: 3}
---- !u!4 &5430346385317759720 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7938368369755630291, guid: 2e591cd5ef67bc84590aa3e5169a641c, type: 3}
+--- !u!1 &7710789023412117444 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5653408957222354943, guid: 2e591cd5ef67bc84590aa3e5169a641c, type: 3}
   m_PrefabInstance: {fileID: 2699565741791387707}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &8493785377910697173 stripped
@@ -4017,9 +4032,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -2160460575842224403, guid: 2e591cd5ef67bc84590aa3e5169a641c, type: 3}
   m_PrefabInstance: {fileID: 2699565741791387707}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &7710789023412117444 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5653408957222354943, guid: 2e591cd5ef67bc84590aa3e5169a641c, type: 3}
+--- !u!4 &5430346385317759720 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7938368369755630291, guid: 2e591cd5ef67bc84590aa3e5169a641c, type: 3}
   m_PrefabInstance: {fileID: 2699565741791387707}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &9041817361251074876 stripped
