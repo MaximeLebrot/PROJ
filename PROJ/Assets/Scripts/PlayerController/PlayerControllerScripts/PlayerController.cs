@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
     private float inputThreshold = 0.1f;
     private Vector3 input;
     private Vector3 force;
+    private float defaultTurnSpeed;
 
     //Component references
     public PlayerPhysicsSplit physics { get; private set; }
@@ -44,16 +45,30 @@ public class PlayerController : MonoBehaviour
     //Properties
     private float groundHitAngle;
 
+    private delegate void TakeInput(Vector3 inp);
+    private TakeInput takeInput;
 
     void Awake()
     {
-        Application.targetFrameRate = 240;
+        Application.targetFrameRate = 250;
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PlayerPhysicsSplit>();
     }
     private void OnEnable()
     {
+        EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
         force = Vector3.zero;
+    }
+    private void OnDisable()
+    {
+        EventHandler<SaveSettingsEvent>.UnregisterListener(OnSaveSettings);
+    }
+
+    //This could instead load a delegate with a preffered input chain, but as of now that would require more code than the current solution. 
+    //to be considered in the future, though
+    private void OnSaveSettings(SaveSettingsEvent eve)
+    {
+        usingCameraRotation = !eve.settingsData.oneHandMode;          
     }
     private void FixedUpdate()
     {
@@ -188,15 +203,12 @@ public class PlayerController : MonoBehaviour
     /// <returns></returns>
     public bool IsGrounded()
     {
-        bool grounded = Physics.BoxCast(transform.position, Vector3.one * groundCheckBoxSize, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance + physics.GlideHeight, groundCheckMask);
+        bool grounded = Physics.BoxCast(transform.position, Vector3.one * groundCheckBoxSize, Vector3.down, out groundHitInfo, transform.rotation, groundCheckDistance, groundCheckMask);
 
         return grounded; 
     }
 
     //Gets & Sets
-    public float GetMaxSpeed()
-    {
-        return maxSpeed;
-    }
-
+    public void SetDeceleration(float val) => deceleration = val;
+    public float GetDeceleration() => deceleration;
 }
