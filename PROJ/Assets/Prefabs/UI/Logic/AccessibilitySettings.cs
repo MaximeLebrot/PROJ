@@ -12,8 +12,7 @@ public class AccessibilitySettings : MenuSettings {
         menuOptions[ExtractMenuItem("ShowClearedSymbols").ID].SetValue(settingsData.showClearedSymbols);
         menuOptions[ExtractMenuItem("EasyPuzzleControls").ID].SetValue(settingsData.easyPuzzleControls);
         menuOptions[ExtractMenuItem("BigNodes").ID].SetValue(settingsData.bigNodes);
-        
-     //   menuOptions[ExtractMenuItem("SymbolDifficulty").ID].SetValue(settingsData.symbolDifficulty);
+        menuOptions[ExtractMenuItem("SymbolDifficulty").ID].SetValue(settingsData.symbolDifficulty);
 
     }
     

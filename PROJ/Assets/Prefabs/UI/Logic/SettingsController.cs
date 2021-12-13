@@ -46,7 +46,6 @@ public class SettingsController : MonoBehaviour {
     {
         string json = PlayerPrefs.GetString("SavedSettings");
 
-        Debug.Log(json);
         
         //If PlayerPrefs have no settings, read from DefaultSettings file
         if (json == "")

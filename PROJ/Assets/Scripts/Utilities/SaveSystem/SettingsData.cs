@@ -21,7 +21,7 @@ public class SettingsData
     public float fieldOfView;
     public float brightness;
     public bool fullscreen;
-    public Resolution screenResolution;
+    public string screenResolution;
     public string quality;
     
     //Accessibility
