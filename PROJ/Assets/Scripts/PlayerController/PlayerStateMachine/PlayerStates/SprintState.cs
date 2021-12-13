@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class SprintState : PlayerState
 {
     private InputAction sprint;
-    private bool holdToSprint = false;
+    private bool holdToSprint = true;
     public override void Initialize()
     {
         base.Initialize();
