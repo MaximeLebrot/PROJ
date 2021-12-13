@@ -30,11 +30,11 @@ public class SettingsData
     public bool highContrastMode;
     public bool dyslexiaFont;
     public bool oneHandMode;
-    public float nodeSize;
-    public float lineSize;
+    public bool bigNodes;
     public bool currentNodeMarker;
     public bool showClearedSymbols;
     public bool easyPuzzleControls;
+    public string symbolDifficulty;
     
 }
 
