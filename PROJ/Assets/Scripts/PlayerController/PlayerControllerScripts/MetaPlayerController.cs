@@ -37,12 +37,12 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     {
         inputReference.Initialize();
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
-        inputReference.InputMaster.Interact.performed += OnHub;
+        //inputReference.InputMaster.Interact.performed += OnHub;
     }
     private void OnDisable()
     {
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
-        inputReference.InputMaster.Interact.performed -= OnHub;
+        //inputReference.InputMaster.Interact.performed -= OnHub;
     }
 
     //TEMPORARY

@@ -15,15 +15,15 @@ public class Rebinding : MonoBehaviour
 
     private void Start()
     {
-        PlayerPrefs.DeleteAll();
-        LoadBindingOverrides();
+        //PlayerPrefs.DeleteAll();
+       // LoadBindingOverrides();
     }
     /// <summary>
     /// Currently doesn't support rebinding multiple bindings, hard coded to use the
     /// top one, and any others wont be accessible from here.
     /// </summary>
     /// <param name="action"></param>
-    public void RebindAction(InputAction action, int bindingIndex = 0)
+    public void RebindAction(InputAction action, int bindingIndex = 1)
     {
         compositeName = "";     
         
@@ -31,7 +31,7 @@ public class Rebinding : MonoBehaviour
         if (action.bindings[bindingIndex].isComposite)
         {
             int firstPartIndex = bindingIndex + 1;
-            if (firstPartIndex < action.bindings.Count )
+            if (firstPartIndex < action.bindings.Count)
                 Rebind(action, firstPartIndex, composite: true);
         }
         else
@@ -44,6 +44,7 @@ public class Rebinding : MonoBehaviour
 
     private void Rebind(InputAction action, int currentBindingIndex, bool composite = false)
     {
+        Debug.Log("Binding started for " + action.name + " index " + currentBindingIndex);
         rebindingOperation?.Cancel();
 
         action.Disable();
@@ -51,14 +52,15 @@ public class Rebinding : MonoBehaviour
         rebindingOperation = action.PerformInteractiveRebinding(currentBindingIndex)
             .WithControlsExcluding("Mouse")
             .OnMatchWaitForAnother(0.1f)
-            .WithCancelingThrough("<Keyboard>/escape")
+            .WithCancelingThrough("<Gamepad>/start")
             .OnCancel(operation =>
             {
                 CleanUp();
                 action.Enable();
             })
             .OnComplete(operation =>
-            {               
+            {
+                Debug.Log("Bind Completed");
                 CleanUp();
                 
                 if (composite)
@@ -85,6 +87,7 @@ public class Rebinding : MonoBehaviour
                 else
                     UpdateUIButton(action);
 
+                
                 SaveBindingOverride(action);
                 action.Enable();
             })           
