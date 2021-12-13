@@ -31,7 +31,6 @@ public class SprintState : PlayerState
     }
     public override void EnterState()
     {
-        Debug.Log("Entered Sprint State");
         LoadInputs();
         player.animator.SetTrigger("Sprint");
         base.EnterState();        
@@ -48,7 +47,6 @@ public class SprintState : PlayerState
     }
     public override void ExitState()
     {
-        Debug.Log("Exiting Sprint State");
         player.animator.SetTrigger("Walk");
         base.ExitState();
         UnloadInputs();   

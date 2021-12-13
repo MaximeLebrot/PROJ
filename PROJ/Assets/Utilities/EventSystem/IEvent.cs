@@ -76,24 +76,23 @@ public readonly struct CameraLookAtEvent : IEvent {
         this.delayWhenDone = delayWhenDone;
         this.rotationSpeed = rotationSpeed;
     }
-
 }
 
 public readonly struct CameraLookAndMoveToEvent : IEvent {
 
-    public readonly MoveToTransitionData moveToTransitionData;
-    public readonly LookAtTransitionData lookAtTransitionData;
-
     public readonly Vector3 endPosition;
     public readonly Quaternion endRotation;
-    
-    public CameraLookAndMoveToEvent(Vector3 endPosition, Quaternion endRotation, MoveToTransitionData moveToTransitionData, LookAtTransitionData lookAtTransitionData) {
+    public readonly float moveSpeed;
+    public readonly Vector3 offsetToTarget;
+    public readonly float rotationSpeed;
+
+    public CameraLookAndMoveToEvent(Vector3 endPosition, Quaternion endRotation, float moveSpeed, Vector3 offsetToTarget, float rotationSpeed) {
         this.endPosition = endPosition;
         this.endRotation = endRotation;
-        this.moveToTransitionData = moveToTransitionData;
-        this.lookAtTransitionData = lookAtTransitionData;
+        this.moveSpeed = moveSpeed;
+        this.offsetToTarget = offsetToTarget;
+        this.rotationSpeed = rotationSpeed;
     }
-
 }
 
 public class ClearPuzzleEvent : IEvent

@@ -6,12 +6,12 @@ public class AccessibilitySettings : MenuSettings {
         menuOptions[ExtractMenuItem("Use_HighContrastMode").ID].SetValue(settingsData.highContrastMode);
         menuOptions[ExtractMenuItem("BlindMode").ID].SetValue(settingsData.blindMode);
         menuOptions[ExtractMenuItem("OneHandMode").ID].SetValue(settingsData.oneHandMode);
-    //  menuOptions[ExtractMenuItem("NodeSize").ID].SetValue(settingsData.nodeSize);
-      //  menuOptions[ExtractMenuItem("LineSize").ID].SetValue(settingsData.lineSize);
         menuOptions[ExtractMenuItem("CurrentNodeMarker").ID].SetValue(settingsData.currentNodeMarker);
         menuOptions[ExtractMenuItem("ShowClearedSymbols").ID].SetValue(settingsData.showClearedSymbols);
         menuOptions[ExtractMenuItem("EasyPuzzleControls").ID].SetValue(settingsData.easyPuzzleControls);
-        
+        menuOptions[ExtractMenuItem("BigNodes").ID].SetValue(settingsData.bigNodes);
+        menuOptions[ExtractMenuItem("SymbolDifficulty").ID].SetValue(settingsData.symbolDifficulty);
+
     }
     
     public override void ApplyItemValues(ref SettingsData settingsData) {
@@ -23,5 +23,7 @@ public class AccessibilitySettings : MenuSettings {
         settingsData.currentNodeMarker = menuOptions[ExtractMenuItem("CurrentNodeMarker").ID].GetValue();
         settingsData.showClearedSymbols = menuOptions[ExtractMenuItem("ShowClearedSymbols").ID].GetValue();
         settingsData.easyPuzzleControls = menuOptions[ExtractMenuItem("EasyPuzzleControls").ID].GetValue();
+        settingsData.bigNodes = menuOptions[ExtractMenuItem("BigNodes").ID].GetValue();
+        settingsData.symbolDifficulty = menuOptions[ExtractMenuItem("SymbolDiffculty").ID].GetValue();
     }
 }

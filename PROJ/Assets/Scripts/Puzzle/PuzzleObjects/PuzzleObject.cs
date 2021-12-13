@@ -12,8 +12,10 @@ public abstract class PuzzleObject : MonoBehaviour
     [SerializeField] private Vector3 modifierPosition;
     [SerializeField] private GameObject modHolder;
 
-    //[HideInInspector]
+    [HideInInspector]
     [SerializeField] private ModifierVariant modVariant;
+
+    [SerializeField]private MeshRenderer mesh;
 
     [SerializeField] private List<Material> materials_EASY_MEDIUM_HARD = new List<Material>();
     private Dictionary<string, Material> materialsByDifficulty = new Dictionary<string, Material>();
@@ -23,39 +25,39 @@ public abstract class PuzzleObject : MonoBehaviour
     private Image modifierImage; //dekal som ska visas någonstans!?!? HUR GÖR MAN
     private GameObject modifier;
     private Animator anim;
-    private MeshRenderer mesh;
+    
     public bool Active { get; private set; }
 
-    private void Awake()
+    private void Start()
     {
         anim = GetComponent<Animator>();
-        mesh = GetComponent<MeshRenderer>();
-
         SetUpMaterials();
-        SetMaterialBasedOnDifficulty("Medium"/*send the strings based on settings.symbolDiffculty*/);
+        EventHandler<RequestSettingsEvent>.FireEvent(null);
     }
 
     private void OnEnable()
     {
-        EventHandler<SaveSettingsEvent>.RegisterListener(ApplyDificulty);
+        EventHandler<SaveSettingsEvent>.RegisterListener(ApplyDifficulty);
     }
 
     private void OnDisable()
     {
-        EventHandler<SaveSettingsEvent>.UnregisterListener(ApplyDificulty);
+        EventHandler<SaveSettingsEvent>.UnregisterListener(ApplyDifficulty);
     }
 
-    private void ApplyDificulty(SaveSettingsEvent obj)
+    private void ApplyDifficulty(SaveSettingsEvent obj)
     {
+   
         if (materials_EASY_MEDIUM_HARD.Count > 0)
         {
-            //SetMaterialBasedOnDifficulty(send the strings based on obj.settings.symbolDiffculty);
-
+            
+            SetMaterialBasedOnDifficulty(obj.settingsData.symbolDifficulty);
         }
     }
 
     private void SetUpMaterials()
     {
+        
         if(materials_EASY_MEDIUM_HARD.Count > 0)
         {
             materialsByDifficulty.Add("Easy", materials_EASY_MEDIUM_HARD[0]);
@@ -67,7 +69,8 @@ public abstract class PuzzleObject : MonoBehaviour
 
     private void SetMaterialBasedOnDifficulty(string difficulty)
     {
-        if(materials_EASY_MEDIUM_HARD.Count > 0)
+        Debug.Log("SET MATERIAL: " + difficulty);
+        if (materials_EASY_MEDIUM_HARD.Count > 0)
             mesh.material = materialsByDifficulty[difficulty];
     }
 
