@@ -129,10 +129,8 @@ public class Node : MonoBehaviour {
 
         if (hit.collider)
         {
-            //Debug.Log("hit " + hit.collider.gameObject.name);
             return hit.transform.GetComponent<Node>();
         }
-        Debug.Log("hit nothing");
 
         return null;
     }
@@ -183,7 +181,6 @@ public class Node : MonoBehaviour {
     {
         foreach(Node n in list)
         {
-            //Debug.Log(n.PosX + "   " + n.PosY);
             neighbours.Add(n, false);
         }
     }
