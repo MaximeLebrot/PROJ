@@ -24,12 +24,24 @@ public class PlayerAnimation : MonoBehaviour
     private void Update()
     {
         input = mpc.inputReference.InputMaster.Movement.ReadValue<Vector2>();
+<<<<<<< HEAD
+=======
+
+        float cameraDot = Vector3.Dot(mpc.playerController3D.cameraTransform.forward, transform.forward) < rotationThreshold ? -1f : 1f;
+        float dot = Vector3.Dot(transform.forward, mpc.physics.GetXZMovement()) < rotationThreshold ? -1f : 1f;
+        anim.SetFloat(x, input.x * cameraDot);
+>>>>>>> origin/Joanthan_Main
 
         float cameraDot = Vector3.Dot(mpc.playerController3D.cameraTransform.forward, transform.forward) < rotationThreshold ? -1f : 1f;
         float dot = Vector3.Dot(transform.forward, mpc.physics.GetXZMovement()) < rotationThreshold ? -1f : 1f;
         float forwardAnimation = dot > 0 ? Mathf.Abs(input.y) : input.y;
+<<<<<<< HEAD
 
         anim.SetFloat(x, input.x * cameraDot);
+=======
+>>>>>>> origin/Joanthan_Main
         anim.SetFloat(y, forwardAnimation);
+        /*anim.SetFloat(x, mpc.physics.GetXZMovement().x);
+        anim.SetFloat(y, mpc.physics.GetXZMovement().z);*/
     }
 }

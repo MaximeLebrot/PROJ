@@ -21,10 +21,13 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     private void Awake()
     {
+<<<<<<< HEAD
         //Must listen even when script is disabled, so unregister cannot be called in "OnDisable"
         //Therefore, the register cannot be done in "OnEnable", because that subs the method several times.
         EventHandler<InGameMenuEvent>.RegisterListener(EnterInGameMenuState);
 
+=======
+>>>>>>> origin/Joanthan_Main
         inputReference.Initialize();
         DontDestroyOnLoad(this);
     }
@@ -39,8 +42,14 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         stateMachine = new StateMachine(this, states);
     }
     private void OnEnable()
+<<<<<<< HEAD
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
+=======
+    {        
+        EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
+        EventHandler<InGameMenuEvent>.RegisterListener(EnterInGameMenuState);
+>>>>>>> origin/Joanthan_Main
     }
     private void OnDisable()
     {
@@ -60,9 +69,16 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         stateMachine.ChangeState<PuzzleState>();
     }
 
+<<<<<<< HEAD
     public Vector3 storedVelocity; 
     private void EnterInGameMenuState(InGameMenuEvent inGameMenuEvent) {
      
+=======
+    Vector3 storedVelocity; 
+    private void EnterInGameMenuState(InGameMenuEvent inGameMenuEvent) {
+     
+        Debug.Log("Enter int game menu");
+>>>>>>> origin/Joanthan_Main
         if (inGameMenuEvent.Activate)
         {
             storedVelocity = physics.velocity;
@@ -73,7 +89,10 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         else
         {
             StartCoroutine(SetDeceleration());
+<<<<<<< HEAD
             
+=======
+>>>>>>> origin/Joanthan_Main
             physics.velocity = storedVelocity;
             this.enabled = true;
             animator.enabled = true;
@@ -84,7 +103,16 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     {
         float storedDeceleration = playerController3D.GetDeceleration();
         playerController3D.SetDeceleration(decelerationValueForCoroutine);
+<<<<<<< HEAD
         yield return new WaitForSeconds(0.8f);
+=======
+        float time = 1.5f;
+        while (time > 0)
+        {
+            time -= Time.deltaTime;
+            yield return null;
+        }
+>>>>>>> origin/Joanthan_Main
         playerController3D.SetDeceleration(storedDeceleration);
     }
     
