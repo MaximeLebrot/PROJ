@@ -135,8 +135,6 @@ public class PuzzleGrid : MonoBehaviour {
         transform.localPosition = (Vector3.right * -midIndex * nodeOffset) + (Vector3.forward * -midIndex * nodeOffset);
     }
 
-
-
     public void StartPuzzle()
     {
         ActivateNode(startNode, false);
