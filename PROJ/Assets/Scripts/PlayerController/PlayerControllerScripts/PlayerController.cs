@@ -73,6 +73,8 @@ public class PlayerController : MonoBehaviour
     {
         if (eve.settingsData.oneHandMode)
         {
+            transform.forward = cameraTransform.forward;
+            characterModel.transform.forward = cameraTransform.forward;
             rotationDelegate = RotateInVelocityDirection;
             inputDelegate = InputVelocityRotation;
         }
