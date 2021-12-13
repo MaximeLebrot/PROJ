@@ -13,7 +13,6 @@ public class OSWalkState : PlayerState
     {
         Debug.Log("Entered Walk State");
         base.EnterState();
-        player.physics.SetGlide(false);
     }
 
     public override void RunUpdate()

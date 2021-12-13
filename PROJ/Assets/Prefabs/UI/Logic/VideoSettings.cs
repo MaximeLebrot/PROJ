@@ -16,7 +16,7 @@ public class VideoSettings : MenuSettings {
         
         menuOptions[ExtractMenuItem("Field of View").ID].SetValue(settingsData.fieldOfView);
         menuOptions[ExtractMenuItem("Brightness").ID].SetValue(settingsData.brightness);
-        menuOptions[ExtractMenuItem("Quality").ID].SetValue(settingsData.quality);
+        //menuOptions[ExtractMenuItem("Quality").ID].SetValue(settingsData.quality);
         menuOptions[ExtractMenuItem("Fullscreen").ID].SetValue(settingsData.fullscreen);
        
         //From Resolution to string

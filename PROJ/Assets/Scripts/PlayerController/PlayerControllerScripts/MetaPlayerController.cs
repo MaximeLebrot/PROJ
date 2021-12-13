@@ -21,6 +21,11 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     private void Awake()
     {
+        //Must listen even when script is disabled, so unregister cannot be called in "OnDisable"
+        //Therefore, the register cannot be done in "OnEnable", because that subs the method several times.
+        EventHandler<InGameMenuEvent>.RegisterListener(EnterInGameMenuState);
+
+        inputReference.Initialize();
         DontDestroyOnLoad(this);
     }
 
@@ -35,14 +40,11 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     }
     private void OnEnable()
     {
-        inputReference.Initialize();
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
-        inputReference.InputMaster.Interact.performed += OnHub;
     }
     private void OnDisable()
     {
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
-        inputReference.InputMaster.Interact.performed -= OnHub;
     }
 
     //TEMPORARY
@@ -58,7 +60,34 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         stateMachine.ChangeState<PuzzleState>();
     }
 
-
+    public Vector3 storedVelocity; 
+    private void EnterInGameMenuState(InGameMenuEvent inGameMenuEvent) {
+     
+        if (inGameMenuEvent.Activate)
+        {
+            storedVelocity = physics.velocity;
+            physics.velocity = Vector3.zero;
+            this.enabled = false;
+            animator.enabled = false;
+        }
+        else
+        {
+            StartCoroutine(SetDeceleration());
+            
+            physics.velocity = storedVelocity;
+            this.enabled = true;
+            animator.enabled = true;
+        }                
+    }
+    public float decelerationValueForCoroutine = 5;
+    IEnumerator SetDeceleration()
+    {
+        float storedDeceleration = playerController3D.GetDeceleration();
+        playerController3D.SetDeceleration(decelerationValueForCoroutine);
+        yield return new WaitForSeconds(0.8f);
+        playerController3D.SetDeceleration(storedDeceleration);
+    }
+    
     public void ChangeStateToOSPuzzle(StartPuzzleEvent eve) => stateMachine.ChangeState<OSPuzzleState>();
 
     public void ChangeStateToOSWalk(ExitPuzzleEvent eve) => stateMachine.ChangeState<OSWalkState>();

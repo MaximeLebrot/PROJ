@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 [CreateAssetMenu(menuName = "PlayerStates/WalkState")]
 public class WalkState : PlayerState
 {
-    public InputAction sprint;
+    private InputAction sprint;
     public override void Initialize()
     {
         base.Initialize();
@@ -17,13 +17,11 @@ public class WalkState : PlayerState
     {
         //Debug.Log("Entered Walk State");
         base.EnterState();
-        player.physics.SetGlide(false);
         player.inputReference.InputMaster.Sprint.performed += OnSprintActivate;
     }
     public override void RunUpdate()
     {
          SetInput();
-
         if (!player.playerController3D.IsGrounded())
         {
             stateMachine.ChangeState<AirborneState>(this);
@@ -37,6 +35,7 @@ public class WalkState : PlayerState
     }
     private void SetInput()
     {
+        Vector2 inp = player.inputReference.InputMaster.Movement.ReadValue<Vector2>();
         player.playerController3D.InputWalk(player.inputReference.InputMaster.Movement.ReadValue<Vector2>());
     }
     private void OnSprintActivate(InputAction.CallbackContext obj)

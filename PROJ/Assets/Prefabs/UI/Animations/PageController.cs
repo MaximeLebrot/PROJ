@@ -6,9 +6,13 @@ public class PageController : MonoBehaviour {
     private Dictionary<int, GameObject> pageObjects;
 
     private GameObject currentActivePage;
+
+    private MenuController menuController;
     
     private void Awake() {
 
+        menuController = GetComponentInParent<MenuController>();
+        
         pageObjects = new Dictionary<int, GameObject>();
         
         for (int i = 0; i < transform.childCount; i++) {
@@ -16,10 +20,9 @@ public class PageController : MonoBehaviour {
             GameObject child = transform.GetChild(i).gameObject;
             
             pageObjects.Add(child.name.GetHashCode(), child);
-            
         }
         
-        MenuController.OnActivatePage += ActivatePage;
+        menuController.OnActivatePage += ActivatePage;
 
     }
 

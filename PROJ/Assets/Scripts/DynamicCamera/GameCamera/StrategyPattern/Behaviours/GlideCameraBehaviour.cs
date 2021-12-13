@@ -9,8 +9,6 @@ namespace NewCamera {
         
         public override Quaternion ExecuteRotate() {
             
-            Debug.Log("Glide camera");
-            
             Quaternion targetRotation = Quaternion.LookRotation(((target.position - thisTransform.position) + BehaviourData<GlideData>().LookRotationOffset));
             
             return Quaternion.Slerp(thisTransform.rotation, targetRotation, Time.deltaTime * behaviourValues.RotationSpeed);
