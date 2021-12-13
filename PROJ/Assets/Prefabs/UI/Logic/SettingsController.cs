@@ -13,7 +13,6 @@ public class SettingsController : MonoBehaviour {
     private void OnDisable() => EventHandler<RequestSettingsEvent>.UnregisterListener(SendOutUserSettingsData);
 
     private void Start() {
-
         foreach (MenuSettings menuSettings in settingObjects)
             menuSettings.Initialize();
         
@@ -59,13 +58,11 @@ public class SettingsController : MonoBehaviour {
     }
     
     private void UpdateUserSettings() {
-
         foreach(MenuSettings menuSettings in settingObjects)
             menuSettings.ApplyItemValues(ref userSettings);
     }
 
     private void SetValues(SettingsData settings) {
-
         foreach (MenuSettings menuSettings in settingObjects)
             menuSettings.SetMenuItems(settings);
     }
