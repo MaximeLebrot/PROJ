@@ -12,7 +12,7 @@ public class ObjectHelper {
         GameObject[] roots = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
 
         foreach (GameObject sceneObject in roots) {
-            bool settingsMenuExists = sceneObject.GetComponent<InGameMenu>();
+            bool settingsMenuExists = sceneObject.GetComponent<InGameMainMenu>();
 
             if (settingsMenuExists) {
                 Debug.Log("In game settings exists");

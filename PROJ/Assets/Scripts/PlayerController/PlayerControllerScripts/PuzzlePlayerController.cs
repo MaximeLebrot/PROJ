@@ -93,8 +93,6 @@ public class PuzzlePlayerController : MonoBehaviour
 
     private void Decelerate()
     {
-        /*Debug.Log("Puzzle player controller decelerate");
-        force = -deceleration * physics.velocity.normalized;*/
         Vector3 projectedDeceleration = -physics.GetXZMovement() * deceleration;
         force += projectedDeceleration;
     }
