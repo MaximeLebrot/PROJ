@@ -12,8 +12,10 @@ public abstract class PuzzleObject : MonoBehaviour
     [SerializeField] private Vector3 modifierPosition;
     [SerializeField] private GameObject modHolder;
 
-    //[HideInInspector]
+    [HideInInspector]
     [SerializeField] private ModifierVariant modVariant;
+
+    [SerializeField]private MeshRenderer mesh;
 
     [SerializeField] private List<Material> materials_EASY_MEDIUM_HARD = new List<Material>();
     private Dictionary<string, Material> materialsByDifficulty = new Dictionary<string, Material>();
@@ -23,13 +25,13 @@ public abstract class PuzzleObject : MonoBehaviour
     private Image modifierImage; //dekal som ska visas någonstans!?!? HUR GÖR MAN
     private GameObject modifier;
     private Animator anim;
-    private MeshRenderer mesh;
+    
     public bool Active { get; private set; }
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
-        mesh = GetComponentInChildren<MeshRenderer>();
+
 
         SetUpMaterials();
         SetMaterialBasedOnDifficulty("Medium"/*send the strings based on settings.symbolDiffculty*/);
