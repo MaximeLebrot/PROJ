@@ -28,15 +28,16 @@ public abstract class PuzzleObject : MonoBehaviour
     
     public bool Active { get; private set; }
 
+
     private void Start()
     {
         anim = GetComponent<Animator>();
-        SetUpMaterials();
         EventHandler<RequestSettingsEvent>.FireEvent(null);
     }
 
     private void OnEnable()
     {
+        SetUpMaterials();
         EventHandler<SaveSettingsEvent>.RegisterListener(ApplyDifficulty);
     }
 
@@ -50,7 +51,6 @@ public abstract class PuzzleObject : MonoBehaviour
    
         if (materials_EASY_MEDIUM_HARD.Count > 0)
         {
-            
             SetMaterialBasedOnDifficulty(obj.settingsData.symbolDifficulty);
         }
     }
