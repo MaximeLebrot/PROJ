@@ -21,12 +21,7 @@ public class ContrastModeObject : MonoBehaviour {
         swapMaterials = contrastMaterials;
 
     }
-
-    private void Start()
-    {
-        EventHandler<RequestSettingsEvent>.FireEvent(null);
-    }
-
+    
     private void OnEnable() {
         EventHandler<SaveSettingsEvent>.RegisterListener(DetermineIfContrastModeIsActive);
         
