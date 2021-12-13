@@ -14,7 +14,6 @@ public class OSSpinState : PlayerState
     {
         Debug.Log("Entered Spin State");
         base.EnterState();
-        player.physics.SetGlide(false);
     }
 
     public override void RunUpdate()

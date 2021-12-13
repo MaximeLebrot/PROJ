@@ -47,4 +47,5 @@ public static class EventHandler<TEvent> where TEvent : IEvent
         RegisterType();
         typeEventListeners[typeof(TEvent)]?.Invoke(e);
     }
+    
 }
