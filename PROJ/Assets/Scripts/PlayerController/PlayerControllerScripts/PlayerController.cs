@@ -10,9 +10,9 @@ public class PlayerController : MonoBehaviour
     [Header("Player Control")]  
     [SerializeField] private float acceleration = 5f;
     [SerializeField] private float deceleration = 2f;   
-    [SerializeField] private float maxSpeed = 5f;
     [SerializeField] private float turnRate = 4f;
-    [SerializeField] private float turnSpeed; 
+    [SerializeField] private float modelTurnSpeed;
+    [SerializeField] private float objectTurnSpeed;
     [SerializeField] private float retainedSpeedWhenTurning = 0.33f;
     [SerializeField] private float airControl = 0.2f;
     
@@ -35,12 +35,12 @@ public class PlayerController : MonoBehaviour
     private float inputThreshold = 0.1f;
     private Vector3 input;
     private Vector3 force;
-    private float defaultTurnSpeed;
 
     //Component references
     public PlayerPhysicsSplit physics { get; private set; }
     public Transform cameraTransform { get; private set; }
     public ControllerInputReference inputReference;
+    [SerializeField] public GameObject characterModel;
 
     //Properties
     private float groundHitAngle;
@@ -50,6 +50,7 @@ public class PlayerController : MonoBehaviour
         Application.targetFrameRate = 250;
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PlayerPhysicsSplit>();
+        SecureDelegates();
     }
     private void OnEnable()
     {
@@ -63,9 +64,31 @@ public class PlayerController : MonoBehaviour
 
     //This could instead load a delegate with a preffered input chain, but as of now that would require more code than the current solution. 
     //to be considered in the future, though
+    private delegate void RotationDelegate();
+    private RotationDelegate rotationDelegate;
+
+    private delegate void InputDelegate(Vector3 input);
+    private InputDelegate inputDelegate;
     private void OnSaveSettings(SaveSettingsEvent eve)
     {
-        usingCameraRotation = !eve.settingsData.oneHandMode;          
+        if (eve.settingsData.oneHandMode)
+        {
+            rotationDelegate = RotateInVelocityDirection;
+            inputDelegate = InputVelocityRotation;
+        }
+        else
+        {
+            rotationDelegate = RotateInCameraDirection;
+            inputDelegate = InputCameraRotation;
+        }
+    }
+    private void SecureDelegates()
+    {
+        if (rotationDelegate == null || inputDelegate == null)
+        {
+            rotationDelegate = RotateInCameraDirection;
+            inputDelegate = InputCameraRotation;
+        }
     }
     private void FixedUpdate()
     {
@@ -86,7 +109,7 @@ public class PlayerController : MonoBehaviour
 
     public void InputWalk(Vector3 inp)
     {
-        ModeOfInput(inp);      
+        inputDelegate(inp);      
 
         //to stop character rotation when input is 0
         if (input.magnitude < inputThreshold)
@@ -103,7 +126,7 @@ public class PlayerController : MonoBehaviour
     }
     public void InputAirborne(Vector3 inp)
     {
-        ModeOfInput(inp);
+        inputDelegate(inp);
 
         if (input.magnitude > 1f)
         {
@@ -116,20 +139,15 @@ public class PlayerController : MonoBehaviour
         Accelerate();
     }
 
-    private void ModeOfInput(Vector3 inp)
+    private void InputCameraRotation(Vector3 inp)
     {
-        //One way of steering
-        if (usingCameraRotation)
-        {
-            input = inp.x * Vector3.right +
-                    inp.y * Vector3.forward;
-        }
-        //Independent of camera rotation
-        else
-        {
-            input = inp.x * transform.right +
-                    inp.y * transform.forward;
-        }
+        input = inp.x * Vector3.right +
+                inp.y * Vector3.forward;
+    }
+    private void InputVelocityRotation(Vector3 inp)
+    {
+        input = inp.x * transform.right +
+                inp.y * transform.forward;
     }
 
     private void Decelerate()
@@ -153,28 +171,6 @@ public class PlayerController : MonoBehaviour
                  * retainedSpeedWhenTurning 
                  * inputXZ.normalized;
     }
-    
-    private void PlayerDirection(Vector3 rawInput)
-    {
-        if (usingCameraRotation)
-        {
-            Vector3 temp = cameraTransform.rotation.eulerAngles;
-            temp.x = 0;
-            Quaternion camRotation = Quaternion.Euler(temp);
-
-            input = camRotation * input;
-            input.y = 0;
-        }
-        RotateInVelocityDirection();
-        ProjectMovement();
-    }
-    private void RotateInVelocityDirection()
-    {
-        Vector3 charVelocity = physics.GetXZMovement();
-        if (charVelocity.magnitude < inputThreshold)
-            return;
-        transform.forward = Vector3.Lerp(transform.forward, charVelocity.normalized, turnSpeed * Time.deltaTime);
-    }
     private void ProjectMovement()
     {
         groundHitAngle = groundHitInfo.collider == null ? 90 : Vector3.Angle(input, groundHitInfo.normal);
@@ -189,6 +185,37 @@ public class PlayerController : MonoBehaviour
             //Some disruption to movement, possibly another PlayerState, or timed value tweaks
             input = Vector3.zero;
         }
+    }
+    #endregion
+    #region Rotation
+    private void PlayerDirection(Vector3 rawInput)
+    {
+        rotationDelegate();
+        RotateCharacterModel();
+        ProjectMovement();
+    }
+    private void RotateInCameraDirection()
+    {
+        Vector3 temp = cameraTransform.rotation.eulerAngles;
+        temp.x = 0;
+        Quaternion camRotation = Quaternion.Euler(temp);
+
+        input = camRotation * input;
+        input.y = 0;
+    }
+    private void RotateInVelocityDirection()
+    {
+        Vector3 charVelocity = physics.GetXZMovement();
+        if (charVelocity.magnitude < inputThreshold)
+            return;
+        transform.forward = Vector3.Lerp(transform.forward, physics.GetXZMovement().normalized, objectTurnSpeed * Time.deltaTime);
+    }
+    private void RotateCharacterModel()
+    {
+        Vector3 charVelocity = physics.GetXZMovement();
+        if (charVelocity.magnitude < inputThreshold)
+            return;
+        characterModel.transform.forward = Vector3.Lerp(characterModel.transform.forward, charVelocity.normalized, modelTurnSpeed * Time.deltaTime);
     }
     #endregion
 
