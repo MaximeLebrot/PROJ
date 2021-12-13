@@ -31,10 +31,10 @@ public class SettingsData
     public bool dyslexiaFont;
     public bool oneHandMode;
     public bool bigNodes;
-    public bool currentNodeMarker;
-    public bool showClearedSymbols;
+    public bool currentNodeMarker; 
+    public bool showClearedSymbols; //CHECK
     public bool easyPuzzleControls;
-    public string symbolDifficulty;
+    public string symbolDifficulty; //CHECK
     
 }
 
