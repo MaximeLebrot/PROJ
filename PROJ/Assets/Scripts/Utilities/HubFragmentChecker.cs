@@ -32,8 +32,8 @@ public class HubFragmentChecker : MonoBehaviour
             deposits[2].InitializeFragment();
             deposits[1].InitializeFragment();
             deposits[0].InitializeFragment();
-            fragment.transform.position = earthPos.position;
-            fragment.transform.rotation = earthPos.rotation;
+            fragment.transform.position = lavaPos.position;
+            fragment.transform.rotation = lavaPos.rotation;
         }
 
         else if (fragment.DepositFragment("wind"))
