@@ -17,6 +17,7 @@ public class Portal : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        //Open should be called from the fragment holder/whatever, not here. Only for testing.
         Open();
         EventHandler<UnLoadSceneEvent>.FireEvent(new UnLoadSceneEvent(sceneToLoad));
     }

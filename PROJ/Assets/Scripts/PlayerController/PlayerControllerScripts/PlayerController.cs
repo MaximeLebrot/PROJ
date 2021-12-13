@@ -45,9 +45,6 @@ public class PlayerController : MonoBehaviour
     //Properties
     private float groundHitAngle;
 
-    private delegate void TakeInput(Vector3 inp);
-    private TakeInput takeInput;
-
     void Awake()
     {
         Application.targetFrameRate = 250;
@@ -153,7 +150,6 @@ public class PlayerController : MonoBehaviour
         //Add "retainedSpeedWhenTurning" amount of previously existing momentum to our new direction
         //Makes turning less punishing
         force += ((1 - dot) * 0.5f)
-                 * turnRate 
                  * retainedSpeedWhenTurning 
                  * inputXZ.normalized;
     }
@@ -169,7 +165,6 @@ public class PlayerController : MonoBehaviour
             input = camRotation * input;
             input.y = 0;
         }
-
         RotateInVelocityDirection();
         ProjectMovement();
     }
