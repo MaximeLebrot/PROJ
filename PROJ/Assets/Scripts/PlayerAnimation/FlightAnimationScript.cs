@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class FlightAnimationScript : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class FlightAnimationScript : MonoBehaviour
     private float adjustedYValue;
     private float colSizeOffset;
     [SerializeField] private string triggerValue;
-
+    
     private void Awake()
     {
         colSizeOffset = GetComponent<SphereCollider>().radius;
@@ -35,15 +36,21 @@ public class FlightAnimationScript : MonoBehaviour
             mpc.enabled = false;
             moveToCenter = true;
             mpcXZPos = new Vector2(mpc.transform.position.x, mpc.transform.position.z);
+            EventHandler<TransportationBegunEvent>.FireEvent(null);
+            
         }
+        
+        
     }
 
     public void ActivateScripts()
     {
+        EventHandler<TransportationEndedEvent>.FireEvent(null);
         GetComponent<SphereCollider>().enabled = false;
         mpc.transform.parent = null;
         mpc.physics.enabled = true;
         mpc.enabled = true;
+        EventHandler<TransportationEndedEvent>.FireEvent(null);
     }
 
     private void Update()

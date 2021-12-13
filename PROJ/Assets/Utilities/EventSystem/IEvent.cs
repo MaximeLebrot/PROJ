@@ -150,3 +150,16 @@ public class SetUpCameraEvent : IEvent
 
     public SetUpCameraEvent(Transform f, Transform s) { followTarget = f; shoulderPos = s; }
 }
+
+public class InGameMenuEvent : IEvent {
+
+    public readonly bool Activate;
+
+    public InGameMenuEvent(bool activate) => Activate = activate;
+}
+
+public class TransportationBegunEvent : IEvent {}
+public class TransportationEndedEvent : IEvent {}
+
+//Use for making the settings menu to fire a SaveSettingsData
+public class RequestSettingsEvent : IEvent {}
