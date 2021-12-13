@@ -86,13 +86,29 @@ public class Puzzle : MonoBehaviour
         EventHandler<ExitPuzzleEvent>.RegisterListener(OnExitPuzzle);
         EventHandler<ResetPuzzleEvent>.RegisterListener(OnResetPuzzle);
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
+        EventHandler<SaveSettingsEvent>.RegisterListener(ApplySettings);
     }
     private void OnDisable()
     {
         EventHandler<ExitPuzzleEvent>.UnregisterListener(OnExitPuzzle);
         EventHandler<ResetPuzzleEvent>.UnregisterListener(OnResetPuzzle);
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
+        EventHandler<SaveSettingsEvent>.UnregisterListener(ApplySettings);
     }
+
+    private void ApplySettings(SaveSettingsEvent obj)
+    {
+        showClearedSymbols = obj.settingsData.showClearedSymbols;
+
+        if(showClearedSymbols == false)
+        {
+            foreach(TranslationAndObject pair in translationsSorted)
+            {
+                pair.pObj.Activate(false);
+            }
+        }
+    }
+
     private void SetupPuzzleInstances()
     {
         foreach (PuzzleInstance pi in puzzleInstances)
@@ -123,7 +139,6 @@ public class Puzzle : MonoBehaviour
     {
         symbolPlacer.UnloadSymbols();
         currentPuzzleInstance.DestroyHazards();
-        ResetClearanceVariables();
 
 
         if (particles != null)
@@ -220,29 +235,16 @@ public class Puzzle : MonoBehaviour
 
     //Maybe return ID from current PuzzleInstance instead
     public int GetPuzzleID() { return currentPuzzleInstance.GetPuzzleID(); }
-
-
-    private void ResetClearanceVariables()
-    {
-
-    }
-
     
     protected List<bool> clearedSymbols = new List<bool>();
+    protected bool showClearedSymbols;
 
     public virtual void CheckIfClearedSymbol(string currentSolution) //currentSolution = what the player has drawn
     {
-
-        /*
-         * 
-         * if(settings.showClearedSymbols == false)
-         *      return;
-         * 
-         */
-
+        if(showClearedSymbols == false)
+             return;
 
         int solutionOffset = 0;
-
         //Checks for empty solution
         if(currentSolution.Length > 0 == false)
         {
@@ -251,46 +253,28 @@ public class Puzzle : MonoBehaviour
                 pair.pObj.Activate(false);
             }
         }
-
         //goes through each index of strings in translations
         for (int i = 0; i < translations.Count; i++)
         {
-
             if (IsEqualRange(solutionOffset, translations[i].translation.Length, currentSolution, i))
             {
                 solutionOffset += translations[i].translation.Length;
-
                 translations[i].pObj.Activate(true);
             }
             else
             {
-                
                 translations[i].pObj.Activate(false);
             }
-
         }
-
-
-        //ApplyClearedSymbols();
-
     }
 
 
     private bool IsEqualRange(int offset, int length, string currentSolution, int translationIndex)
     {
-        //Debug.Log(length);
-
         if (offset + length > currentSolution.Length)
-        {
-            //Debug.Log("LENGTH IS WRONG");
             return false;
-        }
-
-        //Debug.Log("input: " + currentSolution.Substring(offset, length) + " translation: " + translations[translationIndex].translation);
-        //Debug.Log("equal = " + currentSolution.Substring(offset, length).Equals(translations[translationIndex]));
 
         return currentSolution.Substring(offset, length).Equals(translations[translationIndex].translation);
-        
     }
 
     public void OnExitPuzzle(ExitPuzzleEvent eve)
