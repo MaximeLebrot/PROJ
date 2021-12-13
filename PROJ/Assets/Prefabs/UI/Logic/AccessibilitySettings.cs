@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class AccessibilitySettings : MenuSettings {
     
     public override void SetMenuItems(SettingsData settingsData) {
@@ -10,7 +12,8 @@ public class AccessibilitySettings : MenuSettings {
         menuOptions[ExtractMenuItem("ShowClearedSymbols").ID].SetValue(settingsData.showClearedSymbols);
         menuOptions[ExtractMenuItem("EasyPuzzleControls").ID].SetValue(settingsData.easyPuzzleControls);
         menuOptions[ExtractMenuItem("BigNodes").ID].SetValue(settingsData.bigNodes);
-        menuOptions[ExtractMenuItem("SymbolDifficulty").ID].SetValue(settingsData.symbolDifficulty);
+        
+     //   menuOptions[ExtractMenuItem("SymbolDifficulty").ID].SetValue(settingsData.symbolDifficulty);
 
     }
     
@@ -24,6 +27,6 @@ public class AccessibilitySettings : MenuSettings {
         settingsData.showClearedSymbols = menuOptions[ExtractMenuItem("ShowClearedSymbols").ID].GetValue();
         settingsData.easyPuzzleControls = menuOptions[ExtractMenuItem("EasyPuzzleControls").ID].GetValue();
         settingsData.bigNodes = menuOptions[ExtractMenuItem("BigNodes").ID].GetValue();
-        settingsData.symbolDifficulty = menuOptions[ExtractMenuItem("SymbolDiffculty").ID].GetValue();
+        settingsData.symbolDifficulty = menuOptions[ExtractMenuItem("SymbolDifficulty").ID].GetValue();
     }
 }

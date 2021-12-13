@@ -28,10 +28,13 @@ public abstract class PuzzleObject : MonoBehaviour
     
     public bool Active { get; private set; }
 
-    private void Start()
-    {
+    private void Awake() {
         anim = GetComponent<Animator>();
         SetUpMaterials();
+    }
+
+    private void Start()
+    {
         EventHandler<RequestSettingsEvent>.FireEvent(null);
     }
 
@@ -50,28 +53,28 @@ public abstract class PuzzleObject : MonoBehaviour
    
         if (materials_EASY_MEDIUM_HARD.Count > 0)
         {
-            
             SetMaterialBasedOnDifficulty(obj.settingsData.symbolDifficulty);
         }
     }
 
     private void SetUpMaterials()
     {
-        
         if(materials_EASY_MEDIUM_HARD.Count > 0)
         {
             materialsByDifficulty.Add("Easy", materials_EASY_MEDIUM_HARD[0]);
             materialsByDifficulty.Add("Medium", materials_EASY_MEDIUM_HARD[1]);
             materialsByDifficulty.Add("Hard", materials_EASY_MEDIUM_HARD[2]);
         }
-        
     }
 
     private void SetMaterialBasedOnDifficulty(string difficulty)
     {
-        Debug.Log("SET MATERIAL: " + difficulty);
-        if (materials_EASY_MEDIUM_HARD.Count > 0)
+        Debug.Log(difficulty);
+        if (materials_EASY_MEDIUM_HARD.Count > 0) {
+            
             mesh.material = materialsByDifficulty[difficulty];
+        }
+            
     }
 
     public string GetTranslation()

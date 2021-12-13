@@ -45,9 +45,6 @@ public class GameCamera : MonoBehaviour {
         
         behaviourQueue = ExecuteCameraBehaviour;
     }
-
-    private void Start() => EventHandler<RequestSettingsEvent>.FireEvent(null);
-
     private void LateUpdate() => behaviourQueue?.Invoke();
 
     private void ExecuteCameraBehaviour() {
@@ -214,7 +211,7 @@ public class GameCamera : MonoBehaviour {
     }
 
     private void OnSettingsChanged(SaveSettingsEvent settingsEvent) {
-        Debug.Log($"One hand mode is set to: {settingsEvent.settingsData.oneHandMode}");
+        
     }
     
     [ContextMenu("Auto-assign targets", false,0)]
