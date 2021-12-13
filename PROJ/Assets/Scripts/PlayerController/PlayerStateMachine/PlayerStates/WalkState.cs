@@ -15,7 +15,7 @@ public class WalkState : PlayerState
     }
     public override void EnterState()
     {
-        Debug.Log("Entered Walk State");
+        //Debug.Log("Entered Walk State");
         base.EnterState();
         player.inputReference.InputMaster.Sprint.performed += OnSprintActivate;
     }

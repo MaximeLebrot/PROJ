@@ -65,7 +65,6 @@ public class MetaPlayerController : MonoBehaviour, IPersist
      
         if (inGameMenuEvent.Activate)
         {
-            Debug.Log("Enter int game menu");
             storedVelocity = physics.velocity;
             physics.velocity = Vector3.zero;
             this.enabled = false;
@@ -73,7 +72,6 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         }
         else
         {
-            Debug.Log("exit in game menu");
             StartCoroutine(SetDeceleration());
             
             physics.velocity = storedVelocity;
