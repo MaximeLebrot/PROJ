@@ -8,11 +8,13 @@ public class FragmentDeposit : MonoBehaviour
     [SerializeField] private Portal portal;
     [SerializeField] private GameObject fragmentObject;
     [SerializeField] private Transform fragmentPos;
+    [SerializeField] private FragmentFollow fragment;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<PlayerFragments>().DepositFragment(nameOfThisFragment))
         {
+            fragment.DepositFragment();
             //start relevant cutscene?
             portal.Open();
         }
