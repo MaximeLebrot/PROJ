@@ -45,11 +45,8 @@ public class FlightAnimationScript : MonoBehaviour
             col.GetComponentInChildren<Obi.ObiCloth>().enabled = false;
             //  playerAnimator.SetLayerWeight(2, 1f);
             flight = true;
-            EventHandler<TransportationBegunEvent>.FireEvent(null);
-            
-        }
-        
-        
+            EventHandler<TransportationBegunEvent>.FireEvent(null);            
+        }       
     }
 
     public void ActivateScripts()
