@@ -8,9 +8,9 @@ public class OSPuzzle : MonoBehaviour
     [SerializeField] private MetaPlayerController player;
     [SerializeField] private GameObject UINodeParent;
 
-    private List<Button> UINodes;
+    private List<Button> UINodes = new List<Button>();
 
-    [Header("Variables"), SerializeField, Range(0.1f, 0.9f)] private float speed;
+    [Header("Variables"), SerializeField, Range(0.1f, 0.9f)] private float speed = 0.5f;
     [SerializeField, Range(0.01f, 0.3f)] private float holdingButtonLimit = 0.2f;
 
     private float time = 1f, timer;
@@ -24,18 +24,20 @@ public class OSPuzzle : MonoBehaviour
     public void StartOSPuzzle(StartPuzzleEvent eve)
     {
         //player.velocity = Vector3.zero
+        player.ChangeStateToOSPuzzle(eve);
         UINodeParent.SetActive(true);
+        time = 1f - speed;
         timer = time;
     }
 
     public void ExitOSPuzzle(ExitPuzzleEvent eve)
     {
         UINodeParent.SetActive(false);
+        player.ChangeStateToOSWalk(eve);
     }
 
     private void Update()
     {
-        time = 1f - speed;
         if (inputMaster.OneSwitch.PuzzleTest.ReadValue<float>() != 0)
         {
             pressingButton = true;
@@ -77,24 +79,16 @@ public class OSPuzzle : MonoBehaviour
         }
     }
 
-
-    private void OnEventCalled(StartPuzzleEvent eve)
+    private void MovePlayerTo(int numPDirection)
     {
-        StartOSPuzzle(eve);
-        player.ChangeStateToOSPuzzle(eve);
-    }
 
-    private void OnEventCalled(ExitPuzzleEvent eve)
-    {
-        ExitOSPuzzle(eve);
-        player.ChangeStateToOSWalk(eve);
     }
 
     #region UES
-    private void Start()
+    private void Awake()
     {
         if (UINodeParent == null)
-            return;
+            Debug.LogError("Give reference to UI");
         if (UINodes.Count == 0)
             UINodes.AddRange(UINodeParent.GetComponentsInChildren<Button>());
         if (puzzle == null)
@@ -109,8 +103,6 @@ public class OSPuzzle : MonoBehaviour
     {
         EventHandler<ExitPuzzleEvent>.RegisterListener(ExitOSPuzzle);
         EventHandler<StartPuzzleEvent>.RegisterListener(StartOSPuzzle);
-        EventHandler<StartPuzzleEvent>.RegisterListener(player.ChangeStateToOSPuzzle);
-        EventHandler<ExitPuzzleEvent>.RegisterListener(player.ChangeStateToOSWalk);
     }
 
     private void OnDisable()
@@ -118,8 +110,6 @@ public class OSPuzzle : MonoBehaviour
         inputMaster.Disable();
         EventHandler<ExitPuzzleEvent>.UnregisterListener(ExitOSPuzzle);
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartOSPuzzle);
-        EventHandler<StartPuzzleEvent>.UnregisterListener(player.ChangeStateToOSPuzzle);
-        EventHandler<ExitPuzzleEvent>.UnregisterListener(player.ChangeStateToOSWalk);
     }
     #endregion
 }
