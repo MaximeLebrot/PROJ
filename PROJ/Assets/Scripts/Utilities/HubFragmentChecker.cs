@@ -15,12 +15,10 @@ public class HubFragmentChecker : MonoBehaviour
 
     [SerializeField] private List<FragmentDeposit> deposits = new List<FragmentDeposit>();
 
-    private void Awake()
+    private void Start()
     {
         CheckForPortalsToOpen();
     }
-
-
 
     private void CheckForPortalsToOpen()
     {
