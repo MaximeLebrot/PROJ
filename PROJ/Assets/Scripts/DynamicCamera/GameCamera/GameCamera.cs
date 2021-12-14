@@ -214,16 +214,22 @@ public class GameCamera : MonoBehaviour {
         EventHandler<TransportationBegunEvent>.RegisterListener(OnTransportationEvent);
     }
 
-    private void OnSettingsChanged(SaveSettingsEvent settingsEvent) {
-        if (settingsEvent.settingsData.oneHandMode) {
+    private void OnSettingsChanged(SaveSettingsEvent settingsEvent)
+    {
+        if (settingsEvent.settingsData.oneHandMode)
+        {
             previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
             ChangeBehaviour<OneHandCameraBehaviour>();
         }
-        else {
-            ChangeBehaviour(previousCameraBehaviour);
+        else
+        {
+            if (previousCameraBehaviour != null)
+                ChangeBehaviour(previousCameraBehaviour);
+            else
+                ChangeBehaviour<BaseCameraBehaviour>();
         }
     }
-    
+
     [ContextMenu("Auto-assign targets", false,0)]
     public void AssignTargets() {
         try {

@@ -26,10 +26,6 @@ public class PlayerController : MonoBehaviour
     private float groundCheckBoxSize = 0.1f;
 
     #endregion
-
-    //Steering
-    //exposed for debug
-    [SerializeField]private bool usingCameraRotation;   
     
     //Input
     private float inputThreshold = 0.1f;
