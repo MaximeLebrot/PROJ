@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Portal : MonoBehaviour
@@ -9,16 +7,20 @@ public class Portal : MonoBehaviour
 
     private void Awake()
     {
-        anim = GetComponent<Animator>();
+        if (anim == null)
+            anim = GetComponent<Animator>();
     }
+
     public void Open()
     {
         anim.SetTrigger("Open");
     }
+
     private void OnTriggerEnter(Collider other)
     {
         //Open should be called from the fragment holder/whatever, not here. Only for testing.
-        Open();
+        //Open();
+        Debug.Log("hehehe");
         EventHandler<UnLoadSceneEvent>.FireEvent(new UnLoadSceneEvent(sceneToLoad));
     }
 }
