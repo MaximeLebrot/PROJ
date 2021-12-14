@@ -57,6 +57,24 @@ public class PuzzleGrid : MonoBehaviour {
         }
     }
 
+    private void OnEnable()
+    {
+        EventHandler<SaveSettingsEvent>.RegisterListener(ApplySettings);
+    }
+
+    private void OnDisable()
+    {
+        EventHandler<SaveSettingsEvent>.UnregisterListener(ApplySettings);
+    }
+
+    private void ApplySettings(SaveSettingsEvent obj)
+    {
+        if (obj.settingsData.currentNodeMarker)
+            currentNodeEffect.Play();
+        else
+            currentNodeEffect.Stop();
+    }
+
 
     //Setup puzzle from Puzzle
     public void StartGrid()

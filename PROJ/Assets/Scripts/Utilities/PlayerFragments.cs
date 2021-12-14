@@ -7,7 +7,7 @@ public class PlayerFragments : MonoBehaviour
 {
     private DictionaryOfStringAndBool collectedFragments = new DictionaryOfStringAndBool();
 
-    void Start()
+    void Awake()
     {
         collectedFragments.Add("tutorial", false);
         collectedFragments.Add("earth", false);

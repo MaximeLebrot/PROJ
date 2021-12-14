@@ -23,15 +23,13 @@ public class PlayerAnimation : MonoBehaviour
     float rotationThreshold = -0.7f;
     private void Update()
     {
+        Vector3 charRotationMovement = mpc.transform.rotation * mpc.physics.GetXZMovement();
         input = mpc.inputReference.InputMaster.Movement.ReadValue<Vector2>();
-
         float cameraDot = Vector3.Dot(mpc.playerController3D.cameraTransform.forward, transform.forward) < rotationThreshold ? -1f : 1f;
-        float dot = Vector3.Dot(transform.forward, mpc.physics.GetXZMovement()) < rotationThreshold ? -1f : 1f;
-        anim.SetFloat(x, input.x * cameraDot);
-
+        float dot = Vector3.Dot(mpc.playerController3D.characterModel.transform.forward, mpc.physics.GetXZMovement()) < rotationThreshold ? -1f : 1f;
         float forwardAnimation = dot > 0 ? Mathf.Abs(input.y) : input.y;
+        anim.SetFloat(x, input.x * cameraDot);
         anim.SetFloat(y, forwardAnimation);
-        /*anim.SetFloat(x, mpc.physics.GetXZMovement().x);
-        anim.SetFloat(y, mpc.physics.GetXZMovement().z);*/
+
     }
 }

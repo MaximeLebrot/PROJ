@@ -31,8 +31,8 @@ public class VideoSettings : MenuSettings {
         settingsData.brightness = menuOptions[ExtractMenuItem("Brightness").ID].GetValue();
         settingsData.quality = menuOptions[ExtractMenuItem("Quality").ID].GetValue();
         settingsData.fullscreen = menuOptions[ExtractMenuItem("Fullscreen").ID].GetValue();
-        settingsData.screenResolution = Screen.currentResolution;
-        
+        settingsData.screenResolution = "1920x1080";
+
     }
 
  

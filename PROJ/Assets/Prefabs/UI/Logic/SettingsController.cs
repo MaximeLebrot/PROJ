@@ -8,53 +8,61 @@ public class SettingsController : MonoBehaviour {
     [SerializeField] private SettingsData userSettings;
     [SerializeField] private List<MenuSettings> settingObjects;
 
-    private void Awake() => EventHandler<RequestSettingsEvent>.RegisterListener(SendOutUserSettingsData);
-
-    private void OnDisable() => EventHandler<RequestSettingsEvent>.UnregisterListener(SendOutUserSettingsData);
-
-    private void Start() {
+    private const string JSONFileName = "SavedSettings";
+    
+    private void Awake() {
         foreach (MenuSettings menuSettings in settingObjects)
             menuSettings.Initialize();
         
         LoadSavedSettings();
+        EventHandler<RequestSettingsEvent>.RegisterListener(SendOutUserSettingsData);
     }
+
+    private void OnDisable() => EventHandler<RequestSettingsEvent>.UnregisterListener(SendOutUserSettingsData);
+    
     
     //Called from button in settings menu
-    public void RestoreDefaultValues(string json) {
+    public void RestoreDefaultValues(string json, bool fireSaveEvent) {
         SetValues(JsonUtility.FromJson<SettingsData>(json));
-        SendOutUserSettingsData(null);
+        
+        if(fireSaveEvent)
+            SendOutUserSettingsData(null);
     }
 
     //Called from button in settings menu
-    public void SaveSettings() {
+    public void SaveSettings(bool fireSaveEvent) {
         UpdateUserSettings();
-        SendOutUserSettingsData(null);
+        
+        if(fireSaveEvent)
+            SendOutUserSettingsData(null);
+        
     }
 
-    private void SendOutUserSettingsData(RequestSettingsEvent requestSettingsEvent) => EventHandler<SaveSettingsEvent>.FireEvent(new SaveSettingsEvent(userSettings));
+    private void SendOutUserSettingsData(RequestSettingsEvent requestSettingsEvent) {
+        EventHandler<SaveSettingsEvent>.FireEvent(new SaveSettingsEvent(userSettings));
+    }
 
     private void LoadSavedSettings()
     {
         string json = PlayerPrefs.GetString("SavedSettings");
 
+        Debug.Log(json);
+        
         //If PlayerPrefs have no settings, read from DefaultSettings file
         if (json == "")
         {
-            Debug.Log("json is empty");
             string path = Path.Combine(Application.streamingAssetsPath, "DefaultSettings.json");
-            using (StreamReader streamReader = new StreamReader(path))
-            {
-                json = streamReader.ReadToEnd();
-                RestoreDefaultValues(json);
-                SaveSettings();
-            }
+            StreamReader streamReader = new StreamReader(path);
+            
+            json = streamReader.ReadToEnd();
+            RestoreDefaultValues(json, false);
+            PlayerPrefs.SetString("SavedSettings", json);
         }
-        
-        
         
         SettingsData savedSettings = JsonUtility.FromJson<SettingsData>(json);
         userSettings = savedSettings;
         SetValues(savedSettings);
+        SaveSettings(true);
     }
     
     private void UpdateUserSettings() {
@@ -66,4 +74,5 @@ public class SettingsController : MonoBehaviour {
         foreach (MenuSettings menuSettings in settingObjects)
             menuSettings.SetMenuItems(settings);
     }
+    
 }
