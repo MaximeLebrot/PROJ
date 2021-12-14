@@ -28,13 +28,16 @@ public class GameCamera : MonoBehaviour {
     private event BehaviourQueue behaviourQueue;
 
     private void Awake() {
+        DontDestroyOnLoad(this);
+
         inputReference.Initialize();
         transitioner.Initialize();
         thisTransform = transform;
-        
+        pivotTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
+        character = GameObject.FindWithTag("PlayerModel").transform;
         //Nonononono
 
-        
+
         behaviours.Add(typeof(PuzzleCameraBehaviour),  cameraBehaviours[2]);
         behaviours.Add(typeof(BaseCameraBehaviour),  cameraBehaviours[0]);
         behaviours.Add(typeof(IdleBehaviour),  cameraBehaviours[1]);
