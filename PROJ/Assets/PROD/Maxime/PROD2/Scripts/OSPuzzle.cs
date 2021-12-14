@@ -1,14 +1,16 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class OSPuzzle : MonoBehaviour
-{
-    [SerializeField] private List<Button> nodes;
-    [SerializeField] private GameObject parent;
+{ 
+    [Header("References"), SerializeField] private Puzzle puzzle;
+    [SerializeField] private MetaPlayerController player;
+    [SerializeField] private GameObject UINodeParent;
 
-    [SerializeField, Range(0.1f, 0.9f)] private float speed;
+    private List<Button> UINodes;
+
+    [Header("Variables"), SerializeField, Range(0.1f, 0.9f)] private float speed;
     [SerializeField, Range(0.01f, 0.3f)] private float holdingButtonLimit = 0.2f;
 
     private float time = 1f, timer;
@@ -22,13 +24,13 @@ public class OSPuzzle : MonoBehaviour
     public void StartOSPuzzle(StartPuzzleEvent eve)
     {
         //player.velocity = Vector3.zero
-        parent.SetActive(true);
+        UINodeParent.SetActive(true);
         timer = time;
     }
 
     public void ExitOSPuzzle(ExitPuzzleEvent eve)
     {
-        parent.SetActive(false);
+        UINodeParent.SetActive(false);
     }
 
     private void Update()
@@ -45,11 +47,11 @@ public class OSPuzzle : MonoBehaviour
                 giveLostTime = false;
                 if (timer >= time)
                 {
-                    if (iterator >= nodes.Count)
+                    if (iterator >= UINodes.Count)
                         iterator = 0;
-                    foreach (Button node in nodes)
+                    foreach (Button node in UINodes)
                         node.image.color = Color.white;
-                    nodes[iterator].image.color = Color.red;
+                    UINodes[iterator].image.color = Color.red;
                     iterator++;
                     timer = 0;
                 }
@@ -75,25 +77,49 @@ public class OSPuzzle : MonoBehaviour
         }
     }
 
+
+    private void OnEventCalled(StartPuzzleEvent eve)
+    {
+        StartOSPuzzle(eve);
+        player.ChangeStateToOSPuzzle(eve);
+    }
+
+    private void OnEventCalled(ExitPuzzleEvent eve)
+    {
+        ExitOSPuzzle(eve);
+        player.ChangeStateToOSWalk(eve);
+    }
+
     #region UES
     private void Start()
     {
-        if (parent == null)
+        if (UINodeParent == null)
             return;
-        if (nodes.Count == 0)
-            nodes.AddRange(parent.GetComponentsInChildren<Button>());
+        if (UINodes.Count == 0)
+            UINodes.AddRange(UINodeParent.GetComponentsInChildren<Button>());
+        if (puzzle == null)
+            puzzle = GetComponent<Puzzle>();
+        if (player == null)
+            player = GameObject.FindGameObjectWithTag("Player").GetComponent<MetaPlayerController>();
         inputMaster = new InputMaster();
         inputMaster.Enable();
     }
 
-    private void OnEnable()
+    private void OnEnable() 
     {
-
+        EventHandler<ExitPuzzleEvent>.RegisterListener(ExitOSPuzzle);
+        EventHandler<StartPuzzleEvent>.RegisterListener(StartOSPuzzle);
+        EventHandler<StartPuzzleEvent>.RegisterListener(player.ChangeStateToOSPuzzle);
+        EventHandler<ExitPuzzleEvent>.RegisterListener(player.ChangeStateToOSWalk);
     }
 
     private void OnDisable()
     {
         inputMaster.Disable();
+        EventHandler<ExitPuzzleEvent>.UnregisterListener(ExitOSPuzzle);
+        EventHandler<StartPuzzleEvent>.UnregisterListener(StartOSPuzzle);
+        EventHandler<StartPuzzleEvent>.UnregisterListener(player.ChangeStateToOSPuzzle);
+        EventHandler<ExitPuzzleEvent>.UnregisterListener(player.ChangeStateToOSWalk);
     }
     #endregion
 }
