@@ -27,6 +27,7 @@ public class LoadScreen : MonoBehaviour
     private void StartLoading(UnLoadSceneEvent eve)
     {
         sceneToLoad = eve.sceneToLoad;
+        Debug.Log(sceneToLoad);
         anim.SetTrigger("load");
     }
 
