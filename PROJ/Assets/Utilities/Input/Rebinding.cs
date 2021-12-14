@@ -1,10 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
-using System;
 using System.Collections.Generic;
 
-public class Rebinding : MonoBehaviour
+public class Rebinding : MenuSettings
 {
     public ControllerInputReference inputReference;
     [SerializeField] private List<RebindUIButton> rebindButtons = new List<RebindUIButton>();
@@ -158,4 +156,9 @@ public class Rebinding : MonoBehaviour
     }
 
 
+    public override void SetMenuItems(SettingsData settingsData) {
+    }
+
+    public override void ApplyItemValues(ref SettingsData settingsData) {
+    }
 }
