@@ -24,7 +24,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckDistance = 0.05f;
     private RaycastHit groundHitInfo;
     private float groundCheckBoxSize = 0.1f;
-
     #endregion
     
     //Input
@@ -189,7 +188,7 @@ public class PlayerController : MonoBehaviour
     private void PlayerDirection(Vector3 rawInput)
     {
         rotationDelegate();
-        RotateCharacterModel();
+        //RotateCharacterModel();
         ProjectMovement();
     }
     private void RotateInCameraDirection()
