@@ -42,7 +42,6 @@ public class Node : MonoBehaviour {
         neighbours = new Dictionary<Node, bool>();
         Drawable = true;
         TurnOn();
-        SetSizeMultiplier();
         SetSize();
         //FindNeighbours();
         //PosX = transform.localPosition.x;
@@ -51,17 +50,16 @@ public class Node : MonoBehaviour {
 
 
 
-    private void SetSizeMultiplier()
+    private void SetSizeMultiplier(bool b)
     {
         //Get big Nodes bool from settings
 
-        /*
-         * if settings.bigNode
+        
+        if (b)
             sizeMultiplier = 2;
-
-            else
-         *      sizeMultiplier = 1; 
-         */
+        else
+            sizeMultiplier = 1; 
+        
     }
 
     private void SetSize()
@@ -76,7 +74,7 @@ public class Node : MonoBehaviour {
 
     private void ApplySettings(SaveSettingsEvent obj)
     {
-        SetSizeMultiplier();
+        SetSizeMultiplier(obj.settingsData.bigNodes);
         SetSize();
     }
     private void OnEnable()
