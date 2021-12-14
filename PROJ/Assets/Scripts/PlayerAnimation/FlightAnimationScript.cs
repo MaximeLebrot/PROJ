@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 public class FlightAnimationScript : MonoBehaviour
 {
     private Animator jumpAnimator;
+    public Animator playerAnimator;
+
     private MetaPlayerController mpc;
     private new Transform transform;
 
@@ -14,6 +16,10 @@ public class FlightAnimationScript : MonoBehaviour
     public bool moveToCenter;
     private float adjustedYValue;
     private float colSizeOffset;
+
+    public float time;
+    private bool flight;
+
     [SerializeField] private string triggerValue;
     
     private void Awake()
@@ -36,6 +42,9 @@ public class FlightAnimationScript : MonoBehaviour
             mpc.enabled = false;
             moveToCenter = true;
             mpcXZPos = new Vector2(mpc.transform.position.x, mpc.transform.position.z);
+            col.GetComponentInChildren<Obi.ObiCloth>().enabled = false;
+            //  playerAnimator.SetLayerWeight(2, 1f);
+            flight = true;
             EventHandler<TransportationBegunEvent>.FireEvent(null);
             
         }
@@ -51,6 +60,9 @@ public class FlightAnimationScript : MonoBehaviour
         mpc.physics.enabled = true;
         mpc.enabled = true;
         EventHandler<TransportationEndedEvent>.FireEvent(null);
+        mpc.GetComponentInChildren<Obi.ObiCloth>().enabled = true;
+        flight = false;
+    //    playerAnimator.SetLayerWeight(2, 0);
     }
 
     private void Update()
@@ -72,7 +84,14 @@ public class FlightAnimationScript : MonoBehaviour
             adjustedPosition.y += adjustedYValue;
             mpc.transform.position = Vector3.MoveTowards(mpc.transform.position, adjustedPosition, Time.deltaTime * colSizeOffset);
         }
+
+        if(flight) 
+            playerAnimator.SetLayerWeight(2, time);
+
     }
+
+
     //Maybe we also want to destroy this game object when we're done with it, OR make it part of some type of object pooling. Just leaving it in the scene serves no purpose.
+
 }
 

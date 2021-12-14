@@ -9,6 +9,7 @@ public class PlayerFragments : MonoBehaviour
 
     void Start()
     {
+        collectedFragments.Add("tutorial", false);
         collectedFragments.Add("earth", false);
         collectedFragments.Add("wind", false);
         collectedFragments.Add("lava", false);
