@@ -13,7 +13,6 @@ public class GameCamera : MonoBehaviour {
     private BaseCameraBehaviour currentBaseCameraBehaviour;
 
     [SerializeField] private Transform followTarget;
-    [SerializeField] private Transform shoulderPosition;
 
     [SerializeField] private List<BaseCameraBehaviour> cameraBehaviours;
     [SerializeField] private Transitioner transitioner;
@@ -23,6 +22,8 @@ public class GameCamera : MonoBehaviour {
     
     private readonly Dictionary<Type, BaseCameraBehaviour> behaviours = new Dictionary<Type, BaseCameraBehaviour>();
 
+    private Type previousCameraBehaviour;
+    
     private delegate void BehaviourQueue();
     private event BehaviourQueue behaviourQueue;
 
@@ -45,9 +46,6 @@ public class GameCamera : MonoBehaviour {
         
         behaviourQueue = ExecuteCameraBehaviour;
     }
-
-    private void Start() => EventHandler<RequestSettingsEvent>.FireEvent(null);
-
     private void LateUpdate() => behaviourQueue?.Invoke();
 
     private void ExecuteCameraBehaviour() {
@@ -194,13 +192,16 @@ public class GameCamera : MonoBehaviour {
     private void LockInput(LockInputEvent lockInputEvent) => lockInput = lockInputEvent.lockInput;
 
     private void ActivateMenuCamera(InGameMenuEvent inGameMenuEvent) {
-        if(inGameMenuEvent.Activate)
+        if (inGameMenuEvent.Activate) {
+            previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
             ChangeBehaviour<InGameMenuCameraBehaviour>();
+        }
         else 
-            ChangeBehaviour<BaseCameraBehaviour>();
+            ChangeBehaviour(previousCameraBehaviour);
     }
 
     private void OnTransportationEvent(TransportationBegunEvent transportationBegunEvent) {
+        previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
         ChangeBehaviour(typeof(TransportationBegunEvent));
         EventHandler<TransportationEndedEvent>.RegisterListener(OnTransportationEvent);
         EventHandler<TransportationBegunEvent>.UnregisterListener(OnTransportationEvent);
@@ -208,25 +209,31 @@ public class GameCamera : MonoBehaviour {
     }
     
     private void OnTransportationEvent(TransportationEndedEvent transportationBegunEvent) {
-        ChangeBehaviour<BaseCameraBehaviour>();
+        ChangeBehaviour(previousCameraBehaviour);
         EventHandler<TransportationEndedEvent>.UnregisterListener(OnTransportationEvent);
         EventHandler<TransportationBegunEvent>.RegisterListener(OnTransportationEvent);
     }
 
     private void OnSettingsChanged(SaveSettingsEvent settingsEvent) {
-        Debug.Log($"One hand mode is set to: {settingsEvent.settingsData.oneHandMode}");
+        if (settingsEvent.settingsData.oneHandMode) {
+            previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
+            ChangeBehaviour<OneHandCameraBehaviour>();
+        }
+        else {
+            ChangeBehaviour(previousCameraBehaviour);
+        }
     }
     
     [ContextMenu("Auto-assign targets", false,0)]
     public void AssignTargets() {
         try {
             followTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
-            shoulderPosition = GameObject.FindWithTag("ShoulderCameraPosition").transform;
         } catch (NullReferenceException e) {
             Debug.Log("Couldn't find one or all targets, check if they have the right tag");
             Debug.Log(e);
         }
     }
+    
 }
 
 public struct CustomInput {
