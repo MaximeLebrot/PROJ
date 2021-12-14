@@ -12,33 +12,35 @@ namespace NewCamera {
         protected Vector3 referenceVelocity;
         protected Quaternion previousRotation;
         protected Transform thisTransform;
-        protected Transform target;
+        protected Transform pivotTarget;
+        protected Transform characterModel;
 
         //"Constructor"
-        public virtual void InjectReferences(Transform transform, Transform target) {
+        public virtual void InjectReferences(Transform transform, Transform pivotTarget, Transform characterModel) {
             thisTransform = transform;
-            this.target = target;
+            this.pivotTarget = pivotTarget;
+            this.characterModel = characterModel;
         }
         
-        public virtual void EnterBehaviour() => previousRotation = target.rotation;
+        public virtual void EnterBehaviour() => previousRotation = pivotTarget.rotation;
 
 
         public virtual Vector3 ExecuteMove(Vector3 calculatedOffset) {
-            return Vector3.SmoothDamp(thisTransform.position, target.position + calculatedOffset, ref referenceVelocity, behaviourValues.FollowSpeed);
+            return Vector3.SmoothDamp(thisTransform.position, pivotTarget.position + calculatedOffset, ref referenceVelocity, behaviourValues.FollowSpeed);
         }
 
         public virtual Quaternion ExecuteRotate() {
             
-            Quaternion targetRotation = Quaternion.LookRotation((target.position - thisTransform.position));
+            Quaternion targetRotation = Quaternion.LookRotation((pivotTarget.position - thisTransform.position) + pivotTarget.forward * behaviourValues.CameraLookAhead);
             
             return Quaternion.Slerp(thisTransform.rotation, targetRotation, Time.deltaTime * behaviourValues.RotationSpeed);
         }
 
         public virtual Vector3 ExecuteCollision(GlobalCameraSettings data) {
             
-            Vector3 collisionOffset = target.rotation * behaviourValues.Offset;
+            Vector3 collisionOffset = pivotTarget.rotation * behaviourValues.Offset;
             
-            if (Physics.SphereCast(target.position, data.CollisionRadius, collisionOffset.normalized, out var hitInfo, collisionOffset.magnitude, data.CollisionMask))
+            if (Physics.SphereCast(pivotTarget.position, data.CollisionRadius, collisionOffset.normalized, out var hitInfo, collisionOffset.magnitude, data.CollisionMask))
                 collisionOffset = collisionOffset.normalized * hitInfo.distance;
 
             return collisionOffset;
@@ -50,12 +52,9 @@ namespace NewCamera {
             
             if (input.aim != Vector2.zero) {
 
-                desiredRotation = target.eulerAngles + (Vector3)input.aim;
+                desiredRotation = pivotTarget.eulerAngles + (Vector3)input.aim;
 
-                if (desiredRotation.x > 180)
-                    desiredRotation.x -= 360;
-                if (desiredRotation.y > 180)
-                    desiredRotation.y -= 360;
+                desiredRotation = PreventCircleReset(desiredRotation);
 
                 desiredRotation.x = Mathf.Clamp(desiredRotation.x, behaviourValues.ClampValues.x, behaviourValues.ClampValues.y);
             }
@@ -63,10 +62,19 @@ namespace NewCamera {
                 desiredRotation = previousRotation.eulerAngles;
             }
             
-            target.eulerAngles = desiredRotation;
-            previousRotation = target.rotation;
+            pivotTarget.eulerAngles = desiredRotation;
+            previousRotation = pivotTarget.rotation;
         }
 
         protected T BehaviourData<T>() where T : BehaviourData => behaviourValues as T;
+
+        protected Vector3 PreventCircleReset(Vector3 input) {
+            if (input.x > 180)
+                input.x -= 360;
+            if (input.y > 180)
+                input.y -= 360;
+
+            return input;
+        }
     }
 }
