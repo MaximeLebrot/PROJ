@@ -9,7 +9,6 @@ public class GameMenuController : MenuController {
 
     protected override void Initialize() {
         onBackInput = OpenMenu;
-        
         controllerInputReference.InputMaster.Menu.performed += HandleBackInput;
         ActivateComponents(false);
     }
@@ -20,6 +19,7 @@ public class GameMenuController : MenuController {
         
         ActivateComponents(true);
         EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(true));
+        Cursor.lockState = CursorLockMode.None;
         SwitchPage("MenuButtons");
         onBackInput = Back;
     }
@@ -45,10 +45,10 @@ public class GameMenuController : MenuController {
         EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(false));
     }
 
-    private void ActivateComponents(bool activate) {
-        Cursor.lockState = activate ? CursorLockMode.None : CursorLockMode.None;
-        menuAnimator.EnableAnimator(activate); 
-        settingsMenuObject.SetActive(activate);
-        EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(activate));
+    private void ActivateComponents(bool activateComponents) {
+        Cursor.lockState = activateComponents ? CursorLockMode.None : CursorLockMode.Locked;
+        menuAnimator.EnableAnimator(activateComponents); 
+        settingsMenuObject.SetActive(activateComponents);
+        EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(activateComponents));
     }
 }
