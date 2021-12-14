@@ -188,7 +188,7 @@ public class PlayerController : MonoBehaviour
     private void PlayerDirection(Vector3 rawInput)
     {
         rotationDelegate();
-        //RotateCharacterModel();
+        RotateCharacterModel();
         ProjectMovement();
     }
     private void RotateInCameraDirection()
