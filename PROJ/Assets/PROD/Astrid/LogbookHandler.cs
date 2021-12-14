@@ -48,4 +48,13 @@ public class LogbookHandler : MonoBehaviour
             }
         }
     }
+
+    public void TurnPageLeft()
+    {
+        animator.SetTrigger("left");
+    }
+    public void TurnPageRight()
+    {
+        animator.SetTrigger("right");
+    }
 }
