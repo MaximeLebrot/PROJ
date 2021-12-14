@@ -27,27 +27,19 @@ public class PlayerPhysicsSplit : MonoBehaviour
     #region Values from States
     //Values set from States
     private float maxSpeed = 12f;
-
     private float staticFrictionCoefficient = 0.5f;
     private float kineticFrictionCoefficient = 0.35f;
     private float airResistance = 0.35f;
+    private float setValuesLerpSpeed = 2f;
     #endregion
     //Collision
     private CapsuleCollider attachedCollider;
     private Vector3 colliderTopHalf, colliderBottomHalf;
     private Vector3 stepHeightDisplacement;
 
-    private bool isGliding;
-    private float glideNormalForceMargin = 1.1f;
-    private float setValuesLerpSpeed = 2f;
-
     //Input Debug/Fix/Fuckery
     private Vector3 forceInput;
     private PlayerController pc;
-
-    private delegate void CollisionDelegate(int i);
-    private CollisionDelegate collisionMethod; 
-
 
     private void Awake()
     {
@@ -103,7 +95,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
     private void CheckForCollisions(int i)
     {
-        collisionMethod = CheckForCollisions;
+
         YCollisionRayCast();
         XZCollision(i);
     }
@@ -157,7 +149,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
 
             if (i < MAX_ITER)
-                collisionMethod(i + 1);
+                CheckForCollisions(i + 1);
         }
         else
             MoveOutOfGeometry(velocity * Time.deltaTime);

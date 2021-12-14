@@ -15,50 +15,41 @@ public class HubFragmentChecker : MonoBehaviour
 
     [SerializeField] private List<FragmentDeposit> deposits = new List<FragmentDeposit>();
 
-    private void Awake()
+    private void Start()
     {
         CheckForPortalsToOpen();
     }
 
-
-
     private void CheckForPortalsToOpen()
     {
-        PlayerFragments fragment = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerFragments>();
+        PlayerFragments player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerFragments>();
 
 
-        if (fragment.DepositFragment("lava"))
+        if (player.DepositFragment("lava"))
         {
             deposits[2].InitializeFragment();
             deposits[1].InitializeFragment();
             deposits[0].InitializeFragment();
-            fragment.transform.position = lavaPos.position;
-            fragment.transform.rotation = lavaPos.rotation;
+            player.transform.position = lavaPos.position;
+            player.transform.rotation = lavaPos.rotation;
         }
-
-        else if (fragment.DepositFragment("wind"))
+        else if (player.DepositFragment("wind"))
         {
             deposits[1].InitializeFragment();
             deposits[0].InitializeFragment();
-            fragment.transform.position = windPos.position;
-            fragment.transform.rotation = windPos.rotation;
+            player.transform.position = windPos.position;
+            player.transform.rotation = windPos.rotation;
         }
-
-        else if (fragment.DepositFragment("earth"))
+        else if (player.DepositFragment("earth"))
         {
             deposits[0].InitializeFragment();
-            fragment.transform.position = earthPos.position;
-            fragment.transform.rotation = earthPos.rotation;
+            player.transform.position = earthPos.position;
+            player.transform.rotation = earthPos.rotation;
         }
-
         else
         {
-            fragment.transform.position = startPos.position;
-            fragment.transform.rotation = startPos.rotation;
-        }
-            
-
+            player.transform.position = startPos.position;
+            player.transform.rotation = startPos.rotation;
+        } 
     }
-
-
 }

@@ -40,7 +40,6 @@ public class SprintState : PlayerState
         SetInput();
         if (!player.playerController3D.IsGrounded())
         {
-            Debug.Log("no longer grounded from sprint state!");
             stateMachine.ChangeState<AirborneState>(this);
             return;
         }
@@ -57,7 +56,6 @@ public class SprintState : PlayerState
     }
     private void OnSprintActivate(InputAction.CallbackContext obj)
     {
-        Debug.Log("On sprint activate");
         stateMachine.ChangeState<WalkState>();      
     }
     private void OnSaveSettings(SaveSettingsEvent eve)

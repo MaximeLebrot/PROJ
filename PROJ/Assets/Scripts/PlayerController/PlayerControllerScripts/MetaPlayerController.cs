@@ -17,15 +17,13 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     [SerializeField] private PlayerState[] states;
     [SerializeField] public List<ControllerValues> controllerValues = new List<ControllerValues>();
     
+    [SerializeField] float decelerationValueForCoroutine = 5;
     public ControllerInputReference inputReference;
-
     private void Awake()
     {
-
         //Must listen even when script is disabled, so unregister cannot be called in "OnDisable"
         //Therefore, the register cannot be done in "OnEnable", because that subs the method several times.
         EventHandler<InGameMenuEvent>.RegisterListener(EnterInGameMenuState);
-
 
         inputReference.Initialize();
         DontDestroyOnLoad(this);
@@ -81,8 +79,6 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         }
     }
 
-
-    public float decelerationValueForCoroutine = 5;
     IEnumerator SetDeceleration()
     {
         float storedDeceleration = playerController3D.GetDeceleration();
