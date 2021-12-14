@@ -8,12 +8,15 @@ public class LoadScene : MonoBehaviour
 
     public string nextScene;
 
-    public void OnTriggerEnter(Collider other)
+    public void LoadNextScene()
     {
-        if (other.tag == "Player")
-        {
-            SceneManager.LoadScene(nextScene);
-        }
+        
+        EventHandler<UnLoadSceneEvent>.FireEvent(new UnLoadSceneEvent(nextScene));
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        LoadNextScene();
     }
 
 
