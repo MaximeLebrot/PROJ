@@ -20,6 +20,7 @@ public class FragmentDeposit : MonoBehaviour
 
     public void InitializeFragment()
     {
+        Debug.Log("Init");
         GameObject instance = Instantiate(fragmentObject, transform);
         instance.transform.position = fragmentPos.position;
         instance.transform.rotation = fragmentPos.rotation;
