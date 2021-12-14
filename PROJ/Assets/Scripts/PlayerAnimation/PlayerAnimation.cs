@@ -28,7 +28,7 @@ public class PlayerAnimation : MonoBehaviour
         float cameraDot = Vector3.Dot(mpc.playerController3D.cameraTransform.forward, transform.forward) < rotationThreshold ? -1f : 1f;
         float dot = Vector3.Dot(mpc.playerController3D.characterModel.transform.forward, mpc.physics.GetXZMovement()) < rotationThreshold ? -1f : 1f;
         float forwardAnimation = dot > 0 ? Mathf.Abs(input.y) : input.y;
-        anim.SetFloat(x, input.x * cameraDot);
+        anim.SetFloat(x, input.x );
         anim.SetFloat(y, forwardAnimation);
 
     }
