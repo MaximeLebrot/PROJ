@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using NewCamera;
 using UnityEngine;
 
-
 public class GameCamera : MonoBehaviour {
     
     [SerializeField] private ControllerInputReference inputReference;
@@ -220,7 +219,10 @@ public class GameCamera : MonoBehaviour {
             ChangeBehaviour<OneHandCameraBehaviour>();
         }
         else {
-            ChangeBehaviour(previousCameraBehaviour);
+            if(previousCameraBehaviour != null)
+                ChangeBehaviour(previousCameraBehaviour);
+            else
+                ChangeBehaviour<BaseCameraBehaviour>();
         }
     }
     

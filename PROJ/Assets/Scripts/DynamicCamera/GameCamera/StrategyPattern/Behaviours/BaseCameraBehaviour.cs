@@ -29,7 +29,7 @@ namespace NewCamera {
 
         public virtual Quaternion ExecuteRotate() {
             
-            Quaternion targetRotation = Quaternion.LookRotation((target.position - thisTransform.position));
+            Quaternion targetRotation = Quaternion.LookRotation((target.position - thisTransform.position) + target.forward * behaviourValues.CameraLookAhead);
             
             return Quaternion.Slerp(thisTransform.rotation, targetRotation, Time.deltaTime * behaviourValues.RotationSpeed);
         }

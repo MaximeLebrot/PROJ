@@ -8,7 +8,9 @@ namespace NewCamera
     public class IdleBehaviour : BaseCameraBehaviour {
         
         private float pointOnCurve;
-        public override void EnterBehaviour() => pointOnCurve = 0;
+        public override void EnterBehaviour() {
+            pointOnCurve = 0;
+        }
 
         public override Vector3 ExecuteMove(Vector3 calculatedOffset) {
             return Vector3.SmoothDamp(thisTransform.position, target.parent.position + calculatedOffset, ref referenceVelocity, behaviourValues.FollowSpeed);
@@ -18,6 +20,8 @@ namespace NewCamera
 
             float newIndex = BehaviourData<IdleBehaviourData>().RotationCurve.Evaluate(pointOnCurve);
             pointOnCurve +=  Time.deltaTime / BehaviourData<IdleBehaviourData>().FollowSpeed;
+
+            Vector3.Lerp(Vector3.zero, Vector2.zero, 0);
             
             return Quaternion.Lerp(thisTransform.rotation, Quaternion.LookRotation(target.parent.forward), newIndex);
         }
