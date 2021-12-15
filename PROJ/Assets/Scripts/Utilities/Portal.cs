@@ -14,6 +14,7 @@ public class Portal : MonoBehaviour
     public void Open()
     {
         anim.SetTrigger("Open");
+        GetComponent<Collider>().enabled = true;
     }
 
     private void OnTriggerEnter(Collider other)

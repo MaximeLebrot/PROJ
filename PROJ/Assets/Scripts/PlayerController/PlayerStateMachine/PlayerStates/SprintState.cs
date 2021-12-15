@@ -17,7 +17,7 @@ public class SprintState : PlayerState
     }
     private void LoadInputs()
     {
-        Debug.Log("Load inputs");
+        //Debug.Log("Load inputs");
         if (holdToSprint)
             player.inputReference.InputMaster.Sprint.canceled += OnSprintActivate;
         else
@@ -25,7 +25,7 @@ public class SprintState : PlayerState
     }
     private void UnloadInputs()
     {
-        Debug.Log("Unload inputs");
+        //Debug.Log("Unload inputs");
         if(holdToSprint)
             player.inputReference.InputMaster.Sprint.canceled -= OnSprintActivate;
         else
