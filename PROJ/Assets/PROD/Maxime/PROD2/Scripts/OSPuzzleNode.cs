@@ -5,11 +5,12 @@ public class OSPuzzleNode : MonoBehaviour
 {
     public int number;
     [SerializeField] private bool isSelected;
-    [SerializeField] private RawImage image;
-    [SerializeField] private Texture tex;
-    [SerializeField] private Button button;
+    [SerializeField] private Image image;
 
-    private Color deselectedColor = new Color(1, 1, 1, 0.1f);
+    private void Awake()
+    {
+        image = GetComponent<Image>();
+    }
 
     public void SelectPuzzleNode()
     {
@@ -19,25 +20,12 @@ public class OSPuzzleNode : MonoBehaviour
 
     public void DeselectPuzzleNode()
     {
-        image.color = deselectedColor;
+        image.color = Color.white;
         isSelected = false;
     }
 
     public bool GetSelected()
     {
         return isSelected;
-    }
-
-    public void Initialize(int i)
-    {
-        button = GetComponent<Button>();
-        image = GetComponent<RawImage>();
-        number = i + 1;
-        button.interactable = true;
-        image.texture = tex;
-        if (number == 2)
-            SelectPuzzleNode();
-        else
-            DeselectPuzzleNode();
     }
 }

@@ -1,11 +1,7 @@
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class AccessibilitySettings : MenuSettings {
-    protected override void SubMenuInitialize() {
-        menuOptions[ExtractMenuItem("ChangeFontSize").ID].OnValueChanged(() => Debug.Log($"Change font size to: {menuOptions[ExtractMenuItem("ChangeFontSize").ID].GetValue()}"));
-    }
-
+    
     public override void SetMenuItems(SettingsData settingsData) {
         menuOptions[ExtractMenuItem("ChangeFontSize").ID].SetValue(settingsData.fontSize);
         menuOptions[ExtractMenuItem("Use_DyslexiaFont").ID].SetValue(settingsData.dyslexiaFont);
