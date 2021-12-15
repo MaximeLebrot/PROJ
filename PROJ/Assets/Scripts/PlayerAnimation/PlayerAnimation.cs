@@ -27,5 +27,6 @@ public class PlayerAnimation : MonoBehaviour
         float dot = Vector3.Dot(mpc.playerController3D.characterModel.transform.forward, mpc.physics.GetXZMovement());
         anim.SetFloat(x, input.x);
         anim.SetFloat(y, dot);
+
     }
 }
