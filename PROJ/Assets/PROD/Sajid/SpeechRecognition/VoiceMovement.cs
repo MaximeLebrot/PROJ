@@ -11,21 +11,39 @@ public class VoiceMovement : MonoBehaviour
 {
     private KeywordRecognizer keywordRecognizer;
     private Dictionary<string, Action> actions = new Dictionary<string, Action>();
-    public Text direction;
     private PlayerController mpc;
     public Animator animator;
-
+    public PuzzlePlayerController puzzleMovement;
     private int i = 0;
     private int x, y;
 
     public float speed;
 
-    private bool walkingForward;
+    private bool walking, running, puzzleActive;
+
+    Quaternion activePuzzleRotation;
 
     private void Start()
     {
         actions.Add("forward", Forward);
-        actions.Add("back", Back);
+        actions.Add("up", Forward);
+
+        actions.Add("diagonal right up", DiagonalRightUp);
+        actions.Add("diagonal up right", DiagonalRightUp);
+
+        actions.Add("diagonal left up", DiagonalLeftUp);
+        actions.Add("diagonal up left", DiagonalLeftUp); 
+
+        actions.Add("diagonal right down", DiagonalRightDown);
+        actions.Add("diagonal down right", DiagonalRightDown);
+
+        actions.Add("diagonal left down", DiagonalLeftDown);
+        actions.Add("diagonal down left", DiagonalLeftDown);
+
+
+        actions.Add("down", Down);
+        actions.Add("back", Down);
+
         actions.Add("right", Right);
         actions.Add("left", Left);
         actions.Add("stop", Stop);
@@ -34,7 +52,7 @@ public class VoiceMovement : MonoBehaviour
         x = Animator.StringToHash("speed");
         y = Animator.StringToHash("direction");
 
-        direction.text = "";
+      //  direction.text = "";
         keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
         keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
         keywordRecognizer.Start();
@@ -42,12 +60,12 @@ public class VoiceMovement : MonoBehaviour
 
     private void Update()
     {
-        if(walkingForward)
+        if(walking)
         {
-            //    transform.Translate(Vector3.forward * Time.deltaTime * speed);
             mpc.InputWalk(new Vector3(0,1,0));
             animator.SetFloat(x, 1);
         }
+
     }
 
     private void RecognizedSpeech(PhraseRecognizedEventArgs speech)
@@ -57,39 +75,121 @@ public class VoiceMovement : MonoBehaviour
     }
     private void Forward()
     {
-        // transform.Translate(1, 0, 0);
-        // transform.Translate(Vector3.forward * Time.deltaTime * speed);
-        walkingForward = true;
-        direction.text = "Forward";
-        direction.GetComponent<Animator>().SetTrigger("active");
-        //animator.SetFloat(x, 1);
+        if(puzzleActive == false)
+        walking = true; 
+        else
+        {
+            Vector3 puzzleMovement = activePuzzleRotation * Vector3.forward * 3;
+            transform.position+=puzzleMovement;
+        }
+    }
+    private void Down()
+    {
+        if(puzzleActive)
+        {
+            Vector3 puzzleMovement = activePuzzleRotation * Vector3.forward * 3;
+            transform.position -= puzzleMovement;
+        }
+
+    }
+    private void Left()
+    {
+        if (puzzleActive == false)
+        {
+            transform.Rotate(0, -90, 0);
+        } else
+        {
+            Vector3 puzzleMovement = activePuzzleRotation * Vector3.right * 3;
+            transform.position -= puzzleMovement;
+
+        }
+    }
+    private void Right() {
+        if (puzzleActive == false)
+
+            transform.Rotate(0, 90, 0);
+        else
+        {
+            Vector3 puzzleMovement = activePuzzleRotation * Vector3.right * 3;
+            transform.position += puzzleMovement;
+        }
+    }
+
+    private void DiagonalRightUp()
+    {
+        if (puzzleActive)
+        {
+            Vector3 puzzleMovement = activePuzzleRotation * (Vector3.right + Vector3.forward) * 3;
+            transform.position += puzzleMovement;
+        }
+    }
+
+    private void DiagonalLeftUp()
+    {
+        if (puzzleActive)
+        {
+            Vector3 puzzleMovement = activePuzzleRotation * (-Vector3.right + Vector3.forward) * 3;
+            transform.position += puzzleMovement;
+        }
+    }
+
+    private void DiagonalLeftDown()
+    {
+        if (puzzleActive)
+        {
+            Vector3 puzzleMovement = activePuzzleRotation * (Vector3.right + Vector3.forward) * 3;
+            transform.position -= puzzleMovement;
+        }
+    }
+
+    private void DiagonalRightDown()
+    {
+        if (puzzleActive)
+        {
+            Vector3 puzzleMovement = activePuzzleRotation * (-Vector3.right + Vector3.forward) * 3;
+            transform.position -= puzzleMovement;
+        }
     }
 
     private void Stop()
     {
-        walkingForward = false;
+        walking = false;
+        running = false;
         animator.SetFloat(x, 0);
 
     }
 
-    private void Back()
+    private void OnStartPuzzle(StartPuzzleEvent eve)
     {
-        transform.Translate(-1, 0, 0);
-        direction.text = "Back";
-        direction.GetComponent<Animator>().SetTrigger("active");
-    }
-    private void Left()
-    {
-        transform.Rotate(0, -90, 0);
-    }
 
-    private void Right()
-    {
-        transform.Rotate(0, 90, 0);
-
+        puzzleActive = true;
+        walking = false;
+        Debug.Log("PuzzleStarted");
+        animator.SetFloat(x, 0);
+        activePuzzleRotation = eve.info.puzzlePos.rotation;
+    //    transform.rotation = activePuzzleRotation;
+        Debug.Log("activepuzzlerotation: "+ activePuzzleRotation);
+        
     }
 
- 
+    private void OnExitPuzzle(ExitPuzzleEvent eve)
+    {
+        puzzleActive = false;
+        Debug.Log("PuzzleEnded");
 
+    }
 
+    private void OnEnable()
+    {
+        EventHandler<StartPuzzleEvent>.RegisterListener(OnStartPuzzle);
+        EventHandler<ExitPuzzleEvent>.RegisterListener(OnExitPuzzle);
+    }
+    private void OnDisable()
+    {
+        EventHandler<StartPuzzleEvent>.UnregisterListener(OnStartPuzzle);
+        EventHandler<ExitPuzzleEvent>.RegisterListener(OnExitPuzzle);
+
+    }
 }
+
+
