@@ -75,7 +75,9 @@ public class VoiceMovement : MonoBehaviour
     private void Forward()
     {
         if(puzzleActive == false)
+
         walking = true; 
+
         else
         {
             Vector3 puzzleMovement = activePuzzleRotation * Vector3.forward * 3;
@@ -105,7 +107,6 @@ public class VoiceMovement : MonoBehaviour
     }
     private void Right() {
         if (puzzleActive == false)
-
             transform.Rotate(0, 90, 0);
         else
         {
