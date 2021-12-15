@@ -8,7 +8,7 @@ public class FadeGroup : MonoBehaviour {
     [Header("FADE IN occurs from index 0-n | FADE OUT occurs from index n-0")]
     [SerializeField] private List<FadeEntity> fadeOrder;
     
-    public IEnumerator Fade(FadeMode fadeMode, Action callback) {
+    public IEnumerator Fade(FadeMode fadeMode, Action onDone) {
         
         foreach (FadeEntity entity in fadeOrder) {
             
@@ -24,8 +24,8 @@ public class FadeGroup : MonoBehaviour {
             yield return new WaitForSeconds(entity.TimeUntilNextFade);
         }
 
-        if(callback != null)
-            callback.Invoke();
+        if(onDone != null)
+            onDone.Invoke();
     }
     
     private IEnumerator FadeIn(FadeEntity fadeEntity) {

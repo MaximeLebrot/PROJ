@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,10 @@ public class PageController : MonoBehaviour {
     private MenuSettings currentActivePage;
 
     private MenuController menuController;
+
+    private Action onDone;
+
+    private MenuSettings newPage;
     
     private void Awake() {
 
@@ -31,20 +36,29 @@ public class PageController : MonoBehaviour {
         }
         
         menuController.OnActivatePage += SwitchPage;
-
     }
-
+    
     private void SwitchPage(MenuSettings page) {
+        if (!pageObjects.Contains(page)) return;
 
-        if (pageObjects.Contains(page)) {
-
-            if (currentActivePage != null)
-                currentActivePage.FadeMenu(FadeMode.FadeOut, () => currentActivePage.gameObject.SetActive(false));
-            
-            currentActivePage = page;
-            currentActivePage.gameObject.SetActive(true);
-            currentActivePage.FadeMenu(FadeMode.FadeIn, null);
-        }
+        newPage = page;
         
+        if (currentActivePage != null) {
+            onDone = () => currentActivePage.gameObject.SetActive(false);
+            onDone += ActivateNewPage;
+            
+            currentActivePage.FadeMenu(FadeMode.FadeOut, onDone);
+        }
+        else {
+            ActivateNewPage();
+        }
     }
+
+    private void ActivateNewPage() {
+        currentActivePage = newPage;
+        currentActivePage.gameObject.SetActive(true);
+        currentActivePage.FadeMenu(FadeMode.FadeIn, null);
+        newPage = null;
+    }
+    
 }
