@@ -163,24 +163,17 @@ public class OSPuzzle : MonoBehaviour
     #region UES
     private void Awake()
     {
-<<<<<<< Updated upstream
         if (UINodeParent == null)
             Debug.LogError("Give reference to UI");
         if (UINodes.Count == 0)
-=======
-        if (player == null)
-            player = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<MetaPlayerController>();
-        FindPuzzleGridAndNodes();
-    }
-
-    private void FindPuzzleGridAndNodes()
-    {
-        UINodeParent = GameObject.FindGameObjectWithTag("OneSwitchCanvas");
-        UINodes.AddRange(UINodeParent.GetComponentsInChildren<OSPuzzleNode>());
-        for (int i = 0; i < UINodes.Count; i++)
->>>>>>> Stashed changes
         {
-            UINodes[i].number = i + 1;
+            UINodes.AddRange(UINodeParent.GetComponentsInChildren<OSPuzzleNode>());
+            for (int i = 0; i < UINodes.Count; i++)
+            {
+                UINodes[i].number = i + 1;
+                if (i == 1)
+                    UINodes[i].SelectPuzzleNode();
+            }
         }
         if (puzzle == null)
             puzzle = GetComponent<Puzzle>();
@@ -192,23 +185,8 @@ public class OSPuzzle : MonoBehaviour
         inputMaster.Enable();
     }
 
-<<<<<<< Updated upstream
     private void OnEnable() 
     {
-=======
-    private void Start()
-    {
-        UINodeParent.SetActive(false);
-        puzzleGrid = GetComponent<Puzzle>().grid;
-    }
-
-    private void OnEnable()
-    {
-        puzzleGrid = GetComponent<Puzzle>().grid;
-        if (UINodeParent == null)
-            FindPuzzleGridAndNodes();
-        EventHandler<StartPuzzleEvent>.RegisterListener(StartOSPuzzle);
->>>>>>> Stashed changes
         EventHandler<ExitPuzzleEvent>.RegisterListener(ExitOSPuzzle);
         EventHandler<StartPuzzleEvent>.RegisterListener(StartOSPuzzle);
     }
