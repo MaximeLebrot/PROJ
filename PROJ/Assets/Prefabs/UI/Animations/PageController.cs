@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class PageController : MonoBehaviour {
 
-    private Dictionary<int, GameObject> pageObjects;
+    private Dictionary<int, MenuSettings> pageObjects;
 
-    private GameObject currentActivePage;
+    private MenuSettings currentActivePage;
 
     private MenuController menuController;
     
@@ -13,36 +13,40 @@ public class PageController : MonoBehaviour {
 
         menuController = GetComponentInParent<MenuController>();
         
-        pageObjects = new Dictionary<int, GameObject>();
+        pageObjects = new Dictionary<int, MenuSettings>();
         
         for (int i = 0; i < transform.childCount; i++) {
 
-            GameObject child = transform.GetChild(i).gameObject;
+            transform.GetChild(i).TryGetComponent(out MenuSettings menuSettings);
             
-            pageObjects.Add(child.name.GetHashCode(), child);
+            if(menuSettings != null)
+                pageObjects.Add(menuSettings.name.GetHashCode(), menuSettings);
         }
         
-        menuController.OnActivatePage += ActivatePage;
+        menuController.OnActivatePage += SwitchPage;
 
     }
 
-    private void ActivatePage(int ID) {
+    private void SwitchPage(int ID) {
         
         if (pageObjects.ContainsKey(ID) == false && currentActivePage != null) {
             
-            currentActivePage.SetActive(false);
+            currentActivePage.gameObject.SetActive(false);
+            Debug.Log(currentActivePage.name);
             currentActivePage = null;
-
             return;
         }
-
+        
         if (pageObjects.ContainsKey(ID)) {
-            
-            if(currentActivePage != null) 
-                currentActivePage.SetActive(false);
+
+            if (currentActivePage != null) {
+                currentActivePage.gameObject.SetActive(false);
+            }
             
             currentActivePage = pageObjects[ID];
-            currentActivePage.SetActive(true);
+            currentActivePage.gameObject.SetActive(true);
+
         }
+        
     }
 }

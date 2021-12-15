@@ -8,12 +8,12 @@ public class MenuAnimator : MonoBehaviour {
     
     private Animator animator;
     
-    private void Awake() {
-        animator = GetComponent<Animator>();
+    //private void Awake() {
+    //    animator = GetComponent<Animator>();
 
-        foreach (AnimatorControllerParameter parameter in animator.parameters) 
-            pageHashes.Add(parameter.name, Animator.StringToHash(parameter.name));
-    }
+    //    foreach (AnimatorControllerParameter parameter in animator.parameters) 
+    //        pageHashes.Add(parameter.name, Animator.StringToHash(parameter.name));
+   // }
 
     public void SetTrigger(string parameterName) => animator.SetTrigger(pageHashes[parameterName]);
 
