@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Fragment : MonoBehaviour
 {
-    [SerializeField] private string nameOfFragment;
+    [SerializeField] private string portalThisFragmentOpens;
 
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
-            other.GetComponent<PlayerFragments>().AddFragment(nameOfFragment);
+            other.GetComponent<PlayerFragments>().AddFragment(portalThisFragmentOpens);
         //Start a cutscene or whatevs?
     }
 
