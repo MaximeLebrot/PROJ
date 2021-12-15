@@ -36,7 +36,5 @@ public abstract class MenuSettings : MonoBehaviour {
     protected UIMenuItem ExtractMenuItem(string menuName) => menuOptions[menuName.GetHashCode()];
     
     public void FadeMenu(FadeMode fadeMode) => StartCoroutine(fadeGroup.Fade(fadeMode));
-
-
     
 }

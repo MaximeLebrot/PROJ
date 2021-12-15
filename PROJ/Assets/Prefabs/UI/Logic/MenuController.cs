@@ -1,9 +1,7 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(MenuAnimator))]
 public abstract class MenuController : MonoBehaviour {
     
     [SerializeField] protected ControllerInputReference controllerInputReference;
@@ -38,7 +36,4 @@ public abstract class MenuController : MonoBehaviour {
         subMenuDepth.Push(pageName);
     }
     
-    protected void SwitchSubMenu(MenuSettings pageName) {
-        OnActivatePage?.Invoke(pageName);
-    }
 }

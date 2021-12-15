@@ -11,9 +11,6 @@ public class SettingsController : MonoBehaviour {
     private const string JSONFileName = "SavedSettings";
     
     private void Awake() {
-        foreach (MenuSettings menuSettings in settingObjects)
-            menuSettings.Initialize();
-        
         LoadSavedSettings();
         EventHandler<RequestSettingsEvent>.RegisterListener(SendOutUserSettingsData);
     }

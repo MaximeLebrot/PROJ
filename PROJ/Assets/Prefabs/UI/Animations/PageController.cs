@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class PageController : MonoBehaviour {
@@ -19,10 +17,19 @@ public class PageController : MonoBehaviour {
         
         for (int i = 0; i < transform.childCount; i++) {
 
-            transform.GetChild(i).TryGetComponent(out MenuSettings menuSettings);
+            transform.GetChild(i).gameObject.SetActive(true);
             
-            if(menuSettings != null)
+            transform.GetChild(i).TryGetComponent(out MenuSettings menuSettings);
+
+            if (menuSettings != null) {
+                menuSettings.Initialize();
                 pageObjects.Add(menuSettings);
+            }
+                
+            
+            
+            transform.GetChild(i).gameObject.SetActive(false);
+                
         }
         
         menuController.OnActivatePage += SwitchPage;
