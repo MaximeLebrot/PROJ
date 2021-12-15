@@ -160,6 +160,11 @@ public class Puzzle : MonoBehaviour
         currentPuzzleInstance = puzzleInstances[currentPuzzleNum];
     }
 
+    private void PlayPuzzleDescription()
+    {
+        currentPuzzleInstance.PlayDescription();
+    }
+
     private void CompletePuzzle()
     {
         Debug.Log("Klar, exit event skickas");
