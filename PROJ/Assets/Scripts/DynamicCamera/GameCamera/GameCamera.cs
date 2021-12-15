@@ -32,6 +32,8 @@ public class GameCamera : MonoBehaviour {
     private bool pendingAccessibilityUpdate;
     
     private void Awake() {
+        DontDestroyOnLoad(this);
+
         inputReference.Initialize();
         transitioner.Initialize();
         thisTransform = transform;
@@ -130,10 +132,12 @@ public class GameCamera : MonoBehaviour {
     }
     
     private void OnPuzzleStart(StartPuzzleEvent startPuzzleEvent) {
-            
+          //QUIK N DIRTEH
+        if (currentBaseCameraBehaviour.GetType() == typeof(PuzzleCameraBehaviour))
+        {
+            return;
+        }
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
-
-        previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
         
         ChangeBehaviour<PuzzleCameraBehaviour>();
 
