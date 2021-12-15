@@ -5,7 +5,7 @@ using System;
 
 public class PlayerFragments : MonoBehaviour
 {
-    private DictionaryOfStringAndBool collectedFragments = new DictionaryOfStringAndBool();
+    [SerializeField] private DictionaryOfStringAndBool collectedFragments = new DictionaryOfStringAndBool();
 
     void Awake()
     {
