@@ -150,6 +150,7 @@ public class GameCamera : MonoBehaviour {
 
     
     private void ChangeBehaviour(Type type) {
+        Debug.Log("Change Behave");
         currentBaseCameraBehaviour = behaviours[type];
         currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
         currentBaseCameraBehaviour.EnterBehaviour();
