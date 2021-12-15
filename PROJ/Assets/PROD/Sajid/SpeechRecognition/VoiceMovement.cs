@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.Windows.Speech;
 using UnityEngine.UI;
 
-
 public class VoiceMovement : MonoBehaviour
 {
     private KeywordRecognizer keywordRecognizer;
@@ -91,8 +90,8 @@ public class VoiceMovement : MonoBehaviour
             Vector3 puzzleMovement = activePuzzleRotation * Vector3.forward * 3;
             transform.position -= puzzleMovement;
         }
-
     }
+
     private void Left()
     {
         if (puzzleActive == false)
