@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -39,7 +40,9 @@ public class PuzzlePlayerController : MonoBehaviour
         quitPuzzle = metaPlayerController.inputReference.InputMaster.ExitPuzzle;
         quitPuzzle.Enable();
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
+        EventHandler<InGameMenuEvent>.RegisterListener(DisableInputWhenInGameMenu);
     }
+
     private void OnDisable()
     {
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle;
@@ -54,6 +57,19 @@ public class PuzzlePlayerController : MonoBehaviour
         EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(PuzzleTransform.GetComponent<Puzzle>().GetPuzzleID()), false));
     }
 
+    //Fyfan
+    private void DisableInputWhenInGameMenu(InGameMenuEvent e) {
+        metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle;
+        EventHandler<InGameMenuEvent>.UnregisterListener(DisableInputWhenInGameMenu);
+        EventHandler<InGameMenuEvent>.RegisterListener(EnableInput);
+    }
+    
+    private void EnableInput(InGameMenuEvent e) {
+        metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
+        EventHandler<InGameMenuEvent>.UnregisterListener(EnableInput);
+        EventHandler<InGameMenuEvent>.RegisterListener(DisableInputWhenInGameMenu);
+    }
+    
     //NOTE! Currently not safe for very low FPS
     private void FixedUpdate()
     {
