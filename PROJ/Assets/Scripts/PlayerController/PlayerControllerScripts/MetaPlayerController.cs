@@ -27,11 +27,7 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
         inputReference.Initialize();
         DontDestroyOnLoad(this);
-    }
 
-    private void Start()
-    {
-        Debug.LogError("MetaplayerController is" + this.enabled);
         physics = GetComponent<PlayerPhysicsSplit>();
         playerController3D = GetComponent<PlayerController>();
         puzzleController = GetComponent<PuzzlePlayerController>();
@@ -39,6 +35,7 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
         stateMachine = new StateMachine(this, states);
     }
+
     private void OnEnable()
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
@@ -95,7 +92,8 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     public void ChangeStateToOSWalk(ExitPuzzleEvent eve) => stateMachine.ChangeState<OSWalkState>();
 
     private void Update()
-    {  
+    {
+        
         stateMachine.RunUpdate();
     }
 

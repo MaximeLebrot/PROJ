@@ -84,7 +84,8 @@ public class PuzzlePlayerController : MonoBehaviour
         input =
         PuzzleTransform.right * inp.x +
         PuzzleTransform.forward * inp.y ;
-       
+
+        RotateCharacterInsidePuzzle();
         if (input.magnitude < inputThreshold)
         {
             Decelerate();
@@ -95,7 +96,6 @@ public class PuzzlePlayerController : MonoBehaviour
             if (input.magnitude > 1f)
                 input.Normalize();
         }
-        RotateCharacterInsidePuzzle();
         Accelerate();            
     }
     private void Accelerate()

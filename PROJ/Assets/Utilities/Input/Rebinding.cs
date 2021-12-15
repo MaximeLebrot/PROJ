@@ -46,13 +46,12 @@ public class Rebinding : MenuSettings
         rebindingOperation?.Cancel();
 
         action.Disable();
-        /*Debug.Log("Expected control type: " + action.expectedControlType);*/
+
         rebindingOperation = action.PerformInteractiveRebinding(currentBindingIndex)
             .WithControlsExcluding("Mouse")
             .OnMatchWaitForAnother(0.1f)
             .WithCancelingThrough("<Keyboard>/escape")
             .WithCancelingThrough("<Gamepad>/start")
-            
             .OnCancel(operation =>
             {
                 CleanUp();
@@ -145,7 +144,7 @@ public class Rebinding : MenuSettings
     public void RebindButton(RebindUIButton calledFrom)
     {
         currentButton = calledFrom;
-        RebindAction(inputReference.inputMaster.asset.FindAction(calledFrom.action.action.name));
+        RebindAction(inputReference.inputMaster.asset.FindAction(calledFrom.action.action.name));    
     }
     public void RestoreDefault(RebindUIButton calledFrom)
     {
