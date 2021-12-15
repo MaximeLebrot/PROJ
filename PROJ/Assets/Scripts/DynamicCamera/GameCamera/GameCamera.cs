@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using NewCamera;
 using UnityEngine;
 
-
 public class GameCamera : MonoBehaviour {
     
     [SerializeField] private ControllerInputReference inputReference;
@@ -12,8 +11,9 @@ public class GameCamera : MonoBehaviour {
     
     private BaseCameraBehaviour currentBaseCameraBehaviour;
 
-    [SerializeField] private Transform followTarget;
-
+    [SerializeField] private Transform pivotTarget;
+    [SerializeField] private Transform character;
+    
     [SerializeField] private List<BaseCameraBehaviour> cameraBehaviours;
     [SerializeField] private Transitioner transitioner;
     
@@ -28,10 +28,16 @@ public class GameCamera : MonoBehaviour {
     private event BehaviourQueue behaviourQueue;
 
     private void Awake() {
+        DontDestroyOnLoad(this);
+
         inputReference.Initialize();
         transitioner.Initialize();
         thisTransform = transform;
-        
+        pivotTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
+        character = GameObject.FindWithTag("PlayerModel").transform;
+        //Nonononono
+
+
         behaviours.Add(typeof(PuzzleCameraBehaviour),  cameraBehaviours[2]);
         behaviours.Add(typeof(BaseCameraBehaviour),  cameraBehaviours[0]);
         behaviours.Add(typeof(IdleBehaviour),  cameraBehaviours[1]);
@@ -42,7 +48,7 @@ public class GameCamera : MonoBehaviour {
         
         currentBaseCameraBehaviour = behaviours[typeof(BaseCameraBehaviour)];
         
-        currentBaseCameraBehaviour.InjectReferences(thisTransform, followTarget);
+        currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
         
         behaviourQueue = ExecuteCameraBehaviour;
     }
@@ -148,14 +154,14 @@ public class GameCamera : MonoBehaviour {
     
     private void ChangeBehaviour<T>() where T : BaseCameraBehaviour {
         currentBaseCameraBehaviour = behaviours[typeof(T)];
-        currentBaseCameraBehaviour.InjectReferences(thisTransform, followTarget);
+        currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
         currentBaseCameraBehaviour.EnterBehaviour();
     }
 
     
     private void ChangeBehaviour(Type type) {
         currentBaseCameraBehaviour = behaviours[type];
-        currentBaseCameraBehaviour.InjectReferences(thisTransform, followTarget);
+        currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
         currentBaseCameraBehaviour.EnterBehaviour();
     }
     
@@ -220,14 +226,18 @@ public class GameCamera : MonoBehaviour {
             ChangeBehaviour<OneHandCameraBehaviour>();
         }
         else {
-            ChangeBehaviour(previousCameraBehaviour);
+            if(previousCameraBehaviour != null)
+                ChangeBehaviour(previousCameraBehaviour);
+            else
+                ChangeBehaviour<BaseCameraBehaviour>();
         }
     }
     
     [ContextMenu("Auto-assign targets", false,0)]
     public void AssignTargets() {
         try {
-            followTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
+            pivotTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
+            character = GameObject.FindWithTag("PlayerModel").transform;
         } catch (NullReferenceException e) {
             Debug.Log("Couldn't find one or all targets, check if they have the right tag");
             Debug.Log(e);

@@ -17,13 +17,15 @@ public class SprintState : PlayerState
     }
     private void LoadInputs()
     {
-        if(holdToSprint)
+        Debug.Log("Load inputs");
+        if (holdToSprint)
             player.inputReference.InputMaster.Sprint.canceled += OnSprintActivate;
         else
             player.inputReference.InputMaster.Sprint.performed += OnSprintActivate;
     }
     private void UnloadInputs()
     {
+        Debug.Log("Unload inputs");
         if(holdToSprint)
             player.inputReference.InputMaster.Sprint.canceled -= OnSprintActivate;
         else
