@@ -2,16 +2,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class OSPuzzle : MonoBehaviour
-{ 
+{
     [SerializeField] private MetaPlayerController player;
     [SerializeField] private GameObject UINodeParent;
-    [SerializeField] public PuzzleGrid puzzleGrid;
-
 
     public List<OSPuzzleNode> UINodes = new List<OSPuzzleNode>();
 
     public void StartOSPuzzle(StartPuzzleEvent eve)
     {
+        //player.velocity = Vector3.zero
         player.ChangeStateToOSPuzzle(eve);
         UINodeParent.SetActive(true);
     }
@@ -24,21 +23,27 @@ public class OSPuzzle : MonoBehaviour
 
     private void Awake()
     {
-        puzzleGrid = GetComponent<Puzzle>().grid;
-        if (UINodeParent == null)
-            Debug.LogError("Give reference to UI");
-        if (UINodes.Count == 0)
-        {
-            UINodes.AddRange(UINodeParent.GetComponentsInChildren<OSPuzzleNode>());
-            for (int i = 0; i < UINodes.Count; i++)
-            {
-                UINodes[i].number = i + 1;
-                if (i == 1)
-                    UINodes[i].SelectPuzzleNode();
-            }
-        }
+        if (player == null)
+            player = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<MetaPlayerController>();
+
+        FindPuzzleGridAndNodes();
     }
-    
+
+    private void FindPuzzleGridAndNodes()
+    {
+        UINodeParent = GameObject.FindGameObjectWithTag("OneSwitchCanvas");
+        UINodes.AddRange(UINodeParent.GetComponentsInChildren<OSPuzzleNode>());
+        for (int i = 0; i < UINodes.Count; i++)
+            UINodes[i].Initialize(i);
+        if (player == null)
+            player = GameObject.FindGameObjectWithTag("Player").GetComponent<MetaPlayerController>();
+    }
+
+    private void Start()
+    {
+        UINodeParent.SetActive(false);
+    }
+
     private void OnEnable()
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(StartOSPuzzle);

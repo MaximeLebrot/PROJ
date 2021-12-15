@@ -6,10 +6,6 @@ public class Fragment : MonoBehaviour
 {
     [SerializeField] private string portalThisFragmentOpens;
 
-    private void Awake()
-    {
-        DontDestroyOnLoad(this);
-    }
 
     private void OnTriggerEnter(Collider other)
     {

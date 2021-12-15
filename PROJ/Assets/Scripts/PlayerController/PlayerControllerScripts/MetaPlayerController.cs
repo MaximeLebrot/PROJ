@@ -55,7 +55,6 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     {
         puzzleController.CurrentPuzzleID = spe.info.ID;
         puzzleController.PuzzleTransform = spe.info.puzzlePos;
-        playerController3D.ResetCharacterModel();
         stateMachine.ChangeState<PuzzleState>();
     }
 
@@ -92,7 +91,8 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     public void ChangeStateToOSWalk(ExitPuzzleEvent eve) => stateMachine.ChangeState<OSWalkState>();
 
     private void Update()
-    {  
+    {
+        
         stateMachine.RunUpdate();
     }
 

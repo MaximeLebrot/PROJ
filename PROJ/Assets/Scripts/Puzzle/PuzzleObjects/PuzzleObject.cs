@@ -25,8 +25,10 @@ public abstract class PuzzleObject : MonoBehaviour
     private Image modifierImage; //dekal som ska visas någonstans!?!? HUR GÖR MAN
     private GameObject modifier;
     private Animator anim;
-    
+
+
     public bool Active { get; private set; }
+
 
     private void Awake() {
         anim = GetComponent<Animator>();
