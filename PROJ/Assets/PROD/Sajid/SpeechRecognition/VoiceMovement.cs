@@ -56,7 +56,6 @@ public class VoiceMovement : MonoBehaviour
         keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
         keywordRecognizer.Start();
     }
-
     private void Update()
     {
         if(walking)
@@ -64,7 +63,6 @@ public class VoiceMovement : MonoBehaviour
             mpc.InputWalk(new Vector3(0,1,0));
             animator.SetFloat(x, 1);
         }
-
     }
     private void RecognizedSpeech(PhraseRecognizedEventArgs speech)
     {
@@ -91,7 +89,6 @@ public class VoiceMovement : MonoBehaviour
             transform.position -= puzzleMovement;
         }
     }
-
     private void Left()
     {
         if (puzzleActive == false)
