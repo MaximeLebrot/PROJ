@@ -132,6 +132,8 @@ public class GameCamera : MonoBehaviour {
     private void OnPuzzleStart(StartPuzzleEvent startPuzzleEvent) {
             
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
+
+        previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
         
         ChangeBehaviour<PuzzleCameraBehaviour>();
 
