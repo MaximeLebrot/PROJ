@@ -15,7 +15,8 @@ GameObject:
   - component: {fileID: 1625667247}
   - component: {fileID: 1625667249}
   - component: {fileID: 7243787994967334071}
-  m_Layer: 0
+  - component: {fileID: 972680874}
+  m_Layer: 8
   m_Name: Portal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,7 +124,7 @@ Animator:
   m_GameObject: {fileID: 8959146471295875676}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c2e0c322cad7fd349ba23b0aa926e8d6, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -148,6 +149,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &972680874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8959146471295875676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df018e9555ba29e49b248a4bfdfada23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 1625667249}
+  sceneToLoad: 
 --- !u!1 &8959146473123825408
 GameObject:
   m_ObjectHideFlags: 0

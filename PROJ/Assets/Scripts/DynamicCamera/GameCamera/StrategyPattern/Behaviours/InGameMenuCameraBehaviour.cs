@@ -6,11 +6,11 @@ public class InGameMenuCameraBehaviour : BaseCameraBehaviour {
 
     private Quaternion menuRotation;
     
-    public override void EnterBehaviour() => menuRotation = Quaternion.Inverse(Quaternion.LookRotation(target.position - thisTransform.position));
+    public override void EnterBehaviour() => menuRotation = Quaternion.Inverse(Quaternion.LookRotation(pivotTarget.position - thisTransform.position));
 
     public override Quaternion ExecuteRotate() {
         
-        Quaternion targetRotation = Quaternion.LookRotation(target.position - thisTransform.position);
+        Quaternion targetRotation = Quaternion.LookRotation(pivotTarget.position - thisTransform.position);
 
         Vector3 euler = targetRotation.eulerAngles;
 
@@ -21,6 +21,6 @@ public class InGameMenuCameraBehaviour : BaseCameraBehaviour {
     }
 
     public override void ManipulatePivotTarget(CustomInput input) {
-        target.rotation = menuRotation;
+        pivotTarget.rotation = menuRotation;
     }
 }
