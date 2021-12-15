@@ -27,21 +27,16 @@ public class GameCamera : MonoBehaviour {
     private delegate void BehaviourQueue();
     private event BehaviourQueue behaviourQueue;
 
+    private bool oneHandModeIsActive;
+    
     private void Awake() {
-        DontDestroyOnLoad(this);
-
         inputReference.Initialize();
         transitioner.Initialize();
         thisTransform = transform;
-        pivotTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
-        character = GameObject.FindWithTag("PlayerModel").transform;
-        //Nonononono
-
-
+        
         behaviours.Add(typeof(PuzzleCameraBehaviour),  cameraBehaviours[2]);
         behaviours.Add(typeof(BaseCameraBehaviour),  cameraBehaviours[0]);
         behaviours.Add(typeof(IdleBehaviour),  cameraBehaviours[1]);
-        behaviours.Add(typeof(WalkState),  cameraBehaviours[0]);
         behaviours.Add(typeof(OneHandCameraBehaviour),  cameraBehaviours[3]);
         behaviours.Add(typeof(InGameMenuCameraBehaviour),  cameraBehaviours[4]);
         behaviours.Add(typeof(TransportationBegunEvent),  cameraBehaviours[5]);
@@ -84,7 +79,6 @@ public class GameCamera : MonoBehaviour {
         EventHandler<StartPuzzleEvent>.RegisterListener(OnPuzzleStart);
         EventHandler<ExitPuzzleEvent>.RegisterListener(OnPuzzleExit);
         EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
-        EventHandler<PlayerStateChangeEvent>.RegisterListener(OnPlayerStateChange);
         EventHandler<CameraLookAndMoveToEvent>.RegisterListener(OnLookAndMove);
         EventHandler<LockInputEvent>.RegisterListener(LockInput);
         EventHandler<SaveSettingsEvent>.RegisterListener(UpdateSettings);
@@ -97,7 +91,6 @@ public class GameCamera : MonoBehaviour {
         EventHandler<StartPuzzleEvent>.UnregisterListener(OnPuzzleStart);
         EventHandler<ExitPuzzleEvent>.UnregisterListener(OnPuzzleExit);
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
-        EventHandler<PlayerStateChangeEvent>.UnregisterListener(OnPlayerStateChange);
         EventHandler<CameraLookAndMoveToEvent>.UnregisterListener(OnLookAndMove);
         EventHandler<LockInputEvent>.UnregisterListener(LockInput);
         EventHandler<SaveSettingsEvent>.UnregisterListener(UpdateSettings);
@@ -117,15 +110,11 @@ public class GameCamera : MonoBehaviour {
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnReturnToKeyboard);
         EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
     }
-
-    private void OnPlayerStateChange(PlayerStateChangeEvent stateChangeEvent) {
-        if (behaviours.ContainsKey(stateChangeEvent.newState.GetType()))
-            ChangeBehaviour(stateChangeEvent.newState.GetType());
-    }
+    
 
     private void OnPuzzleExit(ExitPuzzleEvent exitPuzzleEvent) {
         EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
-        ChangeBehaviour<BaseCameraBehaviour>();
+        ChangeBehaviour(previousCameraBehaviour);
     }
 
     private void OnLookAndMove(CameraLookAndMoveToEvent lookAndMove) {
@@ -134,16 +123,17 @@ public class GameCamera : MonoBehaviour {
 
     private void UpdateSettings(SaveSettingsEvent saveEvent) {
 
-        bool oneHandMode = saveEvent.settingsData.oneHandMode;
+        oneHandModeIsActive = saveEvent.settingsData.oneHandMode;
         
-        if(oneHandMode)
+        if (oneHandModeIsActive) 
             ChangeBehaviour<OneHandCameraBehaviour>();
-
     }
 
     private void OnPuzzleStart(StartPuzzleEvent startPuzzleEvent) {
             
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
+
+        previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
         
         ChangeBehaviour<PuzzleCameraBehaviour>();
 

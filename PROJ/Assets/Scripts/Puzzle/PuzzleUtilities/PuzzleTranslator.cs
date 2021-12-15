@@ -18,7 +18,7 @@ public class PuzzleTranslator
         solution = "";
         translations.Clear();
 
-        //bygg först en array med alla symbolers översättningar. så streck upp blir bara en 8 t.ex
+        //bygg fÃ¶rst en array med alla symbolers Ã¶versÃ¤ttningar. sÃ¥ streck upp blir bara en 8 t.ex
         foreach(PuzzleObject obj in objects)
         {
             TranslationAndObject newPair = new TranslationAndObject();
@@ -27,7 +27,7 @@ public class PuzzleTranslator
             translations.Add(newPair);
         }
 
-        //gå igenom array och översätt med switchcase t.ex. logiska operatorer blir något annat här t.ex. case R så roteras den
+        //gÃ¥ igenom array och Ã¶versÃ¤tt med switchcase t.ex. logiska operatorer blir nÃ¥got annat hÃ¤r t.ex. case R sÃ¥ roteras den
         for (int i = 0; i < translations.Count; i++)
         {
             string newString = "";

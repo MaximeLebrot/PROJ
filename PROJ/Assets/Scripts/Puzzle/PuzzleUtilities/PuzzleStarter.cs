@@ -18,7 +18,6 @@ public class PuzzleStarter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
         if (Active == false)
         {
 
@@ -26,8 +25,6 @@ public class PuzzleStarter : MonoBehaviour
             puzzle.SetPlayer(other.transform);
             Active = true;
         }
-
-
     }
 
 
