@@ -67,7 +67,6 @@ public class VoiceMovement : MonoBehaviour
         }
 
     }
-
     private void RecognizedSpeech(PhraseRecognizedEventArgs speech)
     {
         Debug.Log(speech.text);
@@ -114,7 +113,6 @@ public class VoiceMovement : MonoBehaviour
             transform.position += puzzleMovement;
         }
     }
-
     private void DiagonalRightUp()
     {
         if (puzzleActive)
@@ -123,7 +121,6 @@ public class VoiceMovement : MonoBehaviour
             transform.position += puzzleMovement;
         }
     }
-
     private void DiagonalLeftUp()
     {
         if (puzzleActive)
@@ -132,7 +129,6 @@ public class VoiceMovement : MonoBehaviour
             transform.position += puzzleMovement;
         }
     }
-
     private void DiagonalLeftDown()
     {
         if (puzzleActive)
@@ -141,7 +137,6 @@ public class VoiceMovement : MonoBehaviour
             transform.position -= puzzleMovement;
         }
     }
-
     private void DiagonalRightDown()
     {
         if (puzzleActive)
@@ -150,7 +145,6 @@ public class VoiceMovement : MonoBehaviour
             transform.position -= puzzleMovement;
         }
     }
-
     private void Stop()
     {
         walking = false;
@@ -158,7 +152,6 @@ public class VoiceMovement : MonoBehaviour
         animator.SetFloat(x, 0);
 
     }
-
     private void OnStartPuzzle(StartPuzzleEvent eve)
     {
 
@@ -171,14 +164,12 @@ public class VoiceMovement : MonoBehaviour
         Debug.Log("activepuzzlerotation: "+ activePuzzleRotation);
         
     }
-
     private void OnExitPuzzle(ExitPuzzleEvent eve)
     {
         puzzleActive = false;
         Debug.Log("PuzzleEnded");
 
     }
-
     private void OnEnable()
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(OnStartPuzzle);
