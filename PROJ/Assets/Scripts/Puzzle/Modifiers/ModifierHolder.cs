@@ -28,6 +28,7 @@ public class ModInfo
     public ModifierVariant variant;
     public string translation;
     public GameObject modifier;
+
 }
 
 

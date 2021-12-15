@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class PuzzleInstance : MonoBehaviour
     private bool currentState;
     private List<Hazard> instantiatedHazards = new List<Hazard>();
 
+    public AudioClip puzzleDescription;
     public bool IsSolved() => currentState;
 
     private void Awake()
@@ -84,6 +86,11 @@ public class PuzzleInstance : MonoBehaviour
     public List<Vector2Int> GetRestrictions()
     {
         return activeNodes;
+    }
+
+    internal void PlayDescription()
+    {
+        //play puzzleDescription;
     }
 }
 
