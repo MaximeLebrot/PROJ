@@ -1,99 +1,58 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class OSPuzzle : MonoBehaviour
 {
-    [SerializeField] private List<Button> nodes;
-    [SerializeField] private GameObject parent;
+    [SerializeField] private MetaPlayerController player;
+    [SerializeField] private GameObject UINodeParent;
 
-    [SerializeField, Range(0.1f, 0.9f)] private float speed;
-    [SerializeField, Range(0.01f, 0.3f)] private float holdingButtonLimit = 0.2f;
-
-    private float time = 1f, timer;
-    private int iterator = 0;
-    private float frameCounter;
-    private bool pressingButton = false;
-    private bool giveLostTime = true;
-
-    private InputMaster inputMaster;
+    public List<OSPuzzleNode> UINodes = new List<OSPuzzleNode>();
 
     public void StartOSPuzzle(StartPuzzleEvent eve)
     {
         //player.velocity = Vector3.zero
-        parent.SetActive(true);
-        timer = time;
+        player.ChangeStateToOSPuzzle(eve);
+        UINodeParent.SetActive(true);
     }
 
     public void ExitOSPuzzle(ExitPuzzleEvent eve)
     {
-        parent.SetActive(false);
+        UINodeParent.SetActive(false);
+        player.ChangeStateToOSWalk(eve);
     }
 
-    private void Update()
+    private void Awake()
     {
-        time = 1f - speed;
-        if (inputMaster.OneSwitch.PuzzleTest.ReadValue<float>() != 0)
-        {
-            pressingButton = true;
-            frameCounter += Time.deltaTime;
-            if (frameCounter >= holdingButtonLimit)
-            {
-                if (giveLostTime)
-                    timer += frameCounter;
-                giveLostTime = false;
-                if (timer >= time)
-                {
-                    if (iterator >= nodes.Count)
-                        iterator = 0;
-                    foreach (Button node in nodes)
-                        node.image.color = Color.white;
-                    nodes[iterator].image.color = Color.red;
-                    iterator++;
-                    timer = 0;
-                }
-                else
-                {
-                    timer += Time.deltaTime;
-                }
-            }
-        }
-        else
-        {
-            if (pressingButton)
-            {
-                if (frameCounter < holdingButtonLimit)
-                {
-                    Debug.Log("Triggered");
-                }
-                frameCounter = 0;
-                pressingButton = false;
-                giveLostTime = true;
-            }
+        if (player == null)
+            player = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<MetaPlayerController>();
 
-        }
+        FindPuzzleGridAndNodes();
     }
 
-    #region UES
+    private void FindPuzzleGridAndNodes()
+    {
+        UINodeParent = GameObject.FindGameObjectWithTag("OneSwitchCanvas");
+        UINodes.AddRange(UINodeParent.GetComponentsInChildren<OSPuzzleNode>());
+        for (int i = 0; i < UINodes.Count; i++)
+            UINodes[i].Initialize(i);
+        if (player == null)
+            player = GameObject.FindGameObjectWithTag("Player").GetComponent<MetaPlayerController>();
+    }
+
     private void Start()
     {
-        if (parent == null)
-            return;
-        if (nodes.Count == 0)
-            nodes.AddRange(parent.GetComponentsInChildren<Button>());
-        inputMaster = new InputMaster();
-        inputMaster.Enable();
+        UINodeParent.SetActive(false);
     }
 
     private void OnEnable()
     {
-
+        EventHandler<StartPuzzleEvent>.RegisterListener(StartOSPuzzle);
+        EventHandler<ExitPuzzleEvent>.RegisterListener(ExitOSPuzzle);
     }
 
     private void OnDisable()
     {
-        inputMaster.Disable();
+        EventHandler<StartPuzzleEvent>.UnregisterListener(StartOSPuzzle);
+        EventHandler<ExitPuzzleEvent>.UnregisterListener(ExitOSPuzzle);
     }
-    #endregion
 }
