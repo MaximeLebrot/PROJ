@@ -1675,7 +1675,7 @@ MonoBehaviour:
   deceleration: 12
   turnRate: 10
   modelTurnSpeed: 14
-  objectTurnSpeed: 0
+  objectTurnSpeed: 3
   retainedSpeedWhenTurning: 2
   airControl: 0.33
   slopeMaxAngle: 140
@@ -1683,7 +1683,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16567
   groundCheckDistance: 1.1
-  usingCameraRotation: 0
   inputReference: {fileID: 11400000, guid: 54398b8fed501aa41813fa11036bc179, type: 2}
   characterModel: {fileID: 3006048765200506218}
 --- !u!114 &7633219187445847148
@@ -3764,6 +3763,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2e591cd5ef67bc84590aa3e5169a641c, type: 3}
       propertyPath: m_Layer
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2e591cd5ef67bc84590aa3e5169a641c, type: 3}
+      propertyPath: m_TagString
+      value: PlayerModel
       objectReference: {fileID: 0}
     - target: {fileID: 994787255124168179, guid: 2e591cd5ef67bc84590aa3e5169a641c, type: 3}
       propertyPath: m_Layer

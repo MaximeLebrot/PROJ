@@ -9,6 +9,7 @@ public class GameMenuController : MenuController {
     private System.Action onBackInput;
     
     protected override void Initialize() {
+        DontDestroyOnLoad(this);
         onBackInput = OpenMenu;
         controllerInputReference.InputMaster.Menu.performed += HandleBackInput;
         ActivateComponents(false);
