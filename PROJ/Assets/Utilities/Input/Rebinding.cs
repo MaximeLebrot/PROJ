@@ -14,7 +14,7 @@ public class Rebinding : MenuSettings
     private void Start()
     {
         //PlayerPrefs.DeleteAll();
-       // LoadBindingOverrides();
+        LoadBindingOverrides();
     }
     /// <summary>
     /// Currently doesn't support rebinding multiple bindings, hard coded to use the

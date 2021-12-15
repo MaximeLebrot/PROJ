@@ -31,7 +31,6 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     private void Start()
     {
-        Debug.LogError("MetaplayerController is" + this.enabled);
         physics = GetComponent<PlayerPhysicsSplit>();
         playerController3D = GetComponent<PlayerController>();
         puzzleController = GetComponent<PuzzlePlayerController>();
