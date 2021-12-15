@@ -9,7 +9,7 @@ namespace NewCamera
 
         public override Quaternion ExecuteRotate()
         {
-            Vector3 lookDirection = (target.position - thisTransform.position).normalized;
+            Vector3 lookDirection = (pivotTarget.position - thisTransform.position).normalized;
 
             return Quaternion.LookRotation(lookDirection, Vector3.up);
         }

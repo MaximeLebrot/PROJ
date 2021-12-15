@@ -8,10 +8,10 @@ using UnityEngine;
 public class HubFragmentChecker : MonoBehaviour
 {
 
-    [SerializeField] private Transform earthPos;
-    [SerializeField] private Transform windPos;
-    [SerializeField] private Transform lavaPos;
-    [SerializeField] private Transform startPos;
+    /*[SerializeField] private */public Transform earthPos;
+    /*[SerializeField] private */public Transform windPos;
+    /*[SerializeField] private */public Transform lavaPos;
+    /*[SerializeField] private */public Transform startPos;
 
     [SerializeField] private List<FragmentDeposit> deposits = new List<FragmentDeposit>();
 
@@ -23,7 +23,6 @@ public class HubFragmentChecker : MonoBehaviour
     private void CheckForPortalsToOpen()
     {
         PlayerFragments player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerFragments>();
-
 
         if (player.DepositFragment("lava"))
         {

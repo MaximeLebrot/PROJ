@@ -7,11 +7,11 @@ public class BehaviourData : ScriptableObject {
     [SerializeField] private Vector2 clampValues;
     [SerializeField] private float followSpeed;
     [SerializeField] private float rotationSpeed;
-    [SerializeField] private float inputDeadZone;
+    [SerializeField] private float cameraLookAhead;
     public Vector3 Offset => offset;
     public float FollowSpeed => followSpeed;
     public float RotationSpeed => rotationSpeed;
-    public float InputDeadZone => inputDeadZone;
+    public float CameraLookAhead => cameraLookAhead;
 
     public Vector2 ClampValues => clampValues;
 }
