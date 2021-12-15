@@ -20,6 +20,9 @@ public class ContrastModeSwitch : MonoBehaviour {
     private LayerMask mainRegularRenderLayers;
     
     private void Awake() {
+
+        if (postProcess == null)
+            Destroy(this);
         
         mainCamera = Camera.main;
         

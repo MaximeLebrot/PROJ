@@ -32,6 +32,7 @@ public class GameCamera : MonoBehaviour {
     private bool pendingAccessibilityUpdate;
     
     private void Awake() {
+        DontDestroyOnLoad(this);
         inputReference.Initialize();
         transitioner.Initialize();
         thisTransform = transform;
