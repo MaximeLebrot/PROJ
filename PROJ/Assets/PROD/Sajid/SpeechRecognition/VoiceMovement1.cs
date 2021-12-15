@@ -1,3 +1,4 @@
+/*
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ public class VoiceMovement : MonoBehaviour
     private KeywordRecognizer keywordRecognizer;
     private Dictionary<string, Action> actions = new Dictionary<string, Action>();
     public Text direction;
-    private PlayerController mpc;
+
     public Animator animator;
 
     private int i = 0;
@@ -30,7 +31,17 @@ public class VoiceMovement : MonoBehaviour
         actions.Add("left", Left);
         actions.Add("stop", Stop);
 
-        mpc = GetComponent<PlayerController>();
+        actions.Add("rotate ninety", Rotate);
+        actions.Add("rotate", Rotate);
+
+        actions.Add("rotate onehundred and eighty", Rotate180);
+        actions.Add("rotate one eighty", Rotate180);
+
+        actions.Add("rotate twohundred and seventy", Rotate270);
+        actions.Add("rotate two seventy", Rotate270);
+
+        actions.Add("Dance", Dance);
+
         x = Animator.StringToHash("speed");
         y = Animator.StringToHash("direction");
 
@@ -44,10 +55,7 @@ public class VoiceMovement : MonoBehaviour
     {
         if(walkingForward)
         {
-            //    transform.Translate(Vector3.forward * Time.deltaTime * speed);
-            mpc.InputWalk(new Vector3(0,1,0));
-            animator.SetFloat(x, 1);
-            Debug.Log("Walking forward now");
+            transform.Translate(Vector3.right * Time.deltaTime * speed);
         }
     }
 
@@ -63,7 +71,7 @@ public class VoiceMovement : MonoBehaviour
         walkingForward = true;
         direction.text = "Forward";
         direction.GetComponent<Animator>().SetTrigger("active");
-        //animator.SetFloat(x, 1);
+        animator.SetFloat(x, 1);
     }
 
     private void Stop()
@@ -81,16 +89,46 @@ public class VoiceMovement : MonoBehaviour
     }
     private void Left()
     {
-        transform.Rotate(0, -90, 0);
+        transform.Translate(0, 0, 1);
+        direction.text = "Left";
+        direction.GetComponent<Animator>().SetTrigger("active");
     }
 
     private void Right()
     {
-        transform.Rotate(0, 90, 0);
-
+        transform.Translate(0, 0, -1);
+        direction.text = "Right";
+        direction.GetComponent<Animator>().SetTrigger("active");
     }
 
- 
+    private void Rotate()
+    {
+        transform.Rotate(0, 90, 0);
+        direction.text = "Rotate 90";
+        direction.GetComponent<Animator>().SetTrigger("active");
+    }
+
+    private void Rotate180()
+    {
+        transform.Rotate(0, 180, 0);
+        direction.text = "Rotate 180";
+        direction.GetComponent<Animator>().SetTrigger("active");
+    }
+
+    private void Rotate270()
+    {
+        transform.Rotate(0, 270, 0);
+        direction.text = "Rotate 270";
+        direction.GetComponent<Animator>().SetTrigger("active");
+    }
+
+    private void Dance()
+    {
+        animator.SetTrigger("Dance");
+        direction.text = "Rick Rolled";
+        direction.GetComponent<Animator>().SetTrigger("active");
+    }
 
 
 }
+*/
