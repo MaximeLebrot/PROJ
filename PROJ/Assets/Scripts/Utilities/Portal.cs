@@ -13,6 +13,7 @@ public class Portal : MonoBehaviour
 
     public void Open()
     {
+        //send LookAtEvent
         anim.SetTrigger("Open");
     }
 

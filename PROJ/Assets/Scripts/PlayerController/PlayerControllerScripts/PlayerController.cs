@@ -55,16 +55,10 @@ public class PlayerController : MonoBehaviour
     {
         EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
         force = Vector3.zero;
-        SceneManager.sceneLoaded += OnSceneLoaded;
     }
     private void OnDisable()
     {
         EventHandler<SaveSettingsEvent>.UnregisterListener(OnSaveSettings);
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        cameraTransform = Camera.main.transform;
     }
 
     //This could instead load a delegate with a preffered input chain, but as of now that would require more code than the current solution. 
@@ -240,4 +234,8 @@ public class PlayerController : MonoBehaviour
     //Gets & Sets
     public void SetDeceleration(float val) => deceleration = val;
     public float GetDeceleration() => deceleration;
+    public void ResetCharacterModel()
+    {
+        characterModel.transform.rotation = transform.rotation;
+    }
 }

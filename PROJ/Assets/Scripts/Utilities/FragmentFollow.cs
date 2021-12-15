@@ -10,8 +10,10 @@ public class FragmentFollow : MonoBehaviour
     [SerializeField, Range(0.1f, 2f)] private float fragmentSize = 1f;
 
     private Vector3 downScale;
-    private bool follow;
+    public bool follow;
     private bool deposit;
+
+    [SerializeField] private Animator anim;
 
     private void Start()
     {
@@ -22,7 +24,12 @@ public class FragmentFollow : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
+        {
+            fragmentHolder = other.transform;
             follow = true;
+            GetComponent<Collider>().isTrigger = false;
+        }
+            
     }
 
     private void Update()
@@ -35,23 +42,29 @@ public class FragmentFollow : MonoBehaviour
 
     private void FragmentFollowPlayer()
     {
+        Debug.Log("FOLOOW");
         if (transform.localScale.x > fragmentSize)
             transform.localScale -= downScale;
-        if (Vector3.Distance(fragmentOrb.position, fragmentHolder.position) > 0.1f)
-            fragmentOrb.position = Vector3.Lerp(fragmentOrb.position, fragmentHolder.position, Time.deltaTime * speed);
+        if (Vector3.Distance(fragmentOrb.position, fragmentHolder.position + Vector3.up * 1.5f) > 0.1f)
+            fragmentOrb.position = Vector3.Lerp(fragmentOrb.position, fragmentHolder.position + Vector3.up * 1.5f, Time.deltaTime * speed);
     }
 
     private void FragmentDeposit()
     {
-        if (follow)
-            follow = false;
+        follow = false;
         fragmentOrb.position = Vector3.Lerp(fragmentOrb.position, fragmentDeposit.position, Time.deltaTime * speed);
         if (Vector3.Distance(fragmentOrb.position, fragmentDeposit.position) < 0.1f)
         {
             deposit = false;
-            Debug.Log("Fragment deposited");
+            Destroy(this, 5);
         }    
     }
 
-    public void DepositFragment() => deposit = true;
+    public void DepositFragment(FragmentDeposit frag) 
+    {
+        fragmentDeposit = frag.transform;
+        deposit = true;
+
+    
+    }
 }

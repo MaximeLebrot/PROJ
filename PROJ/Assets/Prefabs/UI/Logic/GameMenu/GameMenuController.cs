@@ -3,10 +3,10 @@ using UnityEngine.InputSystem;
 
 public class GameMenuController : MenuController {
 
-    public GameObject settingsMenuObject;
+    public MenuSettings settingsMenuObject;
 
-    private System.Action onBackInput; 
-
+    private System.Action onBackInput;
+    
     protected override void Initialize() {
         DontDestroyOnLoad(this);
         onBackInput = OpenMenu;
@@ -20,27 +20,26 @@ public class GameMenuController : MenuController {
         
         ActivateComponents(true);
         EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(true));
-        Cursor.lockState = CursorLockMode.None;
-        SwitchPage("MenuButtons");
+
+        ActivateSubMenu(settingsMenuObject);
         onBackInput = Back;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     private void Back() {
-
         if (inputSuspended)
             return;
-        
-        menuAnimator.Back();
 
-        if (menuAnimator.InsideSubMenu())
-            return; //Player still inside a submenu 
+        if (pageController.CanMoveUpOneLevel())
+            return;
         
-        //No more submenus, close game menu
         CloseMenu();
-        
         onBackInput = OpenMenu;
+        
     }
 
+    
+    
     private void CloseMenu() {
         ActivateComponents(false);
         EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(false));
@@ -48,8 +47,7 @@ public class GameMenuController : MenuController {
 
     private void ActivateComponents(bool activateComponents) {
         Cursor.lockState = activateComponents ? CursorLockMode.None : CursorLockMode.Locked;
-        menuAnimator.EnableAnimator(activateComponents); 
-        settingsMenuObject.SetActive(activateComponents);
+        settingsMenuObject.gameObject.SetActive(activateComponents);
         EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(activateComponents));
     }
 }

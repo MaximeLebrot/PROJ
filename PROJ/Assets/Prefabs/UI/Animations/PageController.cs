@@ -1,48 +1,81 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PageController : MonoBehaviour {
 
-    private Dictionary<int, GameObject> pageObjects;
+    private HashSet<MenuSettings> pageObjects;
 
-    private GameObject currentActivePage;
+    private MenuSettings currentActivePage;
 
-    private MenuController menuController;
+    private Action onDone;
+
+    private MenuSettings newPage;
+    
+    private readonly Stack<MenuSettings> subMenuDepth = new Stack<MenuSettings>(); 
+
     
     private void Awake() {
-
-        menuController = GetComponentInParent<MenuController>();
         
-        pageObjects = new Dictionary<int, GameObject>();
+        pageObjects = new HashSet<MenuSettings>();
         
         for (int i = 0; i < transform.childCount; i++) {
 
-            GameObject child = transform.GetChild(i).gameObject;
+            transform.GetChild(i).gameObject.SetActive(true);
             
-            pageObjects.Add(child.name.GetHashCode(), child);
-        }
-        
-        menuController.OnActivatePage += ActivatePage;
+            transform.GetChild(i).TryGetComponent(out MenuSettings menuSettings);
 
+            if (menuSettings != null) {
+                menuSettings.Initialize();
+                pageObjects.Add(menuSettings);
+            }
+            
+            transform.GetChild(i).gameObject.SetActive(false);
+                
+        }
+    }
+    
+    public void RegisterSubMenuAsActive(MenuSettings page) {
+        SwitchPage(page);
+        subMenuDepth.Push(page);
     }
 
-    private void ActivatePage(int ID) {
+    private void SwitchPage(MenuSettings page) {
+
+        newPage = page;
+
+        if (currentActivePage != null) {
+            onDone = DisableCurrentPage;
+            onDone += ActivateNewPage;
+            currentActivePage.FadeMenu(FadeMode.FadeOut, onDone);
+        }
+        else 
+            ActivateNewPage();
         
-        if (pageObjects.ContainsKey(ID) == false && currentActivePage != null) {
-            
-            currentActivePage.SetActive(false);
-            currentActivePage = null;
+    }
 
-            return;
+    private void DisableCurrentPage() {
+        currentActivePage.gameObject.SetActive(false);
+        currentActivePage = null;
+    }
+    
+    private void ActivateNewPage() {
+        currentActivePage = newPage;
+        currentActivePage.gameObject.SetActive(true);
+        currentActivePage.FadeMenu(FadeMode.FadeIn, null);
+        onDone = null;
+        newPage = null;
+    }
+
+    public bool CanMoveUpOneLevel() {
+        subMenuDepth.Pop();
+
+        if (subMenuDepth.Count > 0) {
+            SwitchPage(subMenuDepth.Peek());
+            return true;
         }
 
-        if (pageObjects.ContainsKey(ID)) {
-            
-            if(currentActivePage != null) 
-                currentActivePage.SetActive(false);
-            
-            currentActivePage = pageObjects[ID];
-            currentActivePage.SetActive(true);
-        }
+        return false;
+
     }
 }

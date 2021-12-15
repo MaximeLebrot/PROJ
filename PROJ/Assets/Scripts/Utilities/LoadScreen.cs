@@ -6,36 +6,42 @@ using UnityEngine.SceneManagement;
 public class LoadScreen : MonoBehaviour
 {
     private string sceneToLoad;
-    Animator anim;
+    private Animator anim;
+
+    private void Start()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        anim = GetComponent<Animator>();
+        
+    }
 
     private void OnEnable()
     {
-        anim = GetComponent<Animator>();
-        SceneManager.sceneLoaded += OnSceneLoaded;
         EventHandler<UnLoadSceneEvent>.RegisterListener(StartLoading);
     }
 
     private void OnDisable()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
         EventHandler<UnLoadSceneEvent>.UnregisterListener(StartLoading);
+    }
+
+    private void StartLoading(UnLoadSceneEvent eve)
+    {
+        Debug.Log("Start Loading, unload scene event read");
+        sceneToLoad = eve.sceneToLoad;
+        anim.SetTrigger("load");
     }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Debug.Log("On Scene Loaded");
         anim.SetTrigger("stopLoad");
     }
-    private void StartLoading(UnLoadSceneEvent eve)
-    {
-        sceneToLoad = eve.sceneToLoad;
-        Debug.Log(sceneToLoad.ToString());
-        anim.SetTrigger("load");
-    }
-
+    //Triggered from animation event
     public void LoadScene()
     {
         SceneManager.LoadScene(sceneToLoad);
     }
-
+    
     public void SendLoadEvent()
     {
         EventHandler<LoadSceneEvent>.FireEvent(new LoadSceneEvent());
