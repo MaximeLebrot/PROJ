@@ -1,10 +1,9 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class GameMenuController : MenuController {
 
-    public GameObject settingsMenuObject;
+    public MenuSettings settingsMenuObject;
 
     private System.Action onBackInput;
     
@@ -17,36 +16,33 @@ public class GameMenuController : MenuController {
 
     private void HandleBackInput(InputAction.CallbackContext e) => onBackInput?.Invoke();
 
-    private async void OpenMenu() {
+    private void OpenMenu() {
         
         ActivateComponents(true);
         EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(true));
 
-        await settingsMenuObject.GetComponent<FadeGroup>().Fade(FadeMode.FadeIn);
+        ActivateMenu(settingsMenuObject);
         
         Cursor.lockState = CursorLockMode.None;
-        onBackInput = Back;
     }
 
     private void Back() {
 
         if (inputSuspended)
             return;
-
-        //No more submenus
+        
         if (subMenuDepth.Count < 1) {
             CloseMenu();
             onBackInput = OpenMenu;
-            
             return;
         }
         
-        Debug.Log(subMenuDepth.Peek());
-        
         //Inside submenu
-        SwitchSubMenu(subMenuDepth.Pop());
+        ActivateMenu(subMenuDepth.Pop());
     }
 
+    
+    
     private void CloseMenu() {
         ActivateComponents(false);
         EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(false));
@@ -54,7 +50,7 @@ public class GameMenuController : MenuController {
 
     private void ActivateComponents(bool activateComponents) {
         Cursor.lockState = activateComponents ? CursorLockMode.None : CursorLockMode.Locked;
-        settingsMenuObject.SetActive(activateComponents);
+        settingsMenuObject.gameObject.SetActive(activateComponents);
         EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(activateComponents));
     }
 }

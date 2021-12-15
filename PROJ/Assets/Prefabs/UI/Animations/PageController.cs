@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PageController : MonoBehaviour {
 
-    private Dictionary<int, MenuSettings> pageObjects;
+    private HashSet<MenuSettings> pageObjects;
 
     private MenuSettings currentActivePage;
 
@@ -13,39 +13,37 @@ public class PageController : MonoBehaviour {
 
         menuController = GetComponentInParent<MenuController>();
         
-        pageObjects = new Dictionary<int, MenuSettings>();
+        pageObjects = new HashSet<MenuSettings>();
         
         for (int i = 0; i < transform.childCount; i++) {
 
-            transform.GetChild(i).TryGetComponent(out MenuSettings menuSettings);
+            transform.GetChild(i).gameObject.SetActive(true);
             
-            if(menuSettings != null)
-                pageObjects.Add(menuSettings.name.GetHashCode(), menuSettings);
+            transform.GetChild(i).TryGetComponent(out MenuSettings menuSettings);
+
+            if (menuSettings != null) {
+                menuSettings.Initialize();
+                pageObjects.Add(menuSettings);
+            }
+            
+            transform.GetChild(i).gameObject.SetActive(false);
+                
         }
         
         menuController.OnActivatePage += SwitchPage;
 
     }
 
-    private void SwitchPage(int ID) {
-        
-        if (pageObjects.ContainsKey(ID) == false && currentActivePage != null) {
-            
-            currentActivePage.gameObject.SetActive(false);
-            Debug.Log(currentActivePage.name);
-            currentActivePage = null;
-            return;
-        }
-        
-        if (pageObjects.ContainsKey(ID)) {
+    private void SwitchPage(MenuSettings page) {
 
-            if (currentActivePage != null) {
-                currentActivePage.gameObject.SetActive(false);
-            }
+        if (pageObjects.Contains(page)) {
+
+            if (currentActivePage != null)
+                currentActivePage.FadeMenu(FadeMode.FadeOut, () => currentActivePage.gameObject.SetActive(false));
             
-            currentActivePage = pageObjects[ID];
+            currentActivePage = page;
             currentActivePage.gameObject.SetActive(true);
-
+            currentActivePage.FadeMenu(FadeMode.FadeIn, null);
         }
         
     }
