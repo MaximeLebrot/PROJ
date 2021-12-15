@@ -21,7 +21,7 @@ public class Portal : MonoBehaviour
     {
         //Open should be called from the fragment holder/whatever, not here. Only for testing.
         //Open();
-        Debug.Log("hehehe");
+
         EventHandler<UnLoadSceneEvent>.FireEvent(new UnLoadSceneEvent(sceneToLoad));
     }
 }

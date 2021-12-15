@@ -3,10 +3,10 @@ using UnityEngine.InputSystem;
 
 public class GameMenuController : MenuController {
 
-    public GameObject settingsMenuObject;
+    public MenuSettings settingsMenuObject;
 
-    private System.Action onBackInput; 
-
+    private System.Action onBackInput;
+    
     protected override void Initialize() {
         DontDestroyOnLoad(this);
         onBackInput = OpenMenu;
@@ -20,9 +20,10 @@ public class GameMenuController : MenuController {
         
         ActivateComponents(true);
         EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(true));
+
+        ActivateMenu(settingsMenuObject);
+        
         Cursor.lockState = CursorLockMode.None;
-        SwitchPage("MenuButtons");
-        onBackInput = Back;
     }
 
     private void Back() {
@@ -30,17 +31,18 @@ public class GameMenuController : MenuController {
         if (inputSuspended)
             return;
         
-        menuAnimator.Back();
-
-        if (menuAnimator.InsideSubMenu())
-            return; //Player still inside a submenu 
+        if (subMenuDepth.Count < 1) {
+            CloseMenu();
+            onBackInput = OpenMenu;
+            return;
+        }
         
-        //No more submenus, close game menu
-        CloseMenu();
-        
-        onBackInput = OpenMenu;
+        //Inside submenu
+        ActivateMenu(subMenuDepth.Pop());
     }
 
+    
+    
     private void CloseMenu() {
         ActivateComponents(false);
         EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(false));
@@ -48,8 +50,7 @@ public class GameMenuController : MenuController {
 
     private void ActivateComponents(bool activateComponents) {
         Cursor.lockState = activateComponents ? CursorLockMode.None : CursorLockMode.Locked;
-        menuAnimator.EnableAnimator(activateComponents); 
-        settingsMenuObject.SetActive(activateComponents);
+        settingsMenuObject.gameObject.SetActive(activateComponents);
         EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(activateComponents));
     }
 }

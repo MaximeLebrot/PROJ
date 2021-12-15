@@ -17,7 +17,7 @@ public class SprintState : PlayerState
     }
     private void LoadInputs()
     {
-        //Debug.Log("Load inputs");
+        Debug.Log("Load inputs");
         if (holdToSprint)
             player.inputReference.InputMaster.Sprint.canceled += OnSprintActivate;
         else
@@ -25,8 +25,8 @@ public class SprintState : PlayerState
     }
     private void UnloadInputs()
     {
-        //Debug.Log("Unload inputs");
-        if(holdToSprint)
+        Debug.Log("Unload inputs");
+        if (holdToSprint)
             player.inputReference.InputMaster.Sprint.canceled -= OnSprintActivate;
         else
             player.inputReference.InputMaster.Sprint.performed -= OnSprintActivate;
@@ -35,7 +35,7 @@ public class SprintState : PlayerState
     {
         LoadInputs();
         player.animator.SetTrigger("Sprint");
-        base.EnterState();        
+        base.EnterState();
     }
     public override void RunUpdate()
     {
@@ -50,7 +50,7 @@ public class SprintState : PlayerState
     {
         player.animator.SetTrigger("Walk");
         base.ExitState();
-        UnloadInputs();   
+        UnloadInputs();
     }
     private void SetInput()
     {
@@ -58,7 +58,7 @@ public class SprintState : PlayerState
     }
     private void OnSprintActivate(InputAction.CallbackContext obj)
     {
-        stateMachine.ChangeState<WalkState>();      
+        stateMachine.ChangeState<WalkState>();
     }
     private void OnSaveSettings(SaveSettingsEvent eve)
     {
