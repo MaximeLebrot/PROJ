@@ -26,9 +26,7 @@ public abstract class MenuSettings : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    public async void ActivateMenu(FadeMode fadeMode) {
-        await fadeGroup.Fade(fadeMode);
-    }
+   
 
     protected virtual void SubMenuInitialize() {}
     
@@ -36,6 +34,8 @@ public abstract class MenuSettings : MonoBehaviour {
 
     public abstract void ApplyItemValues(ref SettingsData settingsData);
     protected UIMenuItem ExtractMenuItem(string menuName) => menuOptions[menuName.GetHashCode()];
+    
+    public void FadeMenu(FadeMode fadeMode) => StartCoroutine(fadeGroup.Fade(fadeMode));
 
 
     
