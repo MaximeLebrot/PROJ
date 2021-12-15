@@ -8,6 +8,7 @@ public class LogbookHandler : MonoBehaviour
     private bool isOpen;
     [SerializeField] private GameObject logbook;
     private Animator animator;
+    private Logbook logbookScript;
 
     private void OnEnable()
     {
@@ -27,10 +28,12 @@ public class LogbookHandler : MonoBehaviour
         isOpen = false;
         logbook.SetActive(false);
         animator = logbook.GetComponent<Animator>();
+        logbookScript = logbook.GetComponent<Logbook>();
     }
 
     private void Update()
     {
+        // Open and close the logbook
         if (inputMaster.Player.Logbook.triggered)
         {
             // Put animation here.
@@ -47,14 +50,18 @@ public class LogbookHandler : MonoBehaviour
                 isOpen = true;
             }
         }
+        // Change page with keys
     }
 
     public void TurnPageLeft()
     {
-        animator.SetTrigger("left");
+       animator.SetTrigger("left");
+       logbookScript.TurnPageLeft();
     }
+
     public void TurnPageRight()
     {
         animator.SetTrigger("right");
+        logbookScript.TurnPageRight();
     }
 }

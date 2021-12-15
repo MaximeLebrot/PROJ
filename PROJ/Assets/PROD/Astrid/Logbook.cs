@@ -1,32 +1,135 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Logbook : MonoBehaviour
 {
-    [SerializeField] private GameObject[] pages; // Will prob wanna categorize them later.
+    [SerializeField] private GameObject[] chapters; // The start page for each chapter
+    [SerializeField] private GameObject[] pages; // All pages
+    [SerializeField] private GameObject[] tabs;
     [SerializeField] private GameObject[] tabsLeft; //Don't include Tab_0
     [SerializeField] private GameObject[] tabsRight; //Don't include Tab_0
     private AudioSource audioSource;
+    private int pageNr;
+    [SerializeField] private GameObject leftTurnButton;
+    [SerializeField] private GameObject rightTurnButton;
+    [SerializeField] private TextMeshProUGUI pageNrText;
 
     public void Start()
     {
         audioSource = GetComponent<AudioSource>();
-
+        pageNr = 0; // Or should it be 0?
+        leftTurnButton.SetActive(false);
         for (int i = 0; i < tabsLeft.Length; i++)
             CloseTab(i);
     }
 
-    //Add so it takes input from keys.
+    // <-- brain stupid and don't understand left vs right
+    public void TurnPageLeft()
+    {
+        pageNr--;
+        CloseEverything();
+        pages[pageNr].SetActive(true);
+        if (rightTurnButton.activeInHierarchy == false)
+            rightTurnButton.SetActive(true);
+        pageNrText.text = "Page " + (pageNr + 1);
+        if (pageNr == 0)
+        {
+            // Deactivate the button
+            if (leftTurnButton.activeInHierarchy == true)
+                leftTurnButton.SetActive(false);
+        }
+        ChapterCheck();
+    }
+
+    // -->
+    public void TurnPageRight()
+    {
+        pageNr++;
+        CloseEverything();
+        pages[pageNr].SetActive(true);
+        if (leftTurnButton.activeInHierarchy == false)
+            leftTurnButton.SetActive(true);
+        pageNrText.text = "Page " + (pageNr + 1);
+        if (pageNr == pages.Length - 1)
+        {
+            // Deactivate the button
+            if (rightTurnButton.activeInHierarchy == true)
+                rightTurnButton.SetActive(false);
+        }
+        ChapterCheck();
+    }
+
+    // Do something about disssss :'))))))))))))
+    private void ChapterCheck()
+    {
+        for (int i = 0; i < chapters.Length; i++)
+        {
+            if (chapters[i].activeInHierarchy == true)
+            {
+                switch (i)
+                {
+                    case 0:
+                        OpenWelcomeTab();
+                        break;
+                    case 1:
+                        OpenFirstTab();
+                        break;
+                    case 2:
+                        OpenSecondTab();
+                        break;
+                    case 3:
+                        OpenThirdTab();
+                        break;
+                }
+
+            }
+        }
+    }
+
+    public void OpenSpecificPage(GameObject page)
+    {
+        for (int i = 0; i < pages.Length; i++)
+        {
+            if (pages[i] == page)
+            {
+                pageNr = i;
+            }
+        }
+        CloseEverything();
+        pages[pageNr].SetActive(true);
+        pageNrText.text = "Page " + (pageNr + 1);
+        
+        // Fix the button stuffs
+        if (pageNr == pages.Length - 1)
+        {
+            // Deactivate the button
+            if (rightTurnButton.activeInHierarchy == true)
+                rightTurnButton.SetActive(false);
+        } else
+        {
+            if (leftTurnButton.activeInHierarchy == false)
+                leftTurnButton.SetActive(true);
+        }
+        if (pageNr == 0)
+        {
+            // Deactivate the button
+            if (leftTurnButton.activeInHierarchy == true)
+                leftTurnButton.SetActive(false);
+        } else
+        {
+            if (rightTurnButton.activeInHierarchy == false)
+                rightTurnButton.SetActive(true);
+        }
+        ChapterCheck();
+    }
 
     public void OpenWelcomeTab()
     {
         for (int i = 0; i < tabsRight.Length; i++)
             CloseTab(i);
-        CloseEverything();
-        if (pages[0].activeInHierarchy != true)
-            pages[0].SetActive(true);
-        audioSource.Play();
+        PlaySound();
     }
 
     public void OpenFirstTab()
@@ -34,10 +137,7 @@ public class Logbook : MonoBehaviour
         for (int i = 1; i < tabsRight.Length; i++)
             CloseTab(i);
         OpenTab(0);
-        CloseEverything();
-        if (pages[1].activeInHierarchy != true)
-            pages[1].SetActive(true);
-        audioSource.Play();
+        PlaySound();
     }
 
     public void OpenSecondTab()
@@ -49,10 +149,7 @@ public class Logbook : MonoBehaviour
             if (i <= 1)
                 OpenTab(i);
         }
-        CloseEverything();
-        if (pages[2].activeInHierarchy != true)
-            pages[2].SetActive(true);
-        audioSource.Play();
+        PlaySound();
     }
 
     public void OpenThirdTab()
@@ -65,35 +162,7 @@ public class Logbook : MonoBehaviour
                 OpenTab(i);
         }
         OpenTab(2);
-        CloseEverything();
-        if (pages[3].activeInHierarchy != true)
-            pages[3].SetActive(true);
-        audioSource.Play();
-    }
-
-    public void OpenForthTab()
-    {
-        for (int i = 4; i < tabsRight.Length; i++)
-            CloseTab(i);
-        for (int i = 0; i < tabsRight.Length; i++)
-        {
-            if (i <= 3)
-                OpenTab(i);
-        }
-        CloseEverything();
-        if (pages[4].activeInHierarchy != true)
-            pages[4].SetActive(true);
-        audioSource.Play();
-    }
-
-    public void OpenFifthTab()
-    {
-        for (int i = 0; i < tabsRight.Length; i++)
-            OpenTab(i);
-        CloseEverything();
-        if (pages[5].activeInHierarchy != true)
-            pages[5].SetActive(true);
-        audioSource.Play();
+        PlaySound();
     }
 
     private void CloseEverything()
@@ -121,5 +190,11 @@ public class Logbook : MonoBehaviour
             tabsLeft[i].SetActive(false);
         if (tabsRight[i].activeInHierarchy != true)
             tabsRight[i].SetActive(true);
+    }
+
+    private void PlaySound()
+    {
+        if (audioSource != null)
+            audioSource.Play();
     }
 }
