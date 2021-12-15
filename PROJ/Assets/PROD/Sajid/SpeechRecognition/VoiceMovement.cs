@@ -47,7 +47,6 @@ public class VoiceMovement : MonoBehaviour
             //    transform.Translate(Vector3.forward * Time.deltaTime * speed);
             mpc.InputWalk(new Vector3(0,1,0));
             animator.SetFloat(x, 1);
-            Debug.Log("Walking forward now");
         }
     }
 
