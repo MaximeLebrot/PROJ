@@ -55,13 +55,13 @@ public class LogbookHandler : MonoBehaviour
 
     public void TurnPageLeft()
     {
-       animator.SetTrigger("left");
+       //animator.SetTrigger("left");
        logbookScript.TurnPageLeft();
     }
 
     public void TurnPageRight()
     {
-        animator.SetTrigger("right");
+        //animator.SetTrigger("right");
         logbookScript.TurnPageRight();
     }
 }
