@@ -95,7 +95,7 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     private void Update()
     {  
-       // stateMachine.RunUpdate();
+        stateMachine.RunUpdate();
     }
 
 
