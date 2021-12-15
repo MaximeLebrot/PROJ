@@ -239,7 +239,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""750247f7-5076-44b9-ab2b-3fd65e39e2d0"",
                     ""path"": ""<Keyboard>/leftShift"",
-                    ""interactions"": ""Press"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Stnd KBM"",
                     ""action"": ""Sprint"",
