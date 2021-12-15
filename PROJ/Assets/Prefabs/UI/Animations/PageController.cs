@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,11 +8,14 @@ public class PageController : MonoBehaviour {
 
     private MenuSettings currentActivePage;
 
-    private MenuController menuController;
+    private Action onDone;
+
+    private MenuSettings newPage;
+    
+    private readonly Stack<MenuSettings> subMenuDepth = new Stack<MenuSettings>(); 
+
     
     private void Awake() {
-
-        menuController = GetComponentInParent<MenuController>();
         
         pageObjects = new HashSet<MenuSettings>();
         
@@ -29,22 +33,49 @@ public class PageController : MonoBehaviour {
             transform.GetChild(i).gameObject.SetActive(false);
                 
         }
-        
-        menuController.OnActivatePage += SwitchPage;
-
+    }
+    
+    public void RegisterSubMenuAsActive(MenuSettings page) {
+        SwitchPage(page);
+        subMenuDepth.Push(page);
     }
 
     private void SwitchPage(MenuSettings page) {
 
-        if (pageObjects.Contains(page)) {
+        newPage = page;
 
-            if (currentActivePage != null)
-                currentActivePage.FadeMenu(FadeMode.FadeOut, () => currentActivePage.gameObject.SetActive(false));
-            
-            currentActivePage = page;
-            currentActivePage.gameObject.SetActive(true);
-            currentActivePage.FadeMenu(FadeMode.FadeIn, null);
+        if (currentActivePage != null) {
+            onDone = DisableCurrentPage;
+            onDone += ActivateNewPage;
+            currentActivePage.FadeMenu(FadeMode.FadeOut, onDone);
         }
+        else 
+            ActivateNewPage();
         
+    }
+
+    private void DisableCurrentPage() {
+        currentActivePage.gameObject.SetActive(false);
+        currentActivePage = null;
+    }
+    
+    private void ActivateNewPage() {
+        currentActivePage = newPage;
+        currentActivePage.gameObject.SetActive(true);
+        currentActivePage.FadeMenu(FadeMode.FadeIn, null);
+        onDone = null;
+        newPage = null;
+    }
+
+    public bool CanMoveUpOneLevel() {
+        subMenuDepth.Pop();
+
+        if (subMenuDepth.Count > 0) {
+            SwitchPage(subMenuDepth.Peek());
+            return true;
+        }
+
+        return false;
+
     }
 }

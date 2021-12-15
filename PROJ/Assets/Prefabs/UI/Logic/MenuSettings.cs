@@ -14,6 +14,10 @@ public abstract class MenuSettings : MonoBehaviour {
 
         gameObject.SetActive(true);
         fadeGroup = GetComponent<FadeGroup>();
+
+        //Just in case
+        foreach (CanvasGroup canvasGroup in GetComponentsInChildren<CanvasGroup>())
+            canvasGroup.alpha = 0;
         
         menuOptions = new Dictionary<int, UIMenuItem>();
 
@@ -36,7 +40,7 @@ public abstract class MenuSettings : MonoBehaviour {
     public abstract void ApplyItemValues(ref SettingsData settingsData);
     protected UIMenuItem ExtractMenuItem(string menuName) => menuOptions[menuName.GetHashCode()];
     
-    public void FadeMenu(FadeMode fadeMode, Action callback) {
-        StartCoroutine(fadeGroup.Fade(fadeMode, callback));
+    public void FadeMenu(FadeMode fadeMode, Action onDone) {
+        StartCoroutine(fadeGroup.Fade(fadeMode, onDone));
     }
 }
