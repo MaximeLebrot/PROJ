@@ -25,7 +25,9 @@ public abstract class PuzzleObject : MonoBehaviour
     private Image modifierImage; //dekal som ska visas någonstans!?!? HUR GÖR MAN
     private GameObject modifier;
     private Animator anim;
-    
+
+    private FMOD.Studio.EventInstance SymbolClear;
+
     public bool Active { get; private set; }
 
     private void Awake() {
@@ -146,6 +148,10 @@ public abstract class PuzzleObject : MonoBehaviour
                 if (modInfo.variant != ModifierVariant.None == true)
                 {
                     modifier.GetComponent<Animator>().SetTrigger("activate");
+                    SymbolClear = FMODUnity.RuntimeManager.CreateInstance("event:/Game/Puzzle/SymbolClear");
+                    SymbolClear.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+                    SymbolClear.start();
+                    SymbolClear.release();
                 }
             }
             else
