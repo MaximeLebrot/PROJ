@@ -1605,6 +1605,7 @@ GameObject:
   - component: {fileID: 7633219187445847150}
   - component: {fileID: 7633219187445847145}
   - component: {fileID: 279962568}
+  - component: {fileID: 840916313}
   m_Layer: 6
   m_Name: Player_3Dec
   m_TagString: Player
@@ -1700,7 +1701,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16567
   groundCheckDistance: 1.1
-  inputReference: {fileID: 11400000, guid: 54398b8fed501aa41813fa11036bc179, type: 2}
   characterModel: {fileID: 3006048765200506218}
 --- !u!114 &7633219187445847148
 MonoBehaviour:
@@ -1788,6 +1788,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ccb3022dad846c4baa3f552e1cafc5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &840916313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7633219187445847144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f937d02af9a9cd44a84e371f1f451f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 7633219187445847150}
+  puzzleMovement: {fileID: 7633219187445847151}
+  speed: 3
 --- !u!1 &7633219188263982395
 GameObject:
   m_ObjectHideFlags: 0
@@ -3875,7 +3890,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6703712814975576625, guid: 2e591cd5ef67bc84590aa3e5169a641c, type: 3}
       propertyPath: m_Materials.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6703712814975576625, guid: 2e591cd5ef67bc84590aa3e5169a641c, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -3887,6 +3902,10 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 96f114420c1e0ad48897223015fccff2, type: 2}
     - target: {fileID: 6703712814975576625, guid: 2e591cd5ef67bc84590aa3e5169a641c, type: 3}
       propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: a29945072f85b0541af6e00c127cc9f1, type: 2}
+    - target: {fileID: 6703712814975576625, guid: 2e591cd5ef67bc84590aa3e5169a641c, type: 3}
+      propertyPath: m_Materials.Array.data[3]
       value: 
       objectReference: {fileID: 2100000, guid: a29945072f85b0541af6e00c127cc9f1, type: 2}
     - target: {fileID: 7542771193803084143, guid: 2e591cd5ef67bc84590aa3e5169a641c, type: 3}
@@ -3941,9 +3960,9 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: -2178499749096800658, guid: 2e591cd5ef67bc84590aa3e5169a641c, type: 3}
   m_PrefabInstance: {fileID: 2699565741791387707}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &3006048765200506218 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2e591cd5ef67bc84590aa3e5169a641c, type: 3}
+--- !u!4 &2521014961975019472 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2e591cd5ef67bc84590aa3e5169a641c, type: 3}
   m_PrefabInstance: {fileID: 2699565741791387707}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &5148256698103371478 stripped
@@ -4001,8 +4020,8 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: -5185799562867270391, guid: 2e591cd5ef67bc84590aa3e5169a641c, type: 3}
   m_PrefabInstance: {fileID: 2699565741791387707}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &2521014961975019472 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2e591cd5ef67bc84590aa3e5169a641c, type: 3}
+--- !u!1 &3006048765200506218 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2e591cd5ef67bc84590aa3e5169a641c, type: 3}
   m_PrefabInstance: {fileID: 2699565741791387707}
   m_PrefabAsset: {fileID: 0}
