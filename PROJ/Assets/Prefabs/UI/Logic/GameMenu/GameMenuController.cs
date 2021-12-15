@@ -21,24 +21,21 @@ public class GameMenuController : MenuController {
         ActivateComponents(true);
         EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(true));
 
-        ActivateMenu(settingsMenuObject);
-        
+        ActivateSubMenu(settingsMenuObject);
+        onBackInput = Back;
         Cursor.lockState = CursorLockMode.None;
     }
 
     private void Back() {
-
         if (inputSuspended)
             return;
-        
-        if (subMenuDepth.Count < 1) {
-            CloseMenu();
-            onBackInput = OpenMenu;
+
+        if (pageController.CanMoveUpOneLevel())
             return;
-        }
         
-        //Inside submenu
-        ActivateMenu(subMenuDepth.Pop());
+        CloseMenu();
+        onBackInput = OpenMenu;
+        
     }
 
     

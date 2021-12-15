@@ -9,6 +9,14 @@ public class FadeGroup : MonoBehaviour {
     [SerializeField] private List<FadeEntity> fadeOrder;
     
     public IEnumerator Fade(FadeMode fadeMode, Action onDone) {
+
+        float totalTime = 0;
+
+        foreach (FadeEntity fadeEntity in fadeOrder)
+            totalTime += fadeEntity.FadeTime;
+
+        float endTime = Time.time + totalTime;
+        float currentTime = Time.time;
         
         foreach (FadeEntity entity in fadeOrder) {
             
@@ -24,12 +32,17 @@ public class FadeGroup : MonoBehaviour {
             yield return new WaitForSeconds(entity.TimeUntilNextFade);
         }
 
-        if(onDone != null)
-            onDone.Invoke();
+        while (currentTime < endTime) {
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+        
+        if (onDone != null)
+            onDone?.Invoke();
     }
     
     private IEnumerator FadeIn(FadeEntity fadeEntity) {
-
+        fadeEntity.CanvasGroup.interactable = false;
         fadeEntity.CanvasGroup.alpha = 0;
         
         while (fadeEntity.CanvasGroup.alpha < (int)FadeMode.FadeIn) {
@@ -38,10 +51,11 @@ public class FadeGroup : MonoBehaviour {
         }
 
         fadeEntity.CanvasGroup.alpha = 1;
+        fadeEntity.CanvasGroup.interactable = true;
     }
 
     private IEnumerator FadeOut(FadeEntity fadeEntity) {
-        
+        fadeEntity.CanvasGroup.interactable = false;
         fadeEntity.CanvasGroup.alpha = 1;
         
         while (fadeEntity.CanvasGroup.alpha > (int)FadeMode.FadeOut) {
@@ -50,6 +64,7 @@ public class FadeGroup : MonoBehaviour {
         }
 
         fadeEntity.CanvasGroup.alpha = 0;
+        fadeEntity.CanvasGroup.interactable = true;
     }
 
 }

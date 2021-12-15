@@ -14,6 +14,10 @@ public abstract class MenuSettings : MonoBehaviour {
 
         gameObject.SetActive(true);
         fadeGroup = GetComponent<FadeGroup>();
+
+        //Just in case
+        foreach (CanvasGroup canvasGroup in GetComponentsInChildren<CanvasGroup>())
+            canvasGroup.alpha = 0;
         
         menuOptions = new Dictionary<int, UIMenuItem>();
 
