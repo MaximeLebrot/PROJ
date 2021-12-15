@@ -1,6 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-
+using System;
 
 [CreateAssetMenu(menuName = "PlayerStates/AirborneState")]
 public class AirborneState : PlayerState
@@ -14,7 +15,6 @@ public class AirborneState : PlayerState
     //NOTE this state should NOT have any values, and therefore not call its superstate's EnterState()
     public override void EnterState(PlayerState previousState)
     {
-        LoadInputs();
         nextState = previousState;
         //Debug.Log("Entered Airborne State");
         player.physics.SetFallingGravity();
@@ -22,6 +22,12 @@ public class AirborneState : PlayerState
     public override void RunUpdate()
     {
         SetInput();
+
+        /*if (player.physics.velocity.magnitude < player.physics.SurfThreshold)
+        {
+            stateMachine.ChangeState<WalkState>();
+            return;
+        }*/
 
         if (player.playerController3D.IsGrounded())
         {
@@ -49,16 +55,8 @@ public class AirborneState : PlayerState
         else
             stateMachine.ChangeState<WalkState>();
             //Else if**, we probably want some other requirement to remain here, be it speed or glideable material/tag
-    }
+            
+            
 
-    //Sprint Sub
-    private void LoadInputs()
-    {
-        player.inputReference.InputMaster.Sprint.canceled += OnSprintActivate;
-        player.inputReference.InputMaster.Sprint.performed += OnSprintActivate;
-    }
-    private void OnSprintActivate(InputAction.CallbackContext obj)
-    {
-        stateMachine.ChangeState<WalkState>();
     }
 }

@@ -1,29 +1,38 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(MenuAnimator))]
 public abstract class MenuController : MonoBehaviour {
-    
-    [SerializeField] protected ControllerInputReference controllerInputReference;
-    public event ActivatePage OnActivatePage;
-    public delegate void ActivatePage(MenuSettings page);
 
+    [SerializeField] protected ControllerInputReference controllerInputReference;
+    public delegate void ActivatePage(int ID);
+    public event ActivatePage OnActivatePage;
+
+    protected MenuAnimator menuAnimator;
     protected bool inputSuspended;
 
-    protected Stack<MenuSettings> subMenuDepth = new Stack<MenuSettings>(); 
-    
     private GraphicRaycaster graphicRaycaster;
 
     protected void Awake() {
         controllerInputReference.Initialize();
         
         graphicRaycaster = GetComponentInParent<GraphicRaycaster>();
-
+        menuAnimator = GetComponent<MenuAnimator>();
+        
         InputController.SuspendInputEvent += SuspendInputEvent;
         
         Initialize();
     }
     
+    public void SwitchPage(string pageName) {
+
+        if (inputSuspended)
+            return;
+        
+        menuAnimator.SetBool(pageName, true);
+    }
+
+
     protected abstract void Initialize();
     
     private void SuspendInputEvent(bool suspend) {
@@ -31,13 +40,7 @@ public abstract class MenuController : MonoBehaviour {
         graphicRaycaster.enabled = !inputSuspended;
     }
     
-    public void ActivateSubMenu(MenuSettings pageName) {
-        OnActivatePage?.Invoke(pageName);
-        subMenuDepth.Push(pageName);
+    public void OnActivatePageEvent(string name) {
+        OnActivatePage?.Invoke(name.GetHashCode());
     }
-
-    protected void ActivateMenu(MenuSettings pageName) {
-        OnActivatePage?.Invoke(pageName);
-    }
-    
 }

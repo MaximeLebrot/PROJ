@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class PageController : MonoBehaviour {
 
-    private HashSet<MenuSettings> pageObjects;
+    private Dictionary<int, GameObject> pageObjects;
 
-    private MenuSettings currentActivePage;
+    private GameObject currentActivePage;
 
     private MenuController menuController;
     
@@ -13,38 +13,36 @@ public class PageController : MonoBehaviour {
 
         menuController = GetComponentInParent<MenuController>();
         
-        pageObjects = new HashSet<MenuSettings>();
+        pageObjects = new Dictionary<int, GameObject>();
         
         for (int i = 0; i < transform.childCount; i++) {
 
-            transform.GetChild(i).gameObject.SetActive(true);
+            GameObject child = transform.GetChild(i).gameObject;
             
-            transform.GetChild(i).TryGetComponent(out MenuSettings menuSettings);
-
-            if (menuSettings != null) {
-                menuSettings.Initialize();
-                pageObjects.Add(menuSettings);
-            }
-            
-            transform.GetChild(i).gameObject.SetActive(false);
-                
+            pageObjects.Add(child.name.GetHashCode(), child);
         }
         
-        menuController.OnActivatePage += SwitchPage;
+        menuController.OnActivatePage += ActivatePage;
 
     }
 
-    private void SwitchPage(MenuSettings page) {
-
-        if (pageObjects.Contains(page)) {
-
-            if (currentActivePage != null)
-                currentActivePage.FadeMenu(FadeMode.FadeOut, () => currentActivePage.gameObject.SetActive(false));
-            
-            currentActivePage = page;
-            currentActivePage.gameObject.SetActive(true);
-            currentActivePage.FadeMenu(FadeMode.FadeIn, null);
-        }
+    private void ActivatePage(int ID) {
         
+        if (pageObjects.ContainsKey(ID) == false && currentActivePage != null) {
+            
+            currentActivePage.SetActive(false);
+            currentActivePage = null;
+
+            return;
+        }
+
+        if (pageObjects.ContainsKey(ID)) {
+            
+            if(currentActivePage != null) 
+                currentActivePage.SetActive(false);
+            
+            currentActivePage = pageObjects[ID];
+            currentActivePage.SetActive(true);
+        }
     }
 }

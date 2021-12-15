@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
     {
         mpc = GetComponent<MetaPlayerController>();
         inputReference = mpc.inputReference;
-        Application.targetFrameRate = 240;
+        Application.targetFrameRate = 250;
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PlayerPhysicsSplit>();
         SecureDelegates();
@@ -116,7 +116,6 @@ public class PlayerController : MonoBehaviour
 
     public void InputWalk(Vector3 inp)
     {
-
         inputDelegate(inp);      
 
         //to stop character rotation when input is 0
@@ -241,8 +240,4 @@ public class PlayerController : MonoBehaviour
     //Gets & Sets
     public void SetDeceleration(float val) => deceleration = val;
     public float GetDeceleration() => deceleration;
-    public void ResetCharacterModel()
-    {
-        characterModel.transform.rotation = transform.rotation;
-    }
 }
