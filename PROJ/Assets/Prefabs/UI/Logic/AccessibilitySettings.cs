@@ -1,7 +1,11 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class AccessibilitySettings : MenuSettings {
-    
+    protected override void SubMenuInitialize() {
+        menuOptions[ExtractMenuItem("ChangeFontSize").ID].OnValueChanged(() => Debug.Log($"Change font size to: {menuOptions[ExtractMenuItem("ChangeFontSize").ID].GetValue()}"));
+    }
+
     public override void SetMenuItems(SettingsData settingsData) {
         menuOptions[ExtractMenuItem("ChangeFontSize").ID].SetValue(settingsData.fontSize);
         menuOptions[ExtractMenuItem("Use_DyslexiaFont").ID].SetValue(settingsData.dyslexiaFont);
@@ -12,9 +16,7 @@ public class AccessibilitySettings : MenuSettings {
         menuOptions[ExtractMenuItem("ShowClearedSymbols").ID].SetValue(settingsData.showClearedSymbols);
         menuOptions[ExtractMenuItem("EasyPuzzleControls").ID].SetValue(settingsData.easyPuzzleControls);
         menuOptions[ExtractMenuItem("BigNodes").ID].SetValue(settingsData.bigNodes);
-        
-     //   menuOptions[ExtractMenuItem("SymbolDifficulty").ID].SetValue(settingsData.symbolDifficulty);
-
+        menuOptions[ExtractMenuItem("SymbolDifficulty").ID].SetValue(settingsData.symbolDifficulty);
     }
     
     public override void ApplyItemValues(ref SettingsData settingsData) {
