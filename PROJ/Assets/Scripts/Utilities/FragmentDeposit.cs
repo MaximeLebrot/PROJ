@@ -14,7 +14,7 @@ public class FragmentDeposit : MonoBehaviour
         if (other.GetComponent<PlayerFragments>().DepositFragment(nameOfThisFragment))
         {
             FragmentFollow frag = other.GetComponent<FragmentFollow>();
-            frag.DepositFragment();
+            frag.DepositFragment(this);
             //start relevant cutscene?
             portal.Open();
         }

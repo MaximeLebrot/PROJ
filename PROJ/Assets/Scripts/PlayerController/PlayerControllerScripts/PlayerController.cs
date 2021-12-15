@@ -240,4 +240,8 @@ public class PlayerController : MonoBehaviour
     //Gets & Sets
     public void SetDeceleration(float val) => deceleration = val;
     public float GetDeceleration() => deceleration;
+    public void ResetCharacterModel()
+    {
+        characterModel.transform.rotation = transform.rotation;
+    }
 }

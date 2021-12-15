@@ -55,6 +55,7 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     {
         puzzleController.CurrentPuzzleID = spe.info.ID;
         puzzleController.PuzzleTransform = spe.info.puzzlePos;
+        playerController3D.ResetCharacterModel();
         stateMachine.ChangeState<PuzzleState>();
     }
 
