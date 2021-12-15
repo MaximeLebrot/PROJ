@@ -6,64 +6,52 @@ using UnityEngine;
 using UnityEngine.Windows.Speech;
 using UnityEngine.UI;
 
+
 public class VoiceMovement : MonoBehaviour
 {
     private KeywordRecognizer keywordRecognizer;
     private Dictionary<string, Action> actions = new Dictionary<string, Action>();
-    private PlayerController mpc;
+   // [SerializeField] private GameObject Text;
+    public Text direction;
+    public GameObject[] kanelbullar;
     public Animator animator;
-    public PuzzlePlayerController puzzleMovement;
+    public GameObject song;
+    public GameObject Light;
+
     private int i = 0;
-    private int x, y;
-
-    public float speed;
-
-    private bool walking, running, puzzleActive;
-
-    Quaternion activePuzzleRotation;
-
     private void Start()
     {
         actions.Add("forward", Forward);
-        actions.Add("up", Forward);
-
-        actions.Add("diagonal right up", DiagonalRightUp);
-        actions.Add("diagonal up right", DiagonalRightUp);
-
-        actions.Add("diagonal left up", DiagonalLeftUp);
-        actions.Add("diagonal up left", DiagonalLeftUp); 
-
-        actions.Add("diagonal right down", DiagonalRightDown);
-        actions.Add("diagonal down right", DiagonalRightDown);
-
-        actions.Add("diagonal left down", DiagonalLeftDown);
-        actions.Add("diagonal down left", DiagonalLeftDown);
-
-
-        actions.Add("down", Down);
-        actions.Add("back", Down);
-
+        actions.Add("back", Back);
         actions.Add("right", Right);
         actions.Add("left", Left);
-        actions.Add("stop", Stop);
 
-        mpc = GetComponent<PlayerController>();
-        x = Animator.StringToHash("speed");
-        y = Animator.StringToHash("direction");
+        actions.Add("rotate ninety", Rotate);
+        actions.Add("rotate", Rotate);
 
-      //  direction.text = "";
+        actions.Add("rotate onehundred and eighty", Rotate180);
+        actions.Add("rotate one eighty", Rotate180);
+
+        actions.Add("rotate twohundred and seventy", Rotate270);
+        actions.Add("rotate two seventy", Rotate270);
+
+        actions.Add("Mums", David);
+        actions.Add("Cinnamon", David);
+        actions.Add("David", David);
+        actions.Add("Emma", David);
+
+
+        actions.Add("Dance", Dance);
+        actions.Add("Kill", Die);
+        actions.Add("Thomas", Dance);
+        actions.Add("Awe", Dance);
+
+        direction.text = "";
         keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
         keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
         keywordRecognizer.Start();
     }
-    private void Update()
-    {
-        if(walking)
-        {
-            mpc.InputWalk(new Vector3(0,1,0));
-            animator.SetFloat(x, 1);
-        }
-    }
+
     private void RecognizedSpeech(PhraseRecognizedEventArgs speech)
     {
         Debug.Log(speech.text);
@@ -71,113 +59,73 @@ public class VoiceMovement : MonoBehaviour
     }
     private void Forward()
     {
-        if(puzzleActive == false)
-
-        walking = true; 
-
-        else
-        {
-            Vector3 puzzleMovement = activePuzzleRotation * Vector3.forward * 3;
-            transform.position+=puzzleMovement;
-        }
+        transform.Translate(1, 0, 0);
+        direction.text = "Forward";
+        direction.GetComponent<Animator>().SetTrigger("active");
     }
-    private void Down()
+
+    private void Back()
     {
-        if(puzzleActive)
-        {
-            Vector3 puzzleMovement = activePuzzleRotation * Vector3.forward * 3;
-            transform.position -= puzzleMovement;
-        }
+        transform.Translate(-1, 0, 0);
+        direction.text = "Back";
+        direction.GetComponent<Animator>().SetTrigger("active");
     }
     private void Left()
     {
-        if (puzzleActive == false)
-        {
-            transform.Rotate(0, -90, 0);
-        } else
-        {
-            Vector3 puzzleMovement = activePuzzleRotation * Vector3.right * 3;
-            transform.position -= puzzleMovement;
+        transform.Translate(0, 0, 1);
+        direction.text = "Left";
+        direction.GetComponent<Animator>().SetTrigger("active");
+    }
 
-        }
-    }
-    private void Right() {
-        if (puzzleActive == false)
-            transform.Rotate(0, 90, 0);
-        else
-        {
-            Vector3 puzzleMovement = activePuzzleRotation * Vector3.right * 3;
-            transform.position += puzzleMovement;
-        }
-    }
-    private void DiagonalRightUp()
+    private void Right()
     {
-        if (puzzleActive)
-        {
-            Vector3 puzzleMovement = activePuzzleRotation * (Vector3.right + Vector3.forward) * 3;
-            transform.position += puzzleMovement;
-        }
+        transform.Translate(0, 0, -1);
+        direction.text = "Right";
+        direction.GetComponent<Animator>().SetTrigger("active");
     }
-    private void DiagonalLeftUp()
-    {
-        if (puzzleActive)
-        {
-            Vector3 puzzleMovement = activePuzzleRotation * (-Vector3.right + Vector3.forward) * 3;
-            transform.position += puzzleMovement;
-        }
-    }
-    private void DiagonalLeftDown()
-    {
-        if (puzzleActive)
-        {
-            Vector3 puzzleMovement = activePuzzleRotation * (Vector3.right + Vector3.forward) * 3;
-            transform.position -= puzzleMovement;
-        }
-    }
-    private void DiagonalRightDown()
-    {
-        if (puzzleActive)
-        {
-            Vector3 puzzleMovement = activePuzzleRotation * (-Vector3.right + Vector3.forward) * 3;
-            transform.position -= puzzleMovement;
-        }
-    }
-    private void Stop()
-    {
-        walking = false;
-        running = false;
-        animator.SetFloat(x, 0);
 
-    }
-    private void OnStartPuzzle(StartPuzzleEvent eve)
+    private void Rotate()
     {
+        transform.Rotate(0, 90, 0);
+        direction.text = "Rotate 90";
+        direction.GetComponent<Animator>().SetTrigger("active");
+    }
 
-        puzzleActive = true;
-        walking = false;
-        Debug.Log("PuzzleStarted");
-        animator.SetFloat(x, 0);
-        activePuzzleRotation = eve.info.puzzlePos.rotation;
-    //    transform.rotation = activePuzzleRotation;
-        Debug.Log("activepuzzlerotation: "+ activePuzzleRotation);
-        
-    }
-    private void OnExitPuzzle(ExitPuzzleEvent eve)
+    private void Rotate180()
     {
-        puzzleActive = false;
-        Debug.Log("PuzzleEnded");
+        transform.Rotate(0, 180, 0);
+        direction.text = "Rotate 180";
+        direction.GetComponent<Animator>().SetTrigger("active");
+    }
 
-    }
-    private void OnEnable()
+    private void Rotate270()
     {
-        EventHandler<StartPuzzleEvent>.RegisterListener(OnStartPuzzle);
-        EventHandler<ExitPuzzleEvent>.RegisterListener(OnExitPuzzle);
+        transform.Rotate(0, 270, 0);
+        direction.text = "Rotate 270";
+        direction.GetComponent<Animator>().SetTrigger("active");
     }
-    private void OnDisable()
-    {
-        EventHandler<StartPuzzleEvent>.UnregisterListener(OnStartPuzzle);
-        EventHandler<ExitPuzzleEvent>.RegisterListener(OnExitPuzzle);
 
+    private void David()
+    {
+        kanelbullar[i].SetActive(true);
+        i++;
+      
     }
+
+    private void Dance()
+    {
+        animator.SetTrigger("Dance");
+        direction.text = "Rick Rolled";
+        song.GetComponent<AudioSource>().Play();
+        direction.GetComponent<Animator>().SetTrigger("active");
+        Light.GetComponent<Animator>().SetTrigger("ActivateLight");
+    }
+
+    private void Die()
+    {
+        animator.SetTrigger("Death");
+        direction.text = "Dying";
+        direction.GetComponent<Animator>().SetTrigger("active");
+    }
+
 }
-
-

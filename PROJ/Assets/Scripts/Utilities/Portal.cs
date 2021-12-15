@@ -14,14 +14,13 @@ public class Portal : MonoBehaviour
     public void Open()
     {
         anim.SetTrigger("Open");
-        GetComponent<Collider>().enabled = true;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         //Open should be called from the fragment holder/whatever, not here. Only for testing.
         //Open();
-
+        Debug.Log("hehehe");
         EventHandler<UnLoadSceneEvent>.FireEvent(new UnLoadSceneEvent(sceneToLoad));
     }
 }

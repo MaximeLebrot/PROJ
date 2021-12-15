@@ -1,30 +1,14 @@
-using System.Collections;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "PlayerStates/OneSwitchStates/OSPuzzleState")]
 public class OSPuzzleState : PlayerState
 {
-    [Header("Variables"), SerializeField, Range(0.1f, 0.9f)] private float speed = 0.7f;
-    [SerializeField, Range(0.01f, 0.3f)] private float holdingButtonLimit = 0.15f;
-    [SerializeField] private float puzzleWalkDuration = 0.7f;
-    [SerializeField] private bool giveLostTime = true;
-    private OSPuzzle puzzle;
-
-    private float time = 1f, timer;
-    private float frameCounter;
-    private int iterator = 2;
     private bool realignPlayer;
-    private bool movingPlayer;
-    private bool pressingButton;
-    private bool diagonalMove;
-
+    private Transform puzzleTransform;
     private Vector3 offset = new Vector3(0, 1.1f, 0);
+
     private Vector2 playerXZ = new Vector2();
     private Vector2 puzzleXZ = new Vector2();
-    private Vector2 currentWalkingDirection = new Vector2();
-
-    private Transform puzzleTransform;
-
     public override void Initialize() => base.Initialize();
 
     public override void EnterState() => HandleStateEntry();
@@ -34,10 +18,10 @@ public class OSPuzzleState : PlayerState
     public override void RunUpdate()
     {
         HandleStartingAlignment();
-        HandlePuzzleMovement();
-        //When do we leave puzzle state, only controlled by EndPuzzleEvent? 
-    }
 
+<<<<<<< Updated upstream
+        //When do we leave puzzle state, only controlled by EndPuzzleEvent? 
+=======
     private void HandlePuzzleMovement()
     {
         if (player.inputReference.inputMaster.OneSwitch.OnlyButton.ReadValue<float>() != 0)
@@ -83,12 +67,7 @@ public class OSPuzzleState : PlayerState
         movingPlayer = true;
         float walkDuration = puzzleWalkDuration;
         if (diagonalMove)
-        {
             walkDuration = Mathf.Sqrt(Mathf.Pow(puzzleWalkDuration, 2) * 2);
-            Debug.Log("Diagonal move, duration: " + walkDuration);
-        }
-        else
-            Debug.Log("Normal move, duration: " + walkDuration);
         yield return new WaitForSeconds(walkDuration);
         diagonalMove = false;
         movingPlayer = false;
@@ -138,6 +117,7 @@ public class OSPuzzleState : PlayerState
                 return Vector2.left;
         }
         return Vector2.zero;
+>>>>>>> Stashed changes
     }
 
     private void HandleStartingAlignment()
@@ -162,7 +142,7 @@ public class OSPuzzleState : PlayerState
     private void HandleExitState()
     {
         base.ExitState();
-        Debug.Log("OSPuzzle State Exit");
+        Debug.Log("PuzzleStateExit");
         player.playerController3D.enabled = true;
         player.puzzleController.enabled = false;
     }
@@ -170,8 +150,7 @@ public class OSPuzzleState : PlayerState
     private void HandleStateEntry()
     {
         base.EnterState();
-        Debug.Log("OSPuzzle State Enter");
-        time = 1 - speed;
+        Debug.Log("Puzzle state");
         realignPlayer = true;
         player.physics.velocity = Vector3.zero;
         player.playerController3D.enabled = false;
@@ -183,7 +162,6 @@ public class OSPuzzleState : PlayerState
         puzzleTransform = eve.info.puzzlePos;
         puzzleXZ.x = puzzleTransform.position.x;
         puzzleXZ.y = puzzleTransform.position.z;
-        puzzle = eve.info.puzzlePos.gameObject.GetComponent<OSPuzzle>();
     }
     private void OnEnable() => EventHandler<StartPuzzleEvent>.RegisterListener(GetPuzzleInfo);
 
