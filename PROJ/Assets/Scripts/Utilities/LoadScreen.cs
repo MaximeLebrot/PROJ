@@ -33,6 +33,7 @@ public class LoadScreen : MonoBehaviour
     }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Debug.Log("On Scene Loaded");
         anim.SetTrigger("stopLoad");
     }
     //Triggered from animation event
