@@ -26,23 +26,27 @@ public class PageController : MonoBehaviour {
 
     }
 
-    private void ActivatePage(int ID) {
+    private async void ActivatePage(int ID) {
         
         if (pageObjects.ContainsKey(ID) == false && currentActivePage != null) {
             
+            await currentActivePage.GetComponent<FadeGroup>().Fade(FadeMode.FadeOut);
             currentActivePage.SetActive(false);
             currentActivePage = null;
-
             return;
         }
-
+        
         if (pageObjects.ContainsKey(ID)) {
-            
-            if(currentActivePage != null) 
+
+            if (currentActivePage != null) {
+                await currentActivePage.GetComponent<FadeGroup>().Fade(FadeMode.FadeOut);
                 currentActivePage.SetActive(false);
+            }
             
             currentActivePage = pageObjects[ID];
             currentActivePage.SetActive(true);
+            await currentActivePage.GetComponent<FadeGroup>().Fade(FadeMode.FadeIn);
         }
+        
     }
 }

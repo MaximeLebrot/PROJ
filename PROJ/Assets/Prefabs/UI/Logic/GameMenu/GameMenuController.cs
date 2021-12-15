@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,8 +6,8 @@ public class GameMenuController : MenuController {
 
     public GameObject settingsMenuObject;
 
-    private System.Action onBackInput; 
-
+    private System.Action onBackInput;
+    
     protected override void Initialize() {
         onBackInput = OpenMenu;
         controllerInputReference.InputMaster.Menu.performed += HandleBackInput;
@@ -15,12 +16,14 @@ public class GameMenuController : MenuController {
 
     private void HandleBackInput(InputAction.CallbackContext e) => onBackInput?.Invoke();
 
-    private void OpenMenu() {
+    private async void OpenMenu() {
         
         ActivateComponents(true);
         EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(true));
+
+        await settingsMenuObject.GetComponent<FadeGroup>().Fade(FadeMode.FadeIn);
+        
         Cursor.lockState = CursorLockMode.None;
-        SwitchPage("MenuButtons");
         onBackInput = Back;
     }
 
@@ -28,16 +31,17 @@ public class GameMenuController : MenuController {
 
         if (inputSuspended)
             return;
-        
-        menuAnimator.Back();
 
-        if (menuAnimator.InsideSubMenu())
-            return; //Player still inside a submenu 
+        //No more submenus
+        if (subMenuDepth.Count < 1) {
+            CloseMenu();
+            onBackInput = OpenMenu;
+            
+            return;
+        }
         
-        //No more submenus, close game menu
-        CloseMenu();
-        
-        onBackInput = OpenMenu;
+        //Inside submenu
+        SwitchSubMenu(subMenuDepth.Pop());
     }
 
     private void CloseMenu() {
@@ -47,7 +51,6 @@ public class GameMenuController : MenuController {
 
     private void ActivateComponents(bool activateComponents) {
         Cursor.lockState = activateComponents ? CursorLockMode.None : CursorLockMode.Locked;
-        menuAnimator.EnableAnimator(activateComponents); 
         settingsMenuObject.SetActive(activateComponents);
         EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(activateComponents));
     }
