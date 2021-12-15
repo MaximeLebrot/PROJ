@@ -28,12 +28,8 @@ public class GameCamera : MonoBehaviour {
     private event BehaviourQueue behaviourQueue;
 
     private bool oneHandModeIsActive;
-
-    private bool pendingAccessibilityUpdate;
     
     private void Awake() {
-        DontDestroyOnLoad(this);
-
         inputReference.Initialize();
         transitioner.Initialize();
         thisTransform = transform;
@@ -85,6 +81,7 @@ public class GameCamera : MonoBehaviour {
         EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
         EventHandler<CameraLookAndMoveToEvent>.RegisterListener(OnLookAndMove);
         EventHandler<LockInputEvent>.RegisterListener(LockInput);
+        EventHandler<SaveSettingsEvent>.RegisterListener(UpdateSettings);
         EventHandler<InGameMenuEvent>.RegisterListener(ActivateMenuCamera);
         EventHandler<TransportationBegunEvent>.RegisterListener(OnTransportationEvent);
         EventHandler<SaveSettingsEvent>.RegisterListener(OnSettingsChanged);
@@ -96,6 +93,7 @@ public class GameCamera : MonoBehaviour {
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
         EventHandler<CameraLookAndMoveToEvent>.UnregisterListener(OnLookAndMove);
         EventHandler<LockInputEvent>.UnregisterListener(LockInput);
+        EventHandler<SaveSettingsEvent>.UnregisterListener(UpdateSettings);
         EventHandler<InGameMenuEvent>.UnregisterListener(ActivateMenuCamera);
         EventHandler<TransportationBegunEvent>.UnregisterListener(OnTransportationEvent);
         EventHandler<SaveSettingsEvent>.UnregisterListener(OnSettingsChanged);
@@ -115,29 +113,27 @@ public class GameCamera : MonoBehaviour {
     
 
     private void OnPuzzleExit(ExitPuzzleEvent exitPuzzleEvent) {
-
-        if (exitPuzzleEvent.success) {
-            
-            EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
-        }
-        
-        if(oneHandModeIsActive)
-            ChangeBehaviour<OneHandCameraBehaviour>();
-        else
-            ChangeBehaviour<BaseCameraBehaviour>();
+        EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
+        ChangeBehaviour(previousCameraBehaviour);
     }
 
     private void OnLookAndMove(CameraLookAndMoveToEvent lookAndMove) {
         
     }
-    
+
+    private void UpdateSettings(SaveSettingsEvent saveEvent) {
+
+        oneHandModeIsActive = saveEvent.settingsData.oneHandMode;
+        
+        if (oneHandModeIsActive) 
+            ChangeBehaviour<OneHandCameraBehaviour>();
+    }
+
     private void OnPuzzleStart(StartPuzzleEvent startPuzzleEvent) {
-          //QUIK N DIRTEH
-        if (currentBaseCameraBehaviour.GetType() == typeof(PuzzleCameraBehaviour))
-        {
-            return;
-        }
+            
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
+
+        previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
         
         ChangeBehaviour<PuzzleCameraBehaviour>();
 
@@ -147,90 +143,18 @@ public class GameCamera : MonoBehaviour {
     }
     
     private void ChangeBehaviour<T>() where T : BaseCameraBehaviour {
-
-        if (pendingAccessibilityUpdate) {
-            pendingAccessibilityUpdate = false;
-            HandlePendingAccessibilityUpdate();
-        }
-            
-        else {
-            currentBaseCameraBehaviour = behaviours[typeof(T)];
-            currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
-            currentBaseCameraBehaviour.EnterBehaviour();
-        }
-       
+        currentBaseCameraBehaviour = behaviours[typeof(T)];
+        currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
+        currentBaseCameraBehaviour.EnterBehaviour();
     }
+
     
     private void ChangeBehaviour(Type type) {
-        if (pendingAccessibilityUpdate) {
-            pendingAccessibilityUpdate = false;
-            HandlePendingAccessibilityUpdate();
-        }
-            
-        else {
-            currentBaseCameraBehaviour = behaviours[type];
-            currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
-            currentBaseCameraBehaviour.EnterBehaviour();
-        }
+        Debug.Log("Change Behave");
+        currentBaseCameraBehaviour = behaviours[type];
+        currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
+        currentBaseCameraBehaviour.EnterBehaviour();
     }
-    
-
-    private void LockInput(LockInputEvent lockInputEvent) => lockInput = lockInputEvent.lockInput;
-
-    private void ActivateMenuCamera(InGameMenuEvent inGameMenuEvent) {
-        if (inGameMenuEvent.Activate) {
-            previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
-            ChangeBehaviour<InGameMenuCameraBehaviour>();
-        }
-        else 
-            ChangeBehaviour(previousCameraBehaviour);
-    }
-
-    private void OnTransportationEvent(TransportationBegunEvent transportationBegunEvent) {
-        previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
-        ChangeBehaviour(typeof(TransportationBegunEvent));
-        EventHandler<TransportationEndedEvent>.RegisterListener(OnTransportationEvent);
-        EventHandler<TransportationBegunEvent>.UnregisterListener(OnTransportationEvent);
-        
-    }
-    
-    private void OnTransportationEvent(TransportationEndedEvent transportationBegunEvent) {
-        ChangeBehaviour(previousCameraBehaviour);
-        EventHandler<TransportationEndedEvent>.UnregisterListener(OnTransportationEvent);
-        EventHandler<TransportationBegunEvent>.RegisterListener(OnTransportationEvent);
-    }
-
-    private void OnSettingsChanged(SaveSettingsEvent settingsEvent) {
-
-        oneHandModeIsActive = settingsEvent.settingsData.oneHandMode;
-        
-        Type currentBehaviourType = currentBaseCameraBehaviour.GetType();
-
-        if (pendingAccessibilityUpdate && currentBehaviourType != typeof(BaseCameraBehaviour) || currentBehaviourType != typeof(OneHandCameraBehaviour)) 
-            pendingAccessibilityUpdate = true;
-        
-    }
-
-    private void HandlePendingAccessibilityUpdate() {
-        if(oneHandModeIsActive)
-            ChangeBehaviour<OneHandCameraBehaviour>();
-        else
-            ChangeBehaviour<BaseCameraBehaviour>();
-    }
-
-
-    [ContextMenu("Auto-assign targets", false,0)]
-    public void AssignTargets() {
-        try {
-            pivotTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
-            character = GameObject.FindWithTag("PlayerModel").transform;
-        } catch (NullReferenceException e) {
-            Debug.Log("Couldn't find one or all targets, check if they have the right tag");
-            Debug.Log(e);
-        }
-    }
-    
-    /*------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     
     private async Task PlayTransition<T>(CameraTransition<T> cameraTransition) where T : TransitionData {
 
@@ -261,13 +185,59 @@ public class GameCamera : MonoBehaviour {
             EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
         }
     }
+    
+    private void LockInput(LockInputEvent lockInputEvent) => lockInput = lockInputEvent.lockInput;
 
+    private void ActivateMenuCamera(InGameMenuEvent inGameMenuEvent) {
+        if (inGameMenuEvent.Activate) {
+            previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
+            ChangeBehaviour<InGameMenuCameraBehaviour>();
+        }
+        else 
+            ChangeBehaviour(previousCameraBehaviour);
+    }
+
+    private void OnTransportationEvent(TransportationBegunEvent transportationBegunEvent) {
+        previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
+        ChangeBehaviour(typeof(TransportationBegunEvent));
+        EventHandler<TransportationEndedEvent>.RegisterListener(OnTransportationEvent);
+        EventHandler<TransportationBegunEvent>.UnregisterListener(OnTransportationEvent);
+        
+    }
+    
+    private void OnTransportationEvent(TransportationEndedEvent transportationBegunEvent) {
+        ChangeBehaviour(previousCameraBehaviour);
+        EventHandler<TransportationEndedEvent>.UnregisterListener(OnTransportationEvent);
+        EventHandler<TransportationBegunEvent>.RegisterListener(OnTransportationEvent);
+    }
+
+    private void OnSettingsChanged(SaveSettingsEvent settingsEvent) {
+        if (settingsEvent.settingsData.oneHandMode) {
+            previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
+            ChangeBehaviour<OneHandCameraBehaviour>();
+        }
+        else {
+            if(previousCameraBehaviour != null)
+                ChangeBehaviour(previousCameraBehaviour);
+            else
+                ChangeBehaviour<BaseCameraBehaviour>();
+        }
+    }
+    
+    [ContextMenu("Auto-assign targets", false,0)]
+    public void AssignTargets() {
+        try {
+            pivotTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
+            character = GameObject.FindWithTag("PlayerModel").transform;
+        } catch (NullReferenceException e) {
+            Debug.Log("Couldn't find one or all targets, check if they have the right tag");
+            Debug.Log(e);
+        }
+    }
+    
 }
 
 public struct CustomInput {
     public Vector2 aim;
     public Vector2 movement;
 }
-
-
-
