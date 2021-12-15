@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 
@@ -24,12 +25,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckDistance = 0.05f;
     private RaycastHit groundHitInfo;
     private float groundCheckBoxSize = 0.1f;
-
     #endregion
-
-    //Steering
-    //exposed for debug
-    [SerializeField]private bool usingCameraRotation;   
     
     //Input
     private float inputThreshold = 0.1f;
@@ -39,15 +35,18 @@ public class PlayerController : MonoBehaviour
     //Component references
     public PlayerPhysicsSplit physics { get; private set; }
     public Transform cameraTransform { get; private set; }
-    public ControllerInputReference inputReference;
     [SerializeField] public GameObject characterModel;
+    private ControllerInputReference inputReference;
+    private MetaPlayerController mpc;
 
     //Properties
     private float groundHitAngle;
 
     void Awake()
     {
-        Application.targetFrameRate = 250;
+        mpc = GetComponent<MetaPlayerController>();
+        inputReference = mpc.inputReference;
+        Application.targetFrameRate = 240;
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PlayerPhysicsSplit>();
         SecureDelegates();
@@ -56,10 +55,16 @@ public class PlayerController : MonoBehaviour
     {
         EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
         force = Vector3.zero;
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
     private void OnDisable()
     {
         EventHandler<SaveSettingsEvent>.UnregisterListener(OnSaveSettings);
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        cameraTransform = Camera.main.transform;
     }
 
     //This could instead load a delegate with a preffered input chain, but as of now that would require more code than the current solution. 
@@ -111,6 +116,7 @@ public class PlayerController : MonoBehaviour
 
     public void InputWalk(Vector3 inp)
     {
+
         inputDelegate(inp);      
 
         //to stop character rotation when input is 0

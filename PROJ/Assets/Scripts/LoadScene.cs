@@ -10,15 +10,8 @@ public class LoadScene : MonoBehaviour
 
     public void LoadNextScene()
     {
-        
         EventHandler<UnLoadSceneEvent>.FireEvent(new UnLoadSceneEvent(nextScene));
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        LoadNextScene();
-    }
-
-
+    
 
 }

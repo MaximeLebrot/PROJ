@@ -1,10 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
-using System;
 using System.Collections.Generic;
 
-public class Rebinding : MonoBehaviour
+public class Rebinding : MenuSettings
 {
     public ControllerInputReference inputReference;
     [SerializeField] private List<RebindUIButton> rebindButtons = new List<RebindUIButton>();
@@ -23,7 +21,7 @@ public class Rebinding : MonoBehaviour
     /// top one, and any others wont be accessible from here.
     /// </summary>
     /// <param name="action"></param>
-    public void RebindAction(InputAction action, int bindingIndex = 1)
+    public void RebindAction(InputAction action, int bindingIndex = 0)
     {
         compositeName = "";     
         
@@ -48,11 +46,13 @@ public class Rebinding : MonoBehaviour
         rebindingOperation?.Cancel();
 
         action.Disable();
-
+        /*Debug.Log("Expected control type: " + action.expectedControlType);*/
         rebindingOperation = action.PerformInteractiveRebinding(currentBindingIndex)
             .WithControlsExcluding("Mouse")
             .OnMatchWaitForAnother(0.1f)
+            .WithCancelingThrough("<Keyboard>/escape")
             .WithCancelingThrough("<Gamepad>/start")
+            
             .OnCancel(operation =>
             {
                 CleanUp();
@@ -93,6 +93,7 @@ public class Rebinding : MonoBehaviour
             })           
             .Start();
     }
+   
     private void CleanUp()
     {
         rebindingOperation.Dispose();
@@ -144,8 +145,21 @@ public class Rebinding : MonoBehaviour
     public void RebindButton(RebindUIButton calledFrom)
     {
         currentButton = calledFrom;
-        RebindAction(inputReference.inputMaster.asset.FindAction(calledFrom.action.action.name));    
+        RebindAction(inputReference.inputMaster.asset.FindAction(calledFrom.action.action.name));
+    }
+    public void RestoreDefault(RebindUIButton calledFrom)
+    {
+        currentButton = calledFrom;
+        InputAction action = inputReference.inputMaster.asset.FindAction(currentButton.action.action.name);
+
+        action.RemoveBindingOverride(0);
+        UpdateUIButton(action);
     }
 
-    
+
+    public override void SetMenuItems(SettingsData settingsData) {
+    }
+
+    public override void ApplyItemValues(ref SettingsData settingsData) {
+    }
 }
