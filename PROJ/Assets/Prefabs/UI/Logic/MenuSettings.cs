@@ -7,9 +7,13 @@ public abstract class MenuSettings : MonoBehaviour {
  
     protected Dictionary<int, UIMenuItem> menuOptions;
 
+    private FadeGroup fadeGroup;
+    
     public void Initialize() {
 
         gameObject.SetActive(true);
+        fadeGroup = GetComponent<FadeGroup>();
+        
         menuOptions = new Dictionary<int, UIMenuItem>();
 
         List<UIMenuItem> childOptions = GetComponentsInChildren<UIMenuItem>().ToList();
@@ -20,6 +24,10 @@ public abstract class MenuSettings : MonoBehaviour {
         SubMenuInitialize();
         
         gameObject.SetActive(false);
+    }
+
+    public async void ActivateMenu(FadeMode fadeMode) {
+        await fadeGroup.Fade(fadeMode);
     }
 
     protected virtual void SubMenuInitialize() {}

@@ -40,6 +40,8 @@ public class GameMenuController : MenuController {
             return;
         }
         
+        Debug.Log(subMenuDepth.Peek());
+        
         //Inside submenu
         SwitchSubMenu(subMenuDepth.Pop());
     }

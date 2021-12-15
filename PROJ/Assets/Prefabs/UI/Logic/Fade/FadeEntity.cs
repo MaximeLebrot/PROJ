@@ -47,6 +47,7 @@ public struct FadeEntity {
         CanvasGroup.alpha = 1;
         
         while (CanvasGroup.alpha > targetValue) {
+            Debug.Log(CanvasGroup.alpha);
             CanvasGroup.alpha -= Time.deltaTime / FadeTime;
             await Task.Yield();
         }

@@ -27,13 +27,12 @@ public class GameCamera : MonoBehaviour {
     private delegate void BehaviourQueue();
     private event BehaviourQueue behaviourQueue;
 
+    private bool oneHandModeIsActive;
+    
     private void Awake() {
         inputReference.Initialize();
         transitioner.Initialize();
         thisTransform = transform;
-        
-        //Nonononono
-
         
         behaviours.Add(typeof(PuzzleCameraBehaviour),  cameraBehaviours[2]);
         behaviours.Add(typeof(BaseCameraBehaviour),  cameraBehaviours[0]);
@@ -81,7 +80,7 @@ public class GameCamera : MonoBehaviour {
         EventHandler<StartPuzzleEvent>.RegisterListener(OnPuzzleStart);
         EventHandler<ExitPuzzleEvent>.RegisterListener(OnPuzzleExit);
         EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
-        EventHandler<PlayerStateChangeEvent>.RegisterListener(OnPlayerStateChange);
+        //EventHandler<PlayerStateChangeEvent>.RegisterListener(OnPlayerStateChange);
         EventHandler<CameraLookAndMoveToEvent>.RegisterListener(OnLookAndMove);
         EventHandler<LockInputEvent>.RegisterListener(LockInput);
         EventHandler<SaveSettingsEvent>.RegisterListener(UpdateSettings);
@@ -94,7 +93,7 @@ public class GameCamera : MonoBehaviour {
         EventHandler<StartPuzzleEvent>.UnregisterListener(OnPuzzleStart);
         EventHandler<ExitPuzzleEvent>.UnregisterListener(OnPuzzleExit);
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
-        EventHandler<PlayerStateChangeEvent>.UnregisterListener(OnPlayerStateChange);
+        //EventHandler<PlayerStateChangeEvent>.UnregisterListener(OnPlayerStateChange);
         EventHandler<CameraLookAndMoveToEvent>.UnregisterListener(OnLookAndMove);
         EventHandler<LockInputEvent>.UnregisterListener(LockInput);
         EventHandler<SaveSettingsEvent>.UnregisterListener(UpdateSettings);
@@ -115,9 +114,14 @@ public class GameCamera : MonoBehaviour {
         EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
     }
 
+    //Player no longer 
     private void OnPlayerStateChange(PlayerStateChangeEvent stateChangeEvent) {
-        if (behaviours.ContainsKey(stateChangeEvent.newState.GetType()))
-            ChangeBehaviour(stateChangeEvent.newState.GetType());
+        if (behaviours.ContainsKey(stateChangeEvent.newState.GetType())) {
+            Type newBehaviour = stateChangeEvent.newState.GetType();
+            if(oneHandModeIsActive)
+                ChangeBehaviour(stateChangeEvent.newState.GetType());
+        }
+            
     }
 
     private void OnPuzzleExit(ExitPuzzleEvent exitPuzzleEvent) {
@@ -131,11 +135,10 @@ public class GameCamera : MonoBehaviour {
 
     private void UpdateSettings(SaveSettingsEvent saveEvent) {
 
-        bool oneHandMode = saveEvent.settingsData.oneHandMode;
+        oneHandModeIsActive = saveEvent.settingsData.oneHandMode;
         
-        if(oneHandMode)
+        if (oneHandModeIsActive) 
             ChangeBehaviour<OneHandCameraBehaviour>();
-
     }
 
     private void OnPuzzleStart(StartPuzzleEvent startPuzzleEvent) {
