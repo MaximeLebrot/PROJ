@@ -132,10 +132,10 @@ public class GameCamera : MonoBehaviour {
     }
 
     private void OnPuzzleStart(StartPuzzleEvent startPuzzleEvent) {
-            
+            //Quick and dirty code that i dont even know if its correct?? /Martin
         if (currentBaseCameraBehaviour.GetType() == typeof(PuzzleCameraBehaviour))
         {
-
+            return;
         }
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
 
