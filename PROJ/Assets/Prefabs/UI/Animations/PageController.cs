@@ -25,8 +25,6 @@ public class PageController : MonoBehaviour {
                 menuSettings.Initialize();
                 pageObjects.Add(menuSettings);
             }
-                
-            
             
             transform.GetChild(i).gameObject.SetActive(false);
                 
@@ -40,14 +38,12 @@ public class PageController : MonoBehaviour {
 
         if (pageObjects.Contains(page)) {
 
-            if (currentActivePage != null) {
-                currentActivePage.FadeMenu(FadeMode.FadeOut);
-                currentActivePage.gameObject.SetActive(false);
-            }
+            if (currentActivePage != null)
+                currentActivePage.FadeMenu(FadeMode.FadeOut, () => currentActivePage.gameObject.SetActive(false));
             
             currentActivePage = page;
             currentActivePage.gameObject.SetActive(true);
-            currentActivePage.FadeMenu(FadeMode.FadeIn);
+            currentActivePage.FadeMenu(FadeMode.FadeIn, null);
         }
         
     }

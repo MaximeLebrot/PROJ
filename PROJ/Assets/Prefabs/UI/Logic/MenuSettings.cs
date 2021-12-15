@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -35,6 +36,7 @@ public abstract class MenuSettings : MonoBehaviour {
     public abstract void ApplyItemValues(ref SettingsData settingsData);
     protected UIMenuItem ExtractMenuItem(string menuName) => menuOptions[menuName.GetHashCode()];
     
-    public void FadeMenu(FadeMode fadeMode) => StartCoroutine(fadeGroup.Fade(fadeMode));
-    
+    public void FadeMenu(FadeMode fadeMode, Action callback) {
+        StartCoroutine(fadeGroup.Fade(fadeMode, callback));
+    }
 }

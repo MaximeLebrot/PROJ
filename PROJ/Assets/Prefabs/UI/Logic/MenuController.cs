@@ -35,5 +35,9 @@ public abstract class MenuController : MonoBehaviour {
         OnActivatePage?.Invoke(pageName);
         subMenuDepth.Push(pageName);
     }
+
+    protected void ActivateMenu(MenuSettings pageName) {
+        OnActivatePage?.Invoke(pageName);
+    }
     
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,7 @@ public class FadeGroup : MonoBehaviour {
     [Header("FADE IN occurs from index 0-n | FADE OUT occurs from index n-0")]
     [SerializeField] private List<FadeEntity> fadeOrder;
     
-    public IEnumerator Fade(FadeMode fadeMode) {
+    public IEnumerator Fade(FadeMode fadeMode, Action callback) {
         
         foreach (FadeEntity entity in fadeOrder) {
             
@@ -17,12 +18,14 @@ public class FadeGroup : MonoBehaviour {
                     break;
                 
                 case FadeMode.FadeOut:
-                    StartCoroutine(FadeIn(entity));
+                    StartCoroutine(FadeOut(entity));
                     break;
             }
             yield return new WaitForSeconds(entity.TimeUntilNextFade);
         }
-        
+
+        if(callback != null)
+            callback.Invoke();
     }
     
     private IEnumerator FadeIn(FadeEntity fadeEntity) {
@@ -41,7 +44,7 @@ public class FadeGroup : MonoBehaviour {
         
         fadeEntity.CanvasGroup.alpha = 1;
         
-        while (fadeEntity.CanvasGroup.alpha > (int)FadeMode.FadeIn) {
+        while (fadeEntity.CanvasGroup.alpha > (int)FadeMode.FadeOut) {
             fadeEntity.CanvasGroup.alpha -= Time.deltaTime / fadeEntity.FadeTime;
             yield return null;
         }
