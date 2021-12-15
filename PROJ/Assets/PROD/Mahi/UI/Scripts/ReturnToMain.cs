@@ -21,13 +21,7 @@ public class ReturnToMain : MonoBehaviour
     {
         inputMaster.Disable();
     }
-    private void Update()
-    {
-        if (inputMaster.UI.BackToMain.triggered)
-        {
-            ReturnToMainMenu();
-        }
-    }
+
 
     public void ReturnToMainMenu()
     {
