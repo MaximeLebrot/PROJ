@@ -76,24 +76,23 @@ public readonly struct CameraLookAtEvent : IEvent {
         this.delayWhenDone = delayWhenDone;
         this.rotationSpeed = rotationSpeed;
     }
-
 }
 
 public readonly struct CameraLookAndMoveToEvent : IEvent {
 
-    public readonly MoveToTransitionData moveToTransitionData;
-    public readonly LookAtTransitionData lookAtTransitionData;
-
     public readonly Vector3 endPosition;
     public readonly Quaternion endRotation;
-    
-    public CameraLookAndMoveToEvent(Vector3 endPosition, Quaternion endRotation, MoveToTransitionData moveToTransitionData, LookAtTransitionData lookAtTransitionData) {
+    public readonly float moveSpeed;
+    public readonly Vector3 offsetToTarget;
+    public readonly float rotationSpeed;
+
+    public CameraLookAndMoveToEvent(Vector3 endPosition, Quaternion endRotation, float moveSpeed, Vector3 offsetToTarget, float rotationSpeed) {
         this.endPosition = endPosition;
         this.endRotation = endRotation;
-        this.moveToTransitionData = moveToTransitionData;
-        this.lookAtTransitionData = lookAtTransitionData;
+        this.moveSpeed = moveSpeed;
+        this.offsetToTarget = offsetToTarget;
+        this.rotationSpeed = rotationSpeed;
     }
-
 }
 
 public class ClearPuzzleEvent : IEvent
@@ -132,7 +131,34 @@ public class UpdateHazardEvent : IEvent
     public bool reverse;
     public UpdateHazardEvent (bool isReverse) { reverse = isReverse; }
 }
-public class ResetHazardEvent : IEvent
-{
+public class ResetHazardEvent : IEvent{}
 
+public class UnLoadSceneEvent : IEvent 
+{
+    public string sceneToLoad;
+
+    public UnLoadSceneEvent(string scene) { sceneToLoad = scene; }
 }
+
+public class LoadSceneEvent : IEvent{}
+
+public class SetUpCameraEvent : IEvent
+{
+    public Transform followTarget;
+    public Transform shoulderPos;
+
+    public SetUpCameraEvent(Transform f, Transform s) { followTarget = f; shoulderPos = s; }
+}
+
+public class InGameMenuEvent : IEvent {
+
+    public readonly bool Activate;
+
+    public InGameMenuEvent(bool activate) => Activate = activate;
+}
+
+public class TransportationBegunEvent : IEvent {}
+public class TransportationEndedEvent : IEvent {}
+
+//Use for making the settings menu to fire a SaveSettingsData
+public class RequestSettingsEvent : IEvent {}

@@ -9,9 +9,9 @@ public class UnorderedSymbolPlacer : SymbolPlacer
     private List<PuzzleObject> instantiatedSymbolsClone;
 
     //Symbol placement
+    [SerializeField] private float panelSize = 2f;
     private float degreeOffset;
     private float startingOffset;
-    private float panelSize = 2f;
     private float panelPlacementDepthOffset = 0.1f;
 
     protected override void UnevenPlaceSymbols()

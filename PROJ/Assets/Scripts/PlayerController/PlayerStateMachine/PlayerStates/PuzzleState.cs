@@ -11,6 +11,7 @@ public class PuzzleState : PlayerState
     }
     public override void EnterState()
     {
+        EventHandler<ExitPuzzleEvent>.RegisterListener(ExitPuzzle);
         player.playerController3D.enabled = false;
         player.puzzleController.enabled = true;
         base.EnterState();
@@ -28,5 +29,10 @@ public class PuzzleState : PlayerState
     private void SetInput()
     {
         player.puzzleController.SetInput(player.inputReference.InputMaster.Movement.ReadValue<Vector2>());
+    }
+    public void ExitPuzzle(ExitPuzzleEvent eve)
+    {
+        EventHandler<ExitPuzzleEvent>.UnregisterListener(ExitPuzzle);
+        stateMachine.ChangeState<WalkState>();
     }
 }

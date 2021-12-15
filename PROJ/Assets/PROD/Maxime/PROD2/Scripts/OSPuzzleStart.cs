@@ -28,8 +28,8 @@ public class OSPuzzleStart : MonoBehaviour
     {
         EventHandler<ExitPuzzleEvent>.UnregisterListener(osPuzzle.ExitOSPuzzle);
         EventHandler<StartPuzzleEvent>.UnregisterListener(osPuzzle.StartOSPuzzle);
-        EventHandler<StartPuzzleEvent>.RegisterListener(player.ChangeStateToOSPuzzle);
-        EventHandler<ExitPuzzleEvent>.RegisterListener(player.ChangeStateToOSWalk);
+        EventHandler<StartPuzzleEvent>.UnregisterListener(player.ChangeStateToOSPuzzle);
+        EventHandler<ExitPuzzleEvent>.UnregisterListener(player.ChangeStateToOSWalk);
     }
 
     private void OnEventCalled(StartPuzzleEvent eve)

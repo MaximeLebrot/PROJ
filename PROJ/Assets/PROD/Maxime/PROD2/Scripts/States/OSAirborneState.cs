@@ -37,12 +37,12 @@ public class OSAirborneState : PlayerState
 
     private void LeaveAirborneState()
     {
-        player.physics.SetNormalGravity();
+        player.physics.RestoreGravity();
 
-        if (player.physics.velocity.magnitude < player.physics.SurfThreshold)
+        /*if (player.physics.velocity.magnitude < player.physics.SurfThreshold)
             stateMachine.ChangeState<OSWalkState>();
         else
-            stateMachine.ChangeState<OSGlideState>();
+            stateMachine.ChangeState<OSGlideState>();*/
 
     }
 }

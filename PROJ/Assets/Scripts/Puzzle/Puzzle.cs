@@ -35,6 +35,8 @@ public class Puzzle : MonoBehaviour
     public float NextPuzzleTimer { get; } = 2.5f;
     public void SetPlayer(Transform t) { player = t; grid.Player = player; }
 
+    private FMOD.Studio.EventInstance PuzzleSolved;
+
     void Awake()
     {
         symbolPlacer = GetComponent<SymbolPlacer>();
@@ -71,24 +73,42 @@ public class Puzzle : MonoBehaviour
         while(currentPuzzleInstance.IsSolved() && 
             currentPuzzleNum + 1 <= puzzleInstances.Count)
         {
-            Debug.Log("LOAD NEXT PUZZLE");
+            //Debug.Log("LOAD NEXT PUZZLE");
             NextPuzzle();
         }
 
     }
+
+    public void GoToNextPuzzle() { if (currentPuzzleNum+1 <= puzzleInstances.Count) { Debug.Log("Pushing to next puzzle"); NextPuzzle(); } }
 
     private void OnEnable()
     {
         EventHandler<ExitPuzzleEvent>.RegisterListener(OnExitPuzzle);
         EventHandler<ResetPuzzleEvent>.RegisterListener(OnResetPuzzle);
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
+        EventHandler<SaveSettingsEvent>.RegisterListener(ApplySettings);
     }
     private void OnDisable()
     {
         EventHandler<ExitPuzzleEvent>.UnregisterListener(OnExitPuzzle);
         EventHandler<ResetPuzzleEvent>.UnregisterListener(OnResetPuzzle);
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
+        EventHandler<SaveSettingsEvent>.UnregisterListener(ApplySettings);
     }
+
+    private void ApplySettings(SaveSettingsEvent obj)
+    {
+        showClearedSymbols = obj.settingsData.showClearedSymbols;
+
+        if(showClearedSymbols == false)
+        {
+            foreach(TranslationAndObject pair in translationsSorted)
+            {
+                pair.pObj.Activate(false);
+            }
+        }
+    }
+
     private void SetupPuzzleInstances()
     {
         foreach (PuzzleInstance pi in puzzleInstances)
@@ -114,11 +134,11 @@ public class Puzzle : MonoBehaviour
         solution = Translate();
         translations = translator.GetTranslations();
     }
+
     protected virtual void NextPuzzle()
     {
         symbolPlacer.UnloadSymbols();
         currentPuzzleInstance.DestroyHazards();
-        ResetClearanceVariables();
 
 
         if (particles != null)
@@ -142,6 +162,7 @@ public class Puzzle : MonoBehaviour
 
     private void CompletePuzzle()
     {
+        Debug.Log("Klar, exit event skickas");
         Invoke("CompleteGrid", 2);
         EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(masterPuzzleID), true));
         GetComponent<Collider>().enabled = false;
@@ -151,8 +172,6 @@ public class Puzzle : MonoBehaviour
     {
         grid.CompleteGrid();
     }
-
-   
 
     public void RemoveInput()
     {
@@ -190,7 +209,6 @@ public class Puzzle : MonoBehaviour
         return false;
     }
 
-
     private void OnTriggerExit(Collider other)
     {
         PuzzleInfo info = new PuzzleInfo(currentPuzzleInstance.GetPuzzleID());
@@ -198,8 +216,6 @@ public class Puzzle : MonoBehaviour
         GetComponentInChildren<PuzzleStarter>().ResetStarter();
 
     }
-
-
 
     public void StartPuzzle(StartPuzzleEvent eve)
     {
@@ -219,22 +235,16 @@ public class Puzzle : MonoBehaviour
 
     //Maybe return ID from current PuzzleInstance instead
     public int GetPuzzleID() { return currentPuzzleInstance.GetPuzzleID(); }
-
-
-    private void ResetClearanceVariables()
-    {
-
-    }
-
     
     protected List<bool> clearedSymbols = new List<bool>();
+    protected bool showClearedSymbols;
 
     public virtual void CheckIfClearedSymbol(string currentSolution) //currentSolution = what the player has drawn
     {
-        Debug.Log("CHECK");
+        if(showClearedSymbols == false)
+             return;
 
         int solutionOffset = 0;
-
         //Checks for empty solution
         if(currentSolution.Length > 0 == false)
         {
@@ -243,46 +253,28 @@ public class Puzzle : MonoBehaviour
                 pair.pObj.Activate(false);
             }
         }
-
         //goes through each index of strings in translations
         for (int i = 0; i < translations.Count; i++)
         {
-
             if (IsEqualRange(solutionOffset, translations[i].translation.Length, currentSolution, i))
             {
                 solutionOffset += translations[i].translation.Length;
-
                 translations[i].pObj.Activate(true);
             }
             else
             {
-                
                 translations[i].pObj.Activate(false);
             }
-
         }
-
-
-        //ApplyClearedSymbols();
-
     }
 
 
     private bool IsEqualRange(int offset, int length, string currentSolution, int translationIndex)
     {
-        //Debug.Log(length);
-
         if (offset + length > currentSolution.Length)
-        {
-            //Debug.Log("LENGTH IS WRONG");
             return false;
-        }
-
-        Debug.Log("input: " + currentSolution.Substring(offset, length) + " translation: " + translations[translationIndex].translation);
-        //Debug.Log("equal = " + currentSolution.Substring(offset, length).Equals(translations[translationIndex]));
 
         return currentSolution.Substring(offset, length).Equals(translations[translationIndex].translation);
-        
     }
 
     public void OnExitPuzzle(ExitPuzzleEvent eve)
@@ -316,7 +308,6 @@ public class Puzzle : MonoBehaviour
     {
         EventHandler<ResetPuzzleEvent>.UnregisterListener(OnResetPuzzle);
         registered = false;
-        Debug.Log("Reset puzzle called");
 
         symbolPlacer.UnloadSymbols();
         grid.ResetGrid();
@@ -327,7 +318,6 @@ public class Puzzle : MonoBehaviour
         if (registered)
             return;
 
-        Debug.Log("Registered listener to reset puzzle event");
         EventHandler<ResetPuzzleEvent>.RegisterListener(OnResetPuzzle);
         registered = true;
     }

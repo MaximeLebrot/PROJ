@@ -26,7 +26,6 @@ public class PuzzlePlayerController : MonoBehaviour
 
 
     //Input
-    private InputAction skipMove;
     private InputAction quitPuzzle;
     private Vector3 input;
     private float inputThreshold = 0.1f;
@@ -39,11 +38,6 @@ public class PuzzlePlayerController : MonoBehaviour
     {
         quitPuzzle = metaPlayerController.inputReference.InputMaster.ExitPuzzle;
         quitPuzzle.Enable();
-       
-        skipMove = metaPlayerController.inputReference.InputMaster.Interact;
-        skipMove.Enable();
-        metaPlayerController.inputReference.InputMaster.Interact.performed += OnSkipMove;
-
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
     }
     private void OnDisable()
@@ -54,10 +48,6 @@ public class PuzzlePlayerController : MonoBehaviour
     void Start()
     {
         physics = GetComponent<PlayerPhysicsSplit>();
-    }
-    private void OnSkipMove(InputAction.CallbackContext obj)
-    {
-        //EventHandler<UpdateHazardEvent>.FireEvent(new UpdateHazardEvent());
     }
     private void OnQuitPuzzle(InputAction.CallbackContext obj)
     {
@@ -103,8 +93,6 @@ public class PuzzlePlayerController : MonoBehaviour
 
     private void Decelerate()
     {
-        /*Debug.Log("Puzzle player controller decelerate");
-        force = -deceleration * physics.velocity.normalized;*/
         Vector3 projectedDeceleration = -physics.GetXZMovement() * deceleration;
         force += projectedDeceleration;
     }
@@ -116,8 +104,5 @@ public class PuzzlePlayerController : MonoBehaviour
 
     #endregion
 
-    public float GetMaxSpeed()
-    {
-        return maxSpeed;
-    }
+
 }

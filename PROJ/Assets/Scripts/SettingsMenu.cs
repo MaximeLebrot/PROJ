@@ -34,11 +34,21 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] private TextMeshProUGUI fieldOfViewSliderText;
     
     [SerializeField] private Slider brightness;
-    [SerializeField] private TextMeshProUGUI brightnessSliderText
-        ;
+    [SerializeField] private TextMeshProUGUI brightnessSliderText;
     [SerializeField] private TMP_Dropdown quality;
     //[SerializeField]private TMP_Dropdown resolution;
     [SerializeField] private Toggle fullscreen;
+
+    //Puzzle Settings
+    /*
+    [SerializeField] private Toggle currentNodeMarker;
+    [SerializeField] private Slider nodeSize;
+    [SerializeField] private TextMeshProUGUI nodeSizeText;
+    [SerializeField] private Slider lineSize;
+    [SerializeField] private TextMeshProUGUI lineSizeText;
+    [SerializeField] private Toggle showClearedSymbols;
+    [SerializeField] private Toggle easyPuzzleControls;
+    */
     #endregion
 
     private void Awake()
@@ -68,7 +78,19 @@ public class SettingsMenu : MonoBehaviour
         brightness.onValueChanged.AddListener(newValue => {
             brightness.value = newValue;
             brightnessSliderText.text = ((int)(newValue)).ToString();
-        });       
+        });
+
+        /*
+        nodeSize.onValueChanged.AddListener(newValue => {
+            nodeSize.value = newValue;
+            nodeSizeText.text = ((int)(newValue)).ToString();
+        });
+
+        lineSize.onValueChanged.AddListener(newValue => {
+            lineSize.value = newValue;
+            lineSizeText.text = ((int)(newValue)).ToString();
+        });
+        */
     }
     
     private void OnEnable()
@@ -128,7 +150,17 @@ public class SettingsMenu : MonoBehaviour
         userSettings.brightness = brightness.value;
         //quality = settings.Quality;
         //resolution  = settings.
-        userSettings.fullscreen = fullscreen.isOn;
+        //userSettings.fullscreen = fullscreen.isOn;
+
+
+        //PuzzleSettings
+        /*
+        userSettings.nodeSize = nodeSize.value;
+        userSettings.lineSize = lineSize.value;
+        userSettings.currentNodeMarker = currentNodeMarker.isOn;
+        userSettings.showClearedSymbols = showClearedSymbols.isOn;
+        userSettings.easyPuzzleControls = easyPuzzleControls.isOn;
+        */
     }
     private void SetValues(SettingsData settings)
     {
@@ -147,7 +179,16 @@ public class SettingsMenu : MonoBehaviour
         brightness.value = settings.brightness;
         //quality = settings.Quality;
         //resolution  = settings.
-        fullscreen.isOn = settings.fullscreen;
+        //fullscreen.isOn = settings.fullscreen;
+
+        //PuzzleSettings
+        /*
+        nodeSize.value = settings.nodeSize;
+        lineSize.value = settings.lineSize;
+        currentNodeMarker.isOn = settings.currentNodeMarker;
+        showClearedSymbols.isOn = settings.ShowClearedSymbols;
+        easyPuzzleControls.isOn = settings.easyPuzzleControls;
+        */
     }
 
 }
