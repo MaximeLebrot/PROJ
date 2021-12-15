@@ -15,17 +15,32 @@ public class AwayController : MonoBehaviour {
         
         EventHandler<StartPuzzleEvent>.RegisterListener(TurnAFKCheckOff);
         EventHandler<ExitPuzzleEvent>.RegisterListener(TurnAFKCheckOn);
+        EventHandler<InGameMenuEvent>.RegisterListener(TurnAFKCheckOffInMenu);
         
     }
 
     private void OnDisable() {
         EventHandler<StartPuzzleEvent>.UnregisterListener(TurnAFKCheckOff);
         EventHandler<ExitPuzzleEvent>.UnregisterListener(TurnAFKCheckOn);
+        EventHandler<InGameMenuEvent>.UnregisterListener(TurnAFKCheckOffInMenu);
     }
 
     private void Update() => inputChecker?.Invoke();
 
     private void TurnAFKCheckOff(StartPuzzleEvent e) => inputChecker = null;
+    
+    //Fyfan
+    private void TurnAFKCheckOffInMenu(InGameMenuEvent e) {
+        TurnAFKCheckOff(null);
+        EventHandler<InGameMenuEvent>.UnregisterListener(TurnAFKCheckOffInMenu);
+        EventHandler<InGameMenuEvent>.RegisterListener(TurnAFKCheckOnOutsideMenu);
+    }
+    private void TurnAFKCheckOnOutsideMenu(InGameMenuEvent e) {
+        TurnAFKCheckOn(null);
+        EventHandler<InGameMenuEvent>.UnregisterListener(TurnAFKCheckOnOutsideMenu);
+        EventHandler<InGameMenuEvent>.RegisterListener(TurnAFKCheckOffInMenu);
+    }
+
     private void TurnAFKCheckOn(ExitPuzzleEvent e) {
         timeSinceLastInput = 0;
         inputChecker = ReadInput;
