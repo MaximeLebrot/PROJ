@@ -76,15 +76,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "PlayPuzzleDescription",
-                    "type": "Button",
-                    "id": "6f538eeb-eea5-4722-a4d6-f64e0810bdbc",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -272,17 +263,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "REBINDTEST",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "d6582536-714d-450c-90d4-cd5fad31ade5",
-                    "path": "<Keyboard>/h",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "PlayPuzzleDescription",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -527,6 +507,74 @@
                     "processors": "",
                     "groups": "",
                     "action": "PuzzleTest",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Voice",
+            "id": "3339898d-3402-486f-bb28-63850224559a",
+            "actions": [
+                {
+                    "name": "TurnOffBoth",
+                    "type": "Button",
+                    "id": "3ab5b315-1735-4a36-8aef-b52e57e9320a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "TurnOnMouse",
+                    "type": "Button",
+                    "id": "c9d83b1c-aa24-4af7-8b35-43d9d26d66ea",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "TurnOnArmless",
+                    "type": "Button",
+                    "id": "00c55675-1a42-45e4-9dc2-2234688c538a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "7eec73cf-b2ed-4e4c-aa91-919c1b8eaa4d",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TurnOffBoth",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "648eed7e-3978-4a57-bbe5-b043bb414f44",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TurnOnMouse",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "930f0e55-3b6e-46e6-99aa-5f1723f69313",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TurnOnArmless",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
