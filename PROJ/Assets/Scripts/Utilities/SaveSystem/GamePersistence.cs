@@ -58,8 +58,7 @@ public class GamePersistence : MonoBehaviour
         {
             savesHolder.saves[saveName] = saveData;
         }
-
-        Debug.Log(saveName);
+        
         savesHolder.currentNrOfSaves++;
         var json = JsonUtility.ToJson(savesHolder);
         PlayerPrefs.SetString("SaveData", json);
@@ -209,7 +208,6 @@ public class GamePersistence : MonoBehaviour
     {
         var json = JsonUtility.ToJson(eve.settingsData);
         PlayerPrefs.SetString("SavedSettings", json);
-        Debug.Log("Settings Saved!");
     }
 
     #endregion

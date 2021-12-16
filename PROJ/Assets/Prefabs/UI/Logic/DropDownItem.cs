@@ -13,13 +13,11 @@ public class DropDownItem : UIMenuItem {
     }
 
     public override void SetValue(dynamic value) {
-        Debug.Log($"{this} changed");
         dropdownList.value = dropdownList.options.FindIndex(resolutionOption => resolutionOption.text.Equals(value.ToString()));
     }
     
   
     public override void OnValueChanged(Action action) {
-        Debug.Log($"{this} recieved a listener");
         dropdownList.onValueChanged.AddListener((e) => action.Invoke());
     }
 }
