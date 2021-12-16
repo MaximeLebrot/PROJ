@@ -11,7 +11,8 @@ public class OSPuzzle : MonoBehaviour
     public void StartOSPuzzle(StartPuzzleEvent eve)
     {
         if (player == null)
-            player = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<MetaPlayerController>();
+            player = GetComponent<MetaPlayerController>();
+            //player = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<MetaPlayerController>();
         //player.velocity = Vector3.zero
         player.ChangeStateToOSPuzzle(eve);
         SetUINodesActive(true);
@@ -26,7 +27,9 @@ public class OSPuzzle : MonoBehaviour
     private void Awake()
     {
         FindPuzzleUINodes();
-        //if (player == null)
+        SetUINodesActive(false);
+        if (player == null)
+            player = GetComponent<MetaPlayerController>();
         //player = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<MetaPlayerController>();
     }
 
