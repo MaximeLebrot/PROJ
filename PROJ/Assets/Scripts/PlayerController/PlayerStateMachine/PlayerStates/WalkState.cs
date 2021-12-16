@@ -15,8 +15,8 @@ public class WalkState : PlayerState
     }
     public override void EnterState()
     {
-        base.EnterState();
         player.inputReference.InputMaster.Sprint.performed += OnSprintActivate;
+        base.EnterState();
     }
     public override void RunUpdate()
     {
@@ -29,16 +29,16 @@ public class WalkState : PlayerState
     }
     public override void ExitState()
     {
-        base.ExitState();
         player.inputReference.InputMaster.Sprint.performed -= OnSprintActivate;
+        base.ExitState();
     }
     private void SetInput()
     {
-        Vector2 inp = player.inputReference.InputMaster.Movement.ReadValue<Vector2>();
         player.playerController3D.InputWalk(player.inputReference.InputMaster.Movement.ReadValue<Vector2>());
     }
     private void OnSprintActivate(InputAction.CallbackContext obj)
     {
+        Debug.Log("Walk state on sprint activate");
             stateMachine.ChangeState<SprintState>();
     }
 }

@@ -36,7 +36,7 @@ public class AirborneState : PlayerState
     }
     private void SetInput()
     {
-        player.playerController3D.InputWalk(player.inputReference.InputMaster.Movement.ReadValue<Vector2>());
+        player.playerController3D.InputAirborne(player.inputReference.InputMaster.Movement.ReadValue<Vector2>());
     }
 
     //No longer needed to differentiate between walk and glide, since glide is removed
@@ -51,9 +51,4 @@ public class AirborneState : PlayerState
             //Else if**, we probably want some other requirement to remain here, be it speed or glideable material/tag
     }
 
-
-    private void OnSprintActivate(InputAction.CallbackContext obj)
-    {
-        stateMachine.ChangeState<WalkState>();
-    }
 }

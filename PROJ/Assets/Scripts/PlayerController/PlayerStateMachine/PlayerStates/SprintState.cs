@@ -46,9 +46,9 @@ public class SprintState : PlayerState
     }
     public override void ExitState()
     {
+        UnloadInputs();   
         player.animator.SetTrigger("Walk");
         base.ExitState();
-        UnloadInputs();   
     }
     private void SetInput()
     {
