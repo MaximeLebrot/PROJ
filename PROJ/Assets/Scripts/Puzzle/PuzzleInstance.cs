@@ -15,7 +15,10 @@ public class PuzzleInstance : MonoBehaviour
     private bool currentState;
     private List<Hazard> instantiatedHazards = new List<Hazard>();
 
-    public AudioClip puzzleDescription;
+    public string puzzleDescription;
+
+    private FMOD.Studio.EventInstance puzzleDescriptionSound;
+
     public bool IsSolved() => currentState;
 
     private void Awake()
@@ -91,6 +94,10 @@ public class PuzzleInstance : MonoBehaviour
     internal void PlayDescription()
     {
         Debug.Log("Play Puzzle Sound");
+        puzzleDescriptionSound = FMODUnity.RuntimeManager.CreateInstance("event:/puzzleDescription/" + puzzleDescription);
+        puzzleDescriptionSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        puzzleDescriptionSound.start();
+        puzzleDescriptionSound.release();
         //play puzzleDescription;
     }
 }
