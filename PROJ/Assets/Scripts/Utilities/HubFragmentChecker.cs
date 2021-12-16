@@ -24,26 +24,28 @@ public class HubFragmentChecker : MonoBehaviour
     {
         PlayerFragments player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerFragments>();
 
-        if (player.DepositFragment("lava"))
+        Debug.Log(player.CheckForFragment("lava") + " yee maddafakka");
+
+        if (player.CheckForFragment("lava"))
         {
             deposits[2].InitializeFragment();
-            deposits[1].InitializeFragment();
-            deposits[0].InitializeFragment();
-            player.transform.position = lavaPos.position;
-            player.transform.rotation = lavaPos.rotation;
-        }
-        else if (player.DepositFragment("wind"))
-        {
             deposits[1].InitializeFragment();
             deposits[0].InitializeFragment();
             player.transform.position = windPos.position;
             player.transform.rotation = windPos.rotation;
         }
-        else if (player.DepositFragment("earth"))
+        else if (player.CheckForFragment("wind"))
         {
+            deposits[1].InitializeFragment();
             deposits[0].InitializeFragment();
             player.transform.position = earthPos.position;
             player.transform.rotation = earthPos.rotation;
+        }
+        else if (player.CheckForFragment("earth"))
+        {
+            deposits[0].InitializeFragment();
+            player.transform.position = startPos.position;
+            player.transform.rotation = startPos.rotation;
         }
         else
         {

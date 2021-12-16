@@ -12,6 +12,7 @@ public class OSPuzzle : MonoBehaviour
     {
         //player.velocity = Vector3.zero
         player.ChangeStateToOSPuzzle(eve);
+        FindPuzzleUINodes();
         UINodeParent.SetActive(true);
     }
 
@@ -25,23 +26,14 @@ public class OSPuzzle : MonoBehaviour
     {
         if (player == null)
             player = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<MetaPlayerController>();
-
-        FindPuzzleGridAndNodes();
     }
 
-    private void FindPuzzleGridAndNodes()
+    private void FindPuzzleUINodes()
     {
         UINodeParent = GameObject.FindGameObjectWithTag("OneSwitchCanvas");
         UINodes.AddRange(UINodeParent.GetComponentsInChildren<OSPuzzleNode>());
         for (int i = 0; i < UINodes.Count; i++)
             UINodes[i].Initialize(i);
-        if (player == null)
-            player = GameObject.FindGameObjectWithTag("Player").GetComponent<MetaPlayerController>();
-    }
-
-    private void Start()
-    {
-        UINodeParent.SetActive(false);
     }
 
     private void OnEnable()

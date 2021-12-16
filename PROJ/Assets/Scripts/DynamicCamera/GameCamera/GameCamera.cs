@@ -32,7 +32,7 @@ public class GameCamera : MonoBehaviour {
 
     private void Awake() {
         DontDestroyOnLoad(this);
-        AssignTargets();
+
 
         inputReference.Initialize();
         transitioner.Initialize();

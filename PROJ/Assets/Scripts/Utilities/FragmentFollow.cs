@@ -17,6 +17,7 @@ public class FragmentFollow : MonoBehaviour
 
     private void Start()
     {
+        DontDestroyOnLoad(this);
         scale /= 10;
         downScale = new Vector3(scale, scale, scale);    
     }
@@ -42,7 +43,6 @@ public class FragmentFollow : MonoBehaviour
 
     private void FragmentFollowPlayer()
     {
-        Debug.Log("FOLOOW");
         if (transform.localScale.x > fragmentSize)
             transform.localScale -= downScale;
         if (Vector3.Distance(fragmentOrb.position, fragmentHolder.position + Vector3.up * 1.5f) > 0.1f)

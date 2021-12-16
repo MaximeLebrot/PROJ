@@ -14,10 +14,12 @@ public class SoundEvent : MonoBehaviour
     }
     private void OnExitPuzzle(ExitPuzzleEvent eve)
     {
+        /*
         PuzzleSolved = FMODUnity.RuntimeManager.CreateInstance("event:/Game/PuzzleSolved");
         PuzzleSolved.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         PuzzleSolved.start();
         PuzzleSolved.release();
+        */
     }
 }
 
