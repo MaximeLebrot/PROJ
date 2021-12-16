@@ -47,8 +47,7 @@ public class GameMenuController : MenuController {
     }
 
     //Called from scene changer buttons (beta release) / Martin
-    public void SceneChangerCloseMenu()
-    {
+    public void SceneChangerCloseMenu() {
         CloseMenu();
         onBackInput = OpenMenu;
     }
