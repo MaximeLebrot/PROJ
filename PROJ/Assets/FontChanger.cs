@@ -4,17 +4,14 @@ using UnityEngine;
 
 public class FontChanger : MonoBehaviour {
 
-    private List<TextMeshProUGUI> textComponents;
+    [SerializeField] private List<TextMeshProUGUI> textComponents;
 
     private Dictionary<int, float> defaultFontSizes;
 
-    public void GatherAllTextComponents() {
+    public void Awake() {
 
         defaultFontSizes = new Dictionary<int, float>();
         
-        textComponents = new List<TextMeshProUGUI>();
-        textComponents.AddRange(GetComponentsInChildren<TextMeshProUGUI>());
-
         foreach (TextMeshProUGUI text in textComponents)
             defaultFontSizes.Add(text.GetInstanceID(), text.fontSize);
     }
@@ -23,5 +20,7 @@ public class FontChanger : MonoBehaviour {
         foreach (TextMeshProUGUI text in textComponents)
             text.fontSize = newFontSize;
     }
+    
+    
 
 }
