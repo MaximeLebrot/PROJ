@@ -35,8 +35,11 @@ public class Puzzle : MonoBehaviour
     public float NextPuzzleTimer { get; } = 2.5f;
     public void SetPlayer(Transform t) { player = t; grid.Player = player; }
 
-    private FMOD.Studio.EventInstance PuzzleSolved;
-
+    private FMOD.Studio.EventInstance PuzzleSolved; 
+    private FMOD.Studio.EventInstance CompletePuzzleSound;
+    private FMOD.Studio.EventInstance PuzzleExit;
+    private FMOD.Studio.EventInstance SectionSolved;
+    private FMOD.Studio.EventInstance SymbolClear;
     void Awake()
     {
         symbolPlacer = GetComponent<SymbolPlacer>();
@@ -140,6 +143,11 @@ public class Puzzle : MonoBehaviour
         symbolPlacer.UnloadSymbols();
         currentPuzzleInstance.DestroyHazards();
 
+        SectionSolved = FMODUnity.RuntimeManager.CreateInstance("event:/Game/Puzzle/SectionSolved");
+        SectionSolved.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        SectionSolved.start();
+        SectionSolved.release();
+
 
         if (particles != null)
             particles.Play();
@@ -171,6 +179,10 @@ public class Puzzle : MonoBehaviour
         Invoke("CompleteGrid", 2);
         EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(masterPuzzleID), true));
         GetComponent<Collider>().enabled = false;
+        PuzzleSolved = FMODUnity.RuntimeManager.CreateInstance("event:/Game/Puzzle/PuzzleSolved");
+        PuzzleSolved.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        PuzzleSolved.start();
+        PuzzleSolved.release();
     }
 
     private void CompleteGrid()
@@ -293,6 +305,10 @@ public class Puzzle : MonoBehaviour
                 if(eve.success == false)
                 {
                     ResetPuzzle();
+                    PuzzleExit = FMODUnity.RuntimeManager.CreateInstance("event:/Game/Puzzle/PuzzleExit");
+                    PuzzleExit.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+                    PuzzleExit.start();
+                    PuzzleExit.release();
                 }
                     
             }

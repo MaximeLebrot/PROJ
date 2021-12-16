@@ -69,7 +69,8 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         }
         else
         {
-            OSPuzzle osPuzzle = spe.info.puzzlePos.gameObject.GetComponent<OSPuzzle>();
+            //OSPuzzle osPuzzle = spe.info.puzzlePos.gameObject.GetComponent<OSPuzzle>();
+            OSPuzzle osPuzzle = GetComponent<OSPuzzle>();
             osPuzzle.enabled = true;
             osPuzzle.StartOSPuzzle(spe);
         }
@@ -117,8 +118,10 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     public void ActivateOneSwitch(SaveSettingsEvent eve)
     {
-        //Debug.Log("Activate One Switch");
-        oneSwitchMode = eve.settingsData.oneHandMode;
+        Debug.Log("Activate One Switch");
+        oneSwitchMode = eve.settingsData.oneSwitchMode;
+        OSPuzzle osPuzzle = GetComponent<OSPuzzle>();
+        osPuzzle.enabled = oneSwitchMode;
         if (oneSwitchMode)
         {
             stateMachine.ChangeState<OSSpinState>();

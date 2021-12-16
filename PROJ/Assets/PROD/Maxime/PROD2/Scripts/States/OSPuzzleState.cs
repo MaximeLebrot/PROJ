@@ -179,7 +179,10 @@ public class OSPuzzleState : PlayerState
         puzzleTransform = eve.info.puzzlePos;
         puzzleXZ.x = puzzleTransform.position.x;
         puzzleXZ.y = puzzleTransform.position.z;
-        puzzle = eve.info.puzzlePos.gameObject.GetComponent<OSPuzzle>();
+        //puzzle = eve.info.puzzlePos.gameObject.GetComponent<OSPuzzle>();
+        Debug.Log(player);
+        puzzle = GameObject.FindGameObjectWithTag("Player").GetComponent<OSPuzzle>();
+        //puzzle = player.GetComponent<OSPuzzle>();
     }
 
     private void OnEnable() => EventHandler<StartPuzzleEvent>.RegisterListener(GetPuzzleInfo);
