@@ -56,7 +56,7 @@ public class FragmentFollow : MonoBehaviour
         if (Vector3.Distance(fragmentOrb.position, fragmentDeposit.position) < 0.1f)
         {
             deposit = false;
-            Destroy(this, 5);
+            Destroy(gameObject, 4);
         }    
     }
 

@@ -117,7 +117,7 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     public void ActivateOneSwitch(SaveSettingsEvent eve)
     {
-        Debug.Log("Activate One Switch");
+        //Debug.Log("Activate One Switch");
         oneSwitchMode = eve.settingsData.oneHandMode;
         if (oneSwitchMode)
         {
