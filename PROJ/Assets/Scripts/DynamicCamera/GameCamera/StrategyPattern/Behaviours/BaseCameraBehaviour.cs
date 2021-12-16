@@ -1,4 +1,5 @@
 using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace NewCamera {
@@ -22,12 +23,7 @@ namespace NewCamera {
             this.characterModel = characterModel;
         }
 
-        public virtual void EnterBehaviour() {
-            previousRotation = pivotTarget.rotation;
-            pivotTarget.localRotation = Quaternion.Euler(0, 0, 0);
-        }
- 
-
+        public virtual void EnterBehaviour() {}
 
         public virtual Vector3 ExecuteMove(Vector3 calculatedOffset) {
             return Vector3.SmoothDamp(thisTransform.position, pivotTarget.position + calculatedOffset, ref referenceVelocity, behaviourValues.FollowSpeed);
@@ -53,21 +49,22 @@ namespace NewCamera {
         public virtual void ManipulatePivotTarget(CustomInput input) {
 
             Vector3 desiredRotation = previousRotation.eulerAngles;
-            
+
             if (input.aim != Vector2.zero) {
 
-                desiredRotation = pivotTarget.eulerAngles + (Vector3)input.aim;
+                desiredRotation = pivotTarget.localEulerAngles + (Vector3)input.aim;
 
                 desiredRotation = PreventCircleReset(desiredRotation);
 
                 desiredRotation.x = Mathf.Clamp(desiredRotation.x, behaviourValues.ClampValues.x, behaviourValues.ClampValues.y);
             }
             else {
-                desiredRotation = previousRotation.eulerAngles;
+                pivotTarget.localRotation = previousRotation;
+                return;
             }
             
-            pivotTarget.eulerAngles = desiredRotation;
-            previousRotation = pivotTarget.rotation;
+            pivotTarget.localEulerAngles = desiredRotation;
+            previousRotation = pivotTarget.localRotation;
         }
 
         protected T BehaviourData<T>() where T : BehaviourData => behaviourValues as T;
@@ -79,6 +76,11 @@ namespace NewCamera {
                 input.y -= 360;
 
             return input;
+        }
+        
+        public void ResetRotation() {
+            previousRotation = characterModel.rotation;
+            pivotTarget.localRotation = previousRotation;
         }
     }
 }
