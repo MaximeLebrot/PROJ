@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Windows.Speech;
 using UnityEngine.UI;
 
-public class VoiceMovement : MonoBehaviour
+public class VoiceMovementMouse : MonoBehaviour
 {
     private KeywordRecognizer keywordRecognizer;
     private Dictionary<string, Action> actions = new Dictionary<string, Action>();
@@ -46,6 +46,8 @@ public class VoiceMovement : MonoBehaviour
         actions.Add("right", Right);
         actions.Add("left", Left);
         actions.Add("stop", Stop);
+
+        actions.Add("cancel", Stop);
 
         mpc = GetComponent<PlayerController>();
         x = Animator.StringToHash("speed");
@@ -171,13 +173,22 @@ public class VoiceMovement : MonoBehaviour
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(OnStartPuzzle);
         EventHandler<ExitPuzzleEvent>.RegisterListener(OnExitPuzzle);
+
+        keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
+        keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
+        keywordRecognizer.Start();
+
     }
     private void OnDisable()
     {
+
         EventHandler<StartPuzzleEvent>.UnregisterListener(OnStartPuzzle);
         EventHandler<ExitPuzzleEvent>.RegisterListener(OnExitPuzzle);
+        keywordRecognizer.Dispose();
+        Debug.Log("Stopped");
 
     }
+
 }
 
 
