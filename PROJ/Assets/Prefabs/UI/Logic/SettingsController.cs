@@ -12,9 +12,6 @@ public class SettingsController : MonoBehaviour {
 
    
     private void Awake() {
-        foreach (MenuSettings menuSettings in settingObjects)
-            menuSettings.Initialize();
-        
         LoadSavedSettings();
         EventHandler<RequestSettingsEvent>.RegisterListener(SendOutUserSettingsData);
     }
