@@ -23,6 +23,7 @@ public class Logbook : MonoBehaviour
         leftTurnButton.SetActive(false);
         for (int i = 0; i < tabsLeft.Length; i++)
             CloseTab(i);
+        CloseEverything();
         if (pages[pageNr].activeInHierarchy == false)
             pages[0].SetActive(true);
     }
