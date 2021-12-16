@@ -51,6 +51,10 @@ public class HubFragmentChecker : MonoBehaviour
         {
             player.transform.position = startPos.position;
             player.transform.rotation = startPos.rotation;
-        } 
+        }
+
+        GameObject solver = GameObject.FindGameObjectWithTag("Solver");
+        solver.SetActive(false);
+        solver.SetActive(true);
     }
 }
