@@ -5,7 +5,7 @@ using UnityEngine;
 public class SceneStarter : MonoBehaviour
 {
     [SerializeField] private Transform startPos;
-    void Awake()
+    void Start()
     {
         Transform player = GameObject.FindGameObjectWithTag("Player").transform;
         player.transform.position = startPos.position;

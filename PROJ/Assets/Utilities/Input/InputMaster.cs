@@ -533,6 +533,74 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Voice"",
+            ""id"": ""3339898d-3402-486f-bb28-63850224559a"",
+            ""actions"": [
+                {
+                    ""name"": ""TurnOffBoth"",
+                    ""type"": ""Button"",
+                    ""id"": ""3ab5b315-1735-4a36-8aef-b52e57e9320a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TurnOnMouse"",
+                    ""type"": ""Button"",
+                    ""id"": ""c9d83b1c-aa24-4af7-8b35-43d9d26d66ea"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TurnOnArmless"",
+                    ""type"": ""Button"",
+                    ""id"": ""00c55675-1a42-45e4-9dc2-2234688c538a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""7eec73cf-b2ed-4e4c-aa91-919c1b8eaa4d"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TurnOffBoth"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""648eed7e-3978-4a57-bbe5-b043bb414f44"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TurnOnMouse"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""930f0e55-3b6e-46e6-99aa-5f1723f69313"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TurnOnArmless"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -592,6 +660,11 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         m_OneSwitch = asset.FindActionMap("OneSwitch", throwIfNotFound: true);
         m_OneSwitch_OnlyButton = m_OneSwitch.FindAction("OnlyButton", throwIfNotFound: true);
         m_OneSwitch_PuzzleTest = m_OneSwitch.FindAction("PuzzleTest", throwIfNotFound: true);
+        // Voice
+        m_Voice = asset.FindActionMap("Voice", throwIfNotFound: true);
+        m_Voice_TurnOffBoth = m_Voice.FindAction("TurnOffBoth", throwIfNotFound: true);
+        m_Voice_TurnOnMouse = m_Voice.FindAction("TurnOnMouse", throwIfNotFound: true);
+        m_Voice_TurnOnArmless = m_Voice.FindAction("TurnOnArmless", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -899,6 +972,55 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         }
     }
     public OneSwitchActions @OneSwitch => new OneSwitchActions(this);
+
+    // Voice
+    private readonly InputActionMap m_Voice;
+    private IVoiceActions m_VoiceActionsCallbackInterface;
+    private readonly InputAction m_Voice_TurnOffBoth;
+    private readonly InputAction m_Voice_TurnOnMouse;
+    private readonly InputAction m_Voice_TurnOnArmless;
+    public struct VoiceActions
+    {
+        private @InputMaster m_Wrapper;
+        public VoiceActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
+        public InputAction @TurnOffBoth => m_Wrapper.m_Voice_TurnOffBoth;
+        public InputAction @TurnOnMouse => m_Wrapper.m_Voice_TurnOnMouse;
+        public InputAction @TurnOnArmless => m_Wrapper.m_Voice_TurnOnArmless;
+        public InputActionMap Get() { return m_Wrapper.m_Voice; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(VoiceActions set) { return set.Get(); }
+        public void SetCallbacks(IVoiceActions instance)
+        {
+            if (m_Wrapper.m_VoiceActionsCallbackInterface != null)
+            {
+                @TurnOffBoth.started -= m_Wrapper.m_VoiceActionsCallbackInterface.OnTurnOffBoth;
+                @TurnOffBoth.performed -= m_Wrapper.m_VoiceActionsCallbackInterface.OnTurnOffBoth;
+                @TurnOffBoth.canceled -= m_Wrapper.m_VoiceActionsCallbackInterface.OnTurnOffBoth;
+                @TurnOnMouse.started -= m_Wrapper.m_VoiceActionsCallbackInterface.OnTurnOnMouse;
+                @TurnOnMouse.performed -= m_Wrapper.m_VoiceActionsCallbackInterface.OnTurnOnMouse;
+                @TurnOnMouse.canceled -= m_Wrapper.m_VoiceActionsCallbackInterface.OnTurnOnMouse;
+                @TurnOnArmless.started -= m_Wrapper.m_VoiceActionsCallbackInterface.OnTurnOnArmless;
+                @TurnOnArmless.performed -= m_Wrapper.m_VoiceActionsCallbackInterface.OnTurnOnArmless;
+                @TurnOnArmless.canceled -= m_Wrapper.m_VoiceActionsCallbackInterface.OnTurnOnArmless;
+            }
+            m_Wrapper.m_VoiceActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @TurnOffBoth.started += instance.OnTurnOffBoth;
+                @TurnOffBoth.performed += instance.OnTurnOffBoth;
+                @TurnOffBoth.canceled += instance.OnTurnOffBoth;
+                @TurnOnMouse.started += instance.OnTurnOnMouse;
+                @TurnOnMouse.performed += instance.OnTurnOnMouse;
+                @TurnOnMouse.canceled += instance.OnTurnOnMouse;
+                @TurnOnArmless.started += instance.OnTurnOnArmless;
+                @TurnOnArmless.performed += instance.OnTurnOnArmless;
+                @TurnOnArmless.canceled += instance.OnTurnOnArmless;
+            }
+        }
+    }
+    public VoiceActions @Voice => new VoiceActions(this);
     private int m_StndKBMSchemeIndex = -1;
     public InputControlScheme StndKBMScheme
     {
@@ -947,5 +1069,11 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     {
         void OnOnlyButton(InputAction.CallbackContext context);
         void OnPuzzleTest(InputAction.CallbackContext context);
+    }
+    public interface IVoiceActions
+    {
+        void OnTurnOffBoth(InputAction.CallbackContext context);
+        void OnTurnOnMouse(InputAction.CallbackContext context);
+        void OnTurnOnArmless(InputAction.CallbackContext context);
     }
 }
