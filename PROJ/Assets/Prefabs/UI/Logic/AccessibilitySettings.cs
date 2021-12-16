@@ -15,7 +15,8 @@ public class AccessibilitySettings : MenuSettings {
     }
     
     public override void ApplyItemValues(ref SettingsData settingsData) {
-        settingsData.fontSize = int.Parse(menuOptions[ExtractMenuItem("ChangeFontSize").ID].GetValue());
+        
+        settingsData.fontSize = menuOptions[ExtractMenuItem("ChangeFontSize").ID].GetValue();
         settingsData.dyslexiaFont = menuOptions[ExtractMenuItem("Use_DyslexiaFont").ID].GetValue();
         settingsData.highContrastMode = menuOptions[ExtractMenuItem("Use_HighContrastMode").ID].GetValue();
         settingsData.blindMode = menuOptions[ExtractMenuItem("BlindMode").ID].GetValue();

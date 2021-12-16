@@ -19,10 +19,4 @@ public abstract class UIMenuItem : MonoBehaviour {
     public abstract void SetValue(dynamic value);
 
     
-    
-    /// <summary>
-    /// Allows for adding listeners to the UIItem. Works with lambdas.
-    /// </summary>
-    /// <param name="action"></param>
-    public abstract void OnValueChanged(Action action);
 }
