@@ -98,6 +98,15 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PlayPuzzleDescription"",
+                    ""type"": ""Button"",
+                    ""id"": ""2422ded7-0332-4209-a175-fa19cdf3d693"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -285,6 +294,17 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""REBINDTEST"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""482499f4-dd1b-4512-b7dc-8b49237886ed"",
+                    ""path"": ""<Keyboard>/h"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayPuzzleDescription"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -643,6 +663,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         m_Player_Menu = m_Player.FindAction("Menu", throwIfNotFound: true);
         m_Player_ContrastMode = m_Player.FindAction("ContrastMode", throwIfNotFound: true);
         m_Player_REBINDTEST = m_Player.FindAction("REBINDTEST", throwIfNotFound: true);
+        m_Player_PlayPuzzleDescription = m_Player.FindAction("PlayPuzzleDescription", throwIfNotFound: true);
         // PuzzleDEBUGGER
         m_PuzzleDEBUGGER = asset.FindActionMap("PuzzleDEBUGGER", throwIfNotFound: true);
         m_PuzzleDEBUGGER_calculatesolution = m_PuzzleDEBUGGER.FindAction("calculate solution", throwIfNotFound: true);
@@ -732,6 +753,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Menu;
     private readonly InputAction m_Player_ContrastMode;
     private readonly InputAction m_Player_REBINDTEST;
+    private readonly InputAction m_Player_PlayPuzzleDescription;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -744,6 +766,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         public InputAction @Menu => m_Wrapper.m_Player_Menu;
         public InputAction @ContrastMode => m_Wrapper.m_Player_ContrastMode;
         public InputAction @REBINDTEST => m_Wrapper.m_Player_REBINDTEST;
+        public InputAction @PlayPuzzleDescription => m_Wrapper.m_Player_PlayPuzzleDescription;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -777,6 +800,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @REBINDTEST.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnREBINDTEST;
                 @REBINDTEST.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnREBINDTEST;
                 @REBINDTEST.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnREBINDTEST;
+                @PlayPuzzleDescription.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlayPuzzleDescription;
+                @PlayPuzzleDescription.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlayPuzzleDescription;
+                @PlayPuzzleDescription.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlayPuzzleDescription;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -805,6 +831,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @REBINDTEST.started += instance.OnREBINDTEST;
                 @REBINDTEST.performed += instance.OnREBINDTEST;
                 @REBINDTEST.canceled += instance.OnREBINDTEST;
+                @PlayPuzzleDescription.started += instance.OnPlayPuzzleDescription;
+                @PlayPuzzleDescription.performed += instance.OnPlayPuzzleDescription;
+                @PlayPuzzleDescription.canceled += instance.OnPlayPuzzleDescription;
             }
         }
     }
@@ -1049,6 +1078,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         void OnMenu(InputAction.CallbackContext context);
         void OnContrastMode(InputAction.CallbackContext context);
         void OnREBINDTEST(InputAction.CallbackContext context);
+        void OnPlayPuzzleDescription(InputAction.CallbackContext context);
     }
     public interface IPuzzleDEBUGGERActions
     {

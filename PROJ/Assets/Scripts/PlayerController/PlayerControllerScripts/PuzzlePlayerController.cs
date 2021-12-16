@@ -40,12 +40,16 @@ public class PuzzlePlayerController : MonoBehaviour
         quitPuzzle = metaPlayerController.inputReference.InputMaster.ExitPuzzle;
         quitPuzzle.Enable();
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
+        metaPlayerController.inputReference.InputMaster.PlayPuzzleDescription.performed += OnPlayPuzzleDescription;
         EventHandler<InGameMenuEvent>.RegisterListener(DisableInputWhenInGameMenu);
     }
+
+    
 
     private void OnDisable()
     {
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle;
+        metaPlayerController.inputReference.InputMaster.PlayPuzzleDescription.performed -= OnPlayPuzzleDescription;
         quitPuzzle.Disable();
     }
     void Start()
@@ -69,7 +73,13 @@ public class PuzzlePlayerController : MonoBehaviour
         EventHandler<InGameMenuEvent>.UnregisterListener(EnableInput);
         EventHandler<InGameMenuEvent>.RegisterListener(DisableInputWhenInGameMenu);
     }
-    
+
+    private void OnPlayPuzzleDescription(InputAction.CallbackContext obj)
+    {
+        if(PuzzleTransform != null)
+            PuzzleTransform.GetComponent<Puzzle>().PlayPuzzleDescription();
+    }
+
     //NOTE! Currently not safe for very low FPS
     private void FixedUpdate()
     {
