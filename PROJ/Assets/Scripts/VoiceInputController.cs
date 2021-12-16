@@ -5,6 +5,7 @@ using UnityEngine;
 public class VoiceInputController : MonoBehaviour
 {
     private InputMaster inputMaster;
+    private GameObject ArmlessCamera;
 
     void Awake()
     {
