@@ -257,6 +257,10 @@ public class PuzzleGrid : MonoBehaviour {
 
     private void CreateNewLine(Node node)
     {
+
+        if (currentLine == null)
+            return;
+
         if(lineRenderers.Count > 0)
             lineRenderers.Peek().ErasableLine(false);
 
