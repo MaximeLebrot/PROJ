@@ -26,28 +26,55 @@ public class VoiceMovementMouse : MonoBehaviour
     {
         actions.Add("forward", Forward);
         actions.Add("up", Forward);
+        actions.Add("straight", Forward);
+        actions.Add("walk", Forward);
+        actions.Add("go", Forward);
 
         actions.Add("diagonal right up", DiagonalRightUp);
         actions.Add("diagonal up right", DiagonalRightUp);
+        actions.Add("up right", DiagonalRightUp);
+        actions.Add("right up", DiagonalRightUp);
+        actions.Add("forward right", DiagonalRightUp);
+        actions.Add("right forward", DiagonalRightUp);
+        actions.Add("diagonal right left", DiagonalRightUp);
+        actions.Add("diagonal right forward", DiagonalRightUp);
 
         actions.Add("diagonal left up", DiagonalLeftUp);
-        actions.Add("diagonal up left", DiagonalLeftUp); 
+        actions.Add("diagonal up left", DiagonalLeftUp);
+        actions.Add("left up", DiagonalLeftUp);
+        actions.Add("up left", DiagonalLeftUp);
+        actions.Add("forward left", DiagonalLeftUp);
+        actions.Add("left forward", DiagonalLeftUp);
+        actions.Add("diagonal forward left", DiagonalLeftUp);
+        actions.Add("diagonal left forward", DiagonalLeftUp);
 
         actions.Add("diagonal right down", DiagonalRightDown);
+        actions.Add("diagonal down right", DiagonalRightDown);
+        actions.Add("right down", DiagonalRightDown);
+        actions.Add("down right", DiagonalRightDown);
+        actions.Add("right down", DiagonalRightDown);
+        actions.Add("diagonal down right", DiagonalRightDown);
         actions.Add("diagonal down right", DiagonalRightDown);
 
         actions.Add("diagonal left down", DiagonalLeftDown);
         actions.Add("diagonal down left", DiagonalLeftDown);
-
+        actions.Add("left down", DiagonalLeftDown);
+        actions.Add("down left", DiagonalLeftDown);
+        actions.Add("left down", DiagonalLeftDown);
+        actions.Add("diagonal down left", DiagonalLeftDown);
+        actions.Add("diagonal down left", DiagonalLeftDown);
 
         actions.Add("down", Down);
         actions.Add("back", Down);
 
         actions.Add("right", Right);
         actions.Add("left", Left);
-        actions.Add("stop", Stop);
 
+        actions.Add("stop", Stop);
         actions.Add("cancel", Stop);
+        actions.Add("halt", Stop);
+        actions.Add("chill", Stop);
+
 
         mpc = GetComponent<PlayerController>();
         x = Animator.StringToHash("speed");
