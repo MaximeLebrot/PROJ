@@ -19,6 +19,9 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     
     [SerializeField] float decelerationValueForCoroutine = 5;
     public ControllerInputReference inputReference;
+
+    public bool oneSwitchMode = false;
+
     private void Awake()
     {
         //Must listen even when script is disabled, so unregister cannot be called in "OnDisable"
@@ -39,10 +42,12 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     private void OnEnable()
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
+        EventHandler<SaveSettingsEvent>.RegisterListener(ActivateOneSwitch);
     }
     private void OnDisable()
     {
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
+        EventHandler<SaveSettingsEvent>.UnregisterListener(ActivateOneSwitch);
     }
 
     //TEMPORARY
@@ -56,7 +61,14 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         puzzleController.CurrentPuzzleID = spe.info.ID;
         puzzleController.PuzzleTransform = spe.info.puzzlePos;
         playerController3D.ResetCharacterModel();
-        stateMachine.ChangeState<PuzzleState>();
+        if (!oneSwitchMode)
+            stateMachine.ChangeState<PuzzleState>();
+        else
+        {
+            OSPuzzle osPuzzle = spe.info.puzzlePos.gameObject.GetComponent<OSPuzzle>();
+            osPuzzle.enabled = true;
+            osPuzzle.StartOSPuzzle(spe);
+        }
     }
 
 
@@ -91,9 +103,17 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     public void ChangeStateToOSWalk(ExitPuzzleEvent eve) => stateMachine.ChangeState<OSWalkState>();
 
+    public void ActivateOneSwitch(SaveSettingsEvent eve)
+    {
+        oneSwitchMode = eve.settingsData.oneHandMode;
+        if (oneSwitchMode)
+            stateMachine.ChangeState<OSSpinState>();
+        else
+            stateMachine.ChangeState<WalkState>();
+    }
+    
     private void Update()
     {
-        
         stateMachine.RunUpdate();
     }
 

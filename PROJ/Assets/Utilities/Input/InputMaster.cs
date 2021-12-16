@@ -98,6 +98,15 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Logbook"",
+                    ""type"": ""Button"",
+                    ""id"": ""99ed9d4b-2753-4ce2-b846-460ff0bee2e6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -285,6 +294,17 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""REBINDTEST"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9786d0e5-5abe-414a-9d51-0247ef8567e7"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Logbook"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -601,6 +621,76 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Logbook"",
+            ""id"": ""b0c65628-56a9-4247-b372-d4006d67b54f"",
+            ""actions"": [
+                {
+                    ""name"": ""TurnLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""478617bc-251a-4875-8ca0-de4d455ac834"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TurnRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""02ca3cfe-6cf6-47cf-817c-a94bc22d87c6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""240e6abe-2778-4172-95d7-21ff00390bd6"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TurnLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""73f98d82-4e24-4c8b-947f-bd2705255d56"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TurnLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""61b5e01d-7422-4bb4-83a7-33fbd75cae7f"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TurnRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dc0432ec-72e4-4c30-909d-5ba9f55b381d"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TurnRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -643,6 +733,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         m_Player_Menu = m_Player.FindAction("Menu", throwIfNotFound: true);
         m_Player_ContrastMode = m_Player.FindAction("ContrastMode", throwIfNotFound: true);
         m_Player_REBINDTEST = m_Player.FindAction("REBINDTEST", throwIfNotFound: true);
+        m_Player_Logbook = m_Player.FindAction("Logbook", throwIfNotFound: true);
         // PuzzleDEBUGGER
         m_PuzzleDEBUGGER = asset.FindActionMap("PuzzleDEBUGGER", throwIfNotFound: true);
         m_PuzzleDEBUGGER_calculatesolution = m_PuzzleDEBUGGER.FindAction("calculate solution", throwIfNotFound: true);
@@ -665,6 +756,10 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         m_Voice_TurnOffBoth = m_Voice.FindAction("TurnOffBoth", throwIfNotFound: true);
         m_Voice_TurnOnMouse = m_Voice.FindAction("TurnOnMouse", throwIfNotFound: true);
         m_Voice_TurnOnArmless = m_Voice.FindAction("TurnOnArmless", throwIfNotFound: true);
+        // Logbook
+        m_Logbook = asset.FindActionMap("Logbook", throwIfNotFound: true);
+        m_Logbook_TurnLeft = m_Logbook.FindAction("TurnLeft", throwIfNotFound: true);
+        m_Logbook_TurnRight = m_Logbook.FindAction("TurnRight", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -732,6 +827,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Menu;
     private readonly InputAction m_Player_ContrastMode;
     private readonly InputAction m_Player_REBINDTEST;
+    private readonly InputAction m_Player_Logbook;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -744,6 +840,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         public InputAction @Menu => m_Wrapper.m_Player_Menu;
         public InputAction @ContrastMode => m_Wrapper.m_Player_ContrastMode;
         public InputAction @REBINDTEST => m_Wrapper.m_Player_REBINDTEST;
+        public InputAction @Logbook => m_Wrapper.m_Player_Logbook;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -777,6 +874,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @REBINDTEST.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnREBINDTEST;
                 @REBINDTEST.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnREBINDTEST;
                 @REBINDTEST.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnREBINDTEST;
+                @Logbook.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLogbook;
+                @Logbook.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLogbook;
+                @Logbook.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLogbook;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -805,6 +905,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @REBINDTEST.started += instance.OnREBINDTEST;
                 @REBINDTEST.performed += instance.OnREBINDTEST;
                 @REBINDTEST.canceled += instance.OnREBINDTEST;
+                @Logbook.started += instance.OnLogbook;
+                @Logbook.performed += instance.OnLogbook;
+                @Logbook.canceled += instance.OnLogbook;
             }
         }
     }
@@ -1021,6 +1124,47 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         }
     }
     public VoiceActions @Voice => new VoiceActions(this);
+
+    // Logbook
+    private readonly InputActionMap m_Logbook;
+    private ILogbookActions m_LogbookActionsCallbackInterface;
+    private readonly InputAction m_Logbook_TurnLeft;
+    private readonly InputAction m_Logbook_TurnRight;
+    public struct LogbookActions
+    {
+        private @InputMaster m_Wrapper;
+        public LogbookActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
+        public InputAction @TurnLeft => m_Wrapper.m_Logbook_TurnLeft;
+        public InputAction @TurnRight => m_Wrapper.m_Logbook_TurnRight;
+        public InputActionMap Get() { return m_Wrapper.m_Logbook; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(LogbookActions set) { return set.Get(); }
+        public void SetCallbacks(ILogbookActions instance)
+        {
+            if (m_Wrapper.m_LogbookActionsCallbackInterface != null)
+            {
+                @TurnLeft.started -= m_Wrapper.m_LogbookActionsCallbackInterface.OnTurnLeft;
+                @TurnLeft.performed -= m_Wrapper.m_LogbookActionsCallbackInterface.OnTurnLeft;
+                @TurnLeft.canceled -= m_Wrapper.m_LogbookActionsCallbackInterface.OnTurnLeft;
+                @TurnRight.started -= m_Wrapper.m_LogbookActionsCallbackInterface.OnTurnRight;
+                @TurnRight.performed -= m_Wrapper.m_LogbookActionsCallbackInterface.OnTurnRight;
+                @TurnRight.canceled -= m_Wrapper.m_LogbookActionsCallbackInterface.OnTurnRight;
+            }
+            m_Wrapper.m_LogbookActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @TurnLeft.started += instance.OnTurnLeft;
+                @TurnLeft.performed += instance.OnTurnLeft;
+                @TurnLeft.canceled += instance.OnTurnLeft;
+                @TurnRight.started += instance.OnTurnRight;
+                @TurnRight.performed += instance.OnTurnRight;
+                @TurnRight.canceled += instance.OnTurnRight;
+            }
+        }
+    }
+    public LogbookActions @Logbook => new LogbookActions(this);
     private int m_StndKBMSchemeIndex = -1;
     public InputControlScheme StndKBMScheme
     {
@@ -1049,6 +1193,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         void OnMenu(InputAction.CallbackContext context);
         void OnContrastMode(InputAction.CallbackContext context);
         void OnREBINDTEST(InputAction.CallbackContext context);
+        void OnLogbook(InputAction.CallbackContext context);
     }
     public interface IPuzzleDEBUGGERActions
     {
@@ -1075,5 +1220,10 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         void OnTurnOffBoth(InputAction.CallbackContext context);
         void OnTurnOnMouse(InputAction.CallbackContext context);
         void OnTurnOnArmless(InputAction.CallbackContext context);
+    }
+    public interface ILogbookActions
+    {
+        void OnTurnLeft(InputAction.CallbackContext context);
+        void OnTurnRight(InputAction.CallbackContext context);
     }
 }

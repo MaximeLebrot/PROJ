@@ -157,7 +157,7 @@ public class OSPuzzleState : PlayerState
     private void HandleExitState()
     {
         base.ExitState();
-        Debug.Log("PuzzleStateExit");
+        Debug.Log("OS Puzzle State Exit");
         player.playerController3D.enabled = true;
         player.puzzleController.enabled = false;
     }
@@ -165,7 +165,7 @@ public class OSPuzzleState : PlayerState
     private void HandleStateEntry()
     {
         base.EnterState();
-        Debug.Log("Puzzle state");
+        Debug.Log("OS Puzzle state");
         time = 1f - speed;
         timer = time;
         realignPlayer = true;

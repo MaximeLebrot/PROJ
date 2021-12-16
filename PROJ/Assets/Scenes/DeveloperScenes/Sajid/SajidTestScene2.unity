@@ -128,7 +128,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2521014961975019472, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
   m_PrefabInstance: {fileID: 1931682430}
   m_PrefabAsset: {fileID: 0}
---- !u!43 &288165462
+--- !u!43 &363615302
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -963,7 +963,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1369965157
 GameObject:
@@ -1123,6 +1123,49 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7143848a98783d4e96901616195f12e, type: 3}
+--- !u!1 &1576558675
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1576558677}
+  - component: {fileID: 1576558676}
+  m_Layer: 0
+  m_Name: OniCollisionWorld
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1576558676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576558675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d02d25c24c8574316883c920912e4fdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1576558677
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576558675}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!850595691 &1593482864
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -1389,10 +1432,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 840916313, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1745557385747978412, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -1400,54 +1439,6 @@ PrefabInstance:
     - target: {fileID: 1745557385792471093, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2699565741464113534, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_Radius
-      value: 0.06
-      objectReference: {fileID: 0}
-    - target: {fileID: 2699565741464113534, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2699565741464113534, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_Center.z
-      value: -0.09
-      objectReference: {fileID: 0}
-    - target: {fileID: 2699565742139454974, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_Radius
-      value: 0.06
-      objectReference: {fileID: 0}
-    - target: {fileID: 2699565742139454974, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_Center.z
-      value: -0.09
-      objectReference: {fileID: 0}
-    - target: {fileID: 2699565742372643322, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2909148505868353726, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_Height
-      value: 0.69
-      objectReference: {fileID: 0}
-    - target: {fileID: 2909148505868353726, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_Radius
-      value: 0.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 2909148505868353726, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2909148507410483782, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_Height
-      value: 0.69
-      objectReference: {fileID: 0}
-    - target: {fileID: 2909148507410483782, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_Radius
-      value: 0.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 2909148507410483782, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7633219187445847137, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
       propertyPath: m_RootOrder
@@ -1497,165 +1488,19 @@ PrefabInstance:
       propertyPath: m_Name
       value: 'Player_3Dec '
       objectReference: {fileID: 0}
-    - target: {fileID: 7965016139684172271, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: parameters.maxDepenetration
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965016139684172271, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: parameters.shockPropagation
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965016139684172271, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: distanceConstraintParameters.SORFactor
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965016139684172271, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: parameters.continuousCollisionDetection
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965016140092118011, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: _drag
-      value: 0.025
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965016140092118011, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: _lift
-      value: 0.025
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965016140092118011, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: _stretchingScale
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965016140092118011, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: _distanceConstraintsEnabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7965016140092118012, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965016140329745904, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965016140329745933, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965016140661529547, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_Damping
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965016140661529547, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_RandomAcceleration.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965016140661529547, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_RandomAcceleration.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965016140661529547, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_RandomAcceleration.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965016140661529547, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_ExternalAcceleration.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965016140661529547, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_ExternalAcceleration.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965016140661529547, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_ExternalAcceleration.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965016141448533394, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_Damping
-      value: 0.49
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965016141448533394, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_WorldVelocityScale
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 7965016141448533394, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-      propertyPath: m_WorldAccelerationScale
-      value: 0.05
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 363615302}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
---- !u!1 &2013938571
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2013938573}
-  - component: {fileID: 2013938572}
-  m_Layer: 0
-  m_Name: OniCollisionWorld
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2013938572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2013938571}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d02d25c24c8574316883c920912e4fdb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &2013938573
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2013938571}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 13
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2016636931 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7633219187445847144, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-  m_PrefabInstance: {fileID: 1931682430}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2016636932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2016636931}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47295b50e30863f42b7d76ed3a77ca3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 2016636936}
---- !u!95 &2016636936 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 7633219187445847150, guid: 414c5fcd4736664428f0fbd6ec0edfe9, type: 3}
-  m_PrefabInstance: {fileID: 1931682430}
-  m_PrefabAsset: {fileID: 0}
 --- !u!43 &2139709284
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh74016
+  m_Name: pb_Mesh34306
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1920,6 +1765,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b13653734636c2a438782ec4917610f9, type: 2}
   decelerationValueForCoroutine: 5
   inputReference: {fileID: 11400000, guid: 54398b8fed501aa41813fa11036bc179, type: 2}
+  oneSwitchMode: 0
   storedVelocity: {x: 0, y: 0, z: 0}
 --- !u!136 &3963703703503501539
 CapsuleCollider:
