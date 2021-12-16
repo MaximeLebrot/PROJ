@@ -50,4 +50,11 @@ public class GameMenuController : MenuController {
         backdrop.SetActive(activateComponents);
         EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(activateComponents));
     }
+
+    //Called from scene changer buttons (beta release) / Martin
+    public void SceneChangerCloseMenu()
+    {
+        CloseMenu();
+        onBackInput = OpenMenu;
+    }
 }

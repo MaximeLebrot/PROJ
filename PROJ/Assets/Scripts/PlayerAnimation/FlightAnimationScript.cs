@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 public class FlightAnimationScript : MonoBehaviour
 {
     private Animator jumpAnimator;
-    public Animator playerAnimator;
 
     private MetaPlayerController mpc;
     private new Transform transform;
@@ -83,7 +82,7 @@ public class FlightAnimationScript : MonoBehaviour
         }
 
         if(flight) 
-            playerAnimator.SetLayerWeight(2, time);
+            mpc.animator.SetLayerWeight(2, time);
 
     }
 

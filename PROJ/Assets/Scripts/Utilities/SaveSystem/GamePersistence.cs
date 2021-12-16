@@ -208,7 +208,6 @@ public class GamePersistence : MonoBehaviour
     {
         var json = JsonUtility.ToJson(eve.settingsData);
         PlayerPrefs.SetString("SavedSettings", json);
-        Debug.Log("Settings Saved!");
     }
 
     #endregion
