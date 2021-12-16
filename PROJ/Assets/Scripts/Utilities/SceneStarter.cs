@@ -11,6 +11,10 @@ public class SceneStarter : MonoBehaviour
         player.transform.position = startPos.position;
         player.transform.rotation = startPos.rotation;
         player.GetComponent<PlayerController>().ResetCharacterModel();
+
+
+        Camera.main.transform.rotation = startPos.rotation;
+        Camera.main.transform.position = startPos.position;
     }
 
 
