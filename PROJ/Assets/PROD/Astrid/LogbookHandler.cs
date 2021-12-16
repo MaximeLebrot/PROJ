@@ -50,7 +50,18 @@ public class LogbookHandler : MonoBehaviour
                 isOpen = true;
             }
         }
-        // Change page with keys
+        if (isOpen)
+        {
+            // Change page with keys
+            if (inputMaster.Logbook.TurnLeft.triggered)
+            {
+                TurnPageLeft();
+            }
+            if (inputMaster.Logbook.TurnRight.triggered)
+            {
+                TurnPageRight();
+            }
+        }
     }
 
     public void TurnPageLeft()

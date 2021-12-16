@@ -31,6 +31,8 @@ public class Logbook : MonoBehaviour
     // <-- brain stupid and don't understand left vs right
     public void TurnPageLeft()
     {
+        if (pageNr == 0)
+            return;
         pageNr--;
         CloseEverything();
         pages[pageNr].SetActive(true);
@@ -49,6 +51,8 @@ public class Logbook : MonoBehaviour
     // -->
     public void TurnPageRight()
     {
+        if (pageNr == pages.Length - 1)
+            return;
         pageNr++;
         CloseEverything();
         pages[pageNr].SetActive(true);
