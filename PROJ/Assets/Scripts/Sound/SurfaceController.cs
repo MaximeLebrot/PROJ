@@ -16,7 +16,8 @@ public class SurfaceController : MonoBehaviour
     private FMOD.Studio.EventInstance BowDraw;
     private FMOD.Studio.EventInstance PlayerAttack;
     private FMOD.Studio.EventInstance BowShot;
-    private FMOD.Studio.EventInstance PlayerAttackStrong;
+    private FMOD.Studio.EventInstance PlayerAttackStrong; 
+    private FMOD.Studio.EventInstance StoneBridgeSpawn;
 
     private void Update()
     {
@@ -254,6 +255,14 @@ public class SurfaceController : MonoBehaviour
         PlayerAttackStrong.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         PlayerAttackStrong.start();
         PlayerAttackStrong.release();
+
+    }
+    public void PlayStoneBridgeSpawn()
+    {
+        StoneBridgeSpawn = FMODUnity.RuntimeManager.CreateInstance("event:/Environment/Soft Magic/StoneBridgeSpawn");
+        StoneBridgeSpawn.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        StoneBridgeSpawn.start();
+        StoneBridgeSpawn.release();
 
     }
 
