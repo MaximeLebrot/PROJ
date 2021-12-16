@@ -256,7 +256,7 @@ public class GameCamera : MonoBehaviour {
     public void AssignTargets() {
         try {
             pivotTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
-            character = GameObject.FindObjectOfType<MetaPlayerController>().transform;
+            character = FindObjectOfType<MetaPlayerController>().transform;
         }
         catch (NullReferenceException e) {
             Debug.Log(e);
