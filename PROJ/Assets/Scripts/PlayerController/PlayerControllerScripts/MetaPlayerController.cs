@@ -42,10 +42,12 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     private void OnEnable()
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
+        EventHandler<SaveSettingsEvent>.RegisterListener(ActivateOneSwitch);
     }
     private void OnDisable()
     {
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
+        EventHandler<SaveSettingsEvent>.UnregisterListener(ActivateOneSwitch);
     }
 
     //TEMPORARY
@@ -101,10 +103,10 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     public void ChangeStateToOSWalk(ExitPuzzleEvent eve) => stateMachine.ChangeState<OSWalkState>();
 
-    public void ActivateOneSwitch(bool activate)
+    public void ActivateOneSwitch(SaveSettingsEvent eve)
     {
-        oneSwitchMode = activate;
-        if (activate)
+        oneSwitchMode = eve.settingsData.oneHandMode;
+        if (oneSwitchMode)
             stateMachine.ChangeState<OSSpinState>();
         else
             stateMachine.ChangeState<WalkState>();
@@ -112,10 +114,6 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     
     private void Update()
     {
-        if (inputReference.inputMaster.OneSwitch.PuzzleTest.triggered)
-        {
-            ActivateOneSwitch(!oneSwitchMode);
-        }
         stateMachine.RunUpdate();
     }
 
