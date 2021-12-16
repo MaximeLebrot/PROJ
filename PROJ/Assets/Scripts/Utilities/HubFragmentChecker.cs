@@ -24,8 +24,6 @@ public class HubFragmentChecker : MonoBehaviour
     {
         PlayerFragments player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerFragments>();
 
-        Debug.Log(player.CheckForFragment("lava") + " yee maddafakka");
-
         if (player.CheckForFragment("lava"))
         {
             //deposits[2].InitializeFragment();

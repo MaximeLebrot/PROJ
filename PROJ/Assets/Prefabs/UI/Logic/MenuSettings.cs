@@ -31,7 +31,7 @@ public abstract class MenuSettings : MonoBehaviour {
         
         SubMenuInitialize();
 
-        fontChanger.GatherAllTextComponents();
+        //fontChanger.GatherAllTextComponents();
         
         gameObject.SetActive(false);
     }
