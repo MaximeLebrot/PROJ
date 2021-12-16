@@ -42,12 +42,12 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     private void OnEnable()
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
-        EventHandler<SaveSettingsEvent>.RegisterListener(ActivateOneSwitch);
+        EventHandler<SaveSettingsEvent>.RegisterListener(HandleOneSwitchSetting);
     }
     private void OnDisable()
     {
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
-        EventHandler<SaveSettingsEvent>.UnregisterListener(ActivateOneSwitch);
+        EventHandler<SaveSettingsEvent>.UnregisterListener(HandleOneSwitchSetting);
     }
 
     //TEMPORARY
@@ -116,9 +116,9 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         stateMachine.ChangeState<OSWalkState>();
     }
 
-    public void ActivateOneSwitch(SaveSettingsEvent eve)
+    public void HandleOneSwitchSetting(SaveSettingsEvent eve)
     {
-        Debug.Log("Activate One Switch");
+        Debug.Log("One Switch is :" + eve.settingsData.oneSwitchMode);
         oneSwitchMode = eve.settingsData.oneSwitchMode;
         OSPuzzle osPuzzle = GetComponent<OSPuzzle>();
         osPuzzle.enabled = oneSwitchMode;
