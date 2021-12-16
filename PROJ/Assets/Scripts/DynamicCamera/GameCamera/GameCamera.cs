@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using NewCamera;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class GameCamera : MonoBehaviour {
     
@@ -33,10 +35,13 @@ public class GameCamera : MonoBehaviour {
     private void Awake() {
         DontDestroyOnLoad(this);
 
+        
 
         inputReference.Initialize();
         transitioner.Initialize();
         thisTransform = transform;
+
+     
         
         behaviours.Add(typeof(PuzzleCameraBehaviour),  cameraBehaviours[2]);
         behaviours.Add(typeof(BaseCameraBehaviour),  cameraBehaviours[0]);
@@ -44,6 +49,7 @@ public class GameCamera : MonoBehaviour {
         behaviours.Add(typeof(OneHandCameraBehaviour),  cameraBehaviours[3]);
         behaviours.Add(typeof(InGameMenuCameraBehaviour),  cameraBehaviours[4]);
         behaviours.Add(typeof(TransportationBegunEvent),  cameraBehaviours[5]);
+        behaviours.Add(typeof(SceneChangeCameraBehaviour),  cameraBehaviours[6]);
         
         ChangeBehaviour<BaseCameraBehaviour>();
         
@@ -88,6 +94,7 @@ public class GameCamera : MonoBehaviour {
         EventHandler<InGameMenuEvent>.RegisterListener(ActivateMenuCamera);
         EventHandler<TransportationBegunEvent>.RegisterListener(OnTransportationEvent);
         EventHandler<SaveSettingsEvent>.RegisterListener(OnSettingsChanged);
+        EventHandler<SceneChangeEvent>.RegisterListener(OnSceneChange);
     }
 
     private void OnDisable() {
@@ -99,6 +106,7 @@ public class GameCamera : MonoBehaviour {
         EventHandler<InGameMenuEvent>.UnregisterListener(ActivateMenuCamera);
         EventHandler<TransportationBegunEvent>.UnregisterListener(OnTransportationEvent);
         EventHandler<SaveSettingsEvent>.UnregisterListener(OnSettingsChanged);
+        EventHandler<SceneChangeEvent>.UnregisterListener(OnSceneChange);
     }
 
     private void OnAwayFromKeyboard(AwayFromKeyboardEvent e) {
@@ -167,6 +175,7 @@ public class GameCamera : MonoBehaviour {
             currentBaseCameraBehaviour = behaviours[type];
             currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
             currentBaseCameraBehaviour.EnterBehaviour();
+            behaviourQueue = ExecuteCameraBehaviour;
         }
     }
     
@@ -175,7 +184,7 @@ public class GameCamera : MonoBehaviour {
     private void ActivateMenuCamera(InGameMenuEvent inGameMenuEvent) {
         if (inGameMenuEvent.Activate) {
             previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
-            ChangeBehaviour<InGameMenuCameraBehaviour>();
+            behaviourQueue = null;
         }
         else 
             ChangeBehaviour(previousCameraBehaviour);
@@ -227,8 +236,23 @@ public class GameCamera : MonoBehaviour {
         else
             ChangeBehaviour<BaseCameraBehaviour>();
     }
+    
+    private void OnSceneChange(SceneChangeEvent onSettingsChanged) {
 
-        [ContextMenu("Auto-assign targets", false,0)]
+        previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
+        EventHandler<SceneLoadedEvent>.RegisterListener(OnSceneLoaded);
+        EventHandler<SceneChangeEvent>.UnregisterListener(OnSceneChange);
+        ChangeBehaviour<SceneChangeCameraBehaviour>();
+        
+    }
+
+    private void OnSceneLoaded(SceneLoadedEvent sceneLoadedEvent) {
+        ChangeBehaviour(previousCameraBehaviour);
+        EventHandler<SceneChangeEvent>.RegisterListener(OnSceneChange);
+        EventHandler<SceneLoadedEvent>.UnregisterListener(OnSceneLoaded);
+    }
+
+    [ContextMenu("Auto-assign targets", false,0)]
     public void AssignTargets() {
         try {
             pivotTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
@@ -275,6 +299,8 @@ public class GameCamera : MonoBehaviour {
         }
     }
 
+    
+    
 
 }
 

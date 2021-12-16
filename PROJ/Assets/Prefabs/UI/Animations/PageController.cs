@@ -92,5 +92,6 @@ public class PageController : MonoBehaviour {
         DisableCurrentPage();
         gameMenuController.SceneChangerCloseMenu();
         subMenuDepth.Clear();
+        EventHandler<SceneChangeEvent>.FireEvent(null);
     }
 }
