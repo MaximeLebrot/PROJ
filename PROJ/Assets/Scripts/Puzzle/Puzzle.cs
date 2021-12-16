@@ -160,7 +160,7 @@ public class Puzzle : MonoBehaviour
         currentPuzzleInstance = puzzleInstances[currentPuzzleNum];
     }
 
-    private void PlayPuzzleDescription()
+    public void PlayPuzzleDescription()
     {
         currentPuzzleInstance.PlayDescription();
     }
@@ -284,6 +284,8 @@ public class Puzzle : MonoBehaviour
 
     public void OnExitPuzzle(ExitPuzzleEvent eve)
     {
+        GetComponent<SphereCollider>().enabled = false;
+
         if (eve.success != true)
         {
             if (eve.info.ID == currentPuzzleInstance.GetPuzzleID())

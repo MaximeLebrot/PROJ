@@ -107,6 +107,15 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PlayPuzzleDescription"",
+                    ""type"": ""Button"",
+                    ""id"": ""20fd9c5f-517a-49fd-ac51-7e41cc3ae566"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -305,6 +314,17 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Logbook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8c417337-a0bf-4205-9808-f89f11c7d121"",
+                    ""path"": ""<Keyboard>/h"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayPuzzleDescription"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -734,6 +754,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         m_Player_ContrastMode = m_Player.FindAction("ContrastMode", throwIfNotFound: true);
         m_Player_REBINDTEST = m_Player.FindAction("REBINDTEST", throwIfNotFound: true);
         m_Player_Logbook = m_Player.FindAction("Logbook", throwIfNotFound: true);
+        m_Player_PlayPuzzleDescription = m_Player.FindAction("PlayPuzzleDescription", throwIfNotFound: true);
         // PuzzleDEBUGGER
         m_PuzzleDEBUGGER = asset.FindActionMap("PuzzleDEBUGGER", throwIfNotFound: true);
         m_PuzzleDEBUGGER_calculatesolution = m_PuzzleDEBUGGER.FindAction("calculate solution", throwIfNotFound: true);
@@ -828,6 +849,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ContrastMode;
     private readonly InputAction m_Player_REBINDTEST;
     private readonly InputAction m_Player_Logbook;
+    private readonly InputAction m_Player_PlayPuzzleDescription;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -841,6 +863,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         public InputAction @ContrastMode => m_Wrapper.m_Player_ContrastMode;
         public InputAction @REBINDTEST => m_Wrapper.m_Player_REBINDTEST;
         public InputAction @Logbook => m_Wrapper.m_Player_Logbook;
+        public InputAction @PlayPuzzleDescription => m_Wrapper.m_Player_PlayPuzzleDescription;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -877,6 +900,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @Logbook.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLogbook;
                 @Logbook.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLogbook;
                 @Logbook.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLogbook;
+                @PlayPuzzleDescription.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlayPuzzleDescription;
+                @PlayPuzzleDescription.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlayPuzzleDescription;
+                @PlayPuzzleDescription.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlayPuzzleDescription;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -908,6 +934,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @Logbook.started += instance.OnLogbook;
                 @Logbook.performed += instance.OnLogbook;
                 @Logbook.canceled += instance.OnLogbook;
+                @PlayPuzzleDescription.started += instance.OnPlayPuzzleDescription;
+                @PlayPuzzleDescription.performed += instance.OnPlayPuzzleDescription;
+                @PlayPuzzleDescription.canceled += instance.OnPlayPuzzleDescription;
             }
         }
     }
@@ -1194,6 +1223,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         void OnContrastMode(InputAction.CallbackContext context);
         void OnREBINDTEST(InputAction.CallbackContext context);
         void OnLogbook(InputAction.CallbackContext context);
+        void OnPlayPuzzleDescription(InputAction.CallbackContext context);
     }
     public interface IPuzzleDEBUGGERActions
     {

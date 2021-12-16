@@ -30,6 +30,7 @@ public class SettingsData
     public bool highContrastMode;
     public bool dyslexiaFont;
     public bool oneHandMode;
+    public bool oneSwitchMode;
     public bool bigNodes;
     public bool currentNodeMarker; 
     public bool showClearedSymbols; //CHECK

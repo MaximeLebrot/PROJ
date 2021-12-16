@@ -8,6 +8,10 @@ public class AnyKey : MonoBehaviour {
     
     private void Awake() {
         canvasGroup = GetComponent<CanvasGroup>();
+        
+    }
+
+    private void Start() {
         controllerInputReference.InputMaster.Anykey.performed += (e) => gameObject.SetActive(false);
     }
     

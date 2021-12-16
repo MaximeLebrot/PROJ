@@ -6,17 +6,12 @@ public class GameMenuController : MenuController {
     [SerializeField] private MenuSettings menuButtons;
     [SerializeField] private GameObject backdrop;
     
-    private System.Action onBackInput;
-    
     protected override void Initialize() {
         DontDestroyOnLoad(this);
         onBackInput = OpenMenu;
-        controllerInputReference.InputMaster.Menu.performed += HandleBackInput;
         ActivateComponents(false);
     }
-
-    private void HandleBackInput(InputAction.CallbackContext e) => onBackInput?.Invoke();
-
+    
     private void OpenMenu() {
         
         ActivateComponents(true);
@@ -52,8 +47,7 @@ public class GameMenuController : MenuController {
     }
 
     //Called from scene changer buttons (beta release) / Martin
-    public void SceneChangerCloseMenu()
-    {
+    public void SceneChangerCloseMenu() {
         CloseMenu();
         onBackInput = OpenMenu;
     }

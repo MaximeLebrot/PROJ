@@ -115,10 +115,11 @@ public class GameCamera : MonoBehaviour {
     
 
     private void OnPuzzleExit(ExitPuzzleEvent exitPuzzleEvent) {
-        if (exitPuzzleEvent.success) {
+
+        //if (exitPuzzleEvent.success) {
             EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
             ChangeBehaviour(previousCameraBehaviour);
-        }
+        //}
     }
 
     private void OnLookAndMove(CameraLookAndMoveToEvent lookAndMove) {

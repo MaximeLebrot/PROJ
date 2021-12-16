@@ -14,13 +14,12 @@ public class PageController : MonoBehaviour {
     
     private readonly Stack<MenuSettings> subMenuDepth = new Stack<MenuSettings>();
 
-    //Förlåt Jonathan /martin
+    //Fï¿½rlï¿½t Jonathan /martin
     GameMenuController gameMenuController;
 
     private void Awake() {
         gameMenuController = GetComponentInParent<GameMenuController>();
-
-
+        
         pageObjects = new HashSet<MenuSettings>();
         
         for (int i = 0; i < transform.childCount; i++) {
