@@ -43,4 +43,9 @@ public class LoadScreen : MonoBehaviour
         SceneManager.LoadScene(sceneToLoad);
     }
 
+    //Triggered from animation event
+    public void SceneLoaded() {
+        EventHandler<SceneLoadedEvent>.FireEvent(null);
+    }
+
 }
