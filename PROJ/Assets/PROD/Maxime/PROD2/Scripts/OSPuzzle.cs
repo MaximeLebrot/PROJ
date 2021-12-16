@@ -30,10 +30,16 @@ public class OSPuzzle : MonoBehaviour
 
     private void FindPuzzleUINodes()
     {
-        UINodeParent = GameObject.FindGameObjectWithTag("OneSwitchCanvas");
-        UINodes.AddRange(UINodeParent.GetComponentsInChildren<OSPuzzleNode>());
-        for (int i = 0; i < UINodes.Count; i++)
-            UINodes[i].Initialize(i);
+        if (UINodeParent == null)
+        {
+            UINodeParent = GameObject.FindGameObjectWithTag("OneSwitchCanvas");
+            if (UINodes.Count == 0)
+            {
+                UINodes.AddRange(UINodeParent.GetComponentsInChildren<OSPuzzleNode>());
+                for (int i = 0; i < UINodes.Count; i++)
+                    UINodes[i].Initialize(i);
+            }
+        }
     }
 
     private void OnEnable()

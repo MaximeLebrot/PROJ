@@ -21,7 +21,7 @@ public class OSPuzzleState : PlayerState
 
     private Transform puzzleTransform;
 
-    private Vector3 offset = new Vector3(0, 1.1f, 0);
+    private Vector3 offset = new Vector3(0, 1.5f, 0);
     private Vector3 currentWalkingDirection = new Vector3();
     private Vector2 playerXZ = new Vector2();
     private Vector2 puzzleXZ = new Vector2();
