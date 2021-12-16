@@ -38,8 +38,7 @@ public abstract class MenuSettings : MonoBehaviour {
         
         gameObject.SetActive(false);
     }
-
-    public void SubscribeToUIItem(string itemName, Action callback) => ExtractMenuItem(itemName).OnValueChanged(callback);
+    
 
     protected virtual void SubMenuInitialize() {}
     

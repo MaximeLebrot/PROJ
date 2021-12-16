@@ -17,5 +17,4 @@ public class MenuSlider : UIMenuItem {
         percentText.text = ((int)(newValue)).ToString();
     }
     
-    public override void OnValueChanged(Action action) => slider.onValueChanged.AddListener(e => action());
 }
