@@ -600,7 +600,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1164035696955160800}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   m_Radius: 0.06
   m_Height: 0.28
   m_Direction: 1
@@ -876,7 +876,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 2407846072444869007}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   m_Radius: 0.08
   m_Height: 0.69
   m_Direction: 1
@@ -1383,16 +1383,16 @@ Cloth:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4689872120946586798}
-  m_Enabled: 0
+  m_Enabled: 1
   m_StretchingStiffness: 1
   m_BendingStiffness: 0
   m_UseTethers: 1
   m_UseGravity: 1
   m_Damping: 0.94
-  m_ExternalAcceleration: {x: 0, y: 0, z: 0}
+  m_ExternalAcceleration: {x: 5, y: 5, z: 5}
   m_RandomAcceleration: {x: 0, y: 0, z: 0}
-  m_WorldVelocityScale: 1
-  m_WorldAccelerationScale: 1
+  m_WorldVelocityScale: 0.2
+  m_WorldAccelerationScale: 0.2
   m_Friction: 0.5
   m_CollisionMassScale: 0
   m_UseContinuousCollision: 1
@@ -2078,7 +2078,7 @@ SkinnedMeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4689872120946586798}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -2673,7 +2673,7 @@ MonoBehaviour:
     mode: 0
     interpolation: 0
     gravity: {x: 0, y: -9.82, z: 0}
-    damping: 0.96
+    damping: 0.99
     maxAnisotropy: 3
     sleepThreshold: 0.001
     collisionMargin: 0.02
@@ -2706,7 +2706,7 @@ MonoBehaviour:
     enabled: 1
   collisionConstraintParameters:
     evaluationOrder: 0
-    iterations: 1
+    iterations: 5
     SORFactor: 1
     enabled: 1
   frictionConstraintParameters:
@@ -4018,7 +4018,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 8493785377910697173}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   m_Radius: 0.08
   m_Height: 0.69
   m_Direction: 1
