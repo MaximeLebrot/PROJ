@@ -28,7 +28,7 @@ public class HubFragmentChecker : MonoBehaviour
 
         if (player.CheckForFragment("lava"))
         {
-            deposits[2].InitializeFragment();
+            //deposits[2].InitializeFragment();
             deposits[1].InitializeFragment();
             deposits[0].InitializeFragment();
             player.transform.position = windPos.position;
@@ -36,14 +36,14 @@ public class HubFragmentChecker : MonoBehaviour
         }
         else if (player.CheckForFragment("wind"))
         {
-            deposits[1].InitializeFragment();
+            //deposits[1].InitializeFragment();
             deposits[0].InitializeFragment();
             player.transform.position = earthPos.position;
             player.transform.rotation = earthPos.rotation;
         }
         else if (player.CheckForFragment("earth"))
         {
-            deposits[0].InitializeFragment();
+            //deposits[0].InitializeFragment();
             player.transform.position = startPos.position;
             player.transform.rotation = startPos.rotation;
         }

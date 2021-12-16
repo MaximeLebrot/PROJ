@@ -21,7 +21,7 @@ public class OSPuzzleState : PlayerState
 
     private Transform puzzleTransform;
 
-    private Vector3 offset = new Vector3(0, 1.1f, 0);
+    private Vector3 offset = new Vector3(0, 1.5f, 0);
     private Vector3 currentWalkingDirection = new Vector3();
     private Vector2 playerXZ = new Vector2();
     private Vector2 puzzleXZ = new Vector2();
@@ -51,11 +51,11 @@ public class OSPuzzleState : PlayerState
                 giveLostTime = false;
                 if (timer >= time)
                 {
-                    if (iterator >= puzzle.UINodes.Count)
+                    if (iterator >= OSPuzzle.UINodes.Count)
                         iterator = 0;
-                    foreach (OSPuzzleNode node in puzzle.UINodes)
+                    foreach (OSPuzzleNode node in OSPuzzle.UINodes)
                         node.DeselectPuzzleNode();
-                    puzzle.UINodes[iterator].SelectPuzzleNode();
+                    OSPuzzle.UINodes[iterator].SelectPuzzleNode();
                     iterator++;
                     timer = 0;
                 }
@@ -92,7 +92,7 @@ public class OSPuzzleState : PlayerState
     private int GetActiveButton()
     {
         OSPuzzleNode node = null;
-        foreach (OSPuzzleNode n in puzzle.UINodes)
+        foreach (OSPuzzleNode n in OSPuzzle.UINodes)
         {
             if (n.GetSelected())
                 node = n;
@@ -179,7 +179,10 @@ public class OSPuzzleState : PlayerState
         puzzleTransform = eve.info.puzzlePos;
         puzzleXZ.x = puzzleTransform.position.x;
         puzzleXZ.y = puzzleTransform.position.z;
-        puzzle = eve.info.puzzlePos.gameObject.GetComponent<OSPuzzle>();
+        //puzzle = eve.info.puzzlePos.gameObject.GetComponent<OSPuzzle>();
+        Debug.Log(player);
+        puzzle = GameObject.FindGameObjectWithTag("Player").GetComponent<OSPuzzle>();
+        //puzzle = player.GetComponent<OSPuzzle>();
     }
 
     private void OnEnable() => EventHandler<StartPuzzleEvent>.RegisterListener(GetPuzzleInfo);

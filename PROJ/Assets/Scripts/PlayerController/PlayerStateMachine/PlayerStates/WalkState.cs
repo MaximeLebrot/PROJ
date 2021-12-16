@@ -6,12 +6,9 @@ using UnityEngine.InputSystem;
 [CreateAssetMenu(menuName = "PlayerStates/WalkState")]
 public class WalkState : PlayerState
 {
-    private InputAction sprint;
     public override void Initialize()
     {
         base.Initialize();
-        sprint = player.inputReference.InputMaster.Sprint;
-        sprint.Enable();
     }
     public override void EnterState()
     {
@@ -38,6 +35,8 @@ public class WalkState : PlayerState
     }
     private void OnSprintActivate(InputAction.CallbackContext obj)
     {
+        if(stateMachine.currentState.GetType() == typeof(WalkState))
             stateMachine.ChangeState<SprintState>();
+        Debug.Log("Walk state on sprint activate");
     }
 }

@@ -37,12 +37,18 @@ public class PuzzlePlayerController : MonoBehaviour
     public MetaPlayerController metaPlayerController;
     private void OnEnable()
     {
+        
         quitPuzzle = metaPlayerController.inputReference.InputMaster.ExitPuzzle;
         quitPuzzle.Enable();
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
+        Debug.Log("SUBSCRIBE");
         metaPlayerController.inputReference.InputMaster.PlayPuzzleDescription.performed += OnPlayPuzzleDescription;
-        EventHandler<InGameMenuEvent>.RegisterListener(DisableInputWhenInGameMenu);
+
+        EventHandler<StartPuzzleEvent>.RegisterListener(OnPuzzleStart);
         EventHandler<ClearPuzzleEvent>.RegisterListener(OnPuzzleCompleted);
+        EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
+
+        EventHandler<RequestSettingsEvent>.FireEvent(null);
     }
 
     
@@ -50,14 +56,33 @@ public class PuzzlePlayerController : MonoBehaviour
     private void OnDisable()
     {
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle;
+        Debug.Log("UNSUBSCRIBE");
         metaPlayerController.inputReference.InputMaster.PlayPuzzleDescription.performed -= OnPlayPuzzleDescription;
         EventHandler<ClearPuzzleEvent>.UnregisterListener(OnPuzzleCompleted);
+        EventHandler<StartPuzzleEvent>.UnregisterListener(OnPuzzleStart);
+        EventHandler<SaveSettingsEvent>.UnregisterListener(OnSaveSettings);
         quitPuzzle.Disable();
+    }
+
+    private void OnSaveSettings(SaveSettingsEvent obj)
+    {
+        if (obj.settingsData.easyPuzzleControls == true)
+            acceleration = 50;
+        else
+            acceleration = 100;
+    }
+
+    private void OnPuzzleStart(StartPuzzleEvent obj)
+    {
+        metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
+        Debug.Log("SUBSCRIBE");
     }
 
     private void OnPuzzleCompleted(ClearPuzzleEvent obj)
     {
-        metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle;
+        metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle; 
+        Debug.Log("UNSUBSCRIBE");
+
     }
 
     void Start()
@@ -69,18 +94,6 @@ public class PuzzlePlayerController : MonoBehaviour
         EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(PuzzleTransform.GetComponent<Puzzle>().GetPuzzleID()), false));
     }
 
-    //Fyfan
-    private void DisableInputWhenInGameMenu(InGameMenuEvent e) {
-        metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle;
-        EventHandler<InGameMenuEvent>.UnregisterListener(DisableInputWhenInGameMenu);
-        EventHandler<InGameMenuEvent>.RegisterListener(EnableInput);
-    }
-    
-    private void EnableInput(InGameMenuEvent e) {
-        metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
-        EventHandler<InGameMenuEvent>.UnregisterListener(EnableInput);
-        EventHandler<InGameMenuEvent>.RegisterListener(DisableInputWhenInGameMenu);
-    }
 
     private void OnPlayPuzzleDescription(InputAction.CallbackContext obj)
     {
