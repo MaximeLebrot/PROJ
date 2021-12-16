@@ -5,12 +5,12 @@ using UnityEngine;
 public class VoiceInputController : MonoBehaviour
 {
     private InputMaster inputMaster;
-    [SerializeField] private GameObject ArmlessCamera;
-    [SerializeField] private GameObject Player;
+    public GameObject armlessCamera;
+    [SerializeField] private GameObject player;
 
     void Awake()
     {
-        inputMaster = new InputMaster();
+        inputMaster = new InputMaster();            
     }
 
     private void Update()
@@ -33,7 +33,7 @@ public class VoiceInputController : MonoBehaviour
         {
             GetComponent<VoiceMovementArmless>().enabled = false;
             GetComponent<VoiceMovementMouse>().enabled = false;
-            ArmlessCamera.SetActive(false);
+            armlessCamera.SetActive(false);
 
             Debug.Log("1");
         }
@@ -41,7 +41,7 @@ public class VoiceInputController : MonoBehaviour
         {
             GetComponent<VoiceMovementArmless>().enabled = false;
             GetComponent<VoiceMovementMouse>().enabled = true;
-            ArmlessCamera.SetActive(false);
+            armlessCamera.SetActive(false);
 
             Debug.Log("2");
 
@@ -50,8 +50,8 @@ public class VoiceInputController : MonoBehaviour
         {
             GetComponent<VoiceMovementMouse>().enabled = false;
             GetComponent<VoiceMovementArmless>().enabled = true;
-            ArmlessCamera.SetActive(true);
-            Player.transform.rotation = Quaternion.Euler(0, 0, 0);
+            armlessCamera.SetActive(true);
+            player.transform.rotation = Quaternion.Euler(0, 0, 0);
             Debug.Log("3");
 
         }

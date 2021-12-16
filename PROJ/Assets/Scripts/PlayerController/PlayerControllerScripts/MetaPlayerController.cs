@@ -20,7 +20,7 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     [SerializeField] float decelerationValueForCoroutine = 5;
     public ControllerInputReference inputReference;
 
-    [HideInInspector] public bool oneSwitchMode;
+    public bool oneSwitchMode = false;
 
     private void Awake()
     {
@@ -112,6 +112,10 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     
     private void Update()
     {
+        if (inputReference.inputMaster.OneSwitch.PuzzleTest.triggered)
+        {
+            ActivateOneSwitch(!oneSwitchMode);
+        }
         stateMachine.RunUpdate();
     }
 
