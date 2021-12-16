@@ -42,6 +42,7 @@ public class PuzzlePlayerController : MonoBehaviour
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
         metaPlayerController.inputReference.InputMaster.PlayPuzzleDescription.performed += OnPlayPuzzleDescription;
         EventHandler<InGameMenuEvent>.RegisterListener(DisableInputWhenInGameMenu);
+        EventHandler<ClearPuzzleEvent>.RegisterListener(OnPuzzleCompleted);
     }
 
     
@@ -50,8 +51,15 @@ public class PuzzlePlayerController : MonoBehaviour
     {
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle;
         metaPlayerController.inputReference.InputMaster.PlayPuzzleDescription.performed -= OnPlayPuzzleDescription;
+        EventHandler<ClearPuzzleEvent>.UnregisterListener(OnPuzzleCompleted);
         quitPuzzle.Disable();
     }
+
+    private void OnPuzzleCompleted(ClearPuzzleEvent obj)
+    {
+        metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle;
+    }
+
     void Start()
     {
         physics = GetComponent<PlayerPhysicsSplit>();
