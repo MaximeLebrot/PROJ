@@ -11,17 +11,26 @@ public class EssentialSpawner : MonoBehaviour
 
     private void OnEnable()
     {
-        if(GameObject.FindGameObjectWithTag("Player") == false)
-        {
-            Instantiate(player);
-        }
+
         if (GameObject.FindGameObjectWithTag("MainCamera") == false)
         {
-            Instantiate(cam);
+            cam.gameObject.SetActive(true);
+            cam.transform.parent = null;
+            DontDestroyOnLoad(cam);
+        }
+        if (GameObject.FindGameObjectWithTag("Player") == false)
+        {
+            player.gameObject.SetActive(true);
+            player.transform.parent = null;
+            DontDestroyOnLoad(player);
         }
         if (GameObject.FindGameObjectWithTag("GameMenu") == false)
         {
-            Instantiate(menu);
+            menu.gameObject.SetActive(true);
+            menu.transform.parent = null;
+            DontDestroyOnLoad(menu);
         }
+
+        Destroy(gameObject);
     }
 }
