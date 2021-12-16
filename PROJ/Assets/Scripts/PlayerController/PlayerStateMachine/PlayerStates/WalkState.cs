@@ -38,7 +38,6 @@ public class WalkState : PlayerState
     }
     private void OnSprintActivate(InputAction.CallbackContext obj)
     {
-        Debug.Log("Walk state on sprint activate");
             stateMachine.ChangeState<SprintState>();
     }
 }
