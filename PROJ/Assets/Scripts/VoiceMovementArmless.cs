@@ -17,8 +17,18 @@ public class VoiceMovementArmless : MonoBehaviour
 
     public Animator animator;
 
-
+    /*
     private void Start()
+    {
+        Debug.Log("Started Armless");
+        AddActions();
+
+        keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
+        keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
+        keywordRecognizer.Start();
+    }
+    */
+    private void AddActions()
     {
         actions.Add("forward", Forward);
         actions.Add("back", Back);
@@ -33,11 +43,7 @@ public class VoiceMovementArmless : MonoBehaviour
 
         actions.Add("rotate twohundred and seventy", Rotate270);
         actions.Add("rotate two seventy", Rotate270);
-        keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
-        keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
-        keywordRecognizer.Start();
     }
-
     private void RecognizedSpeech(PhraseRecognizedEventArgs speech)
     {
         Debug.Log(speech.text);
@@ -47,7 +53,7 @@ public class VoiceMovementArmless : MonoBehaviour
     {
         if (puzzleActive == false)
         {
-            transform.Translate(0, 0, 1);
+            transform.Translate(0, 0, 5);
         } else
         {
             Vector3 puzzleMovement = activePuzzleRotation * Vector3.forward * 3;
@@ -58,7 +64,7 @@ public class VoiceMovementArmless : MonoBehaviour
     private void Back()
     {
         if(puzzleActive == false)
-        transform.Translate(0, 0, -1);
+        transform.Translate(0, 0, -5);
         else 
         {
             Vector3 puzzleMovement = activePuzzleRotation * Vector3.forward * 3;
@@ -68,7 +74,7 @@ public class VoiceMovementArmless : MonoBehaviour
     private void Left()
     {
         if (puzzleActive == false)
-            transform.Translate(-1, 0, 0);
+            transform.Translate(-5, 0, 0);
         else
         {
             Vector3 puzzleMovement = activePuzzleRotation * Vector3.right * 3;
@@ -81,7 +87,7 @@ public class VoiceMovementArmless : MonoBehaviour
     {
         if (puzzleActive == false)
 
-            transform.Translate(1, 0, 0);
+            transform.Translate(5, 0, 0);
         else
         {
             Vector3 puzzleMovement = activePuzzleRotation * Vector3.right * 3;
@@ -122,11 +128,18 @@ public class VoiceMovementArmless : MonoBehaviour
     }
     private void OnEnable()
     {
+        if (actions.Count == 0)
+        {
+            AddActions();
+
+        }
+
         EventHandler<StartPuzzleEvent>.RegisterListener(OnStartPuzzle);
         EventHandler<ExitPuzzleEvent>.RegisterListener(OnExitPuzzle);
         keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
         keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
         keywordRecognizer.Start();
+
     }
     private void OnDisable()
     {
