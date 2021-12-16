@@ -12,9 +12,9 @@ public class AirborneState : PlayerState
     }
 
     //NOTE this state should NOT have any values, and therefore not call its superstate's EnterState()
+
     public override void EnterState(PlayerState previousState)
     {
-        LoadInputs();
         nextState = previousState;
         //Debug.Log("Entered Airborne State");
         player.physics.SetFallingGravity();
@@ -31,12 +31,12 @@ public class AirborneState : PlayerState
 
     }
     public override void ExitState()
-    {       
+    {
         base.ExitState();
     }
     private void SetInput()
     {
-        player.playerController3D.InputWalk(player.inputReference.InputMaster.Movement.ReadValue<Vector2>());
+        player.playerController3D.InputAirborne(player.inputReference.InputMaster.Movement.ReadValue<Vector2>());
     }
 
     //No longer needed to differentiate between walk and glide, since glide is removed
@@ -51,14 +51,4 @@ public class AirborneState : PlayerState
             //Else if**, we probably want some other requirement to remain here, be it speed or glideable material/tag
     }
 
-    //Sprint Sub
-    private void LoadInputs()
-    {
-        player.inputReference.InputMaster.Sprint.canceled += OnSprintActivate;
-        player.inputReference.InputMaster.Sprint.performed += OnSprintActivate;
-    }
-    private void OnSprintActivate(InputAction.CallbackContext obj)
-    {
-        stateMachine.ChangeState<WalkState>();
-    }
 }

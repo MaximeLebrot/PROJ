@@ -11,12 +11,11 @@ public class FragmentDeposit : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
         if (other.GetComponent<PlayerFragments>().DepositFragment(nameOfThisFragment))
         {
-            Debug.Log("Fragment");
-            FragmentFollow frag = GameObject.FindGameObjectWithTag("Fragment").GetComponent<FragmentFollow>();
+            FragmentFollow frag = GameObject.FindGameObjectWithTag(nameOfThisFragment).GetComponent<FragmentFollow>();
             frag.DepositFragment(this);
+            //start relevant cutscene?
             portal.Open();
         }
     }

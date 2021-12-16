@@ -28,8 +28,12 @@ public class GameCamera : MonoBehaviour {
     private event BehaviourQueue behaviourQueue;
 
     private bool oneHandModeIsActive;
-    
+    private bool pendingAccessibilityUpdate;
+
     private void Awake() {
+        DontDestroyOnLoad(this);
+
+
         inputReference.Initialize();
         transitioner.Initialize();
         thisTransform = transform;
@@ -41,12 +45,12 @@ public class GameCamera : MonoBehaviour {
         behaviours.Add(typeof(InGameMenuCameraBehaviour),  cameraBehaviours[4]);
         behaviours.Add(typeof(TransportationBegunEvent),  cameraBehaviours[5]);
         
-        currentBaseCameraBehaviour = behaviours[typeof(BaseCameraBehaviour)];
-        
-        currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
+        ChangeBehaviour<BaseCameraBehaviour>();
         
         behaviourQueue = ExecuteCameraBehaviour;
+        
     }
+    
     private void LateUpdate() => behaviourQueue?.Invoke();
 
     private void ExecuteCameraBehaviour() {
@@ -81,7 +85,6 @@ public class GameCamera : MonoBehaviour {
         EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
         EventHandler<CameraLookAndMoveToEvent>.RegisterListener(OnLookAndMove);
         EventHandler<LockInputEvent>.RegisterListener(LockInput);
-        EventHandler<SaveSettingsEvent>.RegisterListener(UpdateSettings);
         EventHandler<InGameMenuEvent>.RegisterListener(ActivateMenuCamera);
         EventHandler<TransportationBegunEvent>.RegisterListener(OnTransportationEvent);
         EventHandler<SaveSettingsEvent>.RegisterListener(OnSettingsChanged);
@@ -93,7 +96,6 @@ public class GameCamera : MonoBehaviour {
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
         EventHandler<CameraLookAndMoveToEvent>.UnregisterListener(OnLookAndMove);
         EventHandler<LockInputEvent>.UnregisterListener(LockInput);
-        EventHandler<SaveSettingsEvent>.UnregisterListener(UpdateSettings);
         EventHandler<InGameMenuEvent>.UnregisterListener(ActivateMenuCamera);
         EventHandler<TransportationBegunEvent>.UnregisterListener(OnTransportationEvent);
         EventHandler<SaveSettingsEvent>.UnregisterListener(OnSettingsChanged);
@@ -113,76 +115,58 @@ public class GameCamera : MonoBehaviour {
     
 
     private void OnPuzzleExit(ExitPuzzleEvent exitPuzzleEvent) {
-        EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
-        ChangeBehaviour(previousCameraBehaviour);
+
+        //if (exitPuzzleEvent.success) {
+            EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
+            ChangeBehaviour(previousCameraBehaviour);
+        //}
     }
 
     private void OnLookAndMove(CameraLookAndMoveToEvent lookAndMove) {
-        
-    }
-
-    private void UpdateSettings(SaveSettingsEvent saveEvent) {
-
-        oneHandModeIsActive = saveEvent.settingsData.oneHandMode;
-        
-        if (oneHandModeIsActive) 
+        if (oneHandModeIsActive)
             ChangeBehaviour<OneHandCameraBehaviour>();
+        else
+            ChangeBehaviour<BaseCameraBehaviour>();
     }
+
 
     private void OnPuzzleStart(StartPuzzleEvent startPuzzleEvent) {
-            
-        EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
+        
+        //PuzzleBehaviour already active.
+        if (currentBaseCameraBehaviour.GetType() == typeof(PuzzleCameraBehaviour)) 
+            return;
 
         previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
         
+        EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);   
+        
         ChangeBehaviour<PuzzleCameraBehaviour>();
-
+        
         PuzzleCameraBehaviour puzzleBehaviour = currentBaseCameraBehaviour as PuzzleCameraBehaviour;
-
+        
         puzzleBehaviour.AssignRotation(startPuzzleEvent.info.puzzlePos);
     }
-    
+
     private void ChangeBehaviour<T>() where T : BaseCameraBehaviour {
-        currentBaseCameraBehaviour = behaviours[typeof(T)];
-        currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
-        currentBaseCameraBehaviour.EnterBehaviour();
+        
+        if(pendingAccessibilityUpdate)
+            HandlePendingAccessibilityUpdate();
+        else {
+            currentBaseCameraBehaviour = behaviours[typeof(T)];
+            currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
+            currentBaseCameraBehaviour.EnterBehaviour();
+        }
     }
 
     
     private void ChangeBehaviour(Type type) {
-        Debug.Log("Change Behave");
-        currentBaseCameraBehaviour = behaviours[type];
-        currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
-        currentBaseCameraBehaviour.EnterBehaviour();
-    }
-    
-    private async Task PlayTransition<T>(CameraTransition<T> cameraTransition) where T : TransitionData {
-
-        SetBehaviourExecutionActive(false);
-        
-        await cameraTransition.RunTransition(thisTransform);
-
-        SetBehaviourExecutionActive(true);
-    }
-
-    private async Task PlayTransitions(List<Task> transitions) {
-        
-        SetBehaviourExecutionActive(false);
-        
-        await Task.WhenAll(transitions);
-
-        SetBehaviourExecutionActive(true);
-    }
-
-    
-    private void SetBehaviourExecutionActive(bool isActive) {
-        if (isActive) { 
-            behaviourQueue = ExecuteCameraBehaviour;
-            EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
-        }
+        if (pendingAccessibilityUpdate) {
+            HandlePendingAccessibilityUpdate();
+        } 
         else {
-            behaviourQueue = null;
-            EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
+            currentBaseCameraBehaviour = behaviours[type];
+            currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
+            currentBaseCameraBehaviour.EnterBehaviour();
         }
     }
     
@@ -212,29 +196,86 @@ public class GameCamera : MonoBehaviour {
     }
 
     private void OnSettingsChanged(SaveSettingsEvent settingsEvent) {
-        if (settingsEvent.settingsData.oneHandMode) {
-            previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
-            ChangeBehaviour<OneHandCameraBehaviour>();
-        }
-        else {
-            if(previousCameraBehaviour != null)
-                ChangeBehaviour(previousCameraBehaviour);
-            else
-                ChangeBehaviour<BaseCameraBehaviour>();
+
+        bool oneHandModeChanged = oneHandModeIsActive == settingsEvent.settingsData.oneHandMode;
+        
+        //Jesus christ
+        if (oneHandModeChanged == false) {
+
+            oneHandModeIsActive = settingsEvent.settingsData.oneHandMode;
+
+            if (currentBaseCameraBehaviour) {
+                Type currentBehaviourType = currentBaseCameraBehaviour.GetType();
+
+                if (currentBehaviourType != typeof(BaseCameraBehaviour) || currentBehaviourType != typeof(OneHandCameraBehaviour)) {
+                    pendingAccessibilityUpdate = true;
+                }
+                else 
+                    HandlePendingAccessibilityUpdate();
+            }
+            else 
+                HandlePendingAccessibilityUpdate();
+            
         }
     }
-    
-    [ContextMenu("Auto-assign targets", false,0)]
+    private void HandlePendingAccessibilityUpdate() {
+
+        pendingAccessibilityUpdate = false;
+        
+        if (oneHandModeIsActive)
+            ChangeBehaviour<OneHandCameraBehaviour>();
+        else
+            ChangeBehaviour<BaseCameraBehaviour>();
+    }
+
+        [ContextMenu("Auto-assign targets", false,0)]
     public void AssignTargets() {
         try {
             pivotTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
-            character = GameObject.FindWithTag("PlayerModel").transform;
-        } catch (NullReferenceException e) {
-            Debug.Log("Couldn't find one or all targets, check if they have the right tag");
+            character = GameObject.FindObjectOfType<MetaPlayerController>().transform;
+        }
+        catch (NullReferenceException e) {
             Debug.Log(e);
         }
     }
+       /*------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     
+    private async Task PlayTransition<T>(CameraTransition<T> cameraTransition) where T : TransitionData
+    {
+
+        SetBehaviourExecutionActive(false);
+
+        await cameraTransition.RunTransition(thisTransform);
+
+        SetBehaviourExecutionActive(true);
+    }
+
+    private async Task PlayTransitions(List<Task> transitions)
+    {
+
+        SetBehaviourExecutionActive(false);
+
+        await Task.WhenAll(transitions);
+
+        SetBehaviourExecutionActive(true);
+    }
+
+
+    private void SetBehaviourExecutionActive(bool isActive)
+    {
+        if (isActive)
+        {
+            behaviourQueue = ExecuteCameraBehaviour;
+            EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
+        }
+        else
+        {
+            behaviourQueue = null;
+            EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
+        }
+    }
+
+
 }
 
 public struct CustomInput {

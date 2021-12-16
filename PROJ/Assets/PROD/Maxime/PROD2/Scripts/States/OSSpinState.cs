@@ -20,7 +20,10 @@ public class OSSpinState : PlayerState
             stateMachine.ChangeState<OSWalkState>();
     }
 
-    public override void ExitState() => base.ExitState();
+    public override void ExitState()
+    {
+        base.ExitState();
+    }
 
     private void Rotate() => player.gameObject.transform.Rotate(Vector3.up * Time.deltaTime * rotateSpeed);
 }

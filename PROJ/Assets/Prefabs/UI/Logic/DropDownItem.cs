@@ -13,7 +13,7 @@ public class DropDownItem : UIMenuItem {
     }
 
     public override void SetValue(dynamic value) {
-        dropdownList.value = dropdownList.options.FindIndex(dropdownOption => dropdownOption.text.Equals(value.ToString()));
+        dropdownList.value = dropdownList.options.FindIndex(resolutionOption => resolutionOption.text.Equals(value.ToString()));
     }
     
   

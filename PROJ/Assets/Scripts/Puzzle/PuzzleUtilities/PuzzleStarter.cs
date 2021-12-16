@@ -13,18 +13,18 @@ public class PuzzleStarter : MonoBehaviour
         puzzleID = puzzle.GetPuzzleID();
     }
 
-   
-
-
     private void OnTriggerEnter(Collider other)
     {
+
         if (Active == false)
         {
-
+            puzzle.GetComponent<SphereCollider>().enabled = true;
             EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzle.GetPuzzleID(), GetComponentInParent<Puzzle>().transform)));
             puzzle.SetPlayer(other.transform);
             Active = true;
         }
+
+
     }
 
 

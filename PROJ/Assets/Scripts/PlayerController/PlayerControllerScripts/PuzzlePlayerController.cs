@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -39,12 +40,26 @@ public class PuzzlePlayerController : MonoBehaviour
         quitPuzzle = metaPlayerController.inputReference.InputMaster.ExitPuzzle;
         quitPuzzle.Enable();
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
+        metaPlayerController.inputReference.InputMaster.PlayPuzzleDescription.performed += OnPlayPuzzleDescription;
+        EventHandler<InGameMenuEvent>.RegisterListener(DisableInputWhenInGameMenu);
+        EventHandler<ClearPuzzleEvent>.RegisterListener(OnPuzzleCompleted);
     }
+
+    
+
     private void OnDisable()
     {
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle;
+        metaPlayerController.inputReference.InputMaster.PlayPuzzleDescription.performed -= OnPlayPuzzleDescription;
+        EventHandler<ClearPuzzleEvent>.UnregisterListener(OnPuzzleCompleted);
         quitPuzzle.Disable();
     }
+
+    private void OnPuzzleCompleted(ClearPuzzleEvent obj)
+    {
+        metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle;
+    }
+
     void Start()
     {
         physics = GetComponent<PlayerPhysicsSplit>();
@@ -52,6 +67,25 @@ public class PuzzlePlayerController : MonoBehaviour
     private void OnQuitPuzzle(InputAction.CallbackContext obj)
     {
         EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(PuzzleTransform.GetComponent<Puzzle>().GetPuzzleID()), false));
+    }
+
+    //Fyfan
+    private void DisableInputWhenInGameMenu(InGameMenuEvent e) {
+        metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle;
+        EventHandler<InGameMenuEvent>.UnregisterListener(DisableInputWhenInGameMenu);
+        EventHandler<InGameMenuEvent>.RegisterListener(EnableInput);
+    }
+    
+    private void EnableInput(InGameMenuEvent e) {
+        metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
+        EventHandler<InGameMenuEvent>.UnregisterListener(EnableInput);
+        EventHandler<InGameMenuEvent>.RegisterListener(DisableInputWhenInGameMenu);
+    }
+
+    private void OnPlayPuzzleDescription(InputAction.CallbackContext obj)
+    {
+        if(PuzzleTransform != null)
+            PuzzleTransform.GetComponent<Puzzle>().PlayPuzzleDescription();
     }
 
     //NOTE! Currently not safe for very low FPS
@@ -68,7 +102,8 @@ public class PuzzlePlayerController : MonoBehaviour
         input =
         PuzzleTransform.right * inp.x +
         PuzzleTransform.forward * inp.y ;
-       
+
+        RotateCharacterInsidePuzzle();
         if (input.magnitude < inputThreshold)
         {
             Decelerate();
@@ -79,7 +114,6 @@ public class PuzzlePlayerController : MonoBehaviour
             if (input.magnitude > 1f)
                 input.Normalize();
         }
-        RotateCharacterInsidePuzzle();
         Accelerate();            
     }
     private void Accelerate()

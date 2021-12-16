@@ -90,6 +90,7 @@ public class PuzzleInstance : MonoBehaviour
 
     internal void PlayDescription()
     {
+        Debug.Log("Play Puzzle Sound");
         //play puzzleDescription;
     }
 }

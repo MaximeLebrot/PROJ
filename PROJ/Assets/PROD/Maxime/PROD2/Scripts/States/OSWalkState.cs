@@ -7,7 +7,10 @@ public class OSWalkState : PlayerState
 
     public override void Initialize() => base.Initialize();
 
-    public override void EnterState() => base.EnterState();
+    public override void EnterState()
+    {
+        base.EnterState();
+    }
 
     public override void RunUpdate()
     {
@@ -17,7 +20,10 @@ public class OSWalkState : PlayerState
             stateMachine.ChangeState<OSSpinState>();
     }
 
-    public override void ExitState() => base.ExitState();
+    public override void ExitState()
+    {
+        base.ExitState();
+    }
 
     private void WalkForward() => player.playerController3D.InputWalk(forward);
 }

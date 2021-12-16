@@ -3,45 +3,36 @@ using UnityEngine.InputSystem;
 
 public class GameMenuController : MenuController {
 
-    public MenuSettings settingsMenuObject;
-
-    private System.Action onBackInput;
+    [SerializeField] private MenuSettings menuButtons;
+    [SerializeField] private GameObject backdrop;
     
     protected override void Initialize() {
         DontDestroyOnLoad(this);
         onBackInput = OpenMenu;
-        controllerInputReference.InputMaster.Menu.performed += HandleBackInput;
         ActivateComponents(false);
     }
-
-    private void HandleBackInput(InputAction.CallbackContext e) => onBackInput?.Invoke();
-
+    
     private void OpenMenu() {
         
         ActivateComponents(true);
         EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(true));
 
-        ActivateMenu(settingsMenuObject);
-        
+        ActivateSubMenu(menuButtons);
+        onBackInput = Back;
         Cursor.lockState = CursorLockMode.None;
     }
 
     private void Back() {
-
         if (inputSuspended)
             return;
-        
-        if (subMenuDepth.Count < 1) {
-            CloseMenu();
-            onBackInput = OpenMenu;
-            return;
-        }
-        
-        //Inside submenu
-        ActivateMenu(subMenuDepth.Pop());
-    }
 
-    
+        if (pageController.CanMoveUpOneLevel())
+            return;
+        
+        CloseMenu();
+        onBackInput = OpenMenu;
+        
+    }
     
     private void CloseMenu() {
         ActivateComponents(false);
@@ -50,7 +41,14 @@ public class GameMenuController : MenuController {
 
     private void ActivateComponents(bool activateComponents) {
         Cursor.lockState = activateComponents ? CursorLockMode.None : CursorLockMode.Locked;
-        settingsMenuObject.gameObject.SetActive(activateComponents);
+        menuButtons.gameObject.SetActive(activateComponents);
+        backdrop.SetActive(activateComponents);
         EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(activateComponents));
+    }
+
+    //Called from scene changer buttons (beta release) / Martin
+    public void SceneChangerCloseMenu() {
+        CloseMenu();
+        onBackInput = OpenMenu;
     }
 }

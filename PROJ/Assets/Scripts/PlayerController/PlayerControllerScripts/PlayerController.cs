@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
     {
         mpc = GetComponent<MetaPlayerController>();
         inputReference = mpc.inputReference;
-        Application.targetFrameRate = 240;
+        Application.targetFrameRate = 250;
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PlayerPhysicsSplit>();
         SecureDelegates();
@@ -55,16 +55,10 @@ public class PlayerController : MonoBehaviour
     {
         EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
         force = Vector3.zero;
-        SceneManager.sceneLoaded += OnSceneLoaded;
     }
     private void OnDisable()
     {
         EventHandler<SaveSettingsEvent>.UnregisterListener(OnSaveSettings);
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        cameraTransform = Camera.main.transform;
     }
 
     //This could instead load a delegate with a preffered input chain, but as of now that would require more code than the current solution. 
@@ -116,7 +110,6 @@ public class PlayerController : MonoBehaviour
 
     public void InputWalk(Vector3 inp)
     {
-
         inputDelegate(inp);      
 
         //to stop character rotation when input is 0

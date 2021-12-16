@@ -13,8 +13,11 @@ public class FragmentFollow : MonoBehaviour
     public bool follow;
     private bool deposit;
 
+    [SerializeField] private Animator anim;
+
     private void Start()
     {
+        DontDestroyOnLoad(this);
         scale /= 10;
         downScale = new Vector3(scale, scale, scale);    
     }
@@ -23,7 +26,6 @@ public class FragmentFollow : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("DEPÅSOTS");
             fragmentHolder = other.transform;
             follow = true;
             GetComponent<Collider>().isTrigger = false;
@@ -54,7 +56,7 @@ public class FragmentFollow : MonoBehaviour
         if (Vector3.Distance(fragmentOrb.position, fragmentDeposit.position) < 0.1f)
         {
             deposit = false;
-            Debug.Log("Fragment deposited");
+            Destroy(this, 5);
         }    
     }
 
