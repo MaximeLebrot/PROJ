@@ -9,7 +9,8 @@ public class SettingsController : MonoBehaviour {
     [SerializeField] private List<MenuSettings> settingObjects;
 
     private const string JSONFileName = "SavedSettings";
-    
+
+   
     private void Awake() {
         foreach (MenuSettings menuSettings in settingObjects)
             menuSettings.Initialize();

@@ -37,8 +37,6 @@ public class GameMenuController : MenuController {
         onBackInput = OpenMenu;
         
     }
-
-    
     
     private void CloseMenu() {
         ActivateComponents(false);
@@ -49,5 +47,12 @@ public class GameMenuController : MenuController {
         Cursor.lockState = activateComponents ? CursorLockMode.None : CursorLockMode.Locked;
         settingsMenuObject.gameObject.SetActive(activateComponents);
         EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(activateComponents));
+    }
+
+    //Called from scene changer buttons (beta release) / Martin
+    public void SceneChangerCloseMenu()
+    {
+        CloseMenu();
+        onBackInput = OpenMenu;
     }
 }
