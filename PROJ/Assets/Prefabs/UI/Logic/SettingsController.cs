@@ -9,7 +9,8 @@ public class SettingsController : MonoBehaviour {
     [SerializeField] private List<MenuSettings> settingObjects;
 
     private const string JSONFileName = "SavedSettings";
-    
+
+   
     private void Awake() {
         foreach (MenuSettings menuSettings in settingObjects)
             menuSettings.Initialize();
@@ -45,8 +46,6 @@ public class SettingsController : MonoBehaviour {
     private void LoadSavedSettings()
     {
         string json = PlayerPrefs.GetString("SavedSettings");
-
-        Debug.Log(json);
         
         //If PlayerPrefs have no settings, read from DefaultSettings file
         if (json == "")
