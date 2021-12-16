@@ -41,7 +41,7 @@ public class FlightAnimationScript : MonoBehaviour
             mpc.enabled = false;
             moveToCenter = true;
             mpcXZPos = new Vector2(mpc.transform.position.x, mpc.transform.position.z);
-            col.GetComponentInChildren<Obi.ObiCloth>().enabled = false;
+            GameObject.FindGameObjectWithTag("Solver").SetActive(false);
             //  playerAnimator.SetLayerWeight(2, 1f);
             flight = true;
             EventHandler<TransportationBegunEvent>.FireEvent(null);            
@@ -56,7 +56,7 @@ public class FlightAnimationScript : MonoBehaviour
         mpc.physics.enabled = true;
         mpc.enabled = true;
         EventHandler<TransportationEndedEvent>.FireEvent(null);
-        mpc.GetComponentInChildren<Obi.ObiCloth>().enabled = true;
+        GameObject.FindGameObjectWithTag("Solver").SetActive(true);
         flight = false;
     //    playerAnimator.SetLayerWeight(2, 0);
     }
