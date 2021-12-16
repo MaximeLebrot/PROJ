@@ -71,7 +71,6 @@ public abstract class PuzzleObject : MonoBehaviour
 
     private void SetMaterialBasedOnDifficulty(string difficulty)
     {
-        Debug.Log(difficulty);
         if (materials_EASY_MEDIUM_HARD.Count > 0) {
             
             mesh.material = materialsByDifficulty[difficulty];
