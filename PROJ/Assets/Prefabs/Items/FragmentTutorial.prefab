@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 11a080701f76c1240838bbecfe85ff7a, type: 2}
+  - {fileID: 2100000, guid: 584ee7517fd59644380d00a606a3e54f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -139,9 +139,9 @@ GameObject:
   - component: {fileID: 2615986386986568247}
   - component: {fileID: 2615986386986568246}
   - component: {fileID: 2615986386986568241}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: FragmentTutorial
-  m_TagString: Untagged
+  m_TagString: earth
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -179,6 +179,8 @@ MonoBehaviour:
   speed: 5
   scale: 0.5
   fragmentSize: 0.5
+  follow: 0
+  anim: {fileID: 0}
 --- !u!54 &2615986386986568247
 Rigidbody:
   m_ObjectHideFlags: 0
