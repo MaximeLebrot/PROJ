@@ -160,7 +160,7 @@ public class Puzzle : MonoBehaviour
         currentPuzzleInstance = puzzleInstances[currentPuzzleNum];
     }
 
-    private void PlayPuzzleDescription()
+    public void PlayPuzzleDescription()
     {
         currentPuzzleInstance.PlayDescription();
     }
