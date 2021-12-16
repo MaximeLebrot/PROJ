@@ -25,7 +25,7 @@ public class FragmentDeposit : MonoBehaviour
 
         portal.Open();
 
-        //VARFÖR VILL JAG INSTANTIERA DESSA? WTF HAR JAG TÄNKT?
+        //VARFÃ–R VILL JAG INSTANTIERA DESSA? WTF HAR JAG TÃ„NKT?
         /*
         Debug.Log("Init");
         GameObject instance = Instantiate(fragmentObject, transform);
