@@ -13,6 +13,9 @@ GameObject:
   - component: {fileID: 505075501585837002}
   - component: {fileID: 505075501585837003}
   - component: {fileID: 505075501585837004}
+  - component: {fileID: 6164508023678374098}
+  - component: {fileID: 9119025552563147059}
+  - component: {fileID: 8949039701588970539}
   m_Layer: 20
   m_Name: FragmentEarth
   m_TagString: wind
@@ -97,6 +100,53 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   portalThisFragmentOpens: wind
+--- !u!114 &6164508023678374098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 505075501585837001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53e4ab6cfd50d2e448c2b769ef660b9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneToLoad: TutorialMainHub
+--- !u!95 &9119025552563147059
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 505075501585837001}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8949039701588970539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 505075501585837001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46ccd301498f31242b3eb4d57a23b3b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  puzzleID: 6
+  anim: {fileID: 9119025552563147059}
+  triggerName: activate
 --- !u!1 &505075501655308796
 GameObject:
   m_ObjectHideFlags: 0
