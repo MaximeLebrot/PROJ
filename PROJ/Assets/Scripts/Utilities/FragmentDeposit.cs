@@ -13,7 +13,7 @@ public class FragmentDeposit : MonoBehaviour
     {
         if (other.GetComponent<PlayerFragments>().DepositFragment(nameOfThisFragment))
         {
-            FragmentFollow frag = other.GetComponent<FragmentFollow>();
+            FragmentFollow frag = GameObject.FindGameObjectWithTag(nameOfThisFragment).GetComponent<FragmentFollow>();
             frag.DepositFragment(this);
             //start relevant cutscene?
             portal.Open();
