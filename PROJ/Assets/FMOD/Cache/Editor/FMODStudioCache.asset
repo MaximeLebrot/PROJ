@@ -159,6 +159,30 @@ MonoBehaviour:
   - Stone
   - Dirt
   Exists: 0
+--- !u!114 &-8868327719125927660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/AmbienceEarth2D/Fade
+  m_EditorClassIdentifier: 
+  Name: Fade
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &-8825703089314172658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,6 +271,35 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
   m_Name: parameter:/Roll/Terrain
+  m_EditorClassIdentifier: 
+  Name: Terrain
+  StudioPath: 
+  Min: 0
+  Max: 4
+  Default: 3
+  ID:
+    data1: 0
+    data2: 0
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Grass
+  - Gravel
+  - Wood
+  - Stone
+  - Dirt
+  Exists: 1
+--- !u!114 &-8644120989956328232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/RangedEnemyFootsteps/Terrain
   m_EditorClassIdentifier: 
   Name: Terrain
   StudioPath: 
@@ -419,6 +472,30 @@ MonoBehaviour:
   - Stone
   - Dirt
   Exists: 1
+--- !u!114 &-8369496827086690662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/SafeRoom/Drums
+  m_EditorClassIdentifier: 
+  Name: Drums
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &-8351060107828374363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -533,10 +610,10 @@ MonoBehaviour:
   Path: Assets/Audio/FMOD Banks/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 637750044138085318
+  lastModified: 637752824138599912
   FileSizes:
   - Name: 
-    Value: 3532
+    Value: 5426
   Exists: 1
 --- !u!114 &-8275532230765258064
 MonoBehaviour:
@@ -668,6 +745,61 @@ MonoBehaviour:
   - Stone
   - Dirt
   Exists: 1
+--- !u!114 &-7935228987937072516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/Hub/AmbienceHubInterior2D
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/Hub/AmbienceHubInterior2D
+  Guid:
+    Data1: 1146862054
+    Data2: 1221465536
+    Data3: -683401285
+    Data4: 316441783
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 5837569478615787743}
+  MinDistance: 0
+  MaxDistance: 4400
+  Length: 85699
+--- !u!114 &-7900538832212494722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/Soft Magic/Shiny/Orbs
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/Soft Magic/Shiny/Orbs
+  Guid:
+    Data1: -67397303
+    Data2: 1143988111
+    Data3: -239574634
+    Data4: 981721875
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 78000
 --- !u!114 &-7829528337695368306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -819,6 +951,57 @@ MonoBehaviour:
     data2: 0
   Type: 0
   IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &-7670734393784484673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Character/Player/PlayerEmission
+  m_EditorClassIdentifier: 
+  Path: event:/Character/Player/PlayerEmission
+  Guid:
+    Data1: 2120543434
+    Data2: 1146618189
+    Data3: 1874413974
+    Data4: -1779989962
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 54800
+--- !u!114 &-7617052403511359808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Torch/SWidth
+  m_EditorClassIdentifier: 
+  Name: SWidth
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 1
   Labels: []
   Exists: 1
 --- !u!114 &-7608002289702536076
@@ -1042,10 +1225,34 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: -7481402148004077931}
+  - {fileID: -4653251142598601710}
   MinDistance: 0
   MaxDistance: 4400
   Length: 325975
+--- !u!114 &-7298544081851737648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/SafeRoom/Scatterer
+  m_EditorClassIdentifier: 
+  Name: Scatterer
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &-7290468670043870642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1208,6 +1415,30 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &-7189503961464756735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/SafeRoom/Whoom
+  m_EditorClassIdentifier: 
+  Name: Whoom
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &-7174976080072665014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1231,6 +1462,35 @@ MonoBehaviour:
   Type: 0
   IsGlobal: 1
   Labels: []
+  Exists: 1
+--- !u!114 &-7157969817001866563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Footsteps/Terrain
+  m_EditorClassIdentifier: 
+  Name: Terrain
+  StudioPath: 
+  Min: 0
+  Max: 4
+  Default: 3
+  ID:
+    data1: 0
+    data2: 0
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Grass
+  - Gravel
+  - Wood
+  - Stone
+  - Dirt
   Exists: 1
 --- !u!114 &-7126526032064486168
 MonoBehaviour:
@@ -1341,6 +1601,33 @@ MonoBehaviour:
   - Stone
   - Dirt
   Exists: 1
+--- !u!114 &-6812355609173883449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/PageScribble
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/PageScribble
+  Guid:
+    Data1: -1714167580
+    Data2: 1225990898
+    Data3: 289651334
+    Data4: -1425714659
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1184
 --- !u!114 &-6806428406635819205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1389,6 +1676,33 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 0
+--- !u!114 &-6712496972496296938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/Soft Magic/Portal/Portal
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/Soft Magic/Portal/Portal
+  Guid:
+    Data1: 1980702433
+    Data2: 1115872555
+    Data3: -408496713
+    Data4: -884608831
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 16000
 --- !u!114 &-6703124687117054063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1725,10 +2039,10 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 1
   Parameters:
-  - {fileID: -2383423475728288151}
+  - {fileID: -7157969817001866563}
   MinDistance: 1
   MaxDistance: 20
-  Length: 1650
+  Length: 1077
 --- !u!114 &-6047977409350370207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1806,6 +2120,34 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &-6027053663715533105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/EarthRuin/AmbienceEarth
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/EarthRuin/AmbienceEarth
+  Guid:
+    Data1: -130933204
+    Data2: 1271665942
+    Data3: -141710420
+    Data4: -311149865
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: -5374713311214499632}
+  MinDistance: 0
+  MaxDistance: 4400
+  Length: 85699
 --- !u!114 &-6025103317638640006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1880,6 +2222,33 @@ MonoBehaviour:
   - Exterior
   - Interior
   Exists: 0
+--- !u!114 &-5929967896982163645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Game/Puzzle/PuzzleSolvedxd
+  m_EditorClassIdentifier: 
+  Path: event:/Game/Puzzle/PuzzleSolvedxd
+  Guid:
+    Data1: -1341249153
+    Data2: 1293909706
+    Data3: -1973904745
+    Data4: -2025069063
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1880
 --- !u!114 &-5895331961638314759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2164,6 +2533,57 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 65430
+--- !u!114 &-5374713311214499632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/AmbienceEarth/Fade
+  m_EditorClassIdentifier: 
+  Name: Fade
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &-5369385117464147323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Game/Puzzle/NodeErase
+  m_EditorClassIdentifier: 
+  Path: event:/Game/Puzzle/NodeErase
+  Guid:
+    Data1: 536535317
+    Data2: 1101746473
+    Data3: 1760253351
+    Data4: -748686043
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 5500
 --- !u!114 &-5346807305489397766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2392,6 +2812,33 @@ MonoBehaviour:
   - Stone
   - Dirt
   Exists: 0
+--- !u!114 &-5062546436927510665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Game/Puzzle/Node 2
+  m_EditorClassIdentifier: 
+  Path: event:/Game/Puzzle/Node 2
+  Guid:
+    Data1: 203562824
+    Data2: 1248865079
+    Data3: 1980638898
+    Data4: 2018721880
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 53850
 --- !u!114 &-4978466086271105423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2464,7 +2911,7 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 1
   Parameters:
-  - {fileID: 2409174618357720414}
+  - {fileID: 2234333439170442873}
   MinDistance: 1
   MaxDistance: 20
   Length: 1650
@@ -2550,6 +2997,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1650
+--- !u!114 &-4653251142598601710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/AmbienceInterior/Fade
+  m_EditorClassIdentifier: 
+  Name: Fade
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &-4632235056764643380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3113,7 +3584,7 @@ MonoBehaviour:
   Path: Assets/Audio/FMOD Banks/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 637750044138055311
+  lastModified: 637752824138559896
   FileSizes: []
   Exists: 1
 --- !u!114 &-4051255168513999017
@@ -3212,6 +3683,33 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 0
+--- !u!114 &-3852469570906197526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Game/Puzzle/PuzzleSolved
+  m_EditorClassIdentifier: 
+  Path: event:/Game/Puzzle/PuzzleSolved
+  Guid:
+    Data1: -986600082
+    Data2: 1249351808
+    Data3: 563974566
+    Data4: -498933947
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 6163
 --- !u!114 &-3835306893437047512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3339,6 +3837,30 @@ MonoBehaviour:
   - Exterior
   - Interior
   Exists: 1
+--- !u!114 &-3697815283317982443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Reverb/Reveeeerb
+  m_EditorClassIdentifier: 
+  Name: Reveeeerb
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &-3694147109283544010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3387,6 +3909,30 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &-3679754169855016018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/SafeRoom/Flutters
+  m_EditorClassIdentifier: 
+  Name: Flutters
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &-3661688203088174006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3416,6 +3962,34 @@ MonoBehaviour:
   - Stone
   - Dirt
   Exists: 1
+--- !u!114 &-3629284137752874764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/EarthRuin/AmbienceEarth2Dsdaas
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/EarthRuin/AmbienceEarth2Dsdaas
+  Guid:
+    Data1: -1921318770
+    Data2: 1124543763
+    Data3: 178469821
+    Data4: 2116228691
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 4158376298199418591}
+  MinDistance: 0
+  MaxDistance: 4400
+  Length: 85699
 --- !u!114 &-3606417080216111626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3574,6 +4148,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 218136
+--- !u!114 &-3285345182897088822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/WindRuin/AmbienceWind
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/WindRuin/AmbienceWind
+  Guid:
+    Data1: 1839204762
+    Data2: 1101633336
+    Data3: -311628921
+    Data4: -1934432359
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: -608140814798303215}
+  MinDistance: 0
+  MaxDistance: 4400
+  Length: 85699
 --- !u!114 &-3279742824721244651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3626,6 +4228,35 @@ MonoBehaviour:
   Type: 0
   IsGlobal: 0
   Labels: []
+  Exists: 1
+--- !u!114 &-3228692429221613814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Roll/Terrain
+  m_EditorClassIdentifier: 
+  Name: Terrain
+  StudioPath: 
+  Min: 0
+  Max: 4
+  Default: 3
+  ID:
+    data1: 0
+    data2: 0
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Grass
+  - Gravel
+  - Wood
+  - Stone
+  - Dirt
   Exists: 1
 --- !u!114 &-3201558867889895520
 MonoBehaviour:
@@ -3746,6 +4377,34 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &-3108773417025168124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/WindRuin/AmbienceWind2D
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/WindRuin/AmbienceWind2D
+  Guid:
+    Data1: 1329093244
+    Data2: 1236242852
+    Data3: 1888415931
+    Data4: -1492647394
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 316736092264529648}
+  MinDistance: 0
+  MaxDistance: 4400
+  Length: 85699
 --- !u!114 &-3047505484455900759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4162,6 +4821,61 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 342
+--- !u!114 &-2568524844545715055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/Hub/Rocks
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/Hub/Rocks
+  Guid:
+    Data1: 623906546
+    Data2: 1326191868
+    Data3: -23106420
+    Data4: 1027870808
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 80691
+--- !u!114 &-2551180356983848936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/WindRuin/AmbienceWindSmol
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/WindRuin/AmbienceWindSmol
+  Guid:
+    Data1: 1526876304
+    Data2: 1266162469
+    Data3: 1070388870
+    Data4: 85767994
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: -1064757553413535154}
+  MinDistance: 0
+  MaxDistance: 4400
+  Length: 85699
 --- !u!114 &-2542180384953288100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4191,6 +4905,34 @@ MonoBehaviour:
   - Stone
   - Dirt
   Exists: 0
+--- !u!114 &-2538000058160268973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/Hub/AmbienceHub
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/Hub/AmbienceHub
+  Guid:
+    Data1: -740749916
+    Data2: 1327729332
+    Data3: 1140493485
+    Data4: -263840143
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 6288136523185644762}
+  MinDistance: 0
+  MaxDistance: 550
+  Length: 85699
 --- !u!114 &-2536145307679090236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4208,6 +4950,30 @@ MonoBehaviour:
   Min: 0
   Max: 1
   Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &-2413654752759380516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/SafeRoom/EQ
+  m_EditorClassIdentifier: 
+  Name: EQ
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 1
   ID:
     data1: 0
     data2: 0
@@ -4321,6 +5087,34 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &-2209769437953637381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: snapshot:/Reverb
+  m_EditorClassIdentifier: 
+  Path: snapshot:/Reverb
+  Guid:
+    Data1: -1413553049
+    Data2: 1133565281
+    Data3: 431494060
+    Data4: 1530054610
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: -3697815283317982443}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
 --- !u!114 &-2157761997361382886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4423,6 +5217,80 @@ MonoBehaviour:
   Type: 0
   IsGlobal: 0
   Labels: []
+  Exists: 1
+--- !u!114 &-2002093473478556198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/AmbienceWind2Dxd/Fade
+  m_EditorClassIdentifier: 
+  Name: Fade
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &-1989152393901665090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/AmbienceLava2D/Fade
+  m_EditorClassIdentifier: 
+  Name: Fade
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &-1986252927260591393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/AmbienceParameterTest/Environment
+  m_EditorClassIdentifier: 
+  Name: Environment
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Exterior
+  - Interior
   Exists: 1
 --- !u!114 &-1965650457464295288
 MonoBehaviour:
@@ -4576,6 +5444,30 @@ MonoBehaviour:
   - Exterior
   - Interior
   Exists: 1
+--- !u!114 &-1916244720575336887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/AmbienceExterior/Fade
+  m_EditorClassIdentifier: 
+  Name: Fade
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &-1905482891438546087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4652,6 +5544,58 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 4400
   Length: 65430
+--- !u!114 &-1817760207285476770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/SafeRoom/Main Safe
+  m_EditorClassIdentifier: 
+  Name: Main Safe
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &-1791172389617539367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/Hub/AmbienceHub2D
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/Hub/AmbienceHub2D
+  Guid:
+    Data1: 2120655534
+    Data2: 1303162647
+    Data3: 1428724380
+    Data4: 889582813
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 430563722532714268}
+  MinDistance: 0
+  MaxDistance: 4400
+  Length: 85699
 --- !u!114 &-1747588252273149349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4703,7 +5647,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters:
-  - {fileID: -7995459368391596553}
+  - {fileID: 4355493391256565970}
   MinDistance: 1
   MaxDistance: 10000
   Length: 1650
@@ -4747,6 +5691,30 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
   m_Name: parameter:/AmbienceExterior/Fade
+  m_EditorClassIdentifier: 
+  Name: Fade
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &-1647863219318403675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Ambience/Fade
   m_EditorClassIdentifier: 
   Name: Fade
   StudioPath: 
@@ -4889,7 +5857,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 845933581450106875}
+  - {fileID: -1647863219318403675}
   MinDistance: 0
   MaxDistance: 4400
   Length: 65430
@@ -4968,6 +5936,33 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &-1276961308787244122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Game/Puzzle/NodeErasexd
+  m_EditorClassIdentifier: 
+  Path: event:/Game/Puzzle/NodeErasexd
+  Guid:
+    Data1: -1957846933
+    Data2: 1239391966
+    Data3: -1736625520
+    Data4: 126715076
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 3375
 --- !u!114 &-1189528849911885875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5093,6 +6088,30 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &-1064757553413535154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/AmbienceWindSmol/Fade
+  m_EditorClassIdentifier: 
+  Name: Fade
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &-1045023376434548125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5200,6 +6219,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1515
+--- !u!114 &-816963277789693466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Game/Puzzle/PuzzleExitxd
+  m_EditorClassIdentifier: 
+  Path: event:/Game/Puzzle/PuzzleExitxd
+  Guid:
+    Data1: 906885599
+    Data2: 1277816107
+    Data3: -1168508514
+    Data4: 32252401
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 3350
 --- !u!114 &-730497727047729414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5296,10 +6342,34 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 1
   Parameters:
-  - {fileID: 4186987807334315185}
+  - {fileID: -3228692429221613814}
   MinDistance: 1
   MaxDistance: 20
   Length: 1650
+--- !u!114 &-608140814798303215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/AmbienceWind/Fade
+  m_EditorClassIdentifier: 
+  Name: Fade
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &-581957265916856313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5632,13 +6702,13 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 8524256369911735993}
-  - {fileID: -6032518314077610141}
-  - {fileID: 4255935830253614062}
-  - {fileID: 4380231971047288413}
-  - {fileID: -5895331961638314759}
-  - {fileID: 7570395066812606978}
-  - {fileID: 3619453814395675358}
+  - {fileID: -7189503961464756735}
+  - {fileID: 7738888604979262101}
+  - {fileID: -8369496827086690662}
+  - {fileID: -2413654752759380516}
+  - {fileID: -1817760207285476770}
+  - {fileID: -3679754169855016018}
+  - {fileID: -7298544081851737648}
   MinDistance: 1
   MaxDistance: 20
   Length: 40000
@@ -5771,7 +6841,6 @@ MonoBehaviour:
   - {fileID: 4080691569691795158}
   - {fileID: 6216634515242956353}
   - {fileID: -627760655076242665}
-  - {fileID: 910306664266434467}
   - {fileID: 4462208994971833447}
   - {fileID: -3514420408005032214}
   - {fileID: 6842303140176380797}
@@ -5796,16 +6865,57 @@ MonoBehaviour:
   - {fileID: -4873898115689136705}
   - {fileID: -6097452841223514683}
   - {fileID: 1535144589477471562}
+  - {fileID: 8408903445517948831}
+  - {fileID: -5369385117464147323}
+  - {fileID: -6027053663715533105}
+  - {fileID: 6410731651890310894}
+  - {fileID: -5062546436927510665}
+  - {fileID: -7900538832212494722}
+  - {fileID: 2717124998536433515}
+  - {fileID: -2209769437953637381}
+  - {fileID: -1276961308787244122}
+  - {fileID: -3852469570906197526}
+  - {fileID: 61089291259815914}
+  - {fileID: -3108773417025168124}
+  - {fileID: -5929967896982163645}
+  - {fileID: 2224403500462026691}
+  - {fileID: 8310006238907197472}
+  - {fileID: 8201012832589052408}
+  - {fileID: 3866997622177721495}
+  - {fileID: -3629284137752874764}
+  - {fileID: -2551180356983848936}
+  - {fileID: 3902285614600378685}
+  - {fileID: 3476861869609169565}
+  - {fileID: -3285345182897088822}
+  - {fileID: 549121522678222855}
+  - {fileID: -2538000058160268973}
+  - {fileID: 3790555101835734393}
+  - {fileID: -1791172389617539367}
+  - {fileID: 7963059769626142560}
+  - {fileID: -7670734393784484673}
+  - {fileID: 1072072934592555771}
+  - {fileID: 7871510625887661102}
+  - {fileID: -816963277789693466}
+  - {fileID: 9069427287005602291}
+  - {fileID: -6712496972496296938}
+  - {fileID: -6812355609173883449}
+  - {fileID: -7935228987937072516}
+  - {fileID: 6061455201485206704}
+  - {fileID: -2568524844545715055}
+  - {fileID: 1242597378200159001}
+  - {fileID: 8940417162923947027}
+  - {fileID: 5054928387448214873}
   EditorParameters:
   - {fileID: 5921331518060798021}
   - {fileID: -257262962771488751}
   - {fileID: -2679886822908165940}
   - {fileID: 1327163595371458062}
+  - {fileID: 4039809246926406709}
   MasterBanks:
   - {fileID: -4095469730483606745}
   StringsBanks:
   - {fileID: -8328467773490097053}
-  cacheTime: 637750044138085318
+  cacheTime: 637752824138599912
   cacheVersion: 9
 --- !u!114 &11400596774952455
 MonoBehaviour:
@@ -5860,6 +6970,34 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 0
+--- !u!114 &61089291259815914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/WindRuin/AmbienceWind2Dxd
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/WindRuin/AmbienceWind2Dxd
+  Guid:
+    Data1: -277671051
+    Data2: 1192012682
+    Data3: -667863136
+    Data4: -240418459
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: -2002093473478556198}
+  MinDistance: 0
+  MaxDistance: 4400
+  Length: 85699
 --- !u!114 &84773412474152023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5993,6 +7131,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 10000
   Length: 2000
+--- !u!114 &316736092264529648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/AmbienceWind2D/Fade
+  m_EditorClassIdentifier: 
+  Name: Fade
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &365636977665033993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6069,6 +7231,30 @@ MonoBehaviour:
   - Wood
   - Stone
   - Dirt
+  Exists: 1
+--- !u!114 &430563722532714268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/AmbienceHub2D/Fade
+  m_EditorClassIdentifier: 
+  Name: Fade
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
   Exists: 1
 --- !u!114 &467248914712102079
 MonoBehaviour:
@@ -6166,6 +7352,34 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &549121522678222855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Reverb
+  m_EditorClassIdentifier: 
+  Path: event:/Reverb
+  Guid:
+    Data1: 698384026
+    Data2: 1169193432
+    Data3: 461193387
+    Data4: -650903915
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 3149733269719274557}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 5000
 --- !u!114 &559047393674935988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6508,6 +7722,57 @@ MonoBehaviour:
   - Stone
   - Dirt
   Exists: 0
+--- !u!114 &1072072934592555771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/BookOpen
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/BookOpen
+  Guid:
+    Data1: -1240064565
+    Data2: 1173581794
+    Data3: 1919202433
+    Data4: -647529774
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1180
+--- !u!114 &1079761920409991368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/AmbienceLava2Dxd/Fade
+  m_EditorClassIdentifier: 
+  Name: Fade
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &1172355537157572114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6565,6 +7830,33 @@ MonoBehaviour:
   - Stone
   - Dirt
   Exists: 1
+--- !u!114 &1242597378200159001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Game/Puzzle/SectionSolved
+  m_EditorClassIdentifier: 
+  Path: event:/Game/Puzzle/SectionSolved
+  Guid:
+    Data1: -759374861
+    Data2: 1142582221
+    Data3: -1127120707
+    Data4: 1694932054
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 6163
 --- !u!114 &1318795020861016349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7220,6 +8512,34 @@ MonoBehaviour:
   IsGlobal: 1
   Labels: []
   Exists: 1
+--- !u!114 &2224403500462026691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/LavaRuin/AmbienceLava2Dxd
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/LavaRuin/AmbienceLava2Dxd
+  Guid:
+    Data1: 52939139
+    Data2: 1238270141
+    Data3: -675030136
+    Data4: -628670365
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 1079761920409991368}
+  MinDistance: 0
+  MaxDistance: 4400
+  Length: 85699
 --- !u!114 &2233598561589898661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7243,6 +8563,35 @@ MonoBehaviour:
   Type: 0
   IsGlobal: 0
   Labels: []
+  Exists: 1
+--- !u!114 &2234333439170442873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Roll Land/Terrain
+  m_EditorClassIdentifier: 
+  Name: Terrain
+  StudioPath: 
+  Min: 0
+  Max: 4
+  Default: 3
+  ID:
+    data1: 0
+    data2: 0
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Grass
+  - Gravel
+  - Wood
+  - Stone
+  - Dirt
   Exists: 1
 --- !u!114 &2404610637021721118
 MonoBehaviour:
@@ -7482,6 +8831,33 @@ MonoBehaviour:
   IsGlobal: 1
   Labels: []
   Exists: 1
+--- !u!114 &2717124998536433515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Game/Puzzle/SymbolClear
+  m_EditorClassIdentifier: 
+  Path: event:/Game/Puzzle/SymbolClear
+  Guid:
+    Data1: -2034314138
+    Data2: 1163615883
+    Data3: 703150208
+    Data4: 996893704
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 930
 --- !u!114 &2777429478693299357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7661,6 +9037,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 4000
+--- !u!114 &2902911064138465488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/AmbienceExample/Fade
+  m_EditorClassIdentifier: 
+  Name: Fade
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &2960478494280885292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7715,6 +9115,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 7524
+--- !u!114 &3149733269719274557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Reverb/Reveeeerb
+  m_EditorClassIdentifier: 
+  Name: Reveeeerb
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &3167711572124828063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7890,6 +9314,34 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &3476861869609169565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/Hub/AmbienceHubInterior
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/Hub/AmbienceHubInterior
+  Guid:
+    Data1: 626325910
+    Data2: 1140221776
+    Data3: -1324469089
+    Data4: 1721782683
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 3892516190025947061}
+  MinDistance: 0
+  MaxDistance: 4400
+  Length: 85699
 --- !u!114 &3515087994134036079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8076,6 +9528,33 @@ MonoBehaviour:
   - Stone
   - Dirt
   Exists: 1
+--- !u!114 &3790555101835734393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Game/Puzzle/Nodeog
+  m_EditorClassIdentifier: 
+  Path: event:/Game/Puzzle/Nodeog
+  Guid:
+    Data1: 785927589
+    Data2: 1080871724
+    Data3: -233554785
+    Data4: 411443888
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 3375
 --- !u!114 &3798115554121100349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8207,6 +9686,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1750
+--- !u!114 &3866997622177721495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Game/Puzzle/PuzzleStart
+  m_EditorClassIdentifier: 
+  Path: event:/Game/Puzzle/PuzzleStart
+  Guid:
+    Data1: 577480588
+    Data2: 1286312092
+    Data3: -180655439
+    Data4: -2087644227
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 5250
 --- !u!114 &3870241569107838441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8259,6 +9765,82 @@ MonoBehaviour:
   - Wood
   - Stone
   - Dirt
+  Exists: 1
+--- !u!114 &3892516190025947061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/AmbienceHubInterior/Fade
+  m_EditorClassIdentifier: 
+  Name: Fade
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &3902285614600378685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/LavaRuin/AmbienceLava
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/LavaRuin/AmbienceLava
+  Guid:
+    Data1: 965465491
+    Data2: 1146267724
+    Data3: -597064008
+    Data4: 47184684
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 5170119013136664546}
+  MinDistance: 0
+  MaxDistance: 4400
+  Length: 85699
+--- !u!114 &4039809246926406709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Reveeeerb
+  m_EditorClassIdentifier: 
+  Name: Reveeeerb
+  StudioPath: parameter:/Reveeeerb
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 471985825
+    data2: 322258112
+  Type: 0
+  IsGlobal: 1
+  Labels: []
   Exists: 1
 --- !u!114 &4066646820996825474
 MonoBehaviour:
@@ -8353,6 +9935,30 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
   m_Name: parameter:/Ambience/Fade
+  m_EditorClassIdentifier: 
+  Name: Fade
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &4158376298199418591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/AmbienceEarth2Dsdaas/Fade
   m_EditorClassIdentifier: 
   Name: Fade
   StudioPath: 
@@ -8491,7 +10097,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters:
-  - {fileID: 5668009543894232947}
+  - {fileID: 2902911064138465488}
   MinDistance: 0
   MaxDistance: 4400
   Length: 7000
@@ -8518,6 +10124,35 @@ MonoBehaviour:
   Type: 0
   IsGlobal: 1
   Labels: []
+  Exists: 1
+--- !u!114 &4355493391256565970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/SmallEnemyFootsteps/Terrain
+  m_EditorClassIdentifier: 
+  Name: Terrain
+  StudioPath: 
+  Min: 0
+  Max: 4
+  Default: 3
+  ID:
+    data1: 0
+    data2: 0
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Grass
+  - Gravel
+  - Wood
+  - Stone
+  - Dirt
   Exists: 1
 --- !u!114 &4380231971047288413
 MonoBehaviour:
@@ -9043,6 +10678,33 @@ MonoBehaviour:
   IsGlobal: 1
   Labels: []
   Exists: 1
+--- !u!114 &5054928387448214873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Game/Puzzle/NodeErase 3
+  m_EditorClassIdentifier: 
+  Path: event:/Game/Puzzle/NodeErase 3
+  Guid:
+    Data1: 1209688830
+    Data2: 1199740696
+    Data3: 1164128677
+    Data4: -790699870
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 3375
 --- !u!114 &5086598462478316367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9176,6 +10838,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 10000
   Length: 2000
+--- !u!114 &5170119013136664546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/AmbienceLava/Fade
+  m_EditorClassIdentifier: 
+  Name: Fade
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &5199358947302767331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9200,7 +10886,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: -3730816396269315780}
+  - {fileID: -1986252927260591393}
   MinDistance: 1
   MaxDistance: 20
   Length: 65430
@@ -9638,7 +11324,7 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 1
   Parameters:
-  - {fileID: 882015110633291304}
+  - {fileID: -8644120989956328232}
   MinDistance: 1
   MaxDistance: 20
   Length: 1650
@@ -9670,6 +11356,30 @@ MonoBehaviour:
   - Wood
   - Stone
   - Dirt
+  Exists: 1
+--- !u!114 &5837569478615787743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/AmbienceHubInterior2D/Fade
+  m_EditorClassIdentifier: 
+  Name: Fade
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
   Exists: 1
 --- !u!114 &5859910868797956063
 MonoBehaviour:
@@ -9878,6 +11588,33 @@ MonoBehaviour:
   - Stone
   - Dirt
   Exists: 1
+--- !u!114 &6061455201485206704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Game/Puzzle/SectionSolvedxd
+  m_EditorClassIdentifier: 
+  Path: event:/Game/Puzzle/SectionSolvedxd
+  Guid:
+    Data1: -2106319385
+    Data2: 1157027425
+    Data3: -250170202
+    Data4: 555184307
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 5125
 --- !u!114 &6132421430762360253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9953,6 +11690,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 65430
+--- !u!114 &6288136523185644762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/AmbienceHub/Fade
+  m_EditorClassIdentifier: 
+  Name: Fade
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &6315088415697632577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10025,6 +11786,34 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &6410731651890310894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/EarthRuin/AmbienceEarth2D
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/EarthRuin/AmbienceEarth2D
+  Guid:
+    Data1: 1326492461
+    Data2: 1247798513
+    Data3: -1788572490
+    Data4: 1718216265
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: -8868327719125927660}
+  MinDistance: 0
+  MaxDistance: 4400
+  Length: 85699
 --- !u!114 &6534484643333273673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10171,7 +11960,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: -1160806396682156097}
+  - {fileID: -1916244720575336887}
   MinDistance: 0
   MaxDistance: 4400
   Length: 65430
@@ -10508,6 +12297,30 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &7738888604979262101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/SafeRoom/Bass
+  m_EditorClassIdentifier: 
+  Name: Bass
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 0
+    data2: 0
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &7748799271924719395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10532,7 +12345,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: -2845429526012825372}
+  - {fileID: -7617052403511359808}
   MinDistance: 1
   MaxDistance: 20
   Length: 41410
@@ -10560,6 +12373,33 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &7871510625887661102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/Soft Magic/Portal/PortalEnter
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/Soft Magic/Portal/PortalEnter
+  Guid:
+    Data1: -999872048
+    Data2: 1188193855
+    Data3: -1073207906
+    Data4: -399017908
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 6131
 --- !u!114 &7913797519804411211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10642,6 +12482,33 @@ MonoBehaviour:
   - Stone
   - Dirt
   Exists: 1
+--- !u!114 &7963059769626142560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/Soft Magic/Crystal1
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/Soft Magic/Crystal1
+  Guid:
+    Data1: 762233290
+    Data2: 1278960077
+    Data3: 1111558789
+    Data4: 1261736453
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 40400
 --- !u!114 &7976226387967633966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10820,6 +12687,33 @@ MonoBehaviour:
   - Stone
   - Dirt
   Exists: 1
+--- !u!114 &8201012832589052408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Game/Puzzle/Node
+  m_EditorClassIdentifier: 
+  Path: event:/Game/Puzzle/Node
+  Guid:
+    Data1: -1539721847
+    Data2: 1087519854
+    Data3: 631930002
+    Data4: 78226364
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 15800
 --- !u!114 &8220557020162193088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10844,6 +12738,33 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 0
+--- !u!114 &8310006238907197472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Game/Puzzle/PuzzleExit
+  m_EditorClassIdentifier: 
+  Path: event:/Game/Puzzle/PuzzleExit
+  Guid:
+    Data1: -1725335930
+    Data2: 1162087037
+    Data3: -1053611093
+    Data4: -216047227
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 5500
 --- !u!114 &8370653517307973103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10873,6 +12794,34 @@ MonoBehaviour:
   - Stone
   - Dirt
   Exists: 1
+--- !u!114 &8408903445517948831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/LavaRuin/AmbienceLava2D
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/LavaRuin/AmbienceLava2D
+  Guid:
+    Data1: 1758089748
+    Data2: 1094671389
+    Data3: -704714855
+    Data4: 883606777
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: -1989152393901665090}
+  MinDistance: 0
+  MaxDistance: 4400
+  Length: 85699
 --- !u!114 &8421284479269937904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11182,6 +13131,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 7524
+--- !u!114 &8940417162923947027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/BookClose
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/BookClose
+  Guid:
+    Data1: -233538310
+    Data2: 1329822273
+    Data3: 208981689
+    Data4: 797730252
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1500
 --- !u!114 &8973506723339322088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11235,6 +13211,33 @@ MonoBehaviour:
   - Stone
   - Dirt
   Exists: 1
+--- !u!114 &9069427287005602291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/Soft Magic/Crystal
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/Soft Magic/Crystal
+  Guid:
+    Data1: 856792544
+    Data2: 1262794995
+    Data3: -275588674
+    Data4: -1544757446
+  Banks:
+  - {fileID: -4095469730483606745}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 40
+  Length: 183635
 --- !u!114 &9105762700090601823
 MonoBehaviour:
   m_ObjectHideFlags: 0
