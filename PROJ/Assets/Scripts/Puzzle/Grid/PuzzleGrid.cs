@@ -39,6 +39,7 @@ public class PuzzleGrid : MonoBehaviour {
 
     private FMOD.Studio.EventInstance CreateNewLineSound;
     private FMOD.Studio.EventInstance EraseLineSound;
+    private FMOD.Studio.EventInstance SymbolClear;
 
     public string GetSolution() 
     {
@@ -162,6 +163,10 @@ public class PuzzleGrid : MonoBehaviour {
     {
         ActivateNode(startNode, false);
         InstantiateFirstLine();
+        SymbolClear = FMODUnity.RuntimeManager.CreateInstance("event:/Game/Puzzle/SymbolClear");
+        SymbolClear.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        SymbolClear.start();
+        SymbolClear.release();
     }
 
     private void InstantiateFirstLine()

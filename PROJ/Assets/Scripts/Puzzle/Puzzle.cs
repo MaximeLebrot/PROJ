@@ -38,6 +38,8 @@ public class Puzzle : MonoBehaviour
     private FMOD.Studio.EventInstance PuzzleSolved; 
     private FMOD.Studio.EventInstance CompletePuzzleSound;
     private FMOD.Studio.EventInstance PuzzleExit;
+    private FMOD.Studio.EventInstance SectionSolved;
+    private FMOD.Studio.EventInstance SymbolClear;
     void Awake()
     {
         symbolPlacer = GetComponent<SymbolPlacer>();
@@ -140,6 +142,11 @@ public class Puzzle : MonoBehaviour
     {
         symbolPlacer.UnloadSymbols();
         currentPuzzleInstance.DestroyHazards();
+
+        SectionSolved = FMODUnity.RuntimeManager.CreateInstance("event:/Game/Puzzle/SectionSolved");
+        SectionSolved.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        SectionSolved.start();
+        SectionSolved.release();
 
 
         if (particles != null)
