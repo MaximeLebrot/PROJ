@@ -5,7 +5,7 @@ using UnityEngine;
 public class VoiceInputController : MonoBehaviour
 {
     private InputMaster inputMaster;
-    private GameObject ArmlessCamera;
+    [SerializeField] private GameObject ArmlessCamera;
 
     void Awake()
     {
@@ -32,12 +32,16 @@ public class VoiceInputController : MonoBehaviour
         {
             GetComponent<VoiceMovementArmless>().enabled = false;
             GetComponent<VoiceMovementMouse>().enabled = false;
+            ArmlessCamera.SetActive(false);
+
             Debug.Log("1");
         }
         if (inputMaster.Voice.TurnOnMouse.triggered)
         {
             GetComponent<VoiceMovementArmless>().enabled = false;
             GetComponent<VoiceMovementMouse>().enabled = true;
+            ArmlessCamera.SetActive(false);
+
             Debug.Log("2");
 
         }
@@ -45,6 +49,7 @@ public class VoiceInputController : MonoBehaviour
         {
             GetComponent<VoiceMovementMouse>().enabled = false;
             GetComponent<VoiceMovementArmless>().enabled = true;
+            ArmlessCamera.SetActive(true);
             Debug.Log("3");
 
         }
