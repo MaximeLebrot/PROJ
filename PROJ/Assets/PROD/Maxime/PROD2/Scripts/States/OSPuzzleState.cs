@@ -51,11 +51,11 @@ public class OSPuzzleState : PlayerState
                 giveLostTime = false;
                 if (timer >= time)
                 {
-                    if (iterator >= puzzle.UINodes.Count)
+                    if (iterator >= OSPuzzle.UINodes.Count)
                         iterator = 0;
-                    foreach (OSPuzzleNode node in puzzle.UINodes)
+                    foreach (OSPuzzleNode node in OSPuzzle.UINodes)
                         node.DeselectPuzzleNode();
-                    puzzle.UINodes[iterator].SelectPuzzleNode();
+                    OSPuzzle.UINodes[iterator].SelectPuzzleNode();
                     iterator++;
                     timer = 0;
                 }
@@ -92,7 +92,7 @@ public class OSPuzzleState : PlayerState
     private int GetActiveButton()
     {
         OSPuzzleNode node = null;
-        foreach (OSPuzzleNode n in puzzle.UINodes)
+        foreach (OSPuzzleNode n in OSPuzzle.UINodes)
         {
             if (n.GetSelected())
                 node = n;

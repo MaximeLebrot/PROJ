@@ -4,42 +4,55 @@ using UnityEngine;
 public class OSPuzzle : MonoBehaviour
 {
     [SerializeField] private MetaPlayerController player;
-    [SerializeField] private GameObject UINodeParent;
+    [SerializeField] private static GameObject UINodeParent;
 
-    public List<OSPuzzleNode> UINodes = new List<OSPuzzleNode>();
+    public static List<OSPuzzleNode> UINodes = new List<OSPuzzleNode>();
 
     public void StartOSPuzzle(StartPuzzleEvent eve)
     {
+        if (player == null)
+            player = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<MetaPlayerController>();
         //player.velocity = Vector3.zero
         player.ChangeStateToOSPuzzle(eve);
-        FindPuzzleUINodes();
-        UINodeParent.SetActive(true);
+        SetUINodesActive(true);
     }
 
     public void ExitOSPuzzle(ExitPuzzleEvent eve)
     {
-        UINodeParent.SetActive(false);
+        SetUINodesActive(false);
         player.ChangeStateToOSWalk(eve);
     }
 
     private void Awake()
     {
-        if (player == null)
-            player = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<MetaPlayerController>();
+        FindPuzzleUINodes();
+        //if (player == null)
+        //player = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<MetaPlayerController>();
+    }
+
+    private void Start()
+    {
+        //if (player == null)
+            //player = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<MetaPlayerController>();
     }
 
     private void FindPuzzleUINodes()
     {
         if (UINodeParent == null)
-        {
             UINodeParent = GameObject.FindGameObjectWithTag("OneSwitchCanvas");
-            if (UINodes.Count == 0)
-            {
-                UINodes.AddRange(UINodeParent.GetComponentsInChildren<OSPuzzleNode>());
-                for (int i = 0; i < UINodes.Count; i++)
-                    UINodes[i].Initialize(i);
-            }
+        //UINodeParent.SetActive(true);
+        if (UINodes.Count == 0)
+        {
+            UINodes.AddRange(UINodeParent.GetComponentsInChildren<OSPuzzleNode>());
+            for (int i = 0; i < UINodes.Count; i++)
+                UINodes[i].Initialize(i);
         }
+    }
+
+    private void SetUINodesActive(bool active)
+    {
+        foreach (OSPuzzleNode node in UINodes)
+            node.gameObject.SetActive(active);
     }
 
     private void OnEnable()
