@@ -10,6 +10,7 @@ public class SprintState : PlayerState
     private bool holdToSprint = true;
     public override void Initialize()
     {
+        //REBIND IS WEIRD. Jag kan bara starta sprint med gamla knappen och med nya kan jag starta och sluta
         base.Initialize();
         EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
         sprint = player.inputReference.InputMaster.Sprint;
