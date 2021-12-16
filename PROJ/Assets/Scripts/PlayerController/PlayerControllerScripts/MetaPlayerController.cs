@@ -58,11 +58,15 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     private void StartPuzzle(StartPuzzleEvent spe)
     {
+        Debug.Log("Start puzzle, one switch mode is:" + oneSwitchMode);
         puzzleController.CurrentPuzzleID = spe.info.ID;
         puzzleController.PuzzleTransform = spe.info.puzzlePos;
         playerController3D.ResetCharacterModel();
         if (!oneSwitchMode)
+        {
+            Debug.Log("Changing to puzzle state");
             stateMachine.ChangeState<PuzzleState>();
+        }
         else
         {
             OSPuzzle osPuzzle = spe.info.puzzlePos.gameObject.GetComponent<OSPuzzle>();
@@ -98,18 +102,27 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         yield return new WaitForSeconds(0.8f);
         playerController3D.SetDeceleration(storedDeceleration);
     }
-    
-    public void ChangeStateToOSPuzzle(StartPuzzleEvent eve) => stateMachine.ChangeState<OSPuzzleState>();
 
-    public void ChangeStateToOSWalk(ExitPuzzleEvent eve) => stateMachine.ChangeState<OSWalkState>();
+    public void ChangeStateToOSPuzzle(StartPuzzleEvent eve)
+    {
+        Debug.Log("Change State to OS Puzzle");
+        stateMachine.ChangeState<OSPuzzleState>();
+    }
+
+    public void ChangeStateToOSWalk(ExitPuzzleEvent eve)
+    {
+        Debug.Log("Change State to OS Walk");
+        stateMachine.ChangeState<OSWalkState>();
+    }
 
     public void ActivateOneSwitch(SaveSettingsEvent eve)
     {
+        Debug.Log("Activate One Switch");
         oneSwitchMode = eve.settingsData.oneHandMode;
         if (oneSwitchMode)
+        {
             stateMachine.ChangeState<OSSpinState>();
-        else
-            stateMachine.ChangeState<WalkState>();
+        }
     }
     
     private void Update()
