@@ -42,12 +42,14 @@ public class LogbookHandler : MonoBehaviour
                 animator.SetTrigger("trigger");
                 //logbook.SetActive(false);
                 isOpen = false;
+                Cursor.visible = false;
             }
             else
             {
                 logbook.SetActive(true);
                 animator.SetTrigger("trigger");
                 isOpen = true;
+                Cursor.visible = true;
             }
         }
         if (isOpen)
@@ -55,7 +57,7 @@ public class LogbookHandler : MonoBehaviour
             // Change page with keys
             if (inputMaster.Logbook.TurnLeft.triggered)
             {
-                TurnPageLeft();
+                TurnPageLeft();          
             }
             if (inputMaster.Logbook.TurnRight.triggered)
             {
