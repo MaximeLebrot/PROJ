@@ -21,8 +21,12 @@ namespace NewCamera {
             this.pivotTarget = pivotTarget;
             this.characterModel = characterModel;
         }
-        
-        public virtual void EnterBehaviour() => previousRotation = pivotTarget.rotation;
+
+        public virtual void EnterBehaviour() {
+            previousRotation = pivotTarget.rotation;
+            pivotTarget.localRotation = Quaternion.Euler(0, 0, 0);
+        }
+ 
 
 
         public virtual Vector3 ExecuteMove(Vector3 calculatedOffset) {

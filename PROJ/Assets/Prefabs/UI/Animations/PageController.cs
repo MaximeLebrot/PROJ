@@ -12,11 +12,15 @@ public class PageController : MonoBehaviour {
 
     private MenuSettings newPage;
     
-    private readonly Stack<MenuSettings> subMenuDepth = new Stack<MenuSettings>(); 
+    private readonly Stack<MenuSettings> subMenuDepth = new Stack<MenuSettings>();
 
-    
+    //Förlåt Jonathan /martin
+    GameMenuController gameMenuController;
+
     private void Awake() {
-        
+        gameMenuController = GetComponentInParent<GameMenuController>();
+
+
         pageObjects = new HashSet<MenuSettings>();
         
         for (int i = 0; i < transform.childCount; i++) {
@@ -68,6 +72,10 @@ public class PageController : MonoBehaviour {
     }
 
     public bool CanMoveUpOneLevel() {
+
+        if (subMenuDepth.Count < 1)
+            return false;
+        
         subMenuDepth.Pop();
 
         if (subMenuDepth.Count > 0) {
@@ -77,5 +85,13 @@ public class PageController : MonoBehaviour {
 
         return false;
 
+    }
+
+    //Called from scene changer buttons (beta release) /Martin
+    public void CloseMenuOnSceneChange()
+    {
+        DisableCurrentPage();
+        gameMenuController.SceneChangerCloseMenu();
+        subMenuDepth.Clear();
     }
 }
