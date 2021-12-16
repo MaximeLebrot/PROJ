@@ -25,8 +25,8 @@ public class ContrastModeSwitch : MonoBehaviour {
         
         mainRegularRenderLayers = mainCamera.cullingMask = -1; //Render every layer. 
 
-       // if(postProcess.profile.TryGet(out colorAdjustments)) 
-    //        overlayCamera.transform.gameObject.SetActive(false);
+        postProcess.profile.TryGet(out colorAdjustments); 
+        overlayCamera.transform.gameObject.SetActive(false);
     }
 
     private void OnEnable() => EventHandler<SaveSettingsEvent>.RegisterListener(SwitchToContrastMode);
@@ -37,7 +37,7 @@ public class ContrastModeSwitch : MonoBehaviour {
         contrastModeActive = settings.settingsData.highContrastMode;
         overlayCamera.gameObject.SetActive(contrastModeActive);
         mainCamera.cullingMask = contrastModeActive ? contrastModeRenderLayers : mainRegularRenderLayers; 
-       // colorAdjustments.saturation.value = contrastModeActive ? colorAdjustments.saturation.min : 0;
+        colorAdjustments.saturation.value = contrastModeActive ? colorAdjustments.saturation.min : 0;
     }
     
 }
