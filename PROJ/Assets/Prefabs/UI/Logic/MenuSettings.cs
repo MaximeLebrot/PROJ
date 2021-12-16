@@ -25,9 +25,12 @@ public abstract class MenuSettings : MonoBehaviour {
         menuOptions = new Dictionary<int, UIMenuItem>();
 
         List<UIMenuItem> childOptions = GetComponentsInChildren<UIMenuItem>().ToList();
-        
-        foreach (UIMenuItem menuItem in childOptions) 
+
+        foreach (UIMenuItem menuItem in childOptions) {
+            menuItem.GenerateID();
             menuOptions.Add(menuItem.ID, menuItem);
+        }
+            
         
         SubMenuInitialize();
 

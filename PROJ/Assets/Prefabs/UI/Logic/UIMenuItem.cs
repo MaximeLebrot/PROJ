@@ -5,8 +5,11 @@ using UnityEngine.Events;
 public abstract class UIMenuItem : MonoBehaviour {
     public int ID { get; private set; }
 
-    private void Awake() {
+    public bool hasHashedID = false;
+    
+    public void GenerateID() {
         ID = name.GetHashCode();
+        hasHashedID = true;
         Initialize();
     }
 
