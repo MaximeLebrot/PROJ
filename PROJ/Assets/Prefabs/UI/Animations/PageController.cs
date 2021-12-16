@@ -68,6 +68,10 @@ public class PageController : MonoBehaviour {
     }
 
     public bool CanMoveUpOneLevel() {
+
+        if (subMenuDepth.Count < 1)
+            return false;
+        
         subMenuDepth.Pop();
 
         if (subMenuDepth.Count > 0) {
