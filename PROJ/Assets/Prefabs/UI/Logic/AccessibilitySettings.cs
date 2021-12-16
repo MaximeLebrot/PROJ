@@ -2,9 +2,6 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class AccessibilitySettings : MenuSettings {
-    protected override void SubMenuInitialize() {
-        menuOptions[ExtractMenuItem("ChangeFontSize").ID].OnValueChanged(() => Debug.Log($"Change font size to: {menuOptions[ExtractMenuItem("ChangeFontSize").ID].GetValue()}"));
-    }
 
     public override void SetMenuItems(SettingsData settingsData) {
         menuOptions[ExtractMenuItem("ChangeFontSize").ID].SetValue(settingsData.fontSize);
@@ -17,6 +14,7 @@ public class AccessibilitySettings : MenuSettings {
         menuOptions[ExtractMenuItem("EasyPuzzleControls").ID].SetValue(settingsData.easyPuzzleControls);
         menuOptions[ExtractMenuItem("BigNodes").ID].SetValue(settingsData.bigNodes);
         menuOptions[ExtractMenuItem("SymbolDifficulty").ID].SetValue(settingsData.symbolDifficulty);
+        menuOptions[ExtractMenuItem("OneSwitchMode").ID].SetValue(settingsData.oneSwitchMode);
     }
     
     public override void ApplyItemValues(ref SettingsData settingsData) {
@@ -30,5 +28,6 @@ public class AccessibilitySettings : MenuSettings {
         settingsData.easyPuzzleControls = menuOptions[ExtractMenuItem("EasyPuzzleControls").ID].GetValue();
         settingsData.bigNodes = menuOptions[ExtractMenuItem("BigNodes").ID].GetValue();
         settingsData.symbolDifficulty = menuOptions[ExtractMenuItem("SymbolDifficulty").ID].GetValue();
+        settingsData.oneSwitchMode = menuOptions[ExtractMenuItem("OneSwitchMode").ID].GetValue();
     }
 }

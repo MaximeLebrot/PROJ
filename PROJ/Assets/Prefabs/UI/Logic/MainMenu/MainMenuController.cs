@@ -1,10 +1,8 @@
 using UnityEngine.InputSystem;
 using UnityEngine;
 public class MainMenuController : MenuController {
-
-
-    [SerializeField] private MenuSettings first;
     
+    [SerializeField] private MenuSettings first;
     
     protected override void Initialize() {
         controllerInputReference.InputMaster.Anykey.performed += OnAnyKeyPressed;
