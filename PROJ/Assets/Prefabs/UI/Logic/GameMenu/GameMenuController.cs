@@ -3,8 +3,9 @@ using UnityEngine.InputSystem;
 
 public class GameMenuController : MenuController {
 
-    public MenuSettings settingsMenuObject;
-
+    [SerializeField] private MenuSettings menuButtons;
+    [SerializeField] private GameObject backdrop;
+    
     private System.Action onBackInput;
     
     protected override void Initialize() {
@@ -21,7 +22,7 @@ public class GameMenuController : MenuController {
         ActivateComponents(true);
         EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(true));
 
-        ActivateSubMenu(settingsMenuObject);
+        ActivateSubMenu(menuButtons);
         onBackInput = Back;
         Cursor.lockState = CursorLockMode.None;
     }
@@ -37,8 +38,6 @@ public class GameMenuController : MenuController {
         onBackInput = OpenMenu;
         
     }
-
-    
     
     private void CloseMenu() {
         ActivateComponents(false);
@@ -47,7 +46,8 @@ public class GameMenuController : MenuController {
 
     private void ActivateComponents(bool activateComponents) {
         Cursor.lockState = activateComponents ? CursorLockMode.None : CursorLockMode.Locked;
-        settingsMenuObject.gameObject.SetActive(activateComponents);
+        menuButtons.gameObject.SetActive(activateComponents);
+        backdrop.SetActive(activateComponents);
         EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(activateComponents));
     }
 }

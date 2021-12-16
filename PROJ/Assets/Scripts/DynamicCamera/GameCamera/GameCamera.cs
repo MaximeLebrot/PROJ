@@ -44,12 +44,12 @@ public class GameCamera : MonoBehaviour {
         behaviours.Add(typeof(InGameMenuCameraBehaviour),  cameraBehaviours[4]);
         behaviours.Add(typeof(TransportationBegunEvent),  cameraBehaviours[5]);
         
-        currentBaseCameraBehaviour = behaviours[typeof(BaseCameraBehaviour)];
-        
-        currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
+        ChangeBehaviour<BaseCameraBehaviour>();
         
         behaviourQueue = ExecuteCameraBehaviour;
+        
     }
+    
     private void LateUpdate() => behaviourQueue?.Invoke();
 
     private void ExecuteCameraBehaviour() {
@@ -114,8 +114,10 @@ public class GameCamera : MonoBehaviour {
     
 
     private void OnPuzzleExit(ExitPuzzleEvent exitPuzzleEvent) {
-        EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
-        ChangeBehaviour(previousCameraBehaviour);
+        if (exitPuzzleEvent.success) {
+            EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
+            ChangeBehaviour(previousCameraBehaviour);
+        }
     }
 
     private void OnLookAndMove(CameraLookAndMoveToEvent lookAndMove) {
@@ -127,56 +129,39 @@ public class GameCamera : MonoBehaviour {
 
 
     private void OnPuzzleStart(StartPuzzleEvent startPuzzleEvent) {
-            //Quick and dirty code that i dont even know if its correct?? /Martin
-        if (currentBaseCameraBehaviour.GetType() == typeof(PuzzleCameraBehaviour))
-        {
+        
+        //PuzzleBehaviour already active.
+        if (currentBaseCameraBehaviour.GetType() == typeof(PuzzleCameraBehaviour)) 
             return;
-        }
 
-        //Martin added this line**
         previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
-        Debug.Log("Start puzzle event transform is" + startPuzzleEvent.info.puzzlePos);
-        //----------------------------------**
-
+        
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);   
         
         ChangeBehaviour<PuzzleCameraBehaviour>();
-
+        
         PuzzleCameraBehaviour puzzleBehaviour = currentBaseCameraBehaviour as PuzzleCameraBehaviour;
-        Debug.Log("Current behaviour is " + currentBaseCameraBehaviour.GetType());
-        Debug.Assert(puzzleBehaviour);
-        Debug.Log("PuzzleBehaviour is null?  " + puzzleBehaviour == null);
+        
         puzzleBehaviour.AssignRotation(startPuzzleEvent.info.puzzlePos);
     }
 
-    private void ChangeBehaviour<T>() where T : BaseCameraBehaviour
-    {
-       /* Debug.Log("Change behaviour..");
-        if (pendingAccessibilityUpdate)
-        {
-            Debug.Log("Detected pending accessibility updates");
-            pendingAccessibilityUpdate = false;
+    private void ChangeBehaviour<T>() where T : BaseCameraBehaviour {
+        
+        if(pendingAccessibilityUpdate)
             HandlePendingAccessibilityUpdate();
-        }
-
-        else
-        {*/
+        else {
             currentBaseCameraBehaviour = behaviours[typeof(T)];
             currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
             currentBaseCameraBehaviour.EnterBehaviour();
-        //}
+        }
     }
 
     
     private void ChangeBehaviour(Type type) {
-        if (pendingAccessibilityUpdate)
-        {
-
-            pendingAccessibilityUpdate = false;
+        if (pendingAccessibilityUpdate) {
             HandlePendingAccessibilityUpdate();
-        }
-        else
-        {
+        } 
+        else {
             currentBaseCameraBehaviour = behaviours[type];
             currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
             currentBaseCameraBehaviour.EnterBehaviour();
@@ -209,16 +194,32 @@ public class GameCamera : MonoBehaviour {
     }
 
     private void OnSettingsChanged(SaveSettingsEvent settingsEvent) {
-        oneHandModeIsActive = settingsEvent.settingsData.oneHandMode;
 
-        Type currentBehaviourType = currentBaseCameraBehaviour.GetType();
+        bool oneHandModeChanged = oneHandModeIsActive == settingsEvent.settingsData.oneHandMode;
+        
+        //Jesus christ
+        if (oneHandModeChanged == false) {
 
-        if (pendingAccessibilityUpdate && currentBehaviourType != typeof(BaseCameraBehaviour) || currentBehaviourType != typeof(OneHandCameraBehaviour))
-            pendingAccessibilityUpdate = true;
+            oneHandModeIsActive = settingsEvent.settingsData.oneHandMode;
 
+            if (currentBaseCameraBehaviour) {
+                Type currentBehaviourType = currentBaseCameraBehaviour.GetType();
+
+                if (currentBehaviourType != typeof(BaseCameraBehaviour) || currentBehaviourType != typeof(OneHandCameraBehaviour)) {
+                    pendingAccessibilityUpdate = true;
+                }
+                else 
+                    HandlePendingAccessibilityUpdate();
+            }
+            else 
+                HandlePendingAccessibilityUpdate();
+            
+        }
     }
-    private void HandlePendingAccessibilityUpdate()
-    {
+    private void HandlePendingAccessibilityUpdate() {
+
+        pendingAccessibilityUpdate = false;
+        
         if (oneHandModeIsActive)
             ChangeBehaviour<OneHandCameraBehaviour>();
         else
@@ -229,9 +230,9 @@ public class GameCamera : MonoBehaviour {
     public void AssignTargets() {
         try {
             pivotTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
-            character = GameObject.FindWithTag("PlayerModel").transform;
-        } catch (NullReferenceException e) {
-            Debug.Log("Couldn't find one or all targets, check if they have the right tag");
+            character = GameObject.FindObjectOfType<MetaPlayerController>().transform;
+        }
+        catch (NullReferenceException e) {
             Debug.Log(e);
         }
     }

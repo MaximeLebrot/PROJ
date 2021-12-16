@@ -58,8 +58,7 @@ public class GamePersistence : MonoBehaviour
         {
             savesHolder.saves[saveName] = saveData;
         }
-
-        Debug.Log(saveName);
+        
         savesHolder.currentNrOfSaves++;
         var json = JsonUtility.ToJson(savesHolder);
         PlayerPrefs.SetString("SaveData", json);
