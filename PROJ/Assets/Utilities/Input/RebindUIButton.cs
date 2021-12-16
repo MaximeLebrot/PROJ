@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using System;
+using TMPro;
 
 public class RebindUIButton : MonoBehaviour
 {
-    public Text description;
+    public TextMeshProUGUI description;
     public Button resetToDefault;
     public Button bindingButton;
-    public Text bindingButtonText;
+    public TextMeshProUGUI bindingButtonText;
     public InputActionReference action;
     private void OnBtnPress(InputAction.CallbackContext obj)
     {
