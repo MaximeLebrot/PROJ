@@ -56,7 +56,7 @@ public class SprintState : PlayerState
     }
     private void OnSprintActivate(InputAction.CallbackContext obj)
     {
-        stateMachine.ChangeState<WalkState>();      
+            stateMachine.ChangeState<WalkState>();      
     }
     private void OnSaveSettings(SaveSettingsEvent eve)
     {
