@@ -284,6 +284,8 @@ public class Puzzle : MonoBehaviour
 
     public void OnExitPuzzle(ExitPuzzleEvent eve)
     {
+        GetComponent<SphereCollider>().enabled = false;
+
         if (eve.success != true)
         {
             if (eve.info.ID == currentPuzzleInstance.GetPuzzleID())
