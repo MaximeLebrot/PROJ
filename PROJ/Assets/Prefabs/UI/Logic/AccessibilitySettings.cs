@@ -1,8 +1,5 @@
-using UnityEngine;
-using UnityEngine.UIElements;
-
 public class AccessibilitySettings : MenuSettings {
-
+    
     public override void SetMenuItems(SettingsData settingsData) {
         menuOptions[ExtractMenuItem("ChangeFontSize").ID].SetValue(settingsData.fontSize);
         menuOptions[ExtractMenuItem("Use_DyslexiaFont").ID].SetValue(settingsData.dyslexiaFont);
@@ -30,4 +27,5 @@ public class AccessibilitySettings : MenuSettings {
         settingsData.symbolDifficulty = menuOptions[ExtractMenuItem("SymbolDifficulty").ID].GetValue();
         settingsData.oneSwitchMode = menuOptions[ExtractMenuItem("OneSwitchMode").ID].GetValue();
     }
+    
 }

@@ -162,3 +162,6 @@ public class TransportationEndedEvent : IEvent {}
 
 //Use for making the settings menu to fire a SaveSettingsData
 public class RequestSettingsEvent : IEvent {}
+public class SceneChangeEvent : IEvent {}
+public class SceneLoadedEvent : IEvent {}
+

@@ -9,12 +9,15 @@ public abstract class MenuSettings : MonoBehaviour {
     protected Dictionary<int, UIMenuItem> menuOptions;
 
     private FadeGroup fadeGroup;
+
+    private FontChanger fontChanger;
     
     public void Initialize() {
 
         gameObject.SetActive(true);
         fadeGroup = GetComponent<FadeGroup>();
-
+        fontChanger = GetComponent<FontChanger>();
+        
         //Just in case
         foreach (CanvasGroup canvasGroup in GetComponentsInChildren<CanvasGroup>())
             canvasGroup.alpha = 0;
@@ -27,11 +30,13 @@ public abstract class MenuSettings : MonoBehaviour {
             menuOptions.Add(menuItem.ID, menuItem);
         
         SubMenuInitialize();
+
+        //fontChanger.GatherAllTextComponents();
         
         gameObject.SetActive(false);
     }
 
-   
+    public void SubscribeToUIItem(string itemName, Action callback) => ExtractMenuItem(itemName).OnValueChanged(callback);
 
     protected virtual void SubMenuInitialize() {}
     
