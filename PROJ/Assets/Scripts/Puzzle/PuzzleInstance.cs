@@ -15,7 +15,7 @@ public class PuzzleInstance : MonoBehaviour
     private bool currentState;
     private List<Hazard> instantiatedHazards = new List<Hazard>();
 
-    public string puzzleDescription;
+    public AudioClip puzzleDescription;
 
     private FMOD.Studio.EventInstance puzzleDescriptionSound;
 
