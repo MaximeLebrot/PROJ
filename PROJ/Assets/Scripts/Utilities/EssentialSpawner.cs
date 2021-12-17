@@ -7,6 +7,8 @@ public class EssentialSpawner : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject menu;
     [SerializeField] private GameObject cam;
+    [SerializeField] private GameObject canvasLogbook;
+    [SerializeField] private GameObject audioManager;
 
 
     private void OnEnable()
@@ -29,6 +31,18 @@ public class EssentialSpawner : MonoBehaviour
             menu.gameObject.SetActive(true);
             menu.transform.parent = null;
             DontDestroyOnLoad(menu);
+        }
+        if (GameObject.FindGameObjectWithTag("CanvasLogbook") == false)
+        {
+            canvasLogbook.gameObject.SetActive(true);
+            canvasLogbook.transform.parent = null;
+            DontDestroyOnLoad(canvasLogbook);
+        }
+        if (GameObject.FindGameObjectWithTag("AudioManager") == false)
+        {
+            audioManager.gameObject.SetActive(true);
+            audioManager.transform.parent = null;
+            DontDestroyOnLoad(audioManager);
         }
 
         Destroy(gameObject);
