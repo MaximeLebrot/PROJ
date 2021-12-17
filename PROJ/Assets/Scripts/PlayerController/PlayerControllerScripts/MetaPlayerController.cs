@@ -42,12 +42,12 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     private void OnEnable()
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
-        EventHandler<SaveSettingsEvent>.RegisterListener(HandleOneSwitchSetting);
+        //EventHandler<SaveSettingsEvent>.RegisterListener(HandleOneSwitchSetting);
     }
     private void OnDisable()
     {
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
-        EventHandler<SaveSettingsEvent>.UnregisterListener(HandleOneSwitchSetting);
+        //EventHandler<SaveSettingsEvent>.UnregisterListener(HandleOneSwitchSetting);
     }
 
     //TEMPORARY
@@ -116,17 +116,17 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         stateMachine.ChangeState<OSWalkState>();
     }
 
-    public void HandleOneSwitchSetting(SaveSettingsEvent eve)
-    {
-        Debug.Log("One Switch is :" + eve.settingsData.oneSwitchMode);
-        oneSwitchMode = eve.settingsData.oneSwitchMode;
-        OSPuzzle osPuzzle = GetComponent<OSPuzzle>();
-        osPuzzle.enabled = oneSwitchMode;
-        if (oneSwitchMode)
-        {
-            stateMachine.ChangeState<OSSpinState>();
-        }
-    }
+    //private void HandleOneSwitchSetting(SaveSettingsEvent eve)
+    //{
+    //    Debug.Log("One Switch is :" + eve.settingsData.oneSwitchMode);
+    //    oneSwitchMode = eve.settingsData.oneSwitchMode;
+    //    OSPuzzle osPuzzle = GetComponent<OSPuzzle>();
+    //    osPuzzle.enabled = oneSwitchMode;
+    //    if (oneSwitchMode)
+    //    {
+    //        stateMachine.ChangeState<OSSpinState>();
+    //    }
+    //}
     
     private void Update()
     {

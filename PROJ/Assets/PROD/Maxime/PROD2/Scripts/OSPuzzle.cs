@@ -4,7 +4,8 @@ using UnityEngine;
 public class OSPuzzle : MonoBehaviour
 {
     [SerializeField] private MetaPlayerController player;
-    [SerializeField] private static GameObject UINodeParent;
+    [SerializeField] private GameObject UINodeParent;
+    [SerializeField] private bool oneSwitch;
 
     public static List<OSPuzzleNode> UINodes = new List<OSPuzzleNode>();
 
@@ -26,6 +27,7 @@ public class OSPuzzle : MonoBehaviour
 
     private void Awake()
     {
+        EventHandler<SaveSettingsEvent>.RegisterListener(HandleOSSetting);
         FindPuzzleUINodes();
         SetUINodesActive(false);
         if (player == null)
@@ -60,12 +62,23 @@ public class OSPuzzle : MonoBehaviour
 
     private void OnEnable()
     {
+        EventHandler<SaveSettingsEvent>.RegisterListener(HandleOSSetting);
         EventHandler<StartPuzzleEvent>.RegisterListener(StartOSPuzzle);
         EventHandler<ExitPuzzleEvent>.RegisterListener(ExitOSPuzzle);
     }
 
+    private void HandleOSSetting(SaveSettingsEvent eve)
+    {
+        //this.enabled = eve.settingsData.oneSwitchMode;
+        if (this.enabled == false)
+            return;
+        Debug.Log("Kör: " + eve.settingsData.oneSwitchMode);
+
+    }
+
     private void OnDisable()
     {
+        EventHandler<SaveSettingsEvent>.UnregisterListener(HandleOSSetting);
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartOSPuzzle);
         EventHandler<ExitPuzzleEvent>.UnregisterListener(ExitOSPuzzle);
     }

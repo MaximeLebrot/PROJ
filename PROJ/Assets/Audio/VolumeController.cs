@@ -7,10 +7,14 @@ public class VolumeController : MonoBehaviour
 
     private FMOD.Studio.VCA VcaController;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
+
     private void Start()
     {
         VcaController = FMODUnity.RuntimeManager.GetVCA("vca:/Master");
-        Debug.Log(VcaController);
     }
 
     private void OnEnable()
@@ -25,7 +29,7 @@ public class VolumeController : MonoBehaviour
 
     private void UpdateVolume(SaveSettingsEvent eve)
     {
-        Debug.Log("Update Volume called with master vol: " + eve.settingsData.masterVolume);
+        //Debug.Log("Update Volume called with master vol: " + eve.settingsData.masterVolume);
         masterVolume = eve.settingsData.masterVolume;
         musicVolume = eve.settingsData.musicVolume;
         soundEffectsVolume = eve.settingsData.soundEffectsVolume;
