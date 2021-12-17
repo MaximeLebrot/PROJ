@@ -22,19 +22,13 @@ public class ContrastModeObject : MonoBehaviour {
 
     }
     
-    private void OnEnable() {
-        EventHandler<SaveSettingsEvent>.RegisterListener(DetermineIfContrastModeIsActive);
-        
-    }
+    private void OnEnable() => EventHandler<SaveSettingsEvent>.RegisterListener(DetermineIfContrastModeIsActive);
 
     private void DetermineIfContrastModeIsActive(SaveSettingsEvent requestSettingsEvent) {
 
         bool isContrastModeActive = requestSettingsEvent.settingsData.highContrastMode;
 
-        if (!isContrastModeActive) return;
-        
-        SwapMaterials(true);
-
+        SwapMaterials(isContrastModeActive);
     }
     
     private void OnDisable() => EventHandler<SaveSettingsEvent>.UnregisterListener(DetermineIfContrastModeIsActive);
