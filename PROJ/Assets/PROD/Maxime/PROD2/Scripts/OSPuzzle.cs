@@ -69,7 +69,7 @@ public class OSPuzzle : MonoBehaviour
 
     private void HandleOSSetting(SaveSettingsEvent eve)
     {
-        this.enabled = eve.settingsData.oneSwitchMode;
+        //this.enabled = eve.settingsData.oneSwitchMode;
         if (this.enabled == false)
             return;
         Debug.Log("Kör: " + eve.settingsData.oneSwitchMode);
