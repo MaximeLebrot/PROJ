@@ -14,7 +14,7 @@ public class AccessibilitySettings : MenuSettings {
         menuOptions[ExtractMenuItem("OneSwitchMode").ID].SetValue(settingsData.oneSwitchMode);
     }
     
-    public override void ApplyItemValues(ref SettingsData settingsData) {
+    public override void ExtractValues(ref SettingsData settingsData) {
         
         settingsData.fontSize = menuOptions[ExtractMenuItem("ChangeFontSize").ID].GetValue();
         settingsData.dyslexiaFont = menuOptions[ExtractMenuItem("Use_DyslexiaFont").ID].GetValue();

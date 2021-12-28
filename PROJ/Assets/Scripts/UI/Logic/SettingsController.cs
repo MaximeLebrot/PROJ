@@ -50,9 +50,12 @@ public class SettingsController : MonoBehaviour {
             string path = Path.Combine(Application.streamingAssetsPath, "DefaultSettings.json");
             StreamReader streamReader = new StreamReader(path);
             
-            json = streamReader.ReadToEnd();
+            json = File.ReadAllText(path);
+            
+             //= streamReader.ReadToEnd();
             RestoreDefaultValues(json, false);
             PlayerPrefs.SetString("SavedSettings", json);
+            
         }
         
         SettingsData savedSettings = JsonUtility.FromJson<SettingsData>(json);
@@ -63,12 +66,13 @@ public class SettingsController : MonoBehaviour {
     
     private void UpdateUserSettings() {
         foreach(MenuSettings menuSettings in settingObjects)
-            menuSettings.ApplyItemValues(ref userSettings);
+            menuSettings.ExtractValues(ref userSettings);
     }
 
     private void SetValues(SettingsData settings) {
-        foreach (MenuSettings menuSettings in settingObjects)
-            menuSettings.SetMenuItems(settings);
+
+        foreach(MenuSettings menuSettings in settingObjects)
+            menuSettings.SetMenuItems(userSettings);
     }
     
 }

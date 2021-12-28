@@ -4,7 +4,7 @@ public class FrontPage : MenuSettings {
      
     }
 
-    public override void ApplyItemValues(ref SettingsData settingsData) {
+    public override void ExtractValues(ref SettingsData settingsData) {
        
     }
 }

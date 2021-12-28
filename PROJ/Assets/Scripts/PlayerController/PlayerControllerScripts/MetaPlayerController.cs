@@ -118,7 +118,6 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     public void HandleOneSwitchSetting(SaveSettingsEvent eve)
     {
-        Debug.Log("One Switch is :" + eve.settingsData.oneSwitchMode);
         oneSwitchMode = eve.settingsData.oneSwitchMode;
         OSPuzzle osPuzzle = GetComponent<OSPuzzle>();
         osPuzzle.enabled = oneSwitchMode;

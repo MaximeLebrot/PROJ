@@ -20,6 +20,7 @@ public class DropDownItem : UIMenuItem {
         dropdownList.value = dropdownList.options.FindIndex(resolutionOption => resolutionOption.text.Equals(value.ToString()));
     }
 
+    
     private void ValueChanged(int value) {
 
         dynamic item = dropdownList.options[dropdownList.value].text;

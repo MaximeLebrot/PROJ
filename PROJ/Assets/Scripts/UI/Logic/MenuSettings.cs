@@ -9,7 +9,7 @@ public abstract class MenuSettings : MonoBehaviour {
     protected Dictionary<int, UIMenuItem> menuOptions;
 
     private FadeGroup fadeGroup;
-
+    
     private FontChanger fontChanger;
     
     public void Initialize() {
@@ -26,11 +26,11 @@ public abstract class MenuSettings : MonoBehaviour {
 
         List<UIMenuItem> childOptions = GetComponentsInChildren<UIMenuItem>().ToList();
 
+        
         foreach (UIMenuItem menuItem in childOptions) {
             menuItem.GenerateID();
             menuOptions.Add(menuItem.ID, menuItem);
         }
-            
         
         SubMenuInitialize();
 
@@ -44,7 +44,9 @@ public abstract class MenuSettings : MonoBehaviour {
     
     public abstract void SetMenuItems(SettingsData settingsData);
 
-    public abstract void ApplyItemValues(ref SettingsData settingsData);
+    public abstract void ExtractValues(ref SettingsData settingsData);
+    
+    
     protected UIMenuItem ExtractMenuItem(string menuName) => menuOptions[menuName.GetHashCode()];
     
     public void FadeMenu(FadeMode fadeMode, Action onDone) {

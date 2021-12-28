@@ -5,7 +5,7 @@ public class RebindSettings : MenuSettings {
         throw new System.NotImplementedException();
     }
 
-    public override void ApplyItemValues(ref SettingsData settingsData) {
+    public override void ExtractValues(ref SettingsData settingsData) {
         throw new System.NotImplementedException();
     }
 }

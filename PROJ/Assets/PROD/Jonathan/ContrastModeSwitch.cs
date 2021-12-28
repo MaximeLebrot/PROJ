@@ -28,7 +28,7 @@ public class ContrastModeSwitch : MonoBehaviour {
         postProcess.profile.TryGet(out colorAdjustments); 
         overlayCamera.transform.gameObject.SetActive(false);
     }
-
+    
     private void OnEnable() => EventHandler<SaveSettingsEvent>.RegisterListener(SwitchToContrastMode);
     private void OnDisable() => EventHandler<SaveSettingsEvent>.UnregisterListener(SwitchToContrastMode);
     

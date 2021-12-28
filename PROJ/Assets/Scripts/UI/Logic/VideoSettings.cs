@@ -26,7 +26,7 @@ public class VideoSettings : MenuSettings {
         
     }
 
-    public override void ApplyItemValues(ref SettingsData settingsData) {
+    public override void ExtractValues(ref SettingsData settingsData) {
         settingsData.fieldOfView = menuOptions[ExtractMenuItem("Field of View").ID].GetValue();
         settingsData.brightness = menuOptions[ExtractMenuItem("Brightness").ID].GetValue();
         settingsData.quality = menuOptions[ExtractMenuItem("Quality").ID].GetValue();
