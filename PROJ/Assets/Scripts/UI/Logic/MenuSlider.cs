@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MenuSlider : UIMenuItem {
+public abstract class MenuSlider<T> : UIMenuItem {
 
     [SerializeField] private Slider slider;
     [SerializeField] private TextMeshProUGUI percentText;

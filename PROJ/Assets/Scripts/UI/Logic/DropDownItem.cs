@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class DropDownItem : UIMenuItem {
+public abstract class DropDownItem<T> : UIMenuItem {
 
     [SerializeField] private TMP_Dropdown dropdownList;
 

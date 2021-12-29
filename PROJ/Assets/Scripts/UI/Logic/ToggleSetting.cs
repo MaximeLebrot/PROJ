@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ToggleSetting : UIMenuItem {
+public abstract class ToggleSetting<T> : UIMenuItem {
 
     [SerializeField] private Toggle toggle;
     
