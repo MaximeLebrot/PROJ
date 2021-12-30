@@ -5,19 +5,6 @@ using UnityEditor;
 using UnityEngine;
 
 public static class FileHandler {
-
-    public static void Save<T>(T[] items, string fileName) {
-        Write(fileName, JsonHelper.ToJson<T>(items, true));
-    }
-
-    public static T[] Read<T>(string fileName) {
-        string contents = Read(fileName);
-
-        if (string.IsNullOrEmpty(contents) || contents.Equals("{}"))
-            return new T[0];
-
-        return JsonHelper.FromJson<T> (contents);
-    }
     
     public static void Write(string path, string contents) {
         
