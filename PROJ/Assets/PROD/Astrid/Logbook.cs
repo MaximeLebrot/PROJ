@@ -199,6 +199,16 @@ public class Logbook : MonoBehaviour
             tabsRight[i].SetActive(true);
     }
 
+    public void AddPage(GameObject newPage)
+    {
+        GameObject[] p = new GameObject[pages.Length + 1];
+        for (int i = 0; i < pages.Length; i++)
+            p[i] = pages[i];
+        p[pages.Length] = newPage;
+        pages = p;
+        rightTurnButton.SetActive(true);
+    }
+
     private void PlaySound()
     {
         if (audioSource != null)
