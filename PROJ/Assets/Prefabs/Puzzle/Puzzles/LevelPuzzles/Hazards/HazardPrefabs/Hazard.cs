@@ -109,6 +109,7 @@ public class Hazard : MonoBehaviour
         int hazardObjectCounter = 0; 
         foreach (HazardObject ho in hazardObjects)
         {
+            ho.SetDirection(moveDirection);
             ho.StartPos = ho.transform.parent.localPosition;
             ho.PuzzleID = puzzleID;
             hazardObjectCounter++;
