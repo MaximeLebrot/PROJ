@@ -12,7 +12,7 @@ public class FontChanger : MonoBehaviour {
     private Dictionary<int, float> defaultFontSizes;
     private Dictionary<int, TMP_FontAsset> defaultFonts;
 
-    [SerializeField] private DropDownItem<int> dropDown;
+    [SerializeField] private DropDownItems<int> dropDown;
 
     public void Awake() {
         
