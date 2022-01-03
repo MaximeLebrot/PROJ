@@ -21,9 +21,11 @@ public class VoiceInputController : MonoBehaviour
     private void OnEnable()
     {
         inputMaster.Enable();
+        EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
     }
     private void OnDisable()
     {
+        EventHandler<SaveSettingsEvent>.UnregisterListener(OnSaveSettings);
         inputMaster.Disable();
     }
 
