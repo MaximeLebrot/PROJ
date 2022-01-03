@@ -13,15 +13,12 @@ public class SprintState : PlayerState
 
     private void LoadInputs()
     {
-
         if (stateMachine.holdToSprint)
         {
-            Debug.Log("Sprint state hold to sprint");
             player.inputReference.InputMaster.Sprint.canceled += OnSprintPress;
         }
         else
         {
-            Debug.Log("Sprint state press to sprint");
             player.inputReference.InputMaster.Sprint.performed += OnSprintPress;
             player.inputReference.InputMaster.Sprint.Enable();
         }
@@ -76,7 +73,6 @@ public class SprintState : PlayerState
     }
     private void OnSprintPress(InputAction.CallbackContext obj)
     {
-        Debug.Log("Sprint state On Sprint Activate");
         stateMachine.ChangeState<WalkState>();      
     }
 }

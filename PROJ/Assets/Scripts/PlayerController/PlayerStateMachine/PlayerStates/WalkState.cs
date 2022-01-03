@@ -14,12 +14,10 @@ public class WalkState : PlayerState
     {
         if (stateMachine.holdToSprint)
         {
-            Debug.Log("hodl to sprint from walk state");
             player.inputReference.InputMaster.Sprint.performed += OnSprintActivate;
         }
         else
         {
-            Debug.Log("press to sprint from walk state");
             player.inputReference.InputMaster.Sprint.Enable();
             player.inputReference.InputMaster.Sprint.performed += OnSprintActivate;
         }
@@ -61,11 +59,7 @@ public class WalkState : PlayerState
     }
     private void OnSprintActivate(InputAction.CallbackContext obj)
     {
-        Debug.Log("Walk state on sprint activate");
         if (stateMachine.currentState.GetType() == typeof(WalkState))
             stateMachine.ChangeState<SprintState>();
-        else
-            Debug.Log("current state is not walk, it is " + stateMachine.currentState.GetType());
-
     }
 }

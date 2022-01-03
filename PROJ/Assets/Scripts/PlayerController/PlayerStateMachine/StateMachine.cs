@@ -27,10 +27,7 @@ public class StateMachine
         //Sub
         EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
     }
-    private void OnSaveSettings(SaveSettingsEvent eve)
-    {
-        holdToSprint = !eve.settingsData.pressToSprint;
-    }
+  
     public void RunUpdate()
     {
         currentState?.RunUpdate();
@@ -62,5 +59,9 @@ public class StateMachine
         }
         else
             Debug.Log(typeof(T) + "not found");
+    }
+    private void OnSaveSettings(SaveSettingsEvent eve)
+    {
+        holdToSprint = !eve.settingsData.pressToSprint;
     }
 }
