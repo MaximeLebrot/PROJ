@@ -41,7 +41,6 @@ public class PuzzlePlayerController : MonoBehaviour
         quitPuzzle = metaPlayerController.inputReference.InputMaster.ExitPuzzle;
         quitPuzzle.Enable();
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
-        Debug.Log("SUBSCRIBE");
         metaPlayerController.inputReference.InputMaster.PlayPuzzleDescription.performed += OnPlayPuzzleDescription;
 
         EventHandler<StartPuzzleEvent>.RegisterListener(OnPuzzleStart);
@@ -56,7 +55,6 @@ public class PuzzlePlayerController : MonoBehaviour
     private void OnDisable()
     {
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle;
-        Debug.Log("UNSUBSCRIBE");
         metaPlayerController.inputReference.InputMaster.PlayPuzzleDescription.performed -= OnPlayPuzzleDescription;
         EventHandler<ClearPuzzleEvent>.UnregisterListener(OnPuzzleCompleted);
         EventHandler<StartPuzzleEvent>.UnregisterListener(OnPuzzleStart);
@@ -75,13 +73,11 @@ public class PuzzlePlayerController : MonoBehaviour
     private void OnPuzzleStart(StartPuzzleEvent obj)
     {
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
-        Debug.Log("SUBSCRIBE");
     }
 
     private void OnPuzzleCompleted(ClearPuzzleEvent obj)
     {
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle; 
-        Debug.Log("UNSUBSCRIBE");
 
     }
 

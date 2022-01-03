@@ -48,6 +48,7 @@ public class Hazard : MonoBehaviour
     }
     private void OnUpdateHazard(UpdateHazardEvent eve)
     {
+
         if (movingHazard)
         {
             if (eve.reverse == false)

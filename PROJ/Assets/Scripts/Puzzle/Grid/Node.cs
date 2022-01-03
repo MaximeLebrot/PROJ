@@ -92,6 +92,7 @@ public class Node : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
+
         grid.AddSelectedNode(this);
     }
 

@@ -395,12 +395,12 @@ public class PuzzleGrid : MonoBehaviour {
     #region RESET_GRID
     public void ResetGrid()
     {
+        TurnOffLines();
+        TurnOffNodes();
+
         solution = "";
 
         currentNodeEffect.transform.localPosition = startNode.transform.localPosition;
-
-        TurnOffLines();
-        TurnOffNodes();
 
         DestroyCurrentLine();
 
@@ -421,13 +421,15 @@ public class PuzzleGrid : MonoBehaviour {
     {
         foreach (Node n in allNodes)
         {
-            if(n.startNode == false)
+            if (n.startNode == false)
             {
                 n.ResetNeighbours();
                 n.TurnOffCollider();
                 n.TurnOff();
                 n.Drawable = true;
             }
+            else
+                n.TurnOffCollider();
         }
         //RestartStartNode();
         Invoke("RestartStartNode", 1f);
