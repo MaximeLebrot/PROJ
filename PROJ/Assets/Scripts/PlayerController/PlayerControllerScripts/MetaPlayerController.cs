@@ -42,12 +42,12 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     private void OnEnable()
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
-        EventHandler<SaveSettingsEvent>.RegisterListener(HandleOneSwitchSetting);
+        //EventHandler<SaveSettingsEvent>.RegisterListener(HandleOneSwitchSetting);
     }
     private void OnDisable()
     {
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
-        EventHandler<SaveSettingsEvent>.UnregisterListener(HandleOneSwitchSetting);
+        //EventHandler<SaveSettingsEvent>.UnregisterListener(HandleOneSwitchSetting);
     }
 
     //TEMPORARY
@@ -58,13 +58,13 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     private void StartPuzzle(StartPuzzleEvent spe)
     {
-        //Debug.Log("Start puzzle, one switch mode is:" + oneSwitchMode);
+        Debug.Log("Start puzzle, one switch mode is:" + oneSwitchMode);
         puzzleController.CurrentPuzzleID = spe.info.ID;
         puzzleController.PuzzleTransform = spe.info.puzzlePos;
         playerController3D.ResetCharacterModel();
         if (!oneSwitchMode)
         {
-            //Debug.Log("Changing to puzzle state");
+            Debug.Log("Changing to puzzle state");
             stateMachine.ChangeState<PuzzleState>();
         }
         else
@@ -106,27 +106,27 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     public void ChangeStateToOSPuzzle(StartPuzzleEvent eve)
     {
-        //Debug.Log("Change State to OS Puzzle");
+        Debug.Log("Change State to OS Puzzle");
         stateMachine.ChangeState<OSPuzzleState>();
     }
 
     public void ChangeStateToOSWalk(ExitPuzzleEvent eve)
     {
-        //Debug.Log("Change State to OS Walk");
+        Debug.Log("Change State to OS Walk");
         stateMachine.ChangeState<OSWalkState>();
     }
 
-    public void HandleOneSwitchSetting(SaveSettingsEvent eve)
-    {
-        //Debug.Log("One Switch is :" + eve.settingsData.oneSwitchMode);
-        oneSwitchMode = eve.settingsData.oneSwitchMode;
-        OSPuzzle osPuzzle = GetComponent<OSPuzzle>();
-        osPuzzle.enabled = oneSwitchMode;
-        if (oneSwitchMode)
-        {
-            stateMachine.ChangeState<OSSpinState>();
-        }
-    }
+    //private void HandleOneSwitchSetting(SaveSettingsEvent eve)
+    //{
+    //    Debug.Log("One Switch is :" + eve.settingsData.oneSwitchMode);
+    //    oneSwitchMode = eve.settingsData.oneSwitchMode;
+    //    OSPuzzle osPuzzle = GetComponent<OSPuzzle>();
+    //    osPuzzle.enabled = oneSwitchMode;
+    //    if (oneSwitchMode)
+    //    {
+    //        stateMachine.ChangeState<OSSpinState>();
+    //    }
+    //}
     
     private void Update()
     {

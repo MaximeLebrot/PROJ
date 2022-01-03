@@ -163,7 +163,7 @@ public class PuzzleGrid : MonoBehaviour {
     {
         ActivateNode(startNode, false);
         InstantiateFirstLine();
-        SymbolClear = FMODUnity.RuntimeManager.CreateInstance("event:/Game/Puzzle/SymbolClear");
+        SymbolClear = FMODUnity.RuntimeManager.CreateInstance("event:/Game/Puzzle/PuzzleStart");
         SymbolClear.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         SymbolClear.start();
         SymbolClear.release();

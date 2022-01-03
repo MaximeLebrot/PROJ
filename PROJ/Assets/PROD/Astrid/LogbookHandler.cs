@@ -14,6 +14,11 @@ public class LogbookHandler : MonoBehaviour
     private FMOD.Studio.EventInstance BookClose;
     private FMOD.Studio.EventInstance PageOpen;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);    
+    }
+
     private void OnEnable()
     {
         
