@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ public abstract class CameraTransition<T> where T : TransitionData {
         this.endTarget = endTarget;
     }
 
-    public async Task RunTransition(Transform transform) {
+    public async Task RunTransition(Transform transform, CancellationToken cancelToken) {
         
         float endTime = Time.time + transitionData.TransitionTime;
         float animationCurveTime = 0;
@@ -22,10 +23,11 @@ public abstract class CameraTransition<T> where T : TransitionData {
         while (endTime > Time.time) {
             
             Transition(transform, startPosition, startRotation, animationCurveTime);
-
-            Debug.Log(animationCurveTime);
             
             animationCurveTime += Time.deltaTime / transitionData.TransitionTime;
+            
+            if (cancelToken.IsCancellationRequested)
+                break;
             
             await Task.Yield();
         }

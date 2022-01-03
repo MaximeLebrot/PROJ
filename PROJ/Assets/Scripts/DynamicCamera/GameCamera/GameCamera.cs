@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using NewCamera;
 using UnityEngine;
@@ -28,6 +29,8 @@ public class GameCamera : MonoBehaviour {
     
     private bool oneHandModeIsActive;
     private bool oneSwitchModeActive;
+
+    private CancellationTokenSource cancellationTokenSource;
     
     private void Awake() {
         behaviorExecutionIsAllowedToRun = true;
@@ -191,7 +194,9 @@ public class GameCamera : MonoBehaviour {
     private async Task PlayTransition<T>(CameraTransition<T> cameraTransition) where T : TransitionData {
         behaviorExecutionIsAllowedToRun = false;
 
-        await cameraTransition.RunTransition(thisTransform);
+        cancellationTokenSource = new CancellationTokenSource();
+        
+        await cameraTransition.RunTransition(thisTransform, cancellationTokenSource.Token);
         
         behaviorExecutionIsAllowedToRun = true;
     }
@@ -247,6 +252,10 @@ public class GameCamera : MonoBehaviour {
         EventHandler<SceneLoadedEvent>.UnregisterListener(OnSceneLoaded);
     }
 
+    private void OnApplicationQuit() {
+        cancellationTokenSource.Cancel();
+    }
+
     [ContextMenu("Auto-assign targets", false,0)]
     public void AssignTargets() {
         try {
@@ -259,6 +268,7 @@ public class GameCamera : MonoBehaviour {
     }
        /*------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     
+       
        
 }
 
