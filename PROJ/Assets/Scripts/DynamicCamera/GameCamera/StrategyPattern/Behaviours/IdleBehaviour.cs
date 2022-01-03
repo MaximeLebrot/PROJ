@@ -20,8 +20,6 @@ namespace NewCamera
 
             float newIndex = BehaviourData<IdleBehaviourData>().RotationCurve.Evaluate(pointOnCurve);
             pointOnCurve +=  Time.deltaTime / BehaviourData<IdleBehaviourData>().FollowSpeed;
-
-            Vector3.Lerp(Vector3.zero, Vector2.zero, 0);
             
             return Quaternion.Lerp(thisTransform.rotation, Quaternion.LookRotation(pivotTarget.parent.forward), newIndex);
         }

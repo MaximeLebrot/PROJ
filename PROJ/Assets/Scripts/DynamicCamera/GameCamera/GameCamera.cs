@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using NewCamera;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-
 
 public class GameCamera : MonoBehaviour {
     
@@ -25,15 +23,14 @@ public class GameCamera : MonoBehaviour {
     private readonly Dictionary<Type, BaseCameraBehaviour> behaviours = new Dictionary<Type, BaseCameraBehaviour>();
 
     private Type previousCameraBehaviour;
+
+    private bool behaviorExecutionIsAllowedToRun;
     
-
-    private delegate void BehaviourQueue();
-    private event BehaviourQueue behaviourQueue;
-
     private bool oneHandModeIsActive;
     private bool oneSwitchModeActive;
     
     private void Awake() {
+        behaviorExecutionIsAllowedToRun = true;
         DontDestroyOnLoad(this);
         
         inputReference.Initialize();
@@ -50,13 +47,16 @@ public class GameCamera : MonoBehaviour {
         
         ChangeBehaviour<BaseCameraBehaviour>();
         
-        behaviourQueue = ExecuteCameraBehaviour;
         
     }
     
-    private void LateUpdate() => behaviourQueue?.Invoke();
+    private void LateUpdate() {
+        if(behaviorExecutionIsAllowedToRun)
+            ExecuteCameraBehaviour();
+    }
 
     private void ExecuteCameraBehaviour() {
+        
         CustomInput input = new CustomInput();
         
         if (lockInput == false) 
@@ -92,6 +92,9 @@ public class GameCamera : MonoBehaviour {
         EventHandler<TransportationBegunEvent>.RegisterListener(OnTransportationEvent);
         EventHandler<SaveSettingsEvent>.RegisterListener(OnSettingsChanged);
         EventHandler<SceneChangeEvent>.RegisterListener(OnSceneChange);
+        EventHandler<CameraLookAndMoveToEvent>.RegisterListener(OnCameraLookAndMove);
+        EventHandler<CameraLookAtEvent>.RegisterListener(OnCameraLook);
+        
     }
 
     private void OnDisable() {
@@ -104,6 +107,8 @@ public class GameCamera : MonoBehaviour {
         EventHandler<TransportationBegunEvent>.UnregisterListener(OnTransportationEvent);
         EventHandler<SaveSettingsEvent>.UnregisterListener(OnSettingsChanged);
         EventHandler<SceneChangeEvent>.UnregisterListener(OnSceneChange);
+        EventHandler<CameraLookAndMoveToEvent>.UnregisterListener(OnCameraLookAndMove);
+        EventHandler<CameraLookAtEvent>.UnregisterListener(OnCameraLook);
     }
 
     private void OnAwayFromKeyboard(AwayFromKeyboardEvent e) {
@@ -163,7 +168,6 @@ public class GameCamera : MonoBehaviour {
         currentBaseCameraBehaviour = behaviours[type]; 
         currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
         currentBaseCameraBehaviour.EnterBehaviour();
-        behaviourQueue = ExecuteCameraBehaviour;
     }
     
     private void LockInput(LockInputEvent lockInputEvent) => lockInput = lockInputEvent.lockInput;
@@ -171,12 +175,27 @@ public class GameCamera : MonoBehaviour {
     private void ActivateMenuCamera(InGameMenuEvent inGameMenuEvent) {
         if (inGameMenuEvent.Activate) {
             previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
-            behaviourQueue = null;
         }
         else 
             ChangeBehaviour(previousCameraBehaviour);
     }
 
+    private async void OnCameraLookAndMove(CameraLookAndMoveToEvent cameraLookAndMoveToEvent) {
+        await PlayTransition(new LookAndMoveTransition(cameraLookAndMoveToEvent.lookAndMoveTransitionData, cameraLookAndMoveToEvent.targetTransform));
+    }
+
+    private async void OnCameraLook(CameraLookAtEvent cameraLookAtEvent) {
+        await PlayTransition(new LookAtEvent(cameraLookAtEvent.transitionData, cameraLookAtEvent.lookAtTarget)); 
+    }
+    
+    private async Task PlayTransition<T>(CameraTransition<T> cameraTransition) where T : TransitionData {
+        behaviorExecutionIsAllowedToRun = false;
+
+        await cameraTransition.RunTransition(thisTransform);
+        
+        behaviorExecutionIsAllowedToRun = true;
+    }
+    
     private void OnTransportationEvent(TransportationBegunEvent transportationBegunEvent) {
         previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
         ChangeBehaviour(typeof(TransportationBegunEvent));
@@ -196,19 +215,16 @@ public class GameCamera : MonoBehaviour {
         bool oneHandModeChanged = oneHandModeIsActive != settingsEvent.settingsData.oneHandMode;
         bool oneSwitchModeChanged = oneSwitchModeActive != settingsEvent.settingsData.oneSwitchMode;
         
-        
         //Jesus christ
         if (oneHandModeChanged || oneSwitchModeChanged) {
             oneHandModeIsActive = settingsEvent.settingsData.oneHandMode;
             oneSwitchModeActive = settingsEvent.settingsData.oneSwitchMode;
             HandlePendingAccessibilityUpdate();
         }
-        
-
     }
 
     private void HandlePendingAccessibilityUpdate() {
-        
+
         if (oneHandModeIsActive || oneSwitchModeActive)
             ChangeBehaviour<OneHandCameraBehaviour>();
         else
@@ -223,7 +239,6 @@ public class GameCamera : MonoBehaviour {
         EventHandler<SceneLoadedEvent>.RegisterListener(OnSceneLoaded);
         EventHandler<SceneChangeEvent>.UnregisterListener(OnSceneChange);
         ChangeBehaviour<SceneChangeCameraBehaviour>();
-        
     }
 
     private void OnSceneLoaded(SceneLoadedEvent sceneLoadedEvent) {
@@ -244,44 +259,7 @@ public class GameCamera : MonoBehaviour {
     }
        /*------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     
-    private async Task PlayTransition<T>(CameraTransition<T> cameraTransition) where T : TransitionData
-    {
-
-        SetBehaviourExecutionActive(false);
-
-        await cameraTransition.RunTransition(thisTransform);
-
-        SetBehaviourExecutionActive(true);
-    }
-
-    private async Task PlayTransitions(List<Task> transitions)
-    {
-
-        SetBehaviourExecutionActive(false);
-
-        await Task.WhenAll(transitions);
-
-        SetBehaviourExecutionActive(true);
-    }
-
-
-    private void SetBehaviourExecutionActive(bool isActive)
-    {
-        if (isActive)
-        {
-            behaviourQueue = ExecuteCameraBehaviour;
-            EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
-        }
-        else
-        {
-            behaviourQueue = null;
-            EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
-        }
-    }
-
-    
-    
-
+       
 }
 
 public struct CustomInput {

@@ -1,18 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectToLookAt : ObjectToActivate
-{
-    [SerializeField] float transitionTime;
-    [SerializeField] float delayWhenDone;
-    [SerializeField] float rotationSpeed;
+public class ObjectToLookAt : ObjectToActivate {
+
+    [SerializeField] private Transform end;
+    [SerializeField] private LookAtTransitionData transitionData;
+    
     public override void Activate(ActivatorEvent eve)
     {
        if (eve.info.ID == puzzleID)
-        {
-            EventHandler<CameraLookAtEvent>.FireEvent(
-                new CameraLookAtEvent(this.transform, transitionTime, delayWhenDone, rotationSpeed));
-        }
+       {
+           EventHandler<CameraLookAtEvent>.FireEvent(new CameraLookAtEvent(end, transitionData));
+       }
     }
 }
