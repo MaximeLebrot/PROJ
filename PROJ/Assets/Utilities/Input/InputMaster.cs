@@ -116,6 +116,24 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cloth"",
+                    ""type"": ""Button"",
+                    ""id"": ""65974c9f-556e-463c-9501-dadbcf89ec6c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DestroyCloth"",
+                    ""type"": ""Button"",
+                    ""id"": ""68443aab-b5b2-4c2e-913f-4ae5e6fd265e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -325,6 +343,28 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""PlayPuzzleDescription"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f7ba6274-c8c0-4f69-b79b-d33fd1b138ab"",
+                    ""path"": ""<Keyboard>/o"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cloth"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c5047cd6-0881-4d4e-a90f-f057edacb3a6"",
+                    ""path"": ""<Keyboard>/0"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DestroyCloth"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -663,6 +703,15 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AddPage"",
+                    ""type"": ""Button"",
+                    ""id"": ""79c8efb5-cb5e-492e-8255-10b27ee8b62b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -707,6 +756,17 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""TurnRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""29d6d0fb-27f2-4dc7-b71e-9f8939a26722"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AddPage"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -755,6 +815,8 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         m_Player_REBINDTEST = m_Player.FindAction("REBINDTEST", throwIfNotFound: true);
         m_Player_Logbook = m_Player.FindAction("Logbook", throwIfNotFound: true);
         m_Player_PlayPuzzleDescription = m_Player.FindAction("PlayPuzzleDescription", throwIfNotFound: true);
+        m_Player_Cloth = m_Player.FindAction("Cloth", throwIfNotFound: true);
+        m_Player_DestroyCloth = m_Player.FindAction("DestroyCloth", throwIfNotFound: true);
         // PuzzleDEBUGGER
         m_PuzzleDEBUGGER = asset.FindActionMap("PuzzleDEBUGGER", throwIfNotFound: true);
         m_PuzzleDEBUGGER_calculatesolution = m_PuzzleDEBUGGER.FindAction("calculate solution", throwIfNotFound: true);
@@ -781,6 +843,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         m_Logbook = asset.FindActionMap("Logbook", throwIfNotFound: true);
         m_Logbook_TurnLeft = m_Logbook.FindAction("TurnLeft", throwIfNotFound: true);
         m_Logbook_TurnRight = m_Logbook.FindAction("TurnRight", throwIfNotFound: true);
+        m_Logbook_AddPage = m_Logbook.FindAction("AddPage", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -850,6 +913,8 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_REBINDTEST;
     private readonly InputAction m_Player_Logbook;
     private readonly InputAction m_Player_PlayPuzzleDescription;
+    private readonly InputAction m_Player_Cloth;
+    private readonly InputAction m_Player_DestroyCloth;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -864,6 +929,8 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         public InputAction @REBINDTEST => m_Wrapper.m_Player_REBINDTEST;
         public InputAction @Logbook => m_Wrapper.m_Player_Logbook;
         public InputAction @PlayPuzzleDescription => m_Wrapper.m_Player_PlayPuzzleDescription;
+        public InputAction @Cloth => m_Wrapper.m_Player_Cloth;
+        public InputAction @DestroyCloth => m_Wrapper.m_Player_DestroyCloth;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -903,6 +970,12 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @PlayPuzzleDescription.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlayPuzzleDescription;
                 @PlayPuzzleDescription.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlayPuzzleDescription;
                 @PlayPuzzleDescription.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlayPuzzleDescription;
+                @Cloth.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCloth;
+                @Cloth.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCloth;
+                @Cloth.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCloth;
+                @DestroyCloth.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDestroyCloth;
+                @DestroyCloth.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDestroyCloth;
+                @DestroyCloth.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDestroyCloth;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -937,6 +1010,12 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @PlayPuzzleDescription.started += instance.OnPlayPuzzleDescription;
                 @PlayPuzzleDescription.performed += instance.OnPlayPuzzleDescription;
                 @PlayPuzzleDescription.canceled += instance.OnPlayPuzzleDescription;
+                @Cloth.started += instance.OnCloth;
+                @Cloth.performed += instance.OnCloth;
+                @Cloth.canceled += instance.OnCloth;
+                @DestroyCloth.started += instance.OnDestroyCloth;
+                @DestroyCloth.performed += instance.OnDestroyCloth;
+                @DestroyCloth.canceled += instance.OnDestroyCloth;
             }
         }
     }
@@ -1159,12 +1238,14 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     private ILogbookActions m_LogbookActionsCallbackInterface;
     private readonly InputAction m_Logbook_TurnLeft;
     private readonly InputAction m_Logbook_TurnRight;
+    private readonly InputAction m_Logbook_AddPage;
     public struct LogbookActions
     {
         private @InputMaster m_Wrapper;
         public LogbookActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
         public InputAction @TurnLeft => m_Wrapper.m_Logbook_TurnLeft;
         public InputAction @TurnRight => m_Wrapper.m_Logbook_TurnRight;
+        public InputAction @AddPage => m_Wrapper.m_Logbook_AddPage;
         public InputActionMap Get() { return m_Wrapper.m_Logbook; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1180,6 +1261,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @TurnRight.started -= m_Wrapper.m_LogbookActionsCallbackInterface.OnTurnRight;
                 @TurnRight.performed -= m_Wrapper.m_LogbookActionsCallbackInterface.OnTurnRight;
                 @TurnRight.canceled -= m_Wrapper.m_LogbookActionsCallbackInterface.OnTurnRight;
+                @AddPage.started -= m_Wrapper.m_LogbookActionsCallbackInterface.OnAddPage;
+                @AddPage.performed -= m_Wrapper.m_LogbookActionsCallbackInterface.OnAddPage;
+                @AddPage.canceled -= m_Wrapper.m_LogbookActionsCallbackInterface.OnAddPage;
             }
             m_Wrapper.m_LogbookActionsCallbackInterface = instance;
             if (instance != null)
@@ -1190,6 +1274,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @TurnRight.started += instance.OnTurnRight;
                 @TurnRight.performed += instance.OnTurnRight;
                 @TurnRight.canceled += instance.OnTurnRight;
+                @AddPage.started += instance.OnAddPage;
+                @AddPage.performed += instance.OnAddPage;
+                @AddPage.canceled += instance.OnAddPage;
             }
         }
     }
@@ -1224,6 +1311,8 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         void OnREBINDTEST(InputAction.CallbackContext context);
         void OnLogbook(InputAction.CallbackContext context);
         void OnPlayPuzzleDescription(InputAction.CallbackContext context);
+        void OnCloth(InputAction.CallbackContext context);
+        void OnDestroyCloth(InputAction.CallbackContext context);
     }
     public interface IPuzzleDEBUGGERActions
     {
@@ -1255,5 +1344,6 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     {
         void OnTurnLeft(InputAction.CallbackContext context);
         void OnTurnRight(InputAction.CallbackContext context);
+        void OnAddPage(InputAction.CallbackContext context);
     }
 }

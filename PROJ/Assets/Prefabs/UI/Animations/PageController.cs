@@ -68,6 +68,8 @@ public class PageController : MonoBehaviour {
         currentActivePage.FadeMenu(FadeMode.FadeIn, null);
         onDone = null;
         newPage = null;
+
+        currentActivePage.SelectTopButton();
     }
 
     public bool CanMoveUpOneLevel() {

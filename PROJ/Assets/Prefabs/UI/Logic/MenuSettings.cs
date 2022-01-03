@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 //HASH STRINGS
 public abstract class MenuSettings : MonoBehaviour {
@@ -12,6 +12,8 @@ public abstract class MenuSettings : MonoBehaviour {
     private FadeGroup fadeGroup;
 
     private FontChanger fontChanger;
+
+    private Selectable topButtonReference;
     
     public void Initialize() {
 
@@ -31,14 +33,16 @@ public abstract class MenuSettings : MonoBehaviour {
             menuItem.GenerateID();
             menuOptions.Add(menuItem.ID, menuItem);
         }
+            
         
         SubMenuInitialize();
-        
+
         //fontChanger.GatherAllTextComponents();
         
         gameObject.SetActive(false);
     }
     
+
     protected virtual void SubMenuInitialize() {}
     
     public abstract void SetMenuItems(SettingsData settingsData);
@@ -48,5 +52,13 @@ public abstract class MenuSettings : MonoBehaviour {
     
     public void FadeMenu(FadeMode fadeMode, Action onDone) {
         StartCoroutine(fadeGroup.Fade(fadeMode, onDone));
+    }
+    public void SelectTopButton()
+    {
+        if (!topButtonReference)
+        {
+           topButtonReference = GetComponentInChildren<Selectable>();
+        }
+        topButtonReference.Select();
     }
 }

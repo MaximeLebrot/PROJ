@@ -21,9 +21,11 @@ public class VoiceInputController : MonoBehaviour
     private void OnEnable()
     {
         inputMaster.Enable();
+        EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
     }
     private void OnDisable()
     {
+        EventHandler<SaveSettingsEvent>.UnregisterListener(OnSaveSettings);
         inputMaster.Disable();
     }
 
@@ -31,34 +33,55 @@ public class VoiceInputController : MonoBehaviour
     {
         if (inputMaster.Voice.TurnOffBoth.triggered)
         {
-            GetComponent<VoiceMovementArmless>().enabled = false;
-            GetComponent<VoiceMovementMouse>().enabled = false;
-            armlessCamera.SetActive(false);
-
-            Debug.Log("1");
+            VoiceMovementArmless();
         }
         if (inputMaster.Voice.TurnOnMouse.triggered)
         {
-            GetComponent<VoiceMovementArmless>().enabled = false;
-            GetComponent<VoiceMovementMouse>().enabled = true;
-            armlessCamera.SetActive(false);
-
-            Debug.Log("2");
-
+            VoiceMovementMouse();
         }
         if (inputMaster.Voice.TurnOnArmless.triggered)
         {
-            GetComponent<VoiceMovementMouse>().enabled = false;
-            GetComponent<VoiceMovementArmless>().enabled = true;
-            armlessCamera.SetActive(true);
-            player.transform.rotation = Quaternion.Euler(0, 90, 0);
-            Debug.Log("3");
-
+            NoVoiceMovement();
         }
     }
+    private void OnSaveSettings(SaveSettingsEvent eve)
+    {
+        //if(eve.settingsData.armlessVoiceMovement)
+        //VoiceMovementArmless();
+
+        //else if(eve.settingsData.mouseVoiceMovement)
+        //VoiceMovementMouse();
+        //else
+        //NoVoiceMovement();
+    }
+    private void VoiceMovementArmless()
+    {
+        GetComponent<VoiceMovementArmless>().enabled = false;
+        GetComponent<VoiceMovementMouse>().enabled = false;
+        armlessCamera.SetActive(false);
+
+        Debug.Log("1");
+    }
+    private void VoiceMovementMouse()
+    {
+        GetComponent<VoiceMovementArmless>().enabled = false;
+        GetComponent<VoiceMovementMouse>().enabled = true;
+        armlessCamera.SetActive(false);
+
+        Debug.Log("2");
+    }
+    private void NoVoiceMovement()
+    {
+        GetComponent<VoiceMovementMouse>().enabled = false;
+        GetComponent<VoiceMovementArmless>().enabled = true;
+        armlessCamera.SetActive(true);
+        player.transform.rotation = Quaternion.Euler(0, 90, 0);
+        Debug.Log("3");
+    }
 }
-  
-    
+
+
+
 /*
 public void DropDownHandler(int choice)
 {
