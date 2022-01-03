@@ -703,6 +703,15 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AddPage"",
+                    ""type"": ""Button"",
+                    ""id"": ""79c8efb5-cb5e-492e-8255-10b27ee8b62b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -747,6 +756,17 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""TurnRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""29d6d0fb-27f2-4dc7-b71e-9f8939a26722"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AddPage"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -823,6 +843,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         m_Logbook = asset.FindActionMap("Logbook", throwIfNotFound: true);
         m_Logbook_TurnLeft = m_Logbook.FindAction("TurnLeft", throwIfNotFound: true);
         m_Logbook_TurnRight = m_Logbook.FindAction("TurnRight", throwIfNotFound: true);
+        m_Logbook_AddPage = m_Logbook.FindAction("AddPage", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1217,12 +1238,14 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     private ILogbookActions m_LogbookActionsCallbackInterface;
     private readonly InputAction m_Logbook_TurnLeft;
     private readonly InputAction m_Logbook_TurnRight;
+    private readonly InputAction m_Logbook_AddPage;
     public struct LogbookActions
     {
         private @InputMaster m_Wrapper;
         public LogbookActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
         public InputAction @TurnLeft => m_Wrapper.m_Logbook_TurnLeft;
         public InputAction @TurnRight => m_Wrapper.m_Logbook_TurnRight;
+        public InputAction @AddPage => m_Wrapper.m_Logbook_AddPage;
         public InputActionMap Get() { return m_Wrapper.m_Logbook; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1238,6 +1261,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @TurnRight.started -= m_Wrapper.m_LogbookActionsCallbackInterface.OnTurnRight;
                 @TurnRight.performed -= m_Wrapper.m_LogbookActionsCallbackInterface.OnTurnRight;
                 @TurnRight.canceled -= m_Wrapper.m_LogbookActionsCallbackInterface.OnTurnRight;
+                @AddPage.started -= m_Wrapper.m_LogbookActionsCallbackInterface.OnAddPage;
+                @AddPage.performed -= m_Wrapper.m_LogbookActionsCallbackInterface.OnAddPage;
+                @AddPage.canceled -= m_Wrapper.m_LogbookActionsCallbackInterface.OnAddPage;
             }
             m_Wrapper.m_LogbookActionsCallbackInterface = instance;
             if (instance != null)
@@ -1248,6 +1274,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @TurnRight.started += instance.OnTurnRight;
                 @TurnRight.performed += instance.OnTurnRight;
                 @TurnRight.canceled += instance.OnTurnRight;
+                @AddPage.started += instance.OnAddPage;
+                @AddPage.performed += instance.OnAddPage;
+                @AddPage.canceled += instance.OnAddPage;
             }
         }
     }
@@ -1315,5 +1344,6 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     {
         void OnTurnLeft(InputAction.CallbackContext context);
         void OnTurnRight(InputAction.CallbackContext context);
+        void OnAddPage(InputAction.CallbackContext context);
     }
 }
