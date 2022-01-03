@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 //HASH STRINGS
 public abstract class MenuSettings : MonoBehaviour {
@@ -30,16 +31,14 @@ public abstract class MenuSettings : MonoBehaviour {
             menuItem.GenerateID();
             menuOptions.Add(menuItem.ID, menuItem);
         }
-            
         
         SubMenuInitialize();
-
+        
         //fontChanger.GatherAllTextComponents();
         
         gameObject.SetActive(false);
     }
     
-
     protected virtual void SubMenuInitialize() {}
     
     public abstract void SetMenuItems(SettingsData settingsData);

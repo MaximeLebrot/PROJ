@@ -176,7 +176,7 @@ public class OSPuzzleState : PlayerState
 
     private void GetPuzzleInfo(StartPuzzleEvent eve)
     {
-        puzzleTransform = eve.info.puzzlePos;
+        puzzleTransform = eve.info.puzzle.transform;
         puzzleXZ.x = puzzleTransform.position.x;
         puzzleXZ.y = puzzleTransform.position.z;
         //puzzle = eve.info.puzzlePos.gameObject.GetComponent<OSPuzzle>();

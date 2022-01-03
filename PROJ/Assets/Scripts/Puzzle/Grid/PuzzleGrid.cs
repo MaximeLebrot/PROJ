@@ -20,6 +20,8 @@ public class PuzzleGrid : MonoBehaviour {
     private Node currentNode;
     private Node startNode;
 
+    public Node StartNode => startNode;
+    
     [SerializeField] private string solution;
     //private List<Node> allNodesLIST = new List<Node>();
     public Node[,] allNodes { get; private set; }

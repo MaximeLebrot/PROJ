@@ -25,7 +25,7 @@ public class ContrastModeSwitch : MonoBehaviour {
         
         mainRegularRenderLayers = mainCamera.cullingMask = -1; //Render every layer. 
 
-        postProcess.profile.TryGet(out colorAdjustments); 
+       // postProcess.profile.TryGet(out colorAdjustments); 
         overlayCamera.transform.gameObject.SetActive(false);
     }
 

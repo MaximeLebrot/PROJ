@@ -26,13 +26,13 @@ public class GameCamera : MonoBehaviour {
 
     private Type previousCameraBehaviour;
     
+
     private delegate void BehaviourQueue();
     private event BehaviourQueue behaviourQueue;
 
     private bool oneHandModeIsActive;
     private bool oneSwitchModeActive;
-    private bool pendingAccessibilityUpdate;
-
+    
     private void Awake() {
         DontDestroyOnLoad(this);
         
@@ -40,9 +40,9 @@ public class GameCamera : MonoBehaviour {
         transitioner.Initialize();
         thisTransform = transform;
         
-        behaviours.Add(typeof(PuzzleCameraBehaviour),  cameraBehaviours[2]);
         behaviours.Add(typeof(BaseCameraBehaviour),  cameraBehaviours[0]);
         behaviours.Add(typeof(IdleBehaviour),  cameraBehaviours[1]);
+        behaviours.Add(typeof(PuzzleCameraBehaviour),  cameraBehaviours[2]);
         behaviours.Add(typeof(OneHandCameraBehaviour),  cameraBehaviours[3]);
         behaviours.Add(typeof(InGameMenuCameraBehaviour),  cameraBehaviours[4]);
         behaviours.Add(typeof(TransportationBegunEvent),  cameraBehaviours[5]);
@@ -140,7 +140,7 @@ public class GameCamera : MonoBehaviour {
         //PuzzleBehaviour already active.
         if (currentBaseCameraBehaviour.GetType() == typeof(PuzzleCameraBehaviour)) 
             return;
-
+        
         previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
         
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);   
@@ -149,7 +149,7 @@ public class GameCamera : MonoBehaviour {
         
         PuzzleCameraBehaviour puzzleBehaviour = currentBaseCameraBehaviour as PuzzleCameraBehaviour;
         
-        puzzleBehaviour.AssignRotation(startPuzzleEvent.info.puzzlePos);
+        puzzleBehaviour.InitializePuzzleCamera(startPuzzleEvent.info.puzzle);
     }
 
     private void ChangeBehaviour<T>() where T : BaseCameraBehaviour {
@@ -157,7 +157,7 @@ public class GameCamera : MonoBehaviour {
         currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
         currentBaseCameraBehaviour.EnterBehaviour();
     }
-
+    
     
     private void ChangeBehaviour(Type type) {
         currentBaseCameraBehaviour = behaviours[type]; 

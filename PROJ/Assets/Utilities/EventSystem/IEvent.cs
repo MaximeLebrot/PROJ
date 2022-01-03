@@ -51,10 +51,10 @@ public class ActivatorEvent : IEvent
 public class PuzzleInfo
 {
     public int ID;
-    public Transform puzzlePos;
-
+    public Puzzle puzzle;
+    
     public PuzzleInfo(int id) { ID = id; }
-    public PuzzleInfo(int id, Transform pp) { ID = id; puzzlePos = pp; }
+    public PuzzleInfo(int id, Puzzle pp) { ID = id; puzzle = pp; }
 }
 
 public readonly struct PlayerStateChangeEvent : IEvent {
