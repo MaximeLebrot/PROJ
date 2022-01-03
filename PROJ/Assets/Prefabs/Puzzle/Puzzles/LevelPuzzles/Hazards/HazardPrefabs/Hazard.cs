@@ -33,7 +33,7 @@ public class Hazard : MonoBehaviour
     }
     public void StartHazard(int puzzleID)
     {
-        grid = GetComponentInParent<Puzzle>().grid;
+        grid = GetComponentInParent<Puzzle>().GetGrid();
         HazardSetup();
         InitializeHazardObjects(puzzleID);
     }

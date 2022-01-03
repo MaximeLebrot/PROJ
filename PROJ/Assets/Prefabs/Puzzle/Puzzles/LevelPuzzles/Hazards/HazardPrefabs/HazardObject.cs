@@ -7,13 +7,15 @@ using UnityEngine.VFX;
 public class HazardObject : MonoBehaviour
 {
    //private Animator animator;
-    public Vector3 StartPos { get; set; }
-    public int PuzzleID { get; internal set; }
-    public bool movingBackwards;
-    public float moveTime = 1.2f;
+    
+    [SerializeField] private bool movingBackwards;
+    [SerializeField] private float moveTime = 1.2f;
 
     private Vector3 direction;
     private VisualEffect lavaParticles;
+
+    public Vector3 StartPos { get; set; }
+    public int PuzzleID { get; internal set; }
 
     private void Awake()
     {
