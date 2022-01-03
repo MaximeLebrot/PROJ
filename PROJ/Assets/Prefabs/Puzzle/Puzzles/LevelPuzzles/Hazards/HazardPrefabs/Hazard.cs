@@ -109,7 +109,7 @@ public class Hazard : MonoBehaviour
         int hazardObjectCounter = 0; 
         foreach (HazardObject ho in hazardObjects)
         {
-            ho.StartPos = ho.transform.position;
+            ho.StartPos = ho.transform.parent.localPosition;
             ho.PuzzleID = puzzleID;
             hazardObjectCounter++;
         }

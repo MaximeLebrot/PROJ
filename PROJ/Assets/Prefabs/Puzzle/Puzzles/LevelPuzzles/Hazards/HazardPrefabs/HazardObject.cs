@@ -19,7 +19,7 @@ public class HazardObject : MonoBehaviour
     {
         StopAllCoroutines();
         movingBackwards = false;
-        transform.parent.position = StartPos;
+        transform.parent.localPosition = StartPos;
     }
 
     public void UpdateHazard(float hazardOffset, Vector3 moveDirection)
