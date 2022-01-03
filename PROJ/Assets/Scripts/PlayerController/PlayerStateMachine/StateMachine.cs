@@ -7,6 +7,7 @@ public class StateMachine
 {
     private Dictionary<Type, PlayerState> instantiatedStates = new Dictionary<Type, PlayerState>();
     public PlayerState currentState { get; private set; }
+    public bool holdToSprint { get; private set; }
 
     public StateMachine(object owner, PlayerState[] states)
     {
@@ -22,6 +23,13 @@ public class StateMachine
                 currentState = instantiated;
         }
         currentState.EnterState();
+
+        //Sub
+        EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
+    }
+    private void OnSaveSettings(SaveSettingsEvent eve)
+    {
+        holdToSprint = !eve.settingsData.pressToSprint;
     }
     public void RunUpdate()
     {

@@ -11,14 +11,18 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     public PlayerController playerController3D { get; private set; }
     public PuzzlePlayerController puzzleController { get; private set; }
     public Animator animator { get; private set; }
+    public ControllerInputReference inputReference;
+    public bool holdToSprint { get; private set; }
 
     //StateMachine
     private StateMachine stateMachine;
     [SerializeField] private PlayerState[] states;
     [SerializeField] public List<ControllerValues> controllerValues = new List<ControllerValues>();
     
-    [SerializeField] float decelerationValueForCoroutine = 5;
-    public ControllerInputReference inputReference;
+
+    [SerializeField] private float decelerationValueForCoroutine = 5;
+    private Vector3 storedVelocity;
+
 
     public bool oneSwitchMode = false;
 
@@ -76,8 +80,6 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         }
     }
 
-
-    public Vector3 storedVelocity; 
     private void EnterInGameMenuState(InGameMenuEvent inGameMenuEvent) {
         if (inGameMenuEvent.Activate)
         {
@@ -104,6 +106,7 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         playerController3D.SetDeceleration(storedDeceleration);
     }
 
+    #region OS
     public void ChangeStateToOSPuzzle(StartPuzzleEvent eve)
     {
         Debug.Log("Change State to OS Puzzle");
@@ -127,7 +130,7 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     //        stateMachine.ChangeState<OSSpinState>();
     //    }
     //}
-    
+    #endregion
     private void Update()
     {
         stateMachine.RunUpdate();

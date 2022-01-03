@@ -277,7 +277,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""351b4e3e-9ae8-438a-9352-efc8be4c601b"",
                     ""path"": ""<Gamepad>/leftStickPress"",
-                    ""interactions"": ""Press"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""xboxcontroller"",
                     ""action"": ""Sprint"",

@@ -10,9 +10,35 @@ public class WalkState : PlayerState
     {
         base.Initialize();
     }
+    private void LoadInputs()
+    {
+        if (stateMachine.holdToSprint)
+        {
+            Debug.Log("hodl to sprint from walk state");
+            player.inputReference.InputMaster.Sprint.performed += OnSprintActivate;
+        }
+        else
+        {
+            Debug.Log("press to sprint from walk state");
+            player.inputReference.InputMaster.Sprint.Enable();
+            player.inputReference.InputMaster.Sprint.performed += OnSprintActivate;
+        }
+    }
+    private void UnloadInputs()
+    {
+        if (stateMachine.holdToSprint)
+        {
+            player.inputReference.InputMaster.Sprint.performed -= OnSprintActivate;
+        }
+        else
+        {
+            player.inputReference.InputMaster.Sprint.Disable();
+            player.inputReference.InputMaster.Sprint.performed -= OnSprintActivate;
+        }
+    }
     public override void EnterState()
     {
-        player.inputReference.InputMaster.Sprint.performed += OnSprintActivate;
+        LoadInputs();
         base.EnterState();
     }
     public override void RunUpdate()
@@ -26,7 +52,7 @@ public class WalkState : PlayerState
     }
     public override void ExitState()
     {
-        player.inputReference.InputMaster.Sprint.performed -= OnSprintActivate;
+        UnloadInputs();
         base.ExitState();
     }
     private void SetInput()
@@ -35,8 +61,11 @@ public class WalkState : PlayerState
     }
     private void OnSprintActivate(InputAction.CallbackContext obj)
     {
-        if(stateMachine.currentState.GetType() == typeof(WalkState))
-            stateMachine.ChangeState<SprintState>();
         Debug.Log("Walk state on sprint activate");
+        if (stateMachine.currentState.GetType() == typeof(WalkState))
+            stateMachine.ChangeState<SprintState>();
+        else
+            Debug.Log("current state is not walk, it is " + stateMachine.currentState.GetType());
+
     }
 }
