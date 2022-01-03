@@ -25,7 +25,6 @@ public class SprintState : PlayerState
     }
     private void UnloadInputs()
     {
-
         if (stateMachine.holdToSprint)
         {
             player.inputReference.InputMaster.Sprint.canceled -= OnSprintPress;
@@ -35,7 +34,6 @@ public class SprintState : PlayerState
             player.inputReference.InputMaster.Sprint.Disable();
             player.inputReference.InputMaster.Sprint.performed -= OnSprintPress;
         }
-
     }
     public override void EnterState()
     {
@@ -45,14 +43,6 @@ public class SprintState : PlayerState
     }
     public override void RunUpdate()
     {
-        /*if (!loadedInputs)
-        {
-            if (timer > 0)
-                timer -= Time.deltaTime;
-            else
-                LoadInputs();
-        }*/
-
         SetInput();
         if (!player.playerController3D.IsGrounded())
         {
