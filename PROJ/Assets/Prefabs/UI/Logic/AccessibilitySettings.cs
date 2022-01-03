@@ -1,8 +1,5 @@
-using UnityEngine;
-using UnityEngine.UIElements;
-
 public class AccessibilitySettings : MenuSettings {
-
+    
     public override void SetMenuItems(SettingsData settingsData) {
         menuOptions[ExtractMenuItem("ChangeFontSize").ID].SetValue(settingsData.fontSize);
         menuOptions[ExtractMenuItem("Use_DyslexiaFont").ID].SetValue(settingsData.dyslexiaFont);
@@ -18,7 +15,8 @@ public class AccessibilitySettings : MenuSettings {
     }
     
     public override void ApplyItemValues(ref SettingsData settingsData) {
-        settingsData.fontSize = int.Parse(menuOptions[ExtractMenuItem("ChangeFontSize").ID].GetValue());
+        
+        settingsData.fontSize = menuOptions[ExtractMenuItem("ChangeFontSize").ID].GetValue();
         settingsData.dyslexiaFont = menuOptions[ExtractMenuItem("Use_DyslexiaFont").ID].GetValue();
         settingsData.highContrastMode = menuOptions[ExtractMenuItem("Use_HighContrastMode").ID].GetValue();
         settingsData.blindMode = menuOptions[ExtractMenuItem("BlindMode").ID].GetValue();
@@ -30,4 +28,5 @@ public class AccessibilitySettings : MenuSettings {
         settingsData.symbolDifficulty = menuOptions[ExtractMenuItem("SymbolDifficulty").ID].GetValue();
         settingsData.oneSwitchMode = menuOptions[ExtractMenuItem("OneSwitchMode").ID].GetValue();
     }
+    
 }

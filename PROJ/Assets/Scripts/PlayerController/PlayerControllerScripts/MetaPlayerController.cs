@@ -11,14 +11,18 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     public PlayerController playerController3D { get; private set; }
     public PuzzlePlayerController puzzleController { get; private set; }
     public Animator animator { get; private set; }
+    public ControllerInputReference inputReference;
+    public bool holdToSprint { get; private set; }
 
     //StateMachine
     private StateMachine stateMachine;
     [SerializeField] private PlayerState[] states;
     [SerializeField] public List<ControllerValues> controllerValues = new List<ControllerValues>();
     
-    [SerializeField] float decelerationValueForCoroutine = 5;
-    public ControllerInputReference inputReference;
+
+    [SerializeField] private float decelerationValueForCoroutine = 5;
+    private Vector3 storedVelocity;
+
 
     public bool oneSwitchMode = false;
 
@@ -42,12 +46,12 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     private void OnEnable()
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
-        EventHandler<SaveSettingsEvent>.RegisterListener(ActivateOneSwitch);
+        //EventHandler<SaveSettingsEvent>.RegisterListener(HandleOneSwitchSetting);
     }
     private void OnDisable()
     {
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
-        EventHandler<SaveSettingsEvent>.UnregisterListener(ActivateOneSwitch);
+        //EventHandler<SaveSettingsEvent>.UnregisterListener(HandleOneSwitchSetting);
     }
 
     //TEMPORARY
@@ -69,14 +73,13 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         }
         else
         {
-            OSPuzzle osPuzzle = spe.info.puzzlePos.gameObject.GetComponent<OSPuzzle>();
+            //OSPuzzle osPuzzle = spe.info.puzzlePos.gameObject.GetComponent<OSPuzzle>();
+            OSPuzzle osPuzzle = GetComponent<OSPuzzle>();
             osPuzzle.enabled = true;
             osPuzzle.StartOSPuzzle(spe);
         }
     }
 
-
-    public Vector3 storedVelocity; 
     private void EnterInGameMenuState(InGameMenuEvent inGameMenuEvent) {
         if (inGameMenuEvent.Activate)
         {
@@ -103,6 +106,7 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         playerController3D.SetDeceleration(storedDeceleration);
     }
 
+    #region OS
     public void ChangeStateToOSPuzzle(StartPuzzleEvent eve)
     {
         Debug.Log("Change State to OS Puzzle");
@@ -115,16 +119,18 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         stateMachine.ChangeState<OSWalkState>();
     }
 
-    public void ActivateOneSwitch(SaveSettingsEvent eve)
-    {
-        Debug.Log("Activate One Switch");
-        oneSwitchMode = eve.settingsData.oneHandMode;
-        if (oneSwitchMode)
-        {
-            stateMachine.ChangeState<OSSpinState>();
-        }
-    }
-    
+    //private void HandleOneSwitchSetting(SaveSettingsEvent eve)
+    //{
+    //    Debug.Log("One Switch is :" + eve.settingsData.oneSwitchMode);
+    //    oneSwitchMode = eve.settingsData.oneSwitchMode;
+    //    OSPuzzle osPuzzle = GetComponent<OSPuzzle>();
+    //    osPuzzle.enabled = oneSwitchMode;
+    //    if (oneSwitchMode)
+    //    {
+    //        stateMachine.ChangeState<OSSpinState>();
+    //    }
+    //}
+    #endregion
     private void Update()
     {
         stateMachine.RunUpdate();

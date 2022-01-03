@@ -48,6 +48,7 @@ public class Hazard : MonoBehaviour
     }
     private void OnUpdateHazard(UpdateHazardEvent eve)
     {
+
         if (movingHazard)
         {
             if (eve.reverse == false)
@@ -108,7 +109,7 @@ public class Hazard : MonoBehaviour
         int hazardObjectCounter = 0; 
         foreach (HazardObject ho in hazardObjects)
         {
-            ho.StartPos = ho.transform.position;
+            ho.StartPos = ho.transform.parent.localPosition;
             ho.PuzzleID = puzzleID;
             hazardObjectCounter++;
         }

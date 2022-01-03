@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using NewCamera;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class GameCamera : MonoBehaviour {
     
@@ -28,12 +30,12 @@ public class GameCamera : MonoBehaviour {
     private event BehaviourQueue behaviourQueue;
 
     private bool oneHandModeIsActive;
+    private bool oneSwitchModeActive;
     private bool pendingAccessibilityUpdate;
 
     private void Awake() {
         DontDestroyOnLoad(this);
-
-
+        
         inputReference.Initialize();
         transitioner.Initialize();
         thisTransform = transform;
@@ -44,6 +46,7 @@ public class GameCamera : MonoBehaviour {
         behaviours.Add(typeof(OneHandCameraBehaviour),  cameraBehaviours[3]);
         behaviours.Add(typeof(InGameMenuCameraBehaviour),  cameraBehaviours[4]);
         behaviours.Add(typeof(TransportationBegunEvent),  cameraBehaviours[5]);
+        behaviours.Add(typeof(SceneChangeCameraBehaviour),  cameraBehaviours[6]);
         
         ChangeBehaviour<BaseCameraBehaviour>();
         
@@ -88,6 +91,7 @@ public class GameCamera : MonoBehaviour {
         EventHandler<InGameMenuEvent>.RegisterListener(ActivateMenuCamera);
         EventHandler<TransportationBegunEvent>.RegisterListener(OnTransportationEvent);
         EventHandler<SaveSettingsEvent>.RegisterListener(OnSettingsChanged);
+        EventHandler<SceneChangeEvent>.RegisterListener(OnSceneChange);
     }
 
     private void OnDisable() {
@@ -99,6 +103,7 @@ public class GameCamera : MonoBehaviour {
         EventHandler<InGameMenuEvent>.UnregisterListener(ActivateMenuCamera);
         EventHandler<TransportationBegunEvent>.UnregisterListener(OnTransportationEvent);
         EventHandler<SaveSettingsEvent>.UnregisterListener(OnSettingsChanged);
+        EventHandler<SceneChangeEvent>.UnregisterListener(OnSceneChange);
     }
 
     private void OnAwayFromKeyboard(AwayFromKeyboardEvent e) {
@@ -148,26 +153,17 @@ public class GameCamera : MonoBehaviour {
     }
 
     private void ChangeBehaviour<T>() where T : BaseCameraBehaviour {
-        
-        if(pendingAccessibilityUpdate)
-            HandlePendingAccessibilityUpdate();
-        else {
-            currentBaseCameraBehaviour = behaviours[typeof(T)];
-            currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
-            currentBaseCameraBehaviour.EnterBehaviour();
-        }
+        currentBaseCameraBehaviour = behaviours[typeof(T)];
+        currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
+        currentBaseCameraBehaviour.EnterBehaviour();
     }
 
     
     private void ChangeBehaviour(Type type) {
-        if (pendingAccessibilityUpdate) {
-            HandlePendingAccessibilityUpdate();
-        } 
-        else {
-            currentBaseCameraBehaviour = behaviours[type];
-            currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
-            currentBaseCameraBehaviour.EnterBehaviour();
-        }
+        currentBaseCameraBehaviour = behaviours[type]; 
+        currentBaseCameraBehaviour.InjectReferences(thisTransform, pivotTarget, character);
+        currentBaseCameraBehaviour.EnterBehaviour();
+        behaviourQueue = ExecuteCameraBehaviour;
     }
     
     private void LockInput(LockInputEvent lockInputEvent) => lockInput = lockInputEvent.lockInput;
@@ -175,7 +171,7 @@ public class GameCamera : MonoBehaviour {
     private void ActivateMenuCamera(InGameMenuEvent inGameMenuEvent) {
         if (inGameMenuEvent.Activate) {
             previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
-            ChangeBehaviour<InGameMenuCameraBehaviour>();
+            behaviourQueue = null;
         }
         else 
             ChangeBehaviour(previousCameraBehaviour);
@@ -197,42 +193,50 @@ public class GameCamera : MonoBehaviour {
 
     private void OnSettingsChanged(SaveSettingsEvent settingsEvent) {
 
-        bool oneHandModeChanged = oneHandModeIsActive == settingsEvent.settingsData.oneHandMode;
+        bool oneHandModeChanged = oneHandModeIsActive != settingsEvent.settingsData.oneHandMode;
+        bool oneSwitchModeChanged = oneSwitchModeActive != settingsEvent.settingsData.oneSwitchMode;
+        
         
         //Jesus christ
-        if (oneHandModeChanged == false) {
-
+        if (oneHandModeChanged || oneSwitchModeChanged) {
             oneHandModeIsActive = settingsEvent.settingsData.oneHandMode;
-
-            if (currentBaseCameraBehaviour) {
-                Type currentBehaviourType = currentBaseCameraBehaviour.GetType();
-
-                if (currentBehaviourType != typeof(BaseCameraBehaviour) || currentBehaviourType != typeof(OneHandCameraBehaviour)) {
-                    pendingAccessibilityUpdate = true;
-                }
-                else 
-                    HandlePendingAccessibilityUpdate();
-            }
-            else 
-                HandlePendingAccessibilityUpdate();
-            
+            oneSwitchModeActive = settingsEvent.settingsData.oneSwitchMode;
+            HandlePendingAccessibilityUpdate();
         }
-    }
-    private void HandlePendingAccessibilityUpdate() {
-
-        pendingAccessibilityUpdate = false;
         
-        if (oneHandModeIsActive)
+
+    }
+
+    private void HandlePendingAccessibilityUpdate() {
+        
+        if (oneHandModeIsActive || oneSwitchModeActive)
             ChangeBehaviour<OneHandCameraBehaviour>();
         else
             ChangeBehaviour<BaseCameraBehaviour>();
+
+        previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
+
+    }
+    
+    private void OnSceneChange(SceneChangeEvent onSettingsChanged) {
+        previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
+        EventHandler<SceneLoadedEvent>.RegisterListener(OnSceneLoaded);
+        EventHandler<SceneChangeEvent>.UnregisterListener(OnSceneChange);
+        ChangeBehaviour<SceneChangeCameraBehaviour>();
+        
     }
 
-        [ContextMenu("Auto-assign targets", false,0)]
+    private void OnSceneLoaded(SceneLoadedEvent sceneLoadedEvent) {
+        ChangeBehaviour(previousCameraBehaviour);
+        EventHandler<SceneChangeEvent>.RegisterListener(OnSceneChange);
+        EventHandler<SceneLoadedEvent>.UnregisterListener(OnSceneLoaded);
+    }
+
+    [ContextMenu("Auto-assign targets", false,0)]
     public void AssignTargets() {
         try {
             pivotTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
-            character = GameObject.FindObjectOfType<MetaPlayerController>().transform;
+            character = FindObjectOfType<MetaPlayerController>().transform;
         }
         catch (NullReferenceException e) {
             Debug.Log(e);
@@ -275,6 +279,8 @@ public class GameCamera : MonoBehaviour {
         }
     }
 
+    
+    
 
 }
 

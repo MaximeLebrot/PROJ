@@ -37,6 +37,10 @@ public class PuzzleGrid : MonoBehaviour {
 
     private Puzzle masterPuzzle;
 
+    private FMOD.Studio.EventInstance CreateNewLineSound;
+    private FMOD.Studio.EventInstance EraseLineSound;
+    private FMOD.Studio.EventInstance SymbolClear;
+
     public string GetSolution() 
     {
         if (solution.Length > 0)
@@ -159,6 +163,10 @@ public class PuzzleGrid : MonoBehaviour {
     {
         ActivateNode(startNode, false);
         InstantiateFirstLine();
+        SymbolClear = FMODUnity.RuntimeManager.CreateInstance("event:/Game/Puzzle/PuzzleStart");
+        SymbolClear.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        SymbolClear.start();
+        SymbolClear.release();
     }
 
     private void InstantiateFirstLine()
@@ -249,6 +257,10 @@ public class PuzzleGrid : MonoBehaviour {
 
     private void CreateNewLine(Node node)
     {
+
+        if (currentLine == null)
+            return;
+
         if(lineRenderers.Count > 0)
             lineRenderers.Peek().ErasableLine(false);
 
@@ -256,6 +268,10 @@ public class PuzzleGrid : MonoBehaviour {
         GameObject newLineRenderer = Instantiate(linePrefab, transform);
         newLineRenderer.transform.position = currentNode.transform.position;
         newLineRenderer.transform.localRotation = Quaternion.Inverse(masterPuzzle.transform.rotation);
+        CreateNewLineSound = FMODUnity.RuntimeManager.CreateInstance("event:/Game/Puzzle/Node");
+        CreateNewLineSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        CreateNewLineSound.start();
+        CreateNewLineSound.release();
 
 
         //Set position of the particle system
@@ -284,6 +300,10 @@ public class PuzzleGrid : MonoBehaviour {
         foreach (Node n in currentNode.neighbours.Keys)
         {
             n.RemoveEnablingNode(currentNode);
+            EraseLineSound = FMODUnity.RuntimeManager.CreateInstance("event:/Game/Puzzle/NodeErase");
+            EraseLineSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+            EraseLineSound.start();
+            EraseLineSound.release();
         }
 
         /*
@@ -375,12 +395,12 @@ public class PuzzleGrid : MonoBehaviour {
     #region RESET_GRID
     public void ResetGrid()
     {
+        TurnOffLines();
+        TurnOffNodes();
+
         solution = "";
 
         currentNodeEffect.transform.localPosition = startNode.transform.localPosition;
-
-        TurnOffLines();
-        TurnOffNodes();
 
         DestroyCurrentLine();
 
@@ -401,13 +421,15 @@ public class PuzzleGrid : MonoBehaviour {
     {
         foreach (Node n in allNodes)
         {
-            if(n.startNode == false)
+            if (n.startNode == false)
             {
                 n.ResetNeighbours();
                 n.TurnOffCollider();
                 n.TurnOff();
                 n.Drawable = true;
             }
+            else
+                n.TurnOffCollider();
         }
         //RestartStartNode();
         Invoke("RestartStartNode", 1f);

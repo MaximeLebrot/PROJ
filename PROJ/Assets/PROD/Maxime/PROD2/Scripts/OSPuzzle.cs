@@ -4,14 +4,16 @@ using UnityEngine;
 public class OSPuzzle : MonoBehaviour
 {
     [SerializeField] private MetaPlayerController player;
-    [SerializeField] private static GameObject UINodeParent;
+    [SerializeField] private GameObject UINodeParent;
+    [SerializeField] private bool oneSwitch;
 
     public static List<OSPuzzleNode> UINodes = new List<OSPuzzleNode>();
 
     public void StartOSPuzzle(StartPuzzleEvent eve)
     {
         if (player == null)
-            player = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<MetaPlayerController>();
+            player = GetComponent<MetaPlayerController>();
+            //player = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<MetaPlayerController>();
         //player.velocity = Vector3.zero
         player.ChangeStateToOSPuzzle(eve);
         SetUINodesActive(true);
@@ -25,8 +27,11 @@ public class OSPuzzle : MonoBehaviour
 
     private void Awake()
     {
+        EventHandler<SaveSettingsEvent>.RegisterListener(HandleOSSetting);
         FindPuzzleUINodes();
-        //if (player == null)
+        SetUINodesActive(false);
+        if (player == null)
+            player = GetComponent<MetaPlayerController>();
         //player = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<MetaPlayerController>();
     }
 
@@ -57,12 +62,23 @@ public class OSPuzzle : MonoBehaviour
 
     private void OnEnable()
     {
+        EventHandler<SaveSettingsEvent>.RegisterListener(HandleOSSetting);
         EventHandler<StartPuzzleEvent>.RegisterListener(StartOSPuzzle);
         EventHandler<ExitPuzzleEvent>.RegisterListener(ExitOSPuzzle);
     }
 
+    private void HandleOSSetting(SaveSettingsEvent eve)
+    {
+        //this.enabled = eve.settingsData.oneSwitchMode;
+        if (this.enabled == false)
+            return;
+        Debug.Log("Kör: " + eve.settingsData.oneSwitchMode);
+
+    }
+
     private void OnDisable()
     {
+        EventHandler<SaveSettingsEvent>.UnregisterListener(HandleOSSetting);
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartOSPuzzle);
         EventHandler<ExitPuzzleEvent>.UnregisterListener(ExitOSPuzzle);
     }

@@ -37,12 +37,17 @@ public class PuzzlePlayerController : MonoBehaviour
     public MetaPlayerController metaPlayerController;
     private void OnEnable()
     {
+        
         quitPuzzle = metaPlayerController.inputReference.InputMaster.ExitPuzzle;
         quitPuzzle.Enable();
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
         metaPlayerController.inputReference.InputMaster.PlayPuzzleDescription.performed += OnPlayPuzzleDescription;
 
+        EventHandler<StartPuzzleEvent>.RegisterListener(OnPuzzleStart);
         EventHandler<ClearPuzzleEvent>.RegisterListener(OnPuzzleCompleted);
+        EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
+
+        EventHandler<RequestSettingsEvent>.FireEvent(null);
     }
 
     
@@ -52,12 +57,28 @@ public class PuzzlePlayerController : MonoBehaviour
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle;
         metaPlayerController.inputReference.InputMaster.PlayPuzzleDescription.performed -= OnPlayPuzzleDescription;
         EventHandler<ClearPuzzleEvent>.UnregisterListener(OnPuzzleCompleted);
+        EventHandler<StartPuzzleEvent>.UnregisterListener(OnPuzzleStart);
+        EventHandler<SaveSettingsEvent>.UnregisterListener(OnSaveSettings);
         quitPuzzle.Disable();
+    }
+
+    private void OnSaveSettings(SaveSettingsEvent obj)
+    {
+        if (obj.settingsData.easyPuzzleControls == true)
+            acceleration = 50;
+        else
+            acceleration = 100;
+    }
+
+    private void OnPuzzleStart(StartPuzzleEvent obj)
+    {
+        metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
     }
 
     private void OnPuzzleCompleted(ClearPuzzleEvent obj)
     {
-        metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle;
+        metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle; 
+
     }
 
     void Start()

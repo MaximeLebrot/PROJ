@@ -51,7 +51,7 @@ public class VoiceInputController : MonoBehaviour
             GetComponent<VoiceMovementMouse>().enabled = false;
             GetComponent<VoiceMovementArmless>().enabled = true;
             armlessCamera.SetActive(true);
-            player.transform.rotation = Quaternion.Euler(0, 0, 0);
+            player.transform.rotation = Quaternion.Euler(0, 90, 0);
             Debug.Log("3");
 
         }

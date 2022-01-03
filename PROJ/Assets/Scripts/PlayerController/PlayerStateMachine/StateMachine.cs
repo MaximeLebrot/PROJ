@@ -7,6 +7,7 @@ public class StateMachine
 {
     private Dictionary<Type, PlayerState> instantiatedStates = new Dictionary<Type, PlayerState>();
     public PlayerState currentState { get; private set; }
+    public bool holdToSprint { get; private set; }
 
     public StateMachine(object owner, PlayerState[] states)
     {
@@ -22,7 +23,11 @@ public class StateMachine
                 currentState = instantiated;
         }
         currentState.EnterState();
+
+        //Sub
+        EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
     }
+  
     public void RunUpdate()
     {
         currentState?.RunUpdate();
@@ -54,5 +59,9 @@ public class StateMachine
         }
         else
             Debug.Log(typeof(T) + "not found");
+    }
+    private void OnSaveSettings(SaveSettingsEvent eve)
+    {
+        holdToSprint = !eve.settingsData.pressToSprint;
     }
 }

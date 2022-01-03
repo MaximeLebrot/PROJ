@@ -25,7 +25,7 @@ public class SettingsData
     public string quality;
     
     //Accessibility
-    public int fontSize;
+    public string fontSize;
     public bool blindMode;
     public bool highContrastMode;
     public bool dyslexiaFont;
