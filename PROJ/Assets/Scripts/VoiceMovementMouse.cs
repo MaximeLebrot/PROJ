@@ -22,21 +22,6 @@ public class VoiceMovementMouse : MonoBehaviour
 
     Quaternion activePuzzleRotation;
 
-    /*private void Start()
-    {
-        AddActions();
-        Debug.Log("Started Mouse");
-
-
-        mpc = GetComponent<PlayerController>();
-        x = Animator.StringToHash("speed");
-        y = Animator.StringToHash("direction");
-
-        keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
-        keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
-        keywordRecognizer.Start();
-    }
-*/
     private void AddActions()
     {
         actions.Add("forward", Forward);

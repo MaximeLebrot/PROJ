@@ -8,6 +8,7 @@ public class VoiceInputController : MonoBehaviour
     public GameObject armlessCamera;
     [SerializeField] private GameObject player;
 
+
     void Awake()
     {
         inputMaster = new InputMaster();            
@@ -50,15 +51,15 @@ public class VoiceInputController : MonoBehaviour
         {
             GetComponent<VoiceMovementMouse>().enabled = false;
             GetComponent<VoiceMovementArmless>().enabled = true;
-            armlessCamera.SetActive(true);
-            player.transform.rotation = Quaternion.Euler(0, 90, 0);
+       //     armlessCamera.SetActive(true);
+       //     player.transform.rotation = Quaternion.Euler(0, 90, 0);
             Debug.Log("3");
 
         }
     }
 }
   
-    
+ 
 /*
 public void DropDownHandler(int choice)
 {
