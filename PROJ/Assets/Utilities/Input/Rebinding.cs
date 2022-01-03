@@ -34,8 +34,7 @@ public class Rebinding : MenuSettings
         }
         else
         {
-            Rebind(action, bindingIndex, composite: false);
-           
+            Rebind(action, bindingIndex, composite: false);         
         }
     }
 
