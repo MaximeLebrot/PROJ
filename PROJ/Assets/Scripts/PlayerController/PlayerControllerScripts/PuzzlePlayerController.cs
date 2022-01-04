@@ -37,7 +37,6 @@ public class PuzzlePlayerController : MonoBehaviour
     public MetaPlayerController metaPlayerController;
     private void OnEnable()
     {
-        
         quitPuzzle = metaPlayerController.inputReference.InputMaster.ExitPuzzle;
         quitPuzzle.Enable();
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
