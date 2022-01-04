@@ -41,7 +41,7 @@ public class GameMenuController : MenuController {
 
     private void ActivateComponents(bool activateComponents) {
         Cursor.lockState = activateComponents ? CursorLockMode.None : CursorLockMode.Locked;
-        Debug.Log(menuButtons);
+        //Debug.Log(menuButtons);
         menuButtons.gameObject.SetActive(activateComponents);
         backdrop.SetActive(activateComponents);
         EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(activateComponents));
