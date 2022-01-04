@@ -169,7 +169,7 @@ public class VoiceMovementMouse : MonoBehaviour
         walking = false;
         Debug.Log("PuzzleStarted");
         animator.SetFloat(x, 0);
-        activePuzzleRotation = eve.info.puzzlePos.rotation;
+        activePuzzleRotation = eve.info.puzzle.transform.rotation;
     //    transform.rotation = activePuzzleRotation;
         Debug.Log("activepuzzlerotation: "+ activePuzzleRotation);
         

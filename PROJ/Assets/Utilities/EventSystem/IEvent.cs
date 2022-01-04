@@ -51,10 +51,10 @@ public class ActivatorEvent : IEvent
 public class PuzzleInfo
 {
     public int ID;
-    public Transform puzzlePos;
-
+    public Puzzle puzzle;
+    
     public PuzzleInfo(int id) { ID = id; }
-    public PuzzleInfo(int id, Transform pp) { ID = id; puzzlePos = pp; }
+    public PuzzleInfo(int id, Puzzle pp) { ID = id; puzzle = pp; }
 }
 
 public readonly struct PlayerStateChangeEvent : IEvent {
@@ -66,32 +66,22 @@ public readonly struct PlayerStateChangeEvent : IEvent {
 public readonly struct CameraLookAtEvent : IEvent {
 
     public readonly Transform lookAtTarget;
-    public readonly float transitionTime;
-    public readonly float delayWhenDone;
-    public readonly float rotationSpeed;
+    public readonly LookAtTransitionData transitionData;
     
-    public CameraLookAtEvent(Transform lookAtTarget, float transitionTime, float delayWhenDone, float rotationSpeed) {
+    public CameraLookAtEvent(Transform lookAtTarget, LookAtTransitionData transitionData) {
         this.lookAtTarget = lookAtTarget;
-        this.transitionTime = transitionTime;
-        this.delayWhenDone = delayWhenDone;
-        this.rotationSpeed = rotationSpeed;
+        this.transitionData = transitionData;
     }
 }
 
 public readonly struct CameraLookAndMoveToEvent : IEvent {
 
-    public readonly Vector3 endPosition;
-    public readonly Quaternion endRotation;
-    public readonly float moveSpeed;
-    public readonly Vector3 offsetToTarget;
-    public readonly float rotationSpeed;
+    public readonly Transform targetTransform;
+    public readonly LookAndMoveTransitionData lookAndMoveTransitionData;
 
-    public CameraLookAndMoveToEvent(Vector3 endPosition, Quaternion endRotation, float moveSpeed, Vector3 offsetToTarget, float rotationSpeed) {
-        this.endPosition = endPosition;
-        this.endRotation = endRotation;
-        this.moveSpeed = moveSpeed;
-        this.offsetToTarget = offsetToTarget;
-        this.rotationSpeed = rotationSpeed;
+    public CameraLookAndMoveToEvent(Transform targetTransform, LookAndMoveTransitionData lookAndMoveTransitionData) {
+        this.targetTransform = targetTransform;
+        this.lookAndMoveTransitionData = lookAndMoveTransitionData;
     }
 }
 

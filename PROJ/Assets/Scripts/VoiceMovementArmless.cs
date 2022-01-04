@@ -195,7 +195,7 @@ public class VoiceMovementArmless : MonoBehaviour
 
         puzzleActive = true;
         Debug.Log("PuzzleStarted");
-        activePuzzleRotation = eve.info.puzzlePos.rotation;
+        activePuzzleRotation = eve.info.puzzle.transform.rotation;
         //    transform.rotation = activePuzzleRotation;
         Debug.Log("activepuzzlerotation: " + activePuzzleRotation);
 

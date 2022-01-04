@@ -80,13 +80,16 @@ public class LogbookHandler : MonoBehaviour
             {
                 TurnPageRight();
             }
+            if (inputMaster.Logbook.AddPage.triggered)
+                logbookScript.AddNextPage();
         }
     }
 
     public void TurnPageLeft()
     {
-       //animator.SetTrigger("left");
-       logbookScript.TurnPageLeft();
+        //animator.SetTrigger("left");
+        logbookScript.FlipPage(false);
+        //logbookScript.TurnPageLeft();
 
         PageOpen = FMODUnity.RuntimeManager.CreateInstance("event:/Environment/PageOpen");
         PageOpen.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
@@ -98,7 +101,8 @@ public class LogbookHandler : MonoBehaviour
     public void TurnPageRight()
     {
         //animator.SetTrigger("right");
-        logbookScript.TurnPageRight();
+        logbookScript.FlipPage(true);
+        //logbookScript.TurnPageRight();
 
         PageOpen = FMODUnity.RuntimeManager.CreateInstance("event:/Environment/PageOpen");
         PageOpen.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));

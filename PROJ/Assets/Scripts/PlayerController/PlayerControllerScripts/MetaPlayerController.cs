@@ -64,7 +64,7 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     {
         Debug.Log("Start puzzle, one switch mode is:" + oneSwitchMode);
         puzzleController.CurrentPuzzleID = spe.info.ID;
-        puzzleController.PuzzleTransform = spe.info.puzzlePos;
+        puzzleController.PuzzleTransform = spe.info.puzzle.transform;
         playerController3D.ResetCharacterModel();
         if (!oneSwitchMode)
         {
