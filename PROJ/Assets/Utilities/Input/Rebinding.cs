@@ -80,8 +80,7 @@ public class Rebinding : MenuSettings
                     {
                         //Done with composite rebinding, assign the name. Only done AFTER the entire composite is complete, which is a bit unfortunate
                         UpdateUIButton(compositeName);
-                    }
-                   
+                    }                  
                 }
                 else
                     UpdateUIButton(action);
