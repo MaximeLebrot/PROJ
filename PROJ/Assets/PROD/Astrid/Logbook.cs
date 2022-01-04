@@ -300,6 +300,8 @@ public class Logbook : MonoBehaviour
 
     public void AddNextPage() => AddPage(completeBook.GetNextPage());
 
+    public void AddSpecificPage(Page page) => AddPage(page);
+
     private void AddPage(Page newPage)
     {
         if (newPage == null)
