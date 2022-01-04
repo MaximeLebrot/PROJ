@@ -50,11 +50,10 @@ public class PageController : MonoBehaviour {
         if (currentActivePage != null) {
             onDone = DisableCurrentPage;
             onDone += ActivateNewPage;
-            currentActivePage.FadeMenu(FadeMode.FadeOut, onDone);
+          //  currentActivePage.FadeMenu(FadeMode.FadeOut, onDone);
         }
         else 
             ActivateNewPage();
-        
     }
 
     private void DisableCurrentPage() {
@@ -65,7 +64,7 @@ public class PageController : MonoBehaviour {
     private void ActivateNewPage() {
         currentActivePage = newPage;
         currentActivePage.gameObject.SetActive(true);
-        currentActivePage.FadeMenu(FadeMode.FadeIn, null);
+        //currentActivePage.FadeMenu(FadeMode.FadeIn, null);
         onDone = null;
         newPage = null;
 
