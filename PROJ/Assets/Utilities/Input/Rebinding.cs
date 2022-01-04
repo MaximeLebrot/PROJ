@@ -10,13 +10,10 @@ public class Rebinding : MenuSettings
     private RebindUIButton currentButton;
     private string compositeName = "";
 
-
-    private void Start()
+    protected override void SubMenuInitialize()
     {
-        //PlayerPrefs.DeleteAll();
-       LoadBindingOverrides();
+        LoadBindingOverrides();
     }
-    /// <summary>
     /// Currently doesn't support rebinding multiple bindings, hard coded to use the
     /// top one, and any others wont be accessible from here.
     /// </summary>
@@ -25,7 +22,7 @@ public class Rebinding : MenuSettings
     {
         compositeName = "";
 
-        Debug.Log("Action binding is : ´" + action.bindings[bindingIndex]);
+       // Debug.Log("Action binding is : ´" + action.bindings[bindingIndex]);
         //Composite binding
         if (action.bindings[bindingIndex].isComposite)
         {
@@ -42,13 +39,13 @@ public class Rebinding : MenuSettings
 
     private void Rebind(InputAction action, int currentBindingIndex, bool composite = false)
     {
-        Debug.Log("Binding started for " + action.name + " index " + currentBindingIndex);
+        //Debug.Log("Binding started for " + action.name + " index " + currentBindingIndex);
         rebindingOperation?.Cancel();
 
         action.Disable();
-        
+
         rebindingOperation = action.PerformInteractiveRebinding(currentBindingIndex)
-            .WithControlsExcluding("Mouse")           
+            .WithControlsExcluding("Mouse")
             .OnMatchWaitForAnother(0.1f)
             .WithCancelingThrough("<Keyboard>/escape")
             .WithCancelingThrough("<Gamepad>/start")
@@ -59,9 +56,9 @@ public class Rebinding : MenuSettings
             })
             .OnComplete(operation =>
             {
-                Debug.Log("Bind Completed");
                 CleanUp();
-                
+                //Debug.Log("New action binding is : ´" + action.bindings[0]);
+
                 if (composite)
                 {
                     //Building a string for a composite key
@@ -90,6 +87,8 @@ public class Rebinding : MenuSettings
                 action.Enable();
             })           
             .Start();
+
+        //Debug.Log("Action binding count is " + action.bindings.Count);
     }
    
     private void CleanUp()
@@ -104,9 +103,27 @@ public class Rebinding : MenuSettings
     private void UpdateUIButton(InputAction action)
     {
         int bindingIndex = action.GetBindingIndexForControl(action.controls[0]);
+
         currentButton.bindingButtonText.text = InputControlPath.ToHumanReadableString(
             action.bindings[bindingIndex].effectivePath, 
             InputControlPath.HumanReadableStringOptions.OmitDevice);
+    }
+    public void BuildCompositeName(InputAction action, int bindingIndex)
+    {
+        string compositeName = "";
+        while (bindingIndex < action.bindings.Count && action.bindings[bindingIndex].isPartOfComposite)
+        {
+            compositeName += InputControlPath.ToHumanReadableString(
+               action.bindings[bindingIndex].effectivePath,
+               InputControlPath.HumanReadableStringOptions.OmitDevice);
+            bindingIndex++;
+
+            //if there are more parts to this composite, add slash
+            if(action.bindings[bindingIndex].isPartOfComposite)
+                compositeName += "/";
+        }
+        UpdateUIButton(compositeName);
+        return;
     }
 
 
@@ -131,8 +148,11 @@ public class Rebinding : MenuSettings
                 {
                     string loadedBindingName = PlayerPrefs.GetString(action.actionMap + action.name + i);
                     action.ApplyBindingOverride(i, loadedBindingName);
+                    //Debug.Log("Load: " + action + " applied override " + loadedBindingName + "counter " + i);
                     bindingName += InputControlPath.ToHumanReadableString(loadedBindingName, InputControlPath.HumanReadableStringOptions.OmitDevice);
-                    bindingName += i != 0 ? "/" : "";
+
+                    if (action.bindings[i + 1].isPartOfComposite)
+                        bindingName += "/";
                 }
             }
             if(!string.IsNullOrEmpty(bindingName))
@@ -147,11 +167,16 @@ public class Rebinding : MenuSettings
     }
     public void RestoreDefault(RebindUIButton calledFrom)
     {
+
         currentButton = calledFrom;
         InputAction action = inputReference.inputMaster.asset.FindAction(currentButton.action.action.name);
 
+        if (action.bindings[0].isComposite)
+            BuildCompositeName(action, 1); 
+        else
+            UpdateUIButton(action);
+
         action.RemoveBindingOverride(0);
-        UpdateUIButton(action);
     }
 
 

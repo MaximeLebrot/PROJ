@@ -37,8 +37,8 @@ public class PuzzlePlayerController : MonoBehaviour
     public MetaPlayerController metaPlayerController;
     private void OnEnable()
     {
-        quitPuzzle = metaPlayerController.inputReference.InputMaster.ExitPuzzle;
-        quitPuzzle.Enable();
+        /*quitPuzzle = metaPlayerController.inputReference.InputMaster.ExitPuzzle;
+        quitPuzzle.Enable();*/
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
         metaPlayerController.inputReference.InputMaster.PlayPuzzleDescription.performed += OnPlayPuzzleDescription;
 
@@ -58,7 +58,7 @@ public class PuzzlePlayerController : MonoBehaviour
         EventHandler<ClearPuzzleEvent>.UnregisterListener(OnPuzzleCompleted);
         EventHandler<StartPuzzleEvent>.UnregisterListener(OnPuzzleStart);
         EventHandler<SaveSettingsEvent>.UnregisterListener(OnSaveSettings);
-        quitPuzzle.Disable();
+        //quitPuzzle.Disable();
     }
 
     private void OnSaveSettings(SaveSettingsEvent obj)

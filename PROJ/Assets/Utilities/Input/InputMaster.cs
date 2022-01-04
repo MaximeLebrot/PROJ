@@ -82,24 +82,6 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ContrastMode"",
-                    ""type"": ""Button"",
-                    ""id"": ""19fab7fd-e07d-45de-9389-2916cd53a3b4"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""REBINDTEST"",
-                    ""type"": ""Button"",
-                    ""id"": ""58d63be6-4da3-4705-9816-9aac15f9385b"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Logbook"",
                     ""type"": ""Button"",
                     ""id"": ""99ed9d4b-2753-4ce2-b846-460ff0bee2e6"",
@@ -293,34 +275,12 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""351b4e3e-9ae8-438a-9352-efc8be4c601b"",
+                    ""id"": ""2ad670e1-249e-4afa-8dd8-b50707d73163"",
                     ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""xboxcontroller"",
                     ""action"": ""Sprint"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""6141eb4b-b7ae-4c77-bd9e-e6a046f7387d"",
-                    ""path"": ""<Keyboard>/k"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Stnd KBM"",
-                    ""action"": ""ContrastMode"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""bc975b64-ffba-45e5-81c6-eaacdc1651c9"",
-                    ""path"": ""<XInputController>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""REBINDTEST"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -352,7 +312,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/o"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Stnd KBM;xboxcontroller"",
                     ""action"": ""Cloth"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -994,8 +954,6 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         m_Player_MoveCamera = m_Player.FindAction("MoveCamera", throwIfNotFound: true);
         m_Player_Anykey = m_Player.FindAction("Anykey", throwIfNotFound: true);
         m_Player_Menu = m_Player.FindAction("Menu", throwIfNotFound: true);
-        m_Player_ContrastMode = m_Player.FindAction("ContrastMode", throwIfNotFound: true);
-        m_Player_REBINDTEST = m_Player.FindAction("REBINDTEST", throwIfNotFound: true);
         m_Player_Logbook = m_Player.FindAction("Logbook", throwIfNotFound: true);
         m_Player_PlayPuzzleDescription = m_Player.FindAction("PlayPuzzleDescription", throwIfNotFound: true);
         m_Player_Cloth = m_Player.FindAction("Cloth", throwIfNotFound: true);
@@ -1100,8 +1058,6 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MoveCamera;
     private readonly InputAction m_Player_Anykey;
     private readonly InputAction m_Player_Menu;
-    private readonly InputAction m_Player_ContrastMode;
-    private readonly InputAction m_Player_REBINDTEST;
     private readonly InputAction m_Player_Logbook;
     private readonly InputAction m_Player_PlayPuzzleDescription;
     private readonly InputAction m_Player_Cloth;
@@ -1116,8 +1072,6 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         public InputAction @MoveCamera => m_Wrapper.m_Player_MoveCamera;
         public InputAction @Anykey => m_Wrapper.m_Player_Anykey;
         public InputAction @Menu => m_Wrapper.m_Player_Menu;
-        public InputAction @ContrastMode => m_Wrapper.m_Player_ContrastMode;
-        public InputAction @REBINDTEST => m_Wrapper.m_Player_REBINDTEST;
         public InputAction @Logbook => m_Wrapper.m_Player_Logbook;
         public InputAction @PlayPuzzleDescription => m_Wrapper.m_Player_PlayPuzzleDescription;
         public InputAction @Cloth => m_Wrapper.m_Player_Cloth;
@@ -1149,12 +1103,6 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @Menu.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMenu;
                 @Menu.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMenu;
                 @Menu.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMenu;
-                @ContrastMode.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnContrastMode;
-                @ContrastMode.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnContrastMode;
-                @ContrastMode.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnContrastMode;
-                @REBINDTEST.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnREBINDTEST;
-                @REBINDTEST.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnREBINDTEST;
-                @REBINDTEST.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnREBINDTEST;
                 @Logbook.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLogbook;
                 @Logbook.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLogbook;
                 @Logbook.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLogbook;
@@ -1189,12 +1137,6 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @Menu.started += instance.OnMenu;
                 @Menu.performed += instance.OnMenu;
                 @Menu.canceled += instance.OnMenu;
-                @ContrastMode.started += instance.OnContrastMode;
-                @ContrastMode.performed += instance.OnContrastMode;
-                @ContrastMode.canceled += instance.OnContrastMode;
-                @REBINDTEST.started += instance.OnREBINDTEST;
-                @REBINDTEST.performed += instance.OnREBINDTEST;
-                @REBINDTEST.canceled += instance.OnREBINDTEST;
                 @Logbook.started += instance.OnLogbook;
                 @Logbook.performed += instance.OnLogbook;
                 @Logbook.canceled += instance.OnLogbook;
@@ -1571,8 +1513,6 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         void OnMoveCamera(InputAction.CallbackContext context);
         void OnAnykey(InputAction.CallbackContext context);
         void OnMenu(InputAction.CallbackContext context);
-        void OnContrastMode(InputAction.CallbackContext context);
-        void OnREBINDTEST(InputAction.CallbackContext context);
         void OnLogbook(InputAction.CallbackContext context);
         void OnPlayPuzzleDescription(InputAction.CallbackContext context);
         void OnCloth(InputAction.CallbackContext context);

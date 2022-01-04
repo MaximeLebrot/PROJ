@@ -82,6 +82,7 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     }
 
     private void EnterInGameMenuState(InGameMenuEvent inGameMenuEvent) {
+
         if (inGameMenuEvent.Activate)
         {
             storedVelocity = physics.velocity;
