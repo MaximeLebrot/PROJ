@@ -26,8 +26,8 @@ public class Logbook : MonoBehaviour
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        AddNextPage();
         AddChapters();
+        AddNextPage();
         leftTurnButton.SetActive(false);
         rightTurnButton.SetActive(true);
         for (int i = 0; i < tabsLeft.Length; i++)
