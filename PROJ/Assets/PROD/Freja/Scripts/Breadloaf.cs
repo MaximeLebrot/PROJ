@@ -5,22 +5,23 @@ public class Breadloaf : MonoBehaviour
     [SerializeField] private Breadcrumb[] breadcrumbs;
     [SerializeField] private Breadcrumb currentCrumb;
     [SerializeField] private Breadcrumb nextCrumb;
-    [SerializeField] private AudioSource currentAudioSource;
-    [SerializeField] private AudioSource nextAudioSource;
-    private AudioSource[] audioSources;
+    [SerializeField] private FMOD.Studio.EventInstance currentAudioSource;
+    [SerializeField] private FMOD.Studio.EventInstance nextAudioSource;
     private bool CASplaying;
+
+    private FMOD.Studio.EventInstance Breadcrumbs;
 
     private void Start()
     {
-        audioSources = GetComponentsInChildren<AudioSource>();
-        currentAudioSource = audioSources[0];
-        nextAudioSource = audioSources[1];
-        nextAudioSource.Play();
+        nextAudioSource = FMODUnity.RuntimeManager.CreateInstance("event:/Blind/NextSound");
+        nextAudioSource.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(nextCrumb.transform.position));
+        nextAudioSource.start();
+        nextAudioSource.release();
         breadcrumbs = GetComponentsInChildren<Breadcrumb>();
         foreach (Breadcrumb crumb in breadcrumbs)
             crumb.parent = this;
         nextCrumb = breadcrumbs[0];
-        nextAudioSource.transform.position = nextCrumb.transform.position;
+        nextAudioSource.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(nextCrumb.transform.position));
     }
 
     public void UpdateCrumbStep(Breadcrumb crumb)
@@ -38,11 +39,14 @@ public class Breadloaf : MonoBehaviour
     {
         if (!CASplaying)
         {
-            currentAudioSource.Play();
+            currentAudioSource = FMODUnity.RuntimeManager.CreateInstance("event:/Blind/CurrentSound");
+            currentAudioSource.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+            currentAudioSource.start();
+            currentAudioSource.release();
             CASplaying = true;
         }
-        currentAudioSource.transform.position = currentCrumb.transform.position;
-        nextAudioSource.transform.position = nextCrumb.transform.position;
+        currentAudioSource.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(currentCrumb.transform.position));
+        nextAudioSource.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(nextCrumb.transform.position));
     }
 
 }
