@@ -34,7 +34,7 @@ public class PageController : MonoBehaviour {
             }
             
             transform.GetChild(i).gameObject.SetActive(false);
-                
+            
         }
     }
     
@@ -85,7 +85,6 @@ public class PageController : MonoBehaviour {
         }
 
         return false;
-
     }
 
     //Called from scene changer buttons (beta release) /Martin

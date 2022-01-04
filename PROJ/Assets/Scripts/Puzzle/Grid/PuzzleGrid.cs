@@ -9,25 +9,25 @@ public class PuzzleGrid : MonoBehaviour {
     [SerializeField] private GameObject linePrefab;
     [SerializeField] private GameObject nodePrefab;
     [SerializeField] private GameObject startNodePrefab;
+
     [SerializeField] private int size;
     [SerializeField] private VisualEffect currentNodeEffect;
+    [SerializeField] private string solution;
 
     private int nodeOffset = 3;
     
+    //Grid components
     private List<Node> walkableNodes = new List<Node>();
     private List<Node> lineNodes = new List<Node>();
     private Stack<LineObject> lineRenderers = new Stack<LineObject>();
     private Node currentNode;
     private Node startNode;
 
-    [SerializeField] private string solution;
-    //private List<Node> allNodesLIST = new List<Node>();
+    
+
     public Node[,] allNodes { get; private set; }
 
-
     private List<Node> unrestrictedNodes = new List<Node>();
-
-
     private PuzzleLine currentLine;
     private GameObject currentLineObject;
 

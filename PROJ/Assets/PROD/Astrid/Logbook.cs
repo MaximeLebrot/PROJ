@@ -5,18 +5,87 @@ using TMPro;
 
 public class Logbook : MonoBehaviour
 {
+    [SerializeField] private CompletedBook completeBook;
+    [SerializeField] private StartPage startPage;
+    [SerializeField] private List<SymbolPage> symbolPages;
+    [SerializeField] private List<OperandPage> operandPages;
+    [SerializeField] private List<MetaOperandPage> metaOperandPages;
+    [SerializeField] private List<Page> allPages;
+
     [SerializeField] private GameObject[] chapters; // The start page for each chapter
     [SerializeField] private GameObject[] pages; // All pages
     [SerializeField] private GameObject[] tabs;
     [SerializeField] private GameObject[] tabsLeft; //Don't include Tab_0
     [SerializeField] private GameObject[] tabsRight; //Don't include Tab_0
     private AudioSource audioSource;
-    private int pageNr;
+    [SerializeField] private int pageNr;
     [SerializeField] private GameObject leftTurnButton;
     [SerializeField] private GameObject rightTurnButton;
     [SerializeField] private TextMeshProUGUI pageNrText;
 
-    public void Start()
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        AddNextPage();
+        AddChapters();
+        leftTurnButton.SetActive(false);
+        rightTurnButton.SetActive(true);
+        for (int i = 0; i < tabsLeft.Length; i++)
+            CloseTab(i);
+        CloseEveryPage();
+        allPages[pageNr].Activate();
+    }
+
+    private void CloseEveryPage()
+    {
+        foreach (Page page in allPages)
+            page.Inactivate();
+    }
+
+    public void FlipPage(bool forward)
+    {
+        if (forward)
+        {
+            if (pageNr == allPages.Count - 1)
+                return;
+            pageNr++;
+            PageActivation();
+        }
+        else
+        {
+            if (pageNr == 0)
+                return;
+            pageNr--;
+            PageActivation();
+        }
+    }
+    
+    public void OpenPage(Page page)
+    {
+        for (int i = 0; i < allPages.Count; i++)
+        {
+            if (allPages[i] == page)
+                pageNr = i;
+        }
+        PageActivation();
+    }
+
+    private void PageActivation()
+    {
+        CloseEveryPage();
+        allPages[pageNr].Activate();
+        pageNrText.text = "Page " + (pageNr + 1);
+        leftTurnButton.SetActive(true);
+        rightTurnButton.SetActive(true);
+        if (pageNr == allPages.Count- 1)
+            rightTurnButton.SetActive(false);
+        else if (pageNr == 0)
+            leftTurnButton.SetActive(false);
+        ChapCheck();
+    }
+
+    #region old
+    /*public void awake()
     {
         audioSource = GetComponent<AudioSource>();
         pageNr = 0; // Or should it be 0?
@@ -66,6 +135,18 @@ public class Logbook : MonoBehaviour
                 rightTurnButton.SetActive(false);
         }
         ChapterCheck();
+    }*/
+
+    private void ChapCheck()
+    {
+        if (pageNr > symbolPages.Count + operandPages.Count)
+            OpenThirdTab();
+        else if (pageNr > symbolPages.Count)
+            OpenSecondTab();
+        else if (pageNr > 0)
+            OpenFirstTab();
+        else
+            OpenWelcomeTab();
     }
 
     // Do something about disssss :'))))))))))))
@@ -197,6 +278,61 @@ public class Logbook : MonoBehaviour
             tabsLeft[i].SetActive(false);
         if (tabsRight[i].activeInHierarchy != true)
             tabsRight[i].SetActive(true);
+    }
+    #endregion
+    
+    private void UpdateAllPages()
+    {
+        allPages = new List<Page>();
+        allPages.Add(startPage);
+        allPages.AddRange(symbolPages);
+        allPages.AddRange(operandPages);
+        allPages.AddRange(metaOperandPages);
+    }
+
+    private void AddChapters()
+    {
+        symbolPages.Add(completeBook.symbolsChapter);
+        operandPages.Add(completeBook.OperandChapter);
+        metaOperandPages.Add(completeBook.MetaOperandChapter);
+        UpdateAllPages();
+    }
+
+    public void AddNextPage() => AddPage(completeBook.GetNextPage());
+
+    private void AddPage(Page newPage)
+    {
+        if (newPage == null)
+            return;
+
+        switch (newPage.GetPageType())
+        {
+            case "Start":
+                startPage = (StartPage)newPage;
+                break;
+            case "Symbol":
+                symbolPages.Add((SymbolPage)newPage);
+                break;
+            case "Operand":
+                operandPages.Add((OperandPage)newPage);
+                break;
+            case "MetaOperand":
+                metaOperandPages.Add((MetaOperandPage)newPage);
+                break;
+        }
+
+        UpdateAllPages();
+        UpdatePageNr(newPage);
+        PageActivation();
+    }
+
+    private void UpdatePageNr(Page page)
+    {
+        for (int i = 0; i < allPages.Count; i++)
+        {
+            if (allPages[i] == page)
+                pageNr = i;
+        }
     }
 
     private void PlaySound()

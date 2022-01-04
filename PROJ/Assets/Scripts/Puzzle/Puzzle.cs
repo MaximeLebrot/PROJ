@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class Puzzle : MonoBehaviour
 {
-    //[SerializeField] int puzzleID; //should be compared to solution on a EvaluatePuzzleEvent and fire a SUCCESS EVENT or FAIL EVENT
     [SerializeField] private int masterPuzzleID; 
-    
     [SerializeField] private List<PuzzleInstance> puzzleInstances = new List<PuzzleInstance>();
     [SerializeField] private string playerInput = "";
     [SerializeField] protected string solution;
@@ -16,7 +14,7 @@ public class Puzzle : MonoBehaviour
     protected PuzzleTranslator translator = new PuzzleTranslator();
     protected List<TranslationAndObject> translations;
 
-    public PuzzleGrid grid;
+    protected PuzzleGrid grid;
 
     private SymbolPlacer symbolPlacer;
  
@@ -34,6 +32,8 @@ public class Puzzle : MonoBehaviour
 
     public float NextPuzzleTimer { get; } = 2.5f;
     public void SetPlayer(Transform t) { player = t; grid.Player = player; }
+
+    public PuzzleGrid GetGrid() { return grid; }
 
     private FMOD.Studio.EventInstance PuzzleSolved; 
     private FMOD.Studio.EventInstance CompletePuzzleSound;

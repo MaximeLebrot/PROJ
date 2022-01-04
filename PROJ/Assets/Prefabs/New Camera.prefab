@@ -141,6 +141,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1058888301}
+  - {fileID: 8424319173505975653}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 4.161, y: -51.348, z: 0.011}
@@ -239,7 +240,7 @@ MonoBehaviour:
   cameraBehaviours:
   - {fileID: 11400000, guid: eabfb2596d8f5744fa06e8dd9887687f, type: 2}
   - {fileID: 11400000, guid: 8c98cd50cc119384f8ed52faab7bf2cd, type: 2}
-  - {fileID: 11400000, guid: 9e10d11396a0e054592cfa7278a3106e, type: 2}
+  - {fileID: 11400000, guid: 1a2431dbab80f754db58a81d327a9649, type: 2}
   - {fileID: 11400000, guid: 581263f5e539d1349ba8f899d10a8114, type: 2}
   - {fileID: 11400000, guid: 23f20788444a5564ca64d09eae4cebfa, type: 2}
   - {fileID: 11400000, guid: 7f1352e241ed24c4ba79b182add2bef5, type: 2}
@@ -266,7 +267,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1306360387060383519}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d75c1cc0f168ad5438449a511c615d63, type: 3}
   m_Name: 
@@ -290,3 +291,55 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attenuationObject: {fileID: 0}
   ListenerNumber: -1
+--- !u!1 &8644273016722242104
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8424319173505975653}
+  - component: {fileID: 6309556055096165812}
+  m_Layer: 0
+  m_Name: PostProcessSwitcher
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8424319173505975653
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8644273016722242104}
+  m_LocalRotation: {x: -0.0326779, y: 0.43296763, z: -0.01581496, w: 0.90067816}
+  m_LocalPosition: {x: -2502.5159, y: 269.9277, z: 1157.7358}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1306360387060383514}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6309556055096165812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8644273016722242104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2513275af3fafd4ead6d21fbed7c6ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volumesByScene:
+  - sceneName: TutorialMainHub
+    volume: {fileID: 0}
+  - sceneName: EarthRuin_2.0
+    volume: {fileID: 0}
+  - sceneName: WindRuin_3.0
+    volume: {fileID: 0}
+  - sceneName: LavaRuin_Beta
+    volume: {fileID: 0}
