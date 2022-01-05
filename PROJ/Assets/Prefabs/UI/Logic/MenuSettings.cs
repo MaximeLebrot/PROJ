@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-//HASH STRINGS
+[Serializable]
 public abstract class MenuSettings : MonoBehaviour {
  
-    protected Dictionary<int, UIMenuItem> menuOptions;
+    protected Dictionary<Type, UIMenuItemBase> menuOptions;
 
     private FadeGroup fadeGroup;
     
@@ -22,13 +23,12 @@ public abstract class MenuSettings : MonoBehaviour {
         foreach (CanvasGroup canvasGroup in GetComponentsInChildren<CanvasGroup>())
             canvasGroup.alpha = 0;
         
-        menuOptions = new Dictionary<int, UIMenuItem>();
+        menuOptions = new Dictionary<Type, UIMenuItemBase>();
 
-        List<UIMenuItem> childOptions = GetComponentsInChildren<UIMenuItem>().ToList();
+        List<UIMenuItemBase> childOptions = GetComponentsInChildren<UIMenuItemBase>().ToList();
 
-        foreach (UIMenuItem menuItem in childOptions) {
-            menuItem.GenerateID();
-            menuOptions.Add(menuItem.ID, menuItem);
+        foreach (UIMenuItemBase menuItem in childOptions) {
+            menuOptions.Add(menuItem.GetType(), menuItem);
         }
             
         
@@ -39,17 +39,20 @@ public abstract class MenuSettings : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
+    public UIMenuItemBase GetOption<T>() => menuOptions[typeof(T)];
+    
     public void ActivatePage(Action onDone) => fadeGroup.InitiateFade(FadeMode.FadeIn, onDone);
 
     public void DeactivatePage(Action action) => fadeGroup.InitiateFade(FadeMode.FadeOut, action);
 
+    public bool HasMenuItem<T>() => menuOptions.ContainsKey(typeof(T));
+    
     protected virtual void SubMenuInitialize() {}
     
     public abstract void SetMenuItems(SettingsData settingsData);
 
     public abstract void ApplyItemValues(ref SettingsData settingsData);
-    protected UIMenuItem ExtractMenuItem(string menuName) => menuOptions[menuName.GetHashCode()];
-    
+ 
     public void SelectTopButton()
     {
         if (!topButtonReference)
@@ -58,4 +61,6 @@ public abstract class MenuSettings : MonoBehaviour {
         }
         topButtonReference.Select();
     }
+    
 }
+

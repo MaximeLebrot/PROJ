@@ -1,22 +1,19 @@
 using System;
 using UnityEngine;
-using UnityEngine.Events;
 
-public abstract class UIMenuItem : MonoBehaviour {
-    public int ID { get; private set; }
+[Serializable]
+public abstract class UIMenuItem<T> : UIMenuItemBase {
+    public abstract T GetValue();
+    public abstract void SetValue(T value);
 
-    public bool hasHashedID = false;
+    protected virtual void ExecuteAdditionalLogic() {}
+}
+
+[Serializable]
+public abstract class UIMenuItemBase : MonoBehaviour {
     
-    public void GenerateID() {
-        ID = name.GetHashCode();
-        hasHashedID = true;
-        Initialize();
-    }
+    public void Awake() => Initialize();
 
     protected virtual void Initialize() {}
-
-    public abstract dynamic GetValue();
-    public abstract void SetValue(dynamic value);
-
     
 }

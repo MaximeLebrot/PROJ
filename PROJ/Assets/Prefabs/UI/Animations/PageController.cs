@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class PageController : MonoBehaviour {
 
-    private HashSet<MenuSettings> pageObjects;
-
+    public List<MenuSettings> PageObjects { get; private set; }
+    
+    
     private MenuSettings currentActivePage;
 
     private Action onDone;
@@ -20,7 +21,7 @@ public class PageController : MonoBehaviour {
     private void Awake() {
         gameMenuController = GetComponentInParent<GameMenuController>();
         
-        pageObjects = new HashSet<MenuSettings>();
+        PageObjects = new List<MenuSettings>();
         
         for (int i = 0; i < transform.childCount; i++) {
 
@@ -30,7 +31,7 @@ public class PageController : MonoBehaviour {
 
             if (menuSettings != null) {
                 menuSettings.Initialize();
-                pageObjects.Add(menuSettings);
+                PageObjects.Add(menuSettings);
             }
             
             transform.GetChild(i).gameObject.SetActive(false);
@@ -40,14 +41,28 @@ public class PageController : MonoBehaviour {
         UIButton.onButtonClicked += HandleButtonClicked;
         UIButton.onResetCalled += ResetPages;
     }
+
+
+    public UIMenuItemBase FindRequestedOption<T>() {
+        foreach (MenuSettings menuSetting in PageObjects) {
+
+            if (menuSetting.HasMenuItem<T>()) 
+                return menuSetting.GetOption<T>();
+        }
+
+        return null;
+    }
     
     
     private void HandleButtonClicked(UIButton clickedButton) {
-        OnSuspendInput?.Invoke(true);
+        
+        OnSuspendInput?.Invoke(true); //invoke with false in ActivatePage
+        
         clickedButton.onMoveCallback += () => {
             SwitchPage(clickedButton.MenuSetting);
         };
     }
+    
 
     public void ResetPages() {
         currentActivePage.DeactivatePage(DisableCurrentPage);

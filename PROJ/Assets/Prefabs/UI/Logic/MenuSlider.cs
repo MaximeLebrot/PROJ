@@ -1,20 +1,26 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class MenuSlider : UIMenuItem {
+public abstract class MenuSlider : UIMenuItem<float> {
 
-    [SerializeField] private Slider slider;
+    [SerializeField] protected Slider slider;
     [SerializeField] private TextMeshProUGUI percentText;
 
-    protected override void Initialize() => slider.onValueChanged.AddListener(UpdateSlider);
-    public override dynamic GetValue() => slider.value;
-    public override void SetValue(dynamic value) => UpdateSlider(value);
+    protected override void Initialize() => AddListener(UpdateSlider);
+
+    public override float GetValue() => slider.value;
+
+    public override void SetValue(float value) => UpdateSlider(value);
+
+    public void AddListener(UnityAction<float> callback) => slider.onValueChanged.AddListener(callback);
     
     private void UpdateSlider(float newValue) {
         slider.value = newValue;
-        Debug.Log("Hallo");
         percentText.text = ((int)(newValue)).ToString();
     }
+    
+    protected virtual void ExecuteAdditionalLogic() {}
     
 }

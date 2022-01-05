@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -12,7 +11,7 @@ public class FontChanger : MonoBehaviour {
     private Dictionary<int, float> defaultFontSizes;
     private Dictionary<int, TMP_FontAsset> defaultFonts;
 
-    [SerializeField] private DropDownItem dropDown;
+   // [SerializeField] private DropDownItem dropDown;
 
     public void Awake() {
         
@@ -26,7 +25,7 @@ public class FontChanger : MonoBehaviour {
         }
             
         
-        dropDown.onValueChanged += ChangeFontSize;
+      //  dropDown.onValueChanged += ChangeFontSize;
     }
 
     private void OnDisable() {

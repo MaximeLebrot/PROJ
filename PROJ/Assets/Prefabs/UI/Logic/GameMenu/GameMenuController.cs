@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 public class GameMenuController : MenuController {
 
     [SerializeField] private MenuButtons menuButtons;
@@ -29,14 +28,12 @@ public class GameMenuController : MenuController {
         
         if (inputSuspended)
             return;
-
-        Debug.Log("Input not suspended");
+        
         if (pageController.IsPageActive()) {
             pageController.ResetPages();
             return;
         }
-            
-      
+        
         CloseMenu();
         onBackInput = OpenMenu;
     }
