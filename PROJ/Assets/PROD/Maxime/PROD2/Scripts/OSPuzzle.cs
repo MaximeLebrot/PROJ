@@ -27,7 +27,6 @@ public class OSPuzzle : MonoBehaviour
 
     private void Awake()
     {
-        EventHandler<SaveSettingsEvent>.RegisterListener(HandleOSSetting);
         FindPuzzleUINodes();
         SetUINodesActive(false);
         if (player == null)
@@ -70,8 +69,8 @@ public class OSPuzzle : MonoBehaviour
     private void HandleOSSetting(SaveSettingsEvent eve)
     {
         //this.enabled = eve.settingsData.oneSwitchMode;
-        if (this.enabled == false)
-            return;
+        /*if (this.enabled == false)
+            return;*/
         Debug.Log("Kör: " + eve.settingsData.oneSwitchMode);
 
     }

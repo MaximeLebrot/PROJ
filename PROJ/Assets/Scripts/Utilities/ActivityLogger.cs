@@ -110,6 +110,6 @@ public class ActivityLogger : MonoBehaviour
     }
     private string getPath(int i)
     {
-        return Application.dataPath + "/StreamingAssets/" + "Log("+ i +").csv";
+        return Application.dataPath + "/StreamingAssets/Logs" + "Log("+ i +").csv";
     }
 }
