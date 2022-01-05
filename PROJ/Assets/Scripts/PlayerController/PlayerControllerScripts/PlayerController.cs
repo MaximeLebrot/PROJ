@@ -36,16 +36,12 @@ public class PlayerController : MonoBehaviour
     public PlayerPhysicsSplit physics { get; private set; }
     public Transform cameraTransform { get; private set; }
     [SerializeField] public GameObject characterModel;
-    private ControllerInputReference inputReference;
-    private MetaPlayerController mpc;
 
     //Properties
     private float groundHitAngle;
 
     void Awake()
     {
-        mpc = GetComponent<MetaPlayerController>();
-        inputReference = mpc.inputReference;
         Application.targetFrameRate = 250;
         cameraTransform = Camera.main.transform;
         physics = GetComponent<PlayerPhysicsSplit>();

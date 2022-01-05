@@ -26,10 +26,10 @@ public class Logbook : MonoBehaviour
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        AddNextPage();
         AddChapters();
-        leftTurnButton.SetActive(false);
-        rightTurnButton.SetActive(true);
+        AddNextPage();
+        //leftTurnButton.SetActive(false);
+        //rightTurnButton.SetActive(true);
         for (int i = 0; i < tabsLeft.Length; i++)
             CloseTab(i);
         CloseEveryPage();
@@ -300,6 +300,8 @@ public class Logbook : MonoBehaviour
 
     public void AddNextPage() => AddPage(completeBook.GetNextPage());
 
+    public void AddSpecificPage(Page page) => AddPage(page);
+
     private void AddPage(Page newPage)
     {
         if (newPage == null)
@@ -324,6 +326,21 @@ public class Logbook : MonoBehaviour
         UpdateAllPages();
         UpdatePageNr(newPage);
         PageActivation();
+    }
+
+    public void AddRightSide(Page page) => page.AddRightSide();
+
+    private Page GetLatestTwoSidedPage()
+    {
+        Page page = null;
+
+        foreach (Page p in allPages)
+        {
+            if (!p.complete)
+                page = p;
+        }
+
+        return page;
     }
 
     private void UpdatePageNr(Page page)
