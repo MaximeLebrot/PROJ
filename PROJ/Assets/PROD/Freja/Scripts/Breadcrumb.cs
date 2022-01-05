@@ -9,6 +9,7 @@ public class Breadcrumb : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             parent.UpdateCrumbStep(this);
+            Debug.Log("Success");
         }
     }
 }

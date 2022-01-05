@@ -13,14 +13,15 @@ public class Breadloaf : MonoBehaviour
 
     private void Start()
     {
-        nextAudioSource = FMODUnity.RuntimeManager.CreateInstance("event:/Blind/NextSound");
-        nextAudioSource.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(nextCrumb.transform.position));
-        nextAudioSource.start();
-        nextAudioSource.release();
         breadcrumbs = GetComponentsInChildren<Breadcrumb>();
         foreach (Breadcrumb crumb in breadcrumbs)
             crumb.parent = this;
         nextCrumb = breadcrumbs[0];
+
+        nextAudioSource = FMODUnity.RuntimeManager.CreateInstance("event:/Blind/NextSound");
+        nextAudioSource.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(nextCrumb.transform.position));
+        nextAudioSource.start();
+        nextAudioSource.release();
         nextAudioSource.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(nextCrumb.transform.position));
     }
 
