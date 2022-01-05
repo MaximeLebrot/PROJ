@@ -70,6 +70,8 @@ public class LogbookHandler : MonoBehaviour
             }
             if (inputReference.inputMaster.Logbook.AddPage.triggered)
                 logbookScript.AddNextPage();
+            //if (inputMaster.Logbook.AddRightSide.triggered)
+                //logbookScript.AddRightSide();
         }
     }
 
