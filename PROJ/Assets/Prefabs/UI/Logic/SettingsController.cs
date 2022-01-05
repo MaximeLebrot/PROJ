@@ -6,12 +6,17 @@ using UnityEngine;
 public class SettingsController : MonoBehaviour {
 
     [SerializeField] private SettingsData userSettings;
-    [SerializeField] private List<MenuSettings> settingObjects;
+    private List<MenuSettings> settingObjects;
 
     private const string JSONFileName = "SavedSettings";
 
    
     private void Awake() {
+        
+        settingObjects = GetComponent<PageController>().PageObjects;
+        
+        UpdateUserSettings();
+        
         LoadSavedSettings();
         EventHandler<RequestSettingsEvent>.RegisterListener(SendOutUserSettingsData);
     }
@@ -53,6 +58,7 @@ public class SettingsController : MonoBehaviour {
             json = streamReader.ReadToEnd();
             RestoreDefaultValues(json, false);
             PlayerPrefs.SetString("SavedSettings", json);
+            streamReader.Close();
         }
         
         SettingsData savedSettings = JsonUtility.FromJson<SettingsData>(json);
@@ -61,9 +67,13 @@ public class SettingsController : MonoBehaviour {
         SaveSettings(true);
     }
     
+    /// <summary>
+    /// For each json-value, get type and menusetting and give the menusetting the type of component + the value to be applied
+    /// </summary>
     private void UpdateUserSettings() {
-        foreach(MenuSettings menuSettings in settingObjects)
+        foreach (MenuSettings menuSettings in settingObjects) {
             menuSettings.ApplyItemValues(ref userSettings);
+        }
     }
 
     private void SetValues(SettingsData settings) {

@@ -18,6 +18,9 @@ public class PostProcessSwitcher : MonoBehaviour
     {
         foreach(SceneAndVolumePair pair in volumesByScene)
         {
+            if(pair.volume == null)
+                continue;
+            
             if (pair.sceneName == SceneManager.GetActiveScene().name)
                 pair.volume.SetActive(true);
             else

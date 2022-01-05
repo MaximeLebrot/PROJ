@@ -31,6 +31,8 @@ public class GameCamera : MonoBehaviour {
     private bool oneSwitchModeActive;
 
     private CancellationTokenSource cancellationTokenSource;
+
+    private float test = 0;
     
     private void Awake() {
         behaviorExecutionIsAllowedToRun = true;
@@ -50,8 +52,10 @@ public class GameCamera : MonoBehaviour {
         
         ChangeBehaviour<BaseCameraBehaviour>();
         
-        
+        //MouseSensitivity a = MenuController.Instance.RequestOption<MouseSensitivity>() as MouseSensitivity;
+
     }
+
     
     private void LateUpdate() {
         if(behaviorExecutionIsAllowedToRun)
@@ -253,7 +257,8 @@ public class GameCamera : MonoBehaviour {
     }
 
     private void OnApplicationQuit() {
-        cancellationTokenSource.Cancel();
+        
+        cancellationTokenSource?.Cancel();
     }
 
     [ContextMenu("Auto-assign targets", false,0)]

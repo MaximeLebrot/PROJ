@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class DropDownItem : UIMenuItem {
+public abstract class DropDownItem : UIMenuItem<string> {
 
     [SerializeField] private TMP_Dropdown dropdownList;
 
@@ -12,12 +12,12 @@ public class DropDownItem : UIMenuItem {
     protected override void Initialize() {
         dropdownList.onValueChanged.AddListener(ValueChanged);
     }
-    public override dynamic GetValue() {
+    public override string GetValue() {
         return dropdownList.options[dropdownList.value].text;
     }
 
-    public override void SetValue(dynamic value) {
-        dropdownList.value = dropdownList.options.FindIndex(resolutionOption => resolutionOption.text.Equals(value.ToString()));
+    public override void SetValue(string value) {
+        dropdownList.value = dropdownList.options.FindIndex(resolutionOption => resolutionOption.text.Equals(value));
     }
 
     private void ValueChanged(int value) {
@@ -25,6 +25,8 @@ public class DropDownItem : UIMenuItem {
         dynamic item = dropdownList.options[dropdownList.value].text;
         
         onValueChanged?.Invoke(item);
+        
+        ExecuteAdditionalLogic();
     }
 
 }
