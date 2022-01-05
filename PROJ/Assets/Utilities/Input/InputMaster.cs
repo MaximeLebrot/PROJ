@@ -712,6 +712,15 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AddRightSide"",
+                    ""type"": ""Button"",
+                    ""id"": ""2000d469-85a0-4bf2-acd2-b63721d4a9d4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -767,6 +776,17 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""AddPage"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7911bb7b-4be2-4ba1-b6d4-cafdd4e14f00"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AddRightSide"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -844,6 +864,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         m_Logbook_TurnLeft = m_Logbook.FindAction("TurnLeft", throwIfNotFound: true);
         m_Logbook_TurnRight = m_Logbook.FindAction("TurnRight", throwIfNotFound: true);
         m_Logbook_AddPage = m_Logbook.FindAction("AddPage", throwIfNotFound: true);
+        m_Logbook_AddRightSide = m_Logbook.FindAction("AddRightSide", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1239,6 +1260,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     private readonly InputAction m_Logbook_TurnLeft;
     private readonly InputAction m_Logbook_TurnRight;
     private readonly InputAction m_Logbook_AddPage;
+    private readonly InputAction m_Logbook_AddRightSide;
     public struct LogbookActions
     {
         private @InputMaster m_Wrapper;
@@ -1246,6 +1268,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         public InputAction @TurnLeft => m_Wrapper.m_Logbook_TurnLeft;
         public InputAction @TurnRight => m_Wrapper.m_Logbook_TurnRight;
         public InputAction @AddPage => m_Wrapper.m_Logbook_AddPage;
+        public InputAction @AddRightSide => m_Wrapper.m_Logbook_AddRightSide;
         public InputActionMap Get() { return m_Wrapper.m_Logbook; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1264,6 +1287,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @AddPage.started -= m_Wrapper.m_LogbookActionsCallbackInterface.OnAddPage;
                 @AddPage.performed -= m_Wrapper.m_LogbookActionsCallbackInterface.OnAddPage;
                 @AddPage.canceled -= m_Wrapper.m_LogbookActionsCallbackInterface.OnAddPage;
+                @AddRightSide.started -= m_Wrapper.m_LogbookActionsCallbackInterface.OnAddRightSide;
+                @AddRightSide.performed -= m_Wrapper.m_LogbookActionsCallbackInterface.OnAddRightSide;
+                @AddRightSide.canceled -= m_Wrapper.m_LogbookActionsCallbackInterface.OnAddRightSide;
             }
             m_Wrapper.m_LogbookActionsCallbackInterface = instance;
             if (instance != null)
@@ -1277,6 +1303,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @AddPage.started += instance.OnAddPage;
                 @AddPage.performed += instance.OnAddPage;
                 @AddPage.canceled += instance.OnAddPage;
+                @AddRightSide.started += instance.OnAddRightSide;
+                @AddRightSide.performed += instance.OnAddRightSide;
+                @AddRightSide.canceled += instance.OnAddRightSide;
             }
         }
     }
@@ -1345,5 +1374,6 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         void OnTurnLeft(InputAction.CallbackContext context);
         void OnTurnRight(InputAction.CallbackContext context);
         void OnAddPage(InputAction.CallbackContext context);
+        void OnAddRightSide(InputAction.CallbackContext context);
     }
 }
