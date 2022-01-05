@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class LogbookHandler : MonoBehaviour
 {
-    private InputMaster inputMaster;
-    private bool isOpen;
+    [SerializeField]private ControllerInputReference inputReference;
     [SerializeField] private GameObject logbook;
+
+    private bool isOpen;
     private Animator animator;
     private Logbook logbookScript;
 
@@ -19,21 +20,8 @@ public class LogbookHandler : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);    
     }
 
-    private void OnEnable()
-    {
-        
-    }
-
-    private void OnDisable()
-    {
-        inputMaster.Disable();
-        
-    }
-
     private void Start()
     {
-        inputMaster = new InputMaster();
-        inputMaster.Enable();
         isOpen = false;
         logbook.SetActive(false);
         animator = logbook.GetComponent<Animator>();
@@ -43,7 +31,7 @@ public class LogbookHandler : MonoBehaviour
     private void Update()
     {
         // Open and close the logbook
-        if (inputMaster.Player.Logbook.triggered)
+        if (inputReference.InputMaster.Logbook.triggered)
         {
             // Put animation here.
             if (isOpen)
@@ -72,16 +60,18 @@ public class LogbookHandler : MonoBehaviour
         if (isOpen)
         {
             // Change page with keys
-            if (inputMaster.Logbook.TurnLeft.triggered)
+            if (inputReference.inputMaster.Logbook.TurnLeft.triggered)
             {
                 TurnPageLeft();          
             }
-            if (inputMaster.Logbook.TurnRight.triggered)
+            if (inputReference.inputMaster.Logbook.TurnRight.triggered)
             {
                 TurnPageRight();
             }
-            if (inputMaster.Logbook.AddPage.triggered)
+            if (inputReference.inputMaster.Logbook.AddPage.triggered)
                 logbookScript.AddNextPage();
+            //if (inputMaster.Logbook.AddRightSide.triggered)
+                //logbookScript.AddRightSide();
         }
     }
 

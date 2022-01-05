@@ -34,7 +34,6 @@ public class StateMachine
     }
     public void ChangeState<T>() where T : PlayerState
     {
-        Debug.Log("Changing State");
         if (instantiatedStates.ContainsKey(typeof(T)))
         {
             PlayerState instance = instantiatedStates[typeof(T)];

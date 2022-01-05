@@ -5,7 +5,6 @@ using UnityEngine;
 public class VoiceInputController : MonoBehaviour
 {
     private InputMaster inputMaster;
-    public GameObject armlessCamera;
     [SerializeField] private GameObject player;
 
     void Awake()
@@ -33,7 +32,8 @@ public class VoiceInputController : MonoBehaviour
     {
         if (inputMaster.Voice.TurnOffBoth.triggered)
         {
-            VoiceMovementArmless();
+            NoVoiceMovement();
+            Debug.Log("Hej");
         }
         if (inputMaster.Voice.TurnOnMouse.triggered)
         {
@@ -41,7 +41,7 @@ public class VoiceInputController : MonoBehaviour
         }
         if (inputMaster.Voice.TurnOnArmless.triggered)
         {
-            NoVoiceMovement();
+            VoiceMovementArmless();
         }
     }
     private void OnSaveSettings(SaveSettingsEvent eve)
@@ -54,11 +54,10 @@ public class VoiceInputController : MonoBehaviour
         //else
         //NoVoiceMovement();
     }
-    private void VoiceMovementArmless()
+    private void NoVoiceMovement()
     {
         GetComponent<VoiceMovementArmless>().enabled = false;
         GetComponent<VoiceMovementMouse>().enabled = false;
-        armlessCamera.SetActive(false);
 
         Debug.Log("1");
     }
@@ -66,15 +65,13 @@ public class VoiceInputController : MonoBehaviour
     {
         GetComponent<VoiceMovementArmless>().enabled = false;
         GetComponent<VoiceMovementMouse>().enabled = true;
-        armlessCamera.SetActive(false);
 
         Debug.Log("2");
     }
-    private void NoVoiceMovement()
+    private void VoiceMovementArmless()
     {
         GetComponent<VoiceMovementMouse>().enabled = false;
         GetComponent<VoiceMovementArmless>().enabled = true;
-        armlessCamera.SetActive(true);
         player.transform.rotation = Quaternion.Euler(0, 90, 0);
         Debug.Log("3");
     }

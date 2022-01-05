@@ -17,7 +17,7 @@ namespace NewCamera
         public void InitializePuzzleCamera(Puzzle puzzle) {
             this.puzzle = puzzle;
 
-            switch (puzzle.Grid.Size) {
+            switch (puzzle.GetGrid().Size) {
                 case 3:
                     behaviourValues = _3x3;
                     break;

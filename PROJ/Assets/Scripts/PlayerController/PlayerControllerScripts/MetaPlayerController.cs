@@ -12,6 +12,7 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     public PuzzlePlayerController puzzleController { get; private set; }
     public Animator animator { get; private set; }
     public ControllerInputReference inputReference;
+    public InputActionAsset inputMaster;
     public bool holdToSprint { get; private set; }
 
     //StateMachine
@@ -81,6 +82,7 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     }
 
     private void EnterInGameMenuState(InGameMenuEvent inGameMenuEvent) {
+
         if (inGameMenuEvent.Activate)
         {
             storedVelocity = physics.velocity;
