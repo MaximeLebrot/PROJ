@@ -82,24 +82,6 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ContrastMode"",
-                    ""type"": ""Button"",
-                    ""id"": ""19fab7fd-e07d-45de-9389-2916cd53a3b4"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""REBINDTEST"",
-                    ""type"": ""Button"",
-                    ""id"": ""58d63be6-4da3-4705-9816-9aac15f9385b"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Logbook"",
                     ""type"": ""Button"",
                     ""id"": ""99ed9d4b-2753-4ce2-b846-460ff0bee2e6"",
@@ -293,34 +275,12 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""351b4e3e-9ae8-438a-9352-efc8be4c601b"",
-                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""id"": ""2ad670e1-249e-4afa-8dd8-b50707d73163"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""xboxcontroller"",
                     ""action"": ""Sprint"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""6141eb4b-b7ae-4c77-bd9e-e6a046f7387d"",
-                    ""path"": ""<Keyboard>/k"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Stnd KBM"",
-                    ""action"": ""ContrastMode"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""bc975b64-ffba-45e5-81c6-eaacdc1651c9"",
-                    ""path"": ""<XInputController>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""REBINDTEST"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -352,7 +312,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/o"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Stnd KBM;xboxcontroller"",
                     ""action"": ""Cloth"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -365,6 +325,189 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""DestroyCloth"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Gamepad"",
+            ""id"": ""24aa23a9-28d4-46af-a521-2918f834fc23"",
+            ""actions"": [
+                {
+                    ""name"": ""Movement"",
+                    ""type"": ""Value"",
+                    ""id"": ""6fb947ca-8194-4ffe-9257-7c65d75c989f"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Sprint"",
+                    ""type"": ""Button"",
+                    ""id"": ""ff7eb99b-ad15-4632-b65b-68b8a6b7759c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ExitPuzzle"",
+                    ""type"": ""Button"",
+                    ""id"": ""27090707-1a25-4d38-9b2a-0956e51246a2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MoveCamera"",
+                    ""type"": ""Value"",
+                    ""id"": ""4726c1df-e3a2-4387-ac38-5a9a3ce3c62f"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Anykey"",
+                    ""type"": ""Button"",
+                    ""id"": ""8921328c-c992-45c4-8765-60636106561a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""94a8289c-b191-40d7-a63c-cb4574e58c3d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""84996a5d-f747-43ea-bbc6-f1c70129cc3f"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""xboxcontroller"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Axis"",
+                    ""id"": ""61f6076f-ed62-45c5-a7dc-e1a1a6068331"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": ""NormalizeVector2"",
+                    ""groups"": ""xboxcontroller"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""5f9bf8af-1da5-45e4-b164-bd8ef4cfac18"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""xboxcontroller"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""eeef2ac4-605d-4b80-b42e-3b1f1f73f280"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""xboxcontroller"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""db018538-62cf-4fb3-986d-82a549f5db3f"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""xboxcontroller"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""66ecb36e-1fd7-4b6b-bc12-f1dfa0113ca5"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""xboxcontroller"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3be26b96-4c4d-4046-841a-3e6ff3321681"",
+                    ""path"": ""<XInputController>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""xboxcontroller"",
+                    ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ef20f953-8f5a-4558-9f6e-8652770acbac"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""xboxcontroller"",
+                    ""action"": ""ExitPuzzle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7a4ca386-ab66-4b93-a7e3-ba93fd203472"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": ""ScaleVector2(x=13,y=13)"",
+                    ""groups"": ""xboxcontroller"",
+                    ""action"": ""MoveCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""da7a34eb-64ce-482b-8bb2-ce061ef6105a"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""xboxcontroller"",
+                    ""action"": ""Anykey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fdffaead-cce1-4055-9ba4-0af8ff1de531"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""xboxcontroller"",
+                    ""action"": ""Menu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -831,12 +974,18 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         m_Player_MoveCamera = m_Player.FindAction("MoveCamera", throwIfNotFound: true);
         m_Player_Anykey = m_Player.FindAction("Anykey", throwIfNotFound: true);
         m_Player_Menu = m_Player.FindAction("Menu", throwIfNotFound: true);
-        m_Player_ContrastMode = m_Player.FindAction("ContrastMode", throwIfNotFound: true);
-        m_Player_REBINDTEST = m_Player.FindAction("REBINDTEST", throwIfNotFound: true);
         m_Player_Logbook = m_Player.FindAction("Logbook", throwIfNotFound: true);
         m_Player_PlayPuzzleDescription = m_Player.FindAction("PlayPuzzleDescription", throwIfNotFound: true);
         m_Player_Cloth = m_Player.FindAction("Cloth", throwIfNotFound: true);
         m_Player_DestroyCloth = m_Player.FindAction("DestroyCloth", throwIfNotFound: true);
+        // Gamepad
+        m_Gamepad = asset.FindActionMap("Gamepad", throwIfNotFound: true);
+        m_Gamepad_Movement = m_Gamepad.FindAction("Movement", throwIfNotFound: true);
+        m_Gamepad_Sprint = m_Gamepad.FindAction("Sprint", throwIfNotFound: true);
+        m_Gamepad_ExitPuzzle = m_Gamepad.FindAction("ExitPuzzle", throwIfNotFound: true);
+        m_Gamepad_MoveCamera = m_Gamepad.FindAction("MoveCamera", throwIfNotFound: true);
+        m_Gamepad_Anykey = m_Gamepad.FindAction("Anykey", throwIfNotFound: true);
+        m_Gamepad_Menu = m_Gamepad.FindAction("Menu", throwIfNotFound: true);
         // PuzzleDEBUGGER
         m_PuzzleDEBUGGER = asset.FindActionMap("PuzzleDEBUGGER", throwIfNotFound: true);
         m_PuzzleDEBUGGER_calculatesolution = m_PuzzleDEBUGGER.FindAction("calculate solution", throwIfNotFound: true);
@@ -930,8 +1079,6 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MoveCamera;
     private readonly InputAction m_Player_Anykey;
     private readonly InputAction m_Player_Menu;
-    private readonly InputAction m_Player_ContrastMode;
-    private readonly InputAction m_Player_REBINDTEST;
     private readonly InputAction m_Player_Logbook;
     private readonly InputAction m_Player_PlayPuzzleDescription;
     private readonly InputAction m_Player_Cloth;
@@ -946,8 +1093,6 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         public InputAction @MoveCamera => m_Wrapper.m_Player_MoveCamera;
         public InputAction @Anykey => m_Wrapper.m_Player_Anykey;
         public InputAction @Menu => m_Wrapper.m_Player_Menu;
-        public InputAction @ContrastMode => m_Wrapper.m_Player_ContrastMode;
-        public InputAction @REBINDTEST => m_Wrapper.m_Player_REBINDTEST;
         public InputAction @Logbook => m_Wrapper.m_Player_Logbook;
         public InputAction @PlayPuzzleDescription => m_Wrapper.m_Player_PlayPuzzleDescription;
         public InputAction @Cloth => m_Wrapper.m_Player_Cloth;
@@ -979,12 +1124,6 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @Menu.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMenu;
                 @Menu.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMenu;
                 @Menu.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMenu;
-                @ContrastMode.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnContrastMode;
-                @ContrastMode.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnContrastMode;
-                @ContrastMode.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnContrastMode;
-                @REBINDTEST.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnREBINDTEST;
-                @REBINDTEST.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnREBINDTEST;
-                @REBINDTEST.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnREBINDTEST;
                 @Logbook.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLogbook;
                 @Logbook.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLogbook;
                 @Logbook.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLogbook;
@@ -1019,12 +1158,6 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @Menu.started += instance.OnMenu;
                 @Menu.performed += instance.OnMenu;
                 @Menu.canceled += instance.OnMenu;
-                @ContrastMode.started += instance.OnContrastMode;
-                @ContrastMode.performed += instance.OnContrastMode;
-                @ContrastMode.canceled += instance.OnContrastMode;
-                @REBINDTEST.started += instance.OnREBINDTEST;
-                @REBINDTEST.performed += instance.OnREBINDTEST;
-                @REBINDTEST.canceled += instance.OnREBINDTEST;
                 @Logbook.started += instance.OnLogbook;
                 @Logbook.performed += instance.OnLogbook;
                 @Logbook.canceled += instance.OnLogbook;
@@ -1041,6 +1174,79 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // Gamepad
+    private readonly InputActionMap m_Gamepad;
+    private IGamepadActions m_GamepadActionsCallbackInterface;
+    private readonly InputAction m_Gamepad_Movement;
+    private readonly InputAction m_Gamepad_Sprint;
+    private readonly InputAction m_Gamepad_ExitPuzzle;
+    private readonly InputAction m_Gamepad_MoveCamera;
+    private readonly InputAction m_Gamepad_Anykey;
+    private readonly InputAction m_Gamepad_Menu;
+    public struct GamepadActions
+    {
+        private @InputMaster m_Wrapper;
+        public GamepadActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Movement => m_Wrapper.m_Gamepad_Movement;
+        public InputAction @Sprint => m_Wrapper.m_Gamepad_Sprint;
+        public InputAction @ExitPuzzle => m_Wrapper.m_Gamepad_ExitPuzzle;
+        public InputAction @MoveCamera => m_Wrapper.m_Gamepad_MoveCamera;
+        public InputAction @Anykey => m_Wrapper.m_Gamepad_Anykey;
+        public InputAction @Menu => m_Wrapper.m_Gamepad_Menu;
+        public InputActionMap Get() { return m_Wrapper.m_Gamepad; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(GamepadActions set) { return set.Get(); }
+        public void SetCallbacks(IGamepadActions instance)
+        {
+            if (m_Wrapper.m_GamepadActionsCallbackInterface != null)
+            {
+                @Movement.started -= m_Wrapper.m_GamepadActionsCallbackInterface.OnMovement;
+                @Movement.performed -= m_Wrapper.m_GamepadActionsCallbackInterface.OnMovement;
+                @Movement.canceled -= m_Wrapper.m_GamepadActionsCallbackInterface.OnMovement;
+                @Sprint.started -= m_Wrapper.m_GamepadActionsCallbackInterface.OnSprint;
+                @Sprint.performed -= m_Wrapper.m_GamepadActionsCallbackInterface.OnSprint;
+                @Sprint.canceled -= m_Wrapper.m_GamepadActionsCallbackInterface.OnSprint;
+                @ExitPuzzle.started -= m_Wrapper.m_GamepadActionsCallbackInterface.OnExitPuzzle;
+                @ExitPuzzle.performed -= m_Wrapper.m_GamepadActionsCallbackInterface.OnExitPuzzle;
+                @ExitPuzzle.canceled -= m_Wrapper.m_GamepadActionsCallbackInterface.OnExitPuzzle;
+                @MoveCamera.started -= m_Wrapper.m_GamepadActionsCallbackInterface.OnMoveCamera;
+                @MoveCamera.performed -= m_Wrapper.m_GamepadActionsCallbackInterface.OnMoveCamera;
+                @MoveCamera.canceled -= m_Wrapper.m_GamepadActionsCallbackInterface.OnMoveCamera;
+                @Anykey.started -= m_Wrapper.m_GamepadActionsCallbackInterface.OnAnykey;
+                @Anykey.performed -= m_Wrapper.m_GamepadActionsCallbackInterface.OnAnykey;
+                @Anykey.canceled -= m_Wrapper.m_GamepadActionsCallbackInterface.OnAnykey;
+                @Menu.started -= m_Wrapper.m_GamepadActionsCallbackInterface.OnMenu;
+                @Menu.performed -= m_Wrapper.m_GamepadActionsCallbackInterface.OnMenu;
+                @Menu.canceled -= m_Wrapper.m_GamepadActionsCallbackInterface.OnMenu;
+            }
+            m_Wrapper.m_GamepadActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Movement.started += instance.OnMovement;
+                @Movement.performed += instance.OnMovement;
+                @Movement.canceled += instance.OnMovement;
+                @Sprint.started += instance.OnSprint;
+                @Sprint.performed += instance.OnSprint;
+                @Sprint.canceled += instance.OnSprint;
+                @ExitPuzzle.started += instance.OnExitPuzzle;
+                @ExitPuzzle.performed += instance.OnExitPuzzle;
+                @ExitPuzzle.canceled += instance.OnExitPuzzle;
+                @MoveCamera.started += instance.OnMoveCamera;
+                @MoveCamera.performed += instance.OnMoveCamera;
+                @MoveCamera.canceled += instance.OnMoveCamera;
+                @Anykey.started += instance.OnAnykey;
+                @Anykey.performed += instance.OnAnykey;
+                @Anykey.canceled += instance.OnAnykey;
+                @Menu.started += instance.OnMenu;
+                @Menu.performed += instance.OnMenu;
+                @Menu.canceled += instance.OnMenu;
+            }
+        }
+    }
+    public GamepadActions @Gamepad => new GamepadActions(this);
 
     // PuzzleDEBUGGER
     private readonly InputActionMap m_PuzzleDEBUGGER;
@@ -1336,12 +1542,19 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         void OnMoveCamera(InputAction.CallbackContext context);
         void OnAnykey(InputAction.CallbackContext context);
         void OnMenu(InputAction.CallbackContext context);
-        void OnContrastMode(InputAction.CallbackContext context);
-        void OnREBINDTEST(InputAction.CallbackContext context);
         void OnLogbook(InputAction.CallbackContext context);
         void OnPlayPuzzleDescription(InputAction.CallbackContext context);
         void OnCloth(InputAction.CallbackContext context);
         void OnDestroyCloth(InputAction.CallbackContext context);
+    }
+    public interface IGamepadActions
+    {
+        void OnMovement(InputAction.CallbackContext context);
+        void OnSprint(InputAction.CallbackContext context);
+        void OnExitPuzzle(InputAction.CallbackContext context);
+        void OnMoveCamera(InputAction.CallbackContext context);
+        void OnAnykey(InputAction.CallbackContext context);
+        void OnMenu(InputAction.CallbackContext context);
     }
     public interface IPuzzleDEBUGGERActions
     {
