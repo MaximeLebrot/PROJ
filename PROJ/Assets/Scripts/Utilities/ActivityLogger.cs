@@ -10,7 +10,7 @@ public class ActivityLogger : MonoBehaviour
     private List<string[]> rowData = new List<string[]>();
     float lastCompletion = 0;
     int fileNumber = 0;
-    int dataPointCounter = 1;ddd
+    int dataPointCounter = 1;
 
     void Start()
     {
