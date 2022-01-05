@@ -214,7 +214,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
                 //Vector3 normalForce = PhysicsFunctions.NormalForce3D(velocity * minimumPenetrationForPenalty, direction.normalized);
                 //velocity += normalForce;
                 //This can also happen if the player intersects only colliders that are not valid, such as attachedCollider or if the collider is a trigger
-                Debug.Log("Separation has no value!");
+                //Debug.Log("Separation has no value!");
                 return;
             }
         }
