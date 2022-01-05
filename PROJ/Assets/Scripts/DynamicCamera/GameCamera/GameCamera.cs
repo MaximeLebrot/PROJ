@@ -52,7 +52,7 @@ public class GameCamera : MonoBehaviour {
         
         ChangeBehaviour<BaseCameraBehaviour>();
         
-        MouseSensitivity a = MenuController.Instance.RequestOption<MouseSensitivity>() as MouseSensitivity;
+        //MouseSensitivity a = MenuController.Instance.RequestOption<MouseSensitivity>() as MouseSensitivity;
 
     }
 

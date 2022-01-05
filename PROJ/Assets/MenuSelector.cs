@@ -13,6 +13,6 @@ public class MenuSelector : MonoBehaviour {
         selectorRect.parent = target.transform;
         selectorRect.localPosition = Vector2.zero;
     }
-
+    
     public void Quit() => Application.Quit();
 }
