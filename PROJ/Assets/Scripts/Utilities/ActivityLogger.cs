@@ -10,7 +10,7 @@ public class ActivityLogger : MonoBehaviour
     private List<string[]> rowData = new List<string[]>();
     float lastCompletion = 0;
     int fileNumber = 0;
-    int dataPointCounter = 1;
+    int dataPointCounter = 1;ddd
 
     void Start()
     {
@@ -110,6 +110,6 @@ public class ActivityLogger : MonoBehaviour
     }
     private string getPath(int i)
     {
-        return Application.dataPath + "/StreamingAssets/" + "Log("+ i +").csv";
+        return Application.dataPath + "/StreamingAssets/Logs" + "Log("+ i +").csv";
     }
 }
