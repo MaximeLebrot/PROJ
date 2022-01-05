@@ -26,7 +26,7 @@ public class ActivityLogger : MonoBehaviour
     {
         string[] rowDataTemp = new string[3];
         rowDataTemp[0] = "ID";
-        rowDataTemp[1] = "Time since last puzzle completion";
+        rowDataTemp[1] = "Puzzle delta";
         rowDataTemp[2] = "Total time to complete";
         rowData.Add(rowDataTemp);
     }
@@ -57,9 +57,7 @@ public class ActivityLogger : MonoBehaviour
     private void OnPuzzleComplete(ActivatorEvent eve)
     {
         Debug.Log("OnPuzzleComplete Log");
-        int puzzleID = eve.info.ID;
-        float time = Time.realtimeSinceStartup;
-        AddDataPoint(puzzleID);
+        AddDataPoint(eve.info.ID);
         Save();
     }
     private void AddDataPoint(int id)
