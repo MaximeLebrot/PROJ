@@ -4,7 +4,15 @@ using UnityEngine.InputSystem;
 public class ControllerInputReference : ScriptableObject {
     
     public InputMaster inputMaster;
-    public InputMaster.PlayerActions InputMaster => inputMaster.Player;
+    public InputMaster.PlayerActions InputMaster {
+        get {
+            if(inputMaster == null)
+                Initialize();
+
+            return inputMaster.Player;
+        }
+    }
+
     public InputMaster.OneSwitchActions OneSwitchInputMaster => inputMaster.OneSwitch;
 
     public void Initialize() {       

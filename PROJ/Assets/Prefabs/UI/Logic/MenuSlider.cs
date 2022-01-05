@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +13,7 @@ public class MenuSlider : UIMenuItem {
     
     private void UpdateSlider(float newValue) {
         slider.value = newValue;
+        Debug.Log("Hallo");
         percentText.text = ((int)(newValue)).ToString();
     }
     

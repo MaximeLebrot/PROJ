@@ -12,7 +12,7 @@ public class MainMenuController : MenuController {
     private void OnAnyKeyPressed(InputAction.CallbackContext e) {
         controllerInputReference.InputMaster.Anykey.performed -= OnAnyKeyPressed;
         first.gameObject.SetActive(true);
-        ActivateSubMenu(first);
+        //ActivateSubMenu(first);
     }
     
 
@@ -20,7 +20,7 @@ public class MainMenuController : MenuController {
         if (inputSuspended)
             return;
 
-        pageController.CanMoveUpOneLevel();
+        pageController.IsPageActive();
             
     }
     

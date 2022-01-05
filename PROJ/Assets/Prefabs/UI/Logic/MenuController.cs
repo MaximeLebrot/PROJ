@@ -17,14 +17,13 @@ public abstract class MenuController : MonoBehaviour {
     protected void Awake() {
         controllerInputReference.Initialize();
 
-        pageController = GetComponentInChildren<PageController>();
+        pageController = GetComponent<PageController>();
 ;        
-        graphicRaycaster = GetComponentInParent<GraphicRaycaster>();
-
-        InputController.SuspendInputEvent += SuspendInputEvent;
+        graphicRaycaster = GetComponent<GraphicRaycaster>();
         
         Initialize();
-        
+
+        pageController.OnSuspendInput += SuspendInputEvent;
     }
     
     private void OnEnable() {
@@ -51,6 +50,5 @@ public abstract class MenuController : MonoBehaviour {
         inputSuspended = suspend;
         graphicRaycaster.enabled = !inputSuspended;
     }
-    
-    public void ActivateSubMenu(MenuSettings page) => pageController.RegisterSubMenuAsActive(page);
+
 }

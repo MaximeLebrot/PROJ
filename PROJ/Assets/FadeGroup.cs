@@ -7,8 +7,10 @@ public class FadeGroup : MonoBehaviour {
 
     [Header("FADE IN occurs from index 0-n | FADE OUT occurs from index n-0")]
     [SerializeField] private List<FadeEntity> fadeOrder;
-    
-    public IEnumerator Fade(FadeMode fadeMode, Action onDone) {
+
+    public void InitiateFade(FadeMode fadeMode, Action onDone) => StartCoroutine(Fade(fadeMode, onDone));
+
+    private IEnumerator Fade(FadeMode fadeMode, Action onDone) {
 
         float totalTime = 0;
 
@@ -40,13 +42,21 @@ public class FadeGroup : MonoBehaviour {
         if (onDone != null)
             onDone?.Invoke();
     }
+
     
+    //Har viktigare saker för mig än att vara effektiv. 
     private IEnumerator FadeIn(FadeEntity fadeEntity) {
         fadeEntity.CanvasGroup.interactable = false;
         fadeEntity.CanvasGroup.alpha = 0;
+
+        float endTime = Time.time + fadeEntity.FadeTime;
+        float lerpValue = 0;
         
-        while (fadeEntity.CanvasGroup.alpha < (int)FadeMode.FadeIn) {
-            fadeEntity.CanvasGroup.alpha += Time.deltaTime / fadeEntity.FadeTime;
+        while (endTime > Time.time) {
+            fadeEntity.CanvasGroup.alpha = Mathf.Lerp(0, 1, lerpValue);
+                
+            lerpValue += Time.deltaTime / fadeEntity.FadeTime;    
+            
             yield return null;
         }
 
@@ -57,9 +67,15 @@ public class FadeGroup : MonoBehaviour {
     private IEnumerator FadeOut(FadeEntity fadeEntity) {
         fadeEntity.CanvasGroup.interactable = false;
         fadeEntity.CanvasGroup.alpha = 1;
+
+        float endTime = Time.time + fadeEntity.FadeTime;
+        float lerpValue = 0;
         
-        while (fadeEntity.CanvasGroup.alpha > (int)FadeMode.FadeOut) {
-            fadeEntity.CanvasGroup.alpha -= Time.deltaTime / fadeEntity.FadeTime;
+        while (endTime > Time.time) {
+            fadeEntity.CanvasGroup.alpha = Mathf.Lerp(1, 0, lerpValue);
+                
+            lerpValue += Time.deltaTime / fadeEntity.FadeTime;    
+            
             yield return null;
         }
 

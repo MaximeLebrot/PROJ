@@ -11,8 +11,8 @@ public class PageController : MonoBehaviour {
     private Action onDone;
 
     private MenuSettings newPage;
-    
-    private readonly Stack<MenuSettings> subMenuDepth = new Stack<MenuSettings>();
+
+    public event Action<bool> OnSuspendInput;
 
     //F�rl�t Jonathan /martin
     GameMenuController gameMenuController;
@@ -36,11 +36,21 @@ public class PageController : MonoBehaviour {
             transform.GetChild(i).gameObject.SetActive(false);
             
         }
+
+        UIButton.onButtonClicked += HandleButtonClicked;
+        UIButton.onResetCalled += ResetPages;
     }
     
-    public void RegisterSubMenuAsActive(MenuSettings page) {
-        SwitchPage(page);
-        subMenuDepth.Push(page);
+    
+    private void HandleButtonClicked(UIButton clickedButton) {
+        OnSuspendInput?.Invoke(true);
+        clickedButton.onMoveCallback += () => {
+            SwitchPage(clickedButton.MenuSetting);
+        };
+    }
+
+    public void ResetPages() {
+        currentActivePage.DeactivatePage(DisableCurrentPage);
     }
 
     private void SwitchPage(MenuSettings page) {
@@ -50,7 +60,7 @@ public class PageController : MonoBehaviour {
         if (currentActivePage != null) {
             onDone = DisableCurrentPage;
             onDone += ActivateNewPage;
-          //  currentActivePage.FadeMenu(FadeMode.FadeOut, onDone);
+            currentActivePage.DeactivatePage(onDone);
         }
         else 
             ActivateNewPage();
@@ -62,36 +72,21 @@ public class PageController : MonoBehaviour {
     }
     
     private void ActivateNewPage() {
-        currentActivePage = newPage;
+        currentActivePage = newPage; //HÄR SÄTTS NEW PAGE
         currentActivePage.gameObject.SetActive(true);
-        //currentActivePage.FadeMenu(FadeMode.FadeIn, null);
+        currentActivePage.ActivatePage(() => OnSuspendInput?.Invoke(false));
         onDone = null;
         newPage = null;
 
         currentActivePage.SelectTopButton();
     }
 
-    public bool CanMoveUpOneLevel() {
-
-        if (subMenuDepth.Count < 1)
-            return false;
-        
-        subMenuDepth.Pop();
-
-        if (subMenuDepth.Count > 0) {
-            SwitchPage(subMenuDepth.Peek());
-            return true;
-        }
-
-        return false;
-    }
+    public bool IsPageActive() => currentActivePage != null;
 
     //Called from scene changer buttons (beta release) /Martin
-    public void CloseMenuOnSceneChange()
-    {
+    public void CloseMenuOnSceneChange() {
         DisableCurrentPage();
         gameMenuController.SceneChangerCloseMenu();
-        subMenuDepth.Clear();
         EventHandler<SceneChangeEvent>.FireEvent(null);
     }
 }
