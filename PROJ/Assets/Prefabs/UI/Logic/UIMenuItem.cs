@@ -13,5 +13,7 @@ public abstract class UIMenuItem<T> : UIMenuItemBase {
 public abstract class UIMenuItemBase : MonoBehaviour {
 
     public virtual void Initialize() {}
-    
+
+    public virtual void DemandFirstRead() {}
+
 }

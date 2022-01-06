@@ -77,16 +77,13 @@ public class VoiceInputController : MonoBehaviour
         //None
         GetComponent<VoiceMovementArmless>().enabled = false;
         GetComponent<VoiceMovementMouse>().enabled = false;
-
-        Debug.Log("Voice DISABLED");
     }
     private void VoiceMovementMouse()
     {
         //Voice + mouse
         GetComponent<VoiceMovementArmless>().enabled = false;
         GetComponent<VoiceMovementMouse>().enabled = true;
-
-        Debug.Log("Voice with mouse activated");
+        
     }
     private void VoiceMovementArmless()
     {
@@ -94,7 +91,6 @@ public class VoiceInputController : MonoBehaviour
         GetComponent<VoiceMovementMouse>().enabled = false;
         GetComponent<VoiceMovementArmless>().enabled = true;
         player.transform.rotation = Quaternion.Euler(0, 90, 0);
-        Debug.Log("Armless voice activated");
     }
 }
 

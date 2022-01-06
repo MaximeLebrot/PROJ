@@ -1,24 +1,21 @@
 public class AudioSettings : MenuSettings {
     
     public override void SetMenuItems(SettingsData settingsData) {
-      /*  
-        menuOptions[ExtractMenuItem("Mute").ID].SetValue(settingsData.mute);
-        menuOptions[ExtractMenuItem("Master").ID].SetValue(settingsData.masterVolume);
-        menuOptions[ExtractMenuItem("Music").ID].SetValue(settingsData.musicVolume);
-        menuOptions[ExtractMenuItem("Ambience").ID].SetValue(settingsData.ambience);
-        menuOptions[ExtractMenuItem("SFX").ID].SetValue(settingsData.soundEffectsVolume);
-        menuOptions[ExtractMenuItem("Voice").ID].SetValue(settingsData.voiceVolume);
+        (menuOptions[typeof(Mute)] as Mute).SetValue(settingsData.mute);
+     /*   (menuOptions[typeof(MasterVolume)] as MasterVolume).SetValue(settingsData.masterVolume);
+        (menuOptions[typeof(MusicVolume)] as MusicVolume).SetValue(settingsData.musicVolume);
+        (menuOptions[typeof(SFXVolume)] as SFXVolume).SetValue(settingsData.soundEffectsVolume);
+        (menuOptions[typeof(AmbianceVolume)] as AmbianceVolume).SetValue(settingsData.ambience);
+        (menuOptions[typeof(VoiceVolume)] as VoiceVolume).SetValue(settingsData.voiceVolume);
         */
     }
 
     public override void ApplyItemValues(ref SettingsData settingsData) {
-        /*
-        settingsData.mute = menuOptions[ExtractMenuItem("Mute").ID].GetValue();
-        settingsData.masterVolume = menuOptions[ExtractMenuItem("Master").ID].GetValue();
-        settingsData.musicVolume = menuOptions[ExtractMenuItem("Music").ID].GetValue();
-        settingsData.ambience = menuOptions[ExtractMenuItem("Ambience").ID].GetValue();
-        settingsData.soundEffectsVolume = menuOptions[ExtractMenuItem("SFX").ID].GetValue();
-        settingsData.voiceVolume = menuOptions[ExtractMenuItem("Voice").ID].GetValue();
-        */
+        settingsData.mute = (menuOptions[typeof(Mute)] as Mute).GetValue();
+      //  settingsData.masterVolume = (menuOptions[typeof(MasterVolume)] as MasterVolume).GetValue();
+     //   settingsData.musicVolume = (menuOptions[typeof(MusicVolume)] as MusicVolume).GetValue();
+      //  settingsData.soundEffectsVolume = (menuOptions[typeof(SFXVolume)] as SFXVolume).GetValue();
+     //   settingsData.ambience = (menuOptions[typeof(AmbianceVolume)] as AmbianceVolume).GetValue();
+     //   settingsData.voiceVolume = (menuOptions[typeof(VoiceVolume)] as VoiceVolume).GetValue();
     }
 }

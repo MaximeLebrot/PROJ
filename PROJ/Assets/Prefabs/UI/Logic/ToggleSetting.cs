@@ -12,4 +12,6 @@ public abstract class ToggleSetting : UIMenuItem<bool> {
     
     public override bool GetValue() => toggle.isOn;
     public override void SetValue(bool value) => toggle.isOn = value;
+
+    public override void DemandFirstRead() => toggle.onValueChanged.Invoke(toggle.isOn);
 }

@@ -49,11 +49,12 @@ public class PlayerController : MonoBehaviour
     }
     private void OnDisable()
     {
-        (GameMenuController.Instance.RequestOption<OneHandMode>() as OneHandMode).RemoveListener(HandleOneHandMode);
+        if(GameMenuController.Instance != null)
+            (GameMenuController.Instance.RequestOption<OneHandMode>() as OneHandMode).RemoveListener(HandleOneHandMode);
     }
 
     private void Start() {
-        (GameMenuController.Instance.RequestOption<OneHandMode>() as OneHandMode).AddListener(HandleOneHandMode);
+        (GameMenuController.Instance?.RequestOption<OneHandMode>() as OneHandMode).AddListener(HandleOneHandMode);
     }
 
     
