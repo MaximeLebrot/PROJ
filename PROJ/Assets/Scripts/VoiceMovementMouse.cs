@@ -13,6 +13,8 @@ public class VoiceMovementMouse : MonoBehaviour
     private PlayerController mpc;
     public Animator animator;
     public PuzzlePlayerController puzzleMovement;
+    private bool canTP;
+    private Transform closestPuzzleTransform;
     private int i = 0;
     private int x, y;
 
@@ -29,6 +31,7 @@ public class VoiceMovementMouse : MonoBehaviour
         actions.Add("straight", Forward);
         actions.Add("walk", Forward);
         actions.Add("go", Forward);
+        actions.Add("infront", Forward);
 
         actions.Add("stop", Stop);
         actions.Add("cancel", Stop);
@@ -65,10 +68,20 @@ public class VoiceMovementMouse : MonoBehaviour
 
         actions.Add("down", Down);
         actions.Add("back", Down);
+        actions.Add("backwards", Down);
+        actions.Add("behind", Down);
 
         actions.Add("right", Right);
         actions.Add("left", Left);
+
+        actions.Add("Closest node", ClosestNode);
+        actions.Add("Walk to node", ClosestNode);
+        actions.Add("Node", ClosestNode);
+        actions.Add("Middle", ClosestNode);
+        actions.Add("Center", ClosestNode);
+
     }
+
     private void Update()
     {
         if(walking)
@@ -155,6 +168,23 @@ public class VoiceMovementMouse : MonoBehaviour
             transform.position -= puzzleMovement;
         }
     }
+
+    private void ClosestNode()
+    {
+        if (canTP)
+        {
+            transform.position = closestPuzzleTransform.position + new Vector3(0, 1, 0);
+            Debug.Log("TP to closest node");
+        }
+        Debug.Log("Can't tp");
+    }
+
+    public void InZone(Transform t)
+    {
+        canTP = true;
+        closestPuzzleTransform = t;
+    }
+
     private void Stop()
     {
         walking = false;
