@@ -23,13 +23,14 @@ public class Logbook : MonoBehaviour
     [SerializeField] private GameObject rightTurnButton;
     [SerializeField] private TextMeshProUGUI pageNrText;
 
-    private void Start()
+    [SerializeField] private Animator notificationAnim;
+
+    private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
         AddChapters();
-        AddNextPage();
-        //leftTurnButton.SetActive(false);
-        //rightTurnButton.SetActive(true);
+        leftTurnButton.SetActive(false);
+        rightTurnButton.SetActive(true);
         for (int i = 0; i < tabsLeft.Length; i++)
             CloseTab(i);
         CloseEveryPage();
@@ -306,7 +307,7 @@ public class Logbook : MonoBehaviour
     {
         if (newPage == null)
             return;
-
+        TriggerNotificationAnimation();
         switch (newPage.GetPageType())
         {
             case "Start":
@@ -328,7 +329,17 @@ public class Logbook : MonoBehaviour
         PageActivation();
     }
 
-    public void AddRightSide(Page page) => page.AddRightSide();
+    private void TriggerNotificationAnimation()
+    {
+        notificationAnim.SetTrigger("Notify");
+    }
+
+    public void AddRightSide(Page page)
+    {
+        TriggerNotificationAnimation();
+        page.AddRightSide();
+        OpenPage(page);
+    }
 
     private Page GetLatestTwoSidedPage()
     {
