@@ -13,10 +13,12 @@ public class LogbookUpdater : MonoBehaviour
     private static Logbook book;
 
 
-    private void Awake()
+    private void Start()
     {
         if (log != null)
-            book = log;
+        {
+            book = FindObjectOfType(typeof(Logbook)) as Logbook;
+        }
         //FindLogbook();
     }
 

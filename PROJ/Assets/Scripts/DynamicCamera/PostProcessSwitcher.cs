@@ -28,6 +28,7 @@ public class PostProcessSwitcher : MonoBehaviour
     private void EnableContrastMode(bool active)
     {
         contrastModeEnabled = active;
+        ContrastModeSwitch(contrastModeEnabled);
     }
     /*private void CheckForContrastMode(SaveSettingsEvent obj)
     {

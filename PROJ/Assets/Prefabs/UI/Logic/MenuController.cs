@@ -27,7 +27,7 @@ public abstract class MenuController : MonoBehaviour {
         }
     }
 
-    protected void OnEnable() {
+    protected void Awake() {
         
         instance = this;
         
@@ -47,12 +47,12 @@ public abstract class MenuController : MonoBehaviour {
     
     protected abstract void Initialize();
     
-    /*private void OnEnable() {
+    private void OnEnable() {
         EventHandler<StartPuzzleEvent>.RegisterListener((OnPuzzleStart));
         EventHandler<ExitPuzzleEvent>.RegisterListener(OnPuzzleExit);
         
     }
-*/
+
     private void OnDisable() {
         EventHandler<StartPuzzleEvent>.UnregisterListener((OnPuzzleStart));
         EventHandler<ExitPuzzleEvent>.UnregisterListener(OnPuzzleExit);
