@@ -13,7 +13,12 @@ public class EssentialSpawner : MonoBehaviour
 
     private void OnEnable()
     {
-
+        if (GameObject.FindGameObjectWithTag("GameMenu") == false)
+        {
+            menu.gameObject.SetActive(true);
+            menu.transform.SetParent(null);
+            DontDestroyOnLoad(menu);
+        }
         if (GameObject.FindGameObjectWithTag("MainCamera") == false)
         {
             cam.gameObject.SetActive(true);
@@ -25,12 +30,6 @@ public class EssentialSpawner : MonoBehaviour
             player.gameObject.SetActive(true);
             player.transform.SetParent(null);
             DontDestroyOnLoad(player);
-        }
-        if (GameObject.FindGameObjectWithTag("GameMenu") == false)
-        {
-            menu.gameObject.SetActive(true);
-            menu.transform.SetParent(null);
-            DontDestroyOnLoad(menu);
         }
         if (GameObject.FindGameObjectWithTag("CanvasLogbook") == false)
         {

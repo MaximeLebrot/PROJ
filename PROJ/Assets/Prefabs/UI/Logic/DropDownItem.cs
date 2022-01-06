@@ -6,7 +6,6 @@ public abstract class DropDownItem : UIMenuItem<string> {
 
     [SerializeField] private TMP_Dropdown dropdownList;
     
-    
     public override string GetValue() {
         return dropdownList.options[dropdownList.value].text;
     }
