@@ -309,6 +309,7 @@ public class Logbook : MonoBehaviour
     {
         if (newPage == null)
             return;
+
         TriggerNotificationAnimation();
         switch (newPage.GetPageType())
         {
@@ -364,19 +365,6 @@ public class Logbook : MonoBehaviour
                 p = page;
         }
         return p;
-    }
-
-    private Page GetLatestTwoSidedPage()
-    {
-        Page page = null;
-
-        foreach (Page p in allPages)
-        {
-            if (!p.complete)
-                page = p;
-        }
-
-        return page;
     }
 
     private void UpdatePageNr(Page page)

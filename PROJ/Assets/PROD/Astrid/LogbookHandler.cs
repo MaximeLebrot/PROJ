@@ -25,7 +25,6 @@ public class LogbookHandler : MonoBehaviour
     private void Start()
     {
         isOpen = false;
-        logbook.SetActive(false);
         animator = logbook.GetComponent<Animator>();
         logbookScript = logbook.GetComponent<Logbook>();
     }
