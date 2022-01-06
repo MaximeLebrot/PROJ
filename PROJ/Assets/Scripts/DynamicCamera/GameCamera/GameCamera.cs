@@ -119,14 +119,14 @@ public class GameCamera : MonoBehaviour {
     private void Start() {
         
         (GameMenuController.Instance.RequestOption<VoiceControl>() as VoiceControl).AddListener((option) => {
-            
-            if(option != 0)
+
+            if (option == 1) {
                 ChangeBehaviour<OneHandCameraBehaviour>();
+                previousCameraBehaviour = typeof(OneHandCameraBehaviour);
+            }
             else
                 ChangeBehaviour<BaseCameraBehaviour>();
-            
         });
-        
     }
     
     private void OnAwayFromKeyboard(AwayFromKeyboardEvent e) {
@@ -191,9 +191,8 @@ public class GameCamera : MonoBehaviour {
     private void LockInput(LockInputEvent lockInputEvent) => lockInput = lockInputEvent.lockInput;
 
     private void ActivateMenuCamera(InGameMenuEvent inGameMenuEvent) {
-        if (inGameMenuEvent.Activate) {
+        if (inGameMenuEvent.Activate) 
             previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
-        }
         else 
             ChangeBehaviour(previousCameraBehaviour);
     }
