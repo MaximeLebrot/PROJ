@@ -25,6 +25,8 @@ public class Logbook : MonoBehaviour
 
     [SerializeField] private Animator notificationAnim;
 
+    private FMOD.Studio.EventInstance PageScribbleSound;
+
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
@@ -332,6 +334,10 @@ public class Logbook : MonoBehaviour
     private void TriggerNotificationAnimation()
     {
         notificationAnim.SetTrigger("Notify");
+        PageScribbleSound = FMODUnity.RuntimeManager.CreateInstance("event:/Environment/PageScribble");
+        PageScribbleSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        PageScribbleSound.start();
+        PageScribbleSound.release();
     }
 
     public void AddRightSide(Page page)
