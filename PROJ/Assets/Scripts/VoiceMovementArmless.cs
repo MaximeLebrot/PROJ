@@ -73,10 +73,11 @@ public class VoiceMovementArmless : MonoBehaviour
         actions.Add("rotate twohundred and seventy", Rotate270);
         actions.Add("rotate two seventy", Rotate270);
 
-        actions.Add("Closest node", ClosestNote);
-        actions.Add("Walk to node", ClosestNote);
-        actions.Add("Node", ClosestNote);
-
+        actions.Add("Closest node", ClosestNode);
+        actions.Add("Walk to node", ClosestNode);
+        actions.Add("Node", ClosestNode);
+        actions.Add("Middle", ClosestNode);
+        actions.Add("Center", ClosestNode);
 
     }
 
@@ -196,14 +197,14 @@ public class VoiceMovementArmless : MonoBehaviour
         }
     }
 
-    private void ClosestNote()
+    private void ClosestNode()
     {
         if (canTP)
         {
-            transform.position = closestPuzzleTransform.position;
+            transform.position = closestPuzzleTransform.position + new Vector3(0,1,0);
             Debug.Log("TP to closest node");
         }
-        Debug.Log("CAn't tp");
+        Debug.Log("Can't tp");
     }
 
     public void InZone(Transform t)
