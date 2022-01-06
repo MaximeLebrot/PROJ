@@ -269,7 +269,7 @@ public class GameCamera : MonoBehaviour {
         EventHandler<SceneChangeEvent>.RegisterListener(OnSceneChange);
         EventHandler<SceneLoadedEvent>.UnregisterListener(OnSceneLoaded);
     }
-
+    
     private void OnApplicationQuit() {
         
         cancellationTokenSource?.Cancel();

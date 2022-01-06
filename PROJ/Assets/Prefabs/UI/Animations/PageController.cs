@@ -48,7 +48,6 @@ public class PageController : MonoBehaviour {
         foreach (MenuSettings menuSetting in PageObjects) {
 
             if (menuSetting.HasMenuItem<T>()) {
-                Debug.Log(menuSetting.HasMenuItem<T>());
                 return menuSetting.GetOption<T>();
             }
                 
