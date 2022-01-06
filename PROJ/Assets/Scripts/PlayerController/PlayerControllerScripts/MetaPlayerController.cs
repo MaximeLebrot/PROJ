@@ -51,9 +51,13 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     private void OnDisable()
     {
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
-        //EventHandler<SaveSettingsEvent>.UnregisterListener(HandleOneSwitchSetting);
+        //EventHandler<SaveSettingsEvent>.UnregisterListener(HandleOneSwitchSetting)
     }
 
+    private void Start() => (GameMenuController.Instance.RequestOption<OneHandMode>() as OneHandMode).AddListener(SetOneSwitchMode);
+
+    private void SetOneSwitchMode(bool isActive) => oneSwitchMode = isActive;
+    
     //TEMPORARY
     private void OnHub(InputAction.CallbackContext obj)
     {
@@ -137,14 +141,11 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         stateMachine.RunUpdate();
     }
 
-
-    public void Save(string gameName)
-    {
+    public void Save(string gameName) {
         
     }
 
-    public void Load(string gameName)
-    {
+    public void Load(string gameName) {
         
     }
 }

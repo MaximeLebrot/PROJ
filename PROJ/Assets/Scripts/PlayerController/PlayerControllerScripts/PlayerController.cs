@@ -1,8 +1,4 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-
-
+﻿using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -49,14 +45,19 @@ public class PlayerController : MonoBehaviour
     }
     private void OnEnable()
     {
-        EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
         force = Vector3.zero;
     }
     private void OnDisable()
     {
-        EventHandler<SaveSettingsEvent>.UnregisterListener(OnSaveSettings);
+        (GameMenuController.Instance.RequestOption<OneHandMode>() as OneHandMode).RemoveListener(HandleOneHandMode);
     }
 
+    private void Start() {
+        (GameMenuController.Instance.RequestOption<OneHandMode>() as OneHandMode).AddListener(HandleOneHandMode);
+    }
+
+    
+    
     //This could instead load a delegate with a preffered input chain, but as of now that would require more code than the current solution. 
     //to be considered in the future, though
     private delegate void RotationDelegate();
@@ -64,9 +65,9 @@ public class PlayerController : MonoBehaviour
 
     private delegate void InputDelegate(Vector3 input);
     private InputDelegate inputDelegate;
-    private void OnSaveSettings(SaveSettingsEvent eve)
+    private void HandleOneHandMode(bool oneHandModeIsActive)
     {
-        if (eve.settingsData.oneHandMode)
+        if (oneHandModeIsActive)
         {
             transform.forward = cameraTransform.forward;
             characterModel.transform.forward = cameraTransform.forward;

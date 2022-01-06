@@ -9,15 +9,18 @@ public class PuzzleShortcut : MonoBehaviour
     private static VoiceMovementArmless vma;
     private static VoiceMovementMouse vmm;
 
-    void Awake()
+    void Start()
     {
         if (vma == null)
             vma = GameObject.FindGameObjectWithTag("Player").GetComponent<VoiceMovementArmless>();
         if (vmm == null)
             vmm = GameObject.FindGameObjectWithTag("Player").GetComponent<VoiceMovementMouse>();
-        inputMaster = new InputMaster();
+
         if (puzzle == null)
             puzzle = GetComponent<Puzzle>();
+        
+        inputMaster = new InputMaster();
+        inputMaster.Enable();
     }
 
     private void Update()
@@ -51,11 +54,6 @@ public class PuzzleShortcut : MonoBehaviour
             else if (other.GetComponent<VoiceMovementMouse>().enabled)
                 vmm.InZone(transform);
         }
-    }
-
-    private void OnEnable()
-    {
-        inputMaster.Enable();
     }
 
     private void OnDisable()

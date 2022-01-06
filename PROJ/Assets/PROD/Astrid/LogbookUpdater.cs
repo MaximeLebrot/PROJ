@@ -11,9 +11,13 @@ public class LogbookUpdater : MonoBehaviour
     [SerializeField] private string[] rightSidePagesName;
 
 
-    private void Awake()
+    private void Start()
     {
-        FindLogbook();
+        if (log != null)
+        {
+            book = FindObjectOfType(typeof(Logbook)) as Logbook;
+        }
+        //FindLogbook();
     }
 
     private void FindLogbook()

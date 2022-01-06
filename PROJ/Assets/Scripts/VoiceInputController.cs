@@ -62,16 +62,7 @@ public class VoiceInputController : MonoBehaviour
             VoiceMovementArmless();
         }
     }
-    private void OnSaveSettings(SaveSettingsEvent eve)
-    {
-        //if(eve.settingsData.armlessVoiceMovement)
-        //VoiceMovementArmless();
 
-        //else if(eve.settingsData.mouseVoiceMovement)
-        //VoiceMovementMouse();
-        //else
-        //NoVoiceMovement();
-    }
     private void NoVoiceMovement()
     {
         //None

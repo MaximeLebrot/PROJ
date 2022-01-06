@@ -16,8 +16,17 @@ public abstract class MenuController : MonoBehaviour {
 
     private static MenuController instance;
 
-    public static MenuController Instance => instance;
-    
+    public static MenuController Instance {
+        get {
+            
+            if (instance == null) {
+                instance = FindObjectOfType<MenuController>();
+            }
+
+            return instance;
+        }
+    }
+
     protected void Awake() {
         
         instance = this;
@@ -33,6 +42,7 @@ public abstract class MenuController : MonoBehaviour {
         pageController.Initialize();
         
         pageController.OnSuspendInput += SuspendInputEvent;
+        controllerInputReference.InputMaster.Menu.performed += HandleBackInput;
     }
     
     protected abstract void Initialize();
@@ -40,7 +50,7 @@ public abstract class MenuController : MonoBehaviour {
     private void OnEnable() {
         EventHandler<StartPuzzleEvent>.RegisterListener((OnPuzzleStart));
         EventHandler<ExitPuzzleEvent>.RegisterListener(OnPuzzleExit);
-        controllerInputReference.InputMaster.Menu.performed += HandleBackInput;
+        
     }
 
     private void OnDisable() {

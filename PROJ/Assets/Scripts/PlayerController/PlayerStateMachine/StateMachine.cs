@@ -25,7 +25,8 @@ public class StateMachine
         currentState.EnterState();
 
         //Sub
-        EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
+        //EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
+        (GameMenuController.Instance.RequestOption<SprintMode>() as SprintMode).AddListener((menuValue) => holdToSprint = Convert.ToBoolean(menuValue));
     }
   
     public void RunUpdate()
