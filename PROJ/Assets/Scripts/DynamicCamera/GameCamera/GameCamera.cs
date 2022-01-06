@@ -51,8 +51,6 @@ public class GameCamera : MonoBehaviour {
         behaviours.Add(typeof(SceneChangeCameraBehaviour),  cameraBehaviours[6]);
         
         ChangeBehaviour<BaseCameraBehaviour>();
-        
-        //MouseSensitivity a = MenuController.Instance.RequestOption<MouseSensitivity>() as MouseSensitivity;
 
     }
 

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class VoiceInputController : MonoBehaviour
@@ -20,12 +18,33 @@ public class VoiceInputController : MonoBehaviour
     private void OnEnable()
     {
         inputMaster.Enable();
-        EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
+        //EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
     }
     private void OnDisable()
     {
-        EventHandler<SaveSettingsEvent>.UnregisterListener(OnSaveSettings);
+        //EventHandler<SaveSettingsEvent>.UnregisterListener(OnSaveSettings);
         inputMaster.Disable();
+    }
+
+    private void Start() {
+        VoiceControl voiceControl = GameMenuController.Instance.RequestOption<VoiceControl>() as VoiceControl;
+        
+        voiceControl.AddListener((@dropdownValue) => {
+
+            switch (dropdownValue) {
+                case 0: 
+                    NoVoiceMovement();
+                    break;
+                case 1:
+                    VoiceMovementMouse();
+                    break;
+                case 2:
+                    VoiceMovementArmless();
+                    break;
+            }
+            
+        });
+        
     }
 
     private void ButtonClicker()
@@ -56,6 +75,7 @@ public class VoiceInputController : MonoBehaviour
     }
     private void NoVoiceMovement()
     {
+        //None
         GetComponent<VoiceMovementArmless>().enabled = false;
         GetComponent<VoiceMovementMouse>().enabled = false;
 
@@ -63,6 +83,7 @@ public class VoiceInputController : MonoBehaviour
     }
     private void VoiceMovementMouse()
     {
+        //Voice + mouse
         GetComponent<VoiceMovementArmless>().enabled = false;
         GetComponent<VoiceMovementMouse>().enabled = true;
 
@@ -70,6 +91,7 @@ public class VoiceInputController : MonoBehaviour
     }
     private void VoiceMovementArmless()
     {
+        //Voice only
         GetComponent<VoiceMovementMouse>().enabled = false;
         GetComponent<VoiceMovementArmless>().enabled = true;
         player.transform.rotation = Quaternion.Euler(0, 90, 0);
