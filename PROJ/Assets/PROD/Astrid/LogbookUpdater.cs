@@ -22,8 +22,9 @@ public class LogbookUpdater : MonoBehaviour
 
     private void FindLogbook()
     {
-        //if (book == null)
-            //book = GameObject.FindGameObjectWithTag("Logbook").GetComponent<Logbook>();
+        if (book == null)
+            book = GameObject.FindGameObjectWithTag("CanvasLogbook").GetComponent<LogbookHandler>().Logbook;
+        Debug.Log(book);
     }
 
     private void OnEnable()
@@ -40,6 +41,7 @@ public class LogbookUpdater : MonoBehaviour
     {
         if (eve.info.ID == puzzleID)
         {
+            Debug.Log("Eve info ID: " + eve.info.ID);
             FindLogbook();
             if (rightPageOnly)
             {
