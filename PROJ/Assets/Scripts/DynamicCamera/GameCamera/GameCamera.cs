@@ -32,7 +32,7 @@ public class GameCamera : MonoBehaviour {
 
     private CancellationTokenSource cancellationTokenSource;
 
-    private float test = 0;
+    private float mouseSensitivity;
     
     private void Awake() {
         behaviorExecutionIsAllowedToRun = true;
@@ -52,6 +52,24 @@ public class GameCamera : MonoBehaviour {
         
         ChangeBehaviour<BaseCameraBehaviour>();
 
+    }
+    
+    private void Start() {
+        
+        (GameMenuController.Instance.RequestOption<MouseSensitivity>() as MouseSensitivity).AddListener((value) => globalCameraSettings.MouseSensitivity = value);
+        
+        (GameMenuController.Instance.RequestOption<VoiceControl>() as VoiceControl).AddListener((option) => {
+
+                if (option == 1) {
+                    ChangeBehaviour<OneHandCameraBehaviour>();
+                    previousCameraBehaviour = typeof(OneHandCameraBehaviour);
+                }
+                else {
+                    previousCameraBehaviour = typeof(BaseCameraBehaviour);
+                    ChangeBehaviour<BaseCameraBehaviour>();
+                }
+            }
+        );
     }
 
     
@@ -116,22 +134,7 @@ public class GameCamera : MonoBehaviour {
         EventHandler<CameraLookAtEvent>.UnregisterListener(OnCameraLook);
     }
 
-    private void Start() {
-        
-        (GameMenuController.Instance.RequestOption<VoiceControl>() as VoiceControl).AddListener((option) => {
 
-            if (option == 1) {
-                ChangeBehaviour<OneHandCameraBehaviour>();
-                previousCameraBehaviour = typeof(OneHandCameraBehaviour);
-            }
-            else
-            {
-                previousCameraBehaviour = typeof(BaseCameraBehaviour);
-                ChangeBehaviour<BaseCameraBehaviour>();
-            }
-        }
-        );
-    }
     
     private void OnAwayFromKeyboard(AwayFromKeyboardEvent e) {
         ChangeBehaviour<IdleBehaviour>();

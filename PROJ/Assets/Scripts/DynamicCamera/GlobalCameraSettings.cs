@@ -7,7 +7,13 @@ public class GlobalCameraSettings : ScriptableObject {
     [SerializeField] private float collisionRadius;
     [SerializeField] private LayerMask collisionMask;
 
-    public float MouseSensitivity => mouseSensitivity;
+    public float MouseSensitivity {
+        get => mouseSensitivity;
+        set {
+            mouseSensitivity = value;
+        }
+    }
+
     public float CollisionRadius => collisionRadius;
     public LayerMask CollisionMask => collisionMask;
 }
