@@ -17,10 +17,9 @@ public enum ButtonState {
 public class UIButton : MonoBehaviour {
 
     private static float moveDuration = 1f;
-
-    [SerializeField] private ControllerInputReference controllerInputReference;
+    private ButtonState state;
     
-    [SerializeField] private ButtonState state;
+    [SerializeField] private ControllerInputReference controllerInputReference;
     [SerializeField] private MenuSettings menuSettings;
     [SerializeField] private AnimationCurve movementCurve;
     [SerializeField] private float timeUntilMove;
@@ -61,9 +60,7 @@ public class UIButton : MonoBehaviour {
         
         StartCoroutine(Move_Coroutine(duration));
     }
-
-    public void AddListener(UnityAction action) => buttonComponent.onClick.AddListener(action);
-
+    
     public void OnAnotherButtonPressed(UIButton button) {
 
         if (this != button || state == ButtonState.Inactive)
@@ -76,9 +73,8 @@ public class UIButton : MonoBehaviour {
         ResetButton();
     }
     
-    private void ResetButton() {
+    public void ResetButton() {
         state = ButtonState.Inactive;
-        
         Move(moveDuration);
     }
 

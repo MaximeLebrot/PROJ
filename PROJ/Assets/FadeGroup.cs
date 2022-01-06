@@ -39,8 +39,10 @@ public class FadeGroup : MonoBehaviour {
             yield return null;
         }
         
-        if (onDone != null)
-            onDone?.Invoke();
+
+        Debug.Log("Fade Done");
+        
+        onDone?.Invoke();
     }
 
     
