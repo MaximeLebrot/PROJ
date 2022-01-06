@@ -36,10 +36,10 @@ public class VoiceInputController : MonoBehaviour
                     NoVoiceMovement();
                     break;
                 case 1:
-                    VoiceMovementMouse();
+                    VoiceMovementArmless();
                     break;
                 case 2:
-                    VoiceMovementArmless();
+                    VoiceMovementMouse();
                     break;
             }
             
@@ -52,7 +52,6 @@ public class VoiceInputController : MonoBehaviour
         if (inputMaster.Voice.TurnOffBoth.triggered)
         {
             NoVoiceMovement();
-            Debug.Log("Hej");
         }
         if (inputMaster.Voice.TurnOnMouse.triggered)
         {
@@ -79,7 +78,7 @@ public class VoiceInputController : MonoBehaviour
         GetComponent<VoiceMovementArmless>().enabled = false;
         GetComponent<VoiceMovementMouse>().enabled = false;
 
-        Debug.Log("1");
+        Debug.Log("Voice DISABLED");
     }
     private void VoiceMovementMouse()
     {
@@ -87,7 +86,7 @@ public class VoiceInputController : MonoBehaviour
         GetComponent<VoiceMovementArmless>().enabled = false;
         GetComponent<VoiceMovementMouse>().enabled = true;
 
-        Debug.Log("2");
+        Debug.Log("Voice with mouse activated");
     }
     private void VoiceMovementArmless()
     {
@@ -95,7 +94,7 @@ public class VoiceInputController : MonoBehaviour
         GetComponent<VoiceMovementMouse>().enabled = false;
         GetComponent<VoiceMovementArmless>().enabled = true;
         player.transform.rotation = Quaternion.Euler(0, 90, 0);
-        Debug.Log("3");
+        Debug.Log("Armless voice activated");
     }
 }
 
