@@ -27,7 +27,7 @@ public class PostProcessSwitcher : MonoBehaviour
     private void CheckForContrastMode(SaveSettingsEvent obj)
     {
         contrastModeEnabled = obj.settingsData.highContrastMode;
-        Debug.Log(contrastModeEnabled);
+        //Debug.Log(contrastModeEnabled);
         ContrastModeSwitch(contrastModeEnabled);
     }
 
