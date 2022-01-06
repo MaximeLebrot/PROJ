@@ -8,6 +8,7 @@ public class LogbookUpdater : MonoBehaviour
     [SerializeField] private Logbook log;
 
     [Header("Options for adding right page"), SerializeField] private bool rightPageOnly;
+    [SerializeField] private string[] rightSidePagesName;
     [SerializeField] private Page[] rightSidePages;
     private static Logbook book;
 
@@ -42,8 +43,10 @@ public class LogbookUpdater : MonoBehaviour
             FindLogbook();
             if (rightPageOnly)
             {
-                for (int i = 0; i < rightSidePages.Length; i++)
-                    book.AddRightSide(rightSidePages[i]);
+                //for (int i = 0; i < rightSidePages.Length; i++)
+                    //book.AddRightSide(rightSidePages[i]);
+                for (int i = 0; i < rightSidePagesName.Length; i++)
+                    book.AddRightSide(rightSidePagesName[i]);
             }
             else
             {
