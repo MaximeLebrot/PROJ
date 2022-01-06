@@ -13,7 +13,6 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     public Animator animator { get; private set; }
     public ControllerInputReference inputReference;
     public InputActionAsset inputMaster;
-    public bool holdToSprint { get; private set; }
 
     //StateMachine
     private StateMachine stateMachine;
