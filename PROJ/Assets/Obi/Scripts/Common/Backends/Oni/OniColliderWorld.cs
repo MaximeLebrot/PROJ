@@ -28,7 +28,9 @@ namespace Obi
         {
             if (--refCount <= 0 && gameObject != null)
             {
-                Destroy(gameObject);
+                //not allowed during physics interaction, results in a lag spike
+                //when flight animation starts, and we try to reset the obi 
+                //DestroyImmediate(gameObject);
             }
         }
 
