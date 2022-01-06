@@ -341,6 +341,25 @@ public class Logbook : MonoBehaviour
         OpenPage(page);
     }
 
+    public void AddRightSide(string pageName)
+    {
+        Page page = FindPageByName(pageName);
+        TriggerNotificationAnimation();
+        page.AddRightSide();
+        OpenPage(page);
+    }
+
+    private Page FindPageByName(string name)
+    {
+        Page p = null;
+        foreach (Page page in allPages)
+        {
+            if (page.name.Equals(name))
+                p = page;
+        }
+        return p;
+    }
+
     private Page GetLatestTwoSidedPage()
     {
         Page page = null;
