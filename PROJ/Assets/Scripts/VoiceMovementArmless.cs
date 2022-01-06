@@ -18,6 +18,8 @@ public class VoiceMovementArmless : MonoBehaviour
     public Animator animator;
     private PlayerController mpc;
     public PuzzlePlayerController puzzleMovement;
+    private bool canTP;
+    private Transform closestPuzzleTransform;
     private int x, y;
     private float time;
     private void AddActions()
@@ -71,10 +73,11 @@ public class VoiceMovementArmless : MonoBehaviour
         actions.Add("rotate twohundred and seventy", Rotate270);
         actions.Add("rotate two seventy", Rotate270);
 
-        actions.Add("Closest node", ClosestNote);
-        actions.Add("Walk to node", ClosestNote);
-        actions.Add("Node", ClosestNote);
-
+        actions.Add("Closest node", ClosestNode);
+        actions.Add("Walk to node", ClosestNode);
+        actions.Add("Node", ClosestNode);
+        actions.Add("Middle", ClosestNode);
+        actions.Add("Center", ClosestNode);
 
     }
 
@@ -193,11 +196,23 @@ public class VoiceMovementArmless : MonoBehaviour
             transform.position -= puzzleMovement;
         }
     }
-    private void ClosestNote()
+
+    private void ClosestNode()
     {
-        Debug.Log("Walking to closest node");
-        
+        if (canTP)
+        {
+            transform.position = closestPuzzleTransform.position + new Vector3(0,1,0);
+            Debug.Log("TP to closest node");
+        }
+        Debug.Log("Can't tp");
     }
+
+    public void InZone(Transform t)
+    {
+        canTP = true;
+        closestPuzzleTransform = t;
+    }
+
     private void OnStartPuzzle(StartPuzzleEvent eve)
     {
 
