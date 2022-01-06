@@ -11,9 +11,7 @@ public abstract class UIMenuItem<T> : UIMenuItemBase {
 
 [Serializable]
 public abstract class UIMenuItemBase : MonoBehaviour {
-    
-    public void Awake() => Initialize();
 
-    protected virtual void Initialize() {}
+    public virtual void Initialize() {}
     
 }

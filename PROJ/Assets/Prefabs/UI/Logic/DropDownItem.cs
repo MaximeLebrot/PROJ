@@ -9,7 +9,7 @@ public abstract class DropDownItem : UIMenuItem<string> {
 
     public event OnValueChanged onValueChanged;
     
-    protected override void Initialize() {
+    public override void Initialize() {
         dropdownList.onValueChanged.AddListener(ValueChanged);
     }
     public override string GetValue() {
