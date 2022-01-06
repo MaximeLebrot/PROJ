@@ -35,51 +35,56 @@ public class LogbookHandler : MonoBehaviour
         {
             // Put animation here.
             if (isOpen)
-            {
-                animator.SetTrigger("trigger");
-                //logbook.SetActive(false);
-                isOpen = false;
-                Cursor.visible = false;
-                BookClose = FMODUnity.RuntimeManager.CreateInstance("event:/Environment/BookClose");
-                BookClose.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-                BookClose.start();
-                BookClose.release();
-            }
+                CloseBook();
             else
-            {
-                logbook.SetActive(true);
-                animator.SetTrigger("trigger");
-                isOpen = true;
-                Cursor.visible = true;
-                BookOpen = FMODUnity.RuntimeManager.CreateInstance("event:/Environment/BookOpen");
-                BookOpen.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-                BookOpen.start();
-                BookOpen.release();
-            }
+                OpenBook();
         }
         if (isOpen)
         {
             // Change page with keys
             if (inputReference.inputMaster.Logbook.TurnLeft.triggered)
-            {
                 TurnPageLeft();          
-            }
             if (inputReference.inputMaster.Logbook.TurnRight.triggered)
-            {
                 TurnPageRight();
-            }
-            if (inputReference.inputMaster.Logbook.AddPage.triggered)
-                logbookScript.AddNextPage();
-            //if (inputMaster.Logbook.AddRightSide.triggered)
-                //logbookScript.AddRightSide();
         }
+    }
+
+    private void CloseBook()
+    {
+        animator.SetTrigger("trigger");
+        //logbook.SetActive(false);
+        isOpen = false;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(false));
+        EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(false));
+
+        BookClose = FMODUnity.RuntimeManager.CreateInstance("event:/Environment/BookClose");
+        BookClose.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        BookClose.start();
+        BookClose.release();
+    }
+
+    private void OpenBook()
+    {
+        logbook.SetActive(true);
+        animator.SetTrigger("trigger");
+        isOpen = true;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
+        EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(true));
+        EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(true));
+
+        BookOpen = FMODUnity.RuntimeManager.CreateInstance("event:/Environment/BookOpen");
+        BookOpen.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        BookOpen.start();
+        BookOpen.release();
     }
 
     public void TurnPageLeft()
     {
         //animator.SetTrigger("left");
         logbookScript.FlipPage(false);
-        //logbookScript.TurnPageLeft();
 
         PageOpen = FMODUnity.RuntimeManager.CreateInstance("event:/Environment/PageOpen");
         PageOpen.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
@@ -92,7 +97,6 @@ public class LogbookHandler : MonoBehaviour
     {
         //animator.SetTrigger("right");
         logbookScript.FlipPage(true);
-        //logbookScript.TurnPageRight();
 
         PageOpen = FMODUnity.RuntimeManager.CreateInstance("event:/Environment/PageOpen");
         PageOpen.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
