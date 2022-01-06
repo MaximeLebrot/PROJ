@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class DropDownItem : UIMenuItem<string> {
 
@@ -9,7 +10,7 @@ public abstract class DropDownItem : UIMenuItem<string> {
 
     public event OnValueChanged onValueChanged;
     
-    protected override void Initialize() {
+    public override void Initialize() {
         dropdownList.onValueChanged.AddListener(ValueChanged);
     }
     public override string GetValue() {
@@ -20,6 +21,8 @@ public abstract class DropDownItem : UIMenuItem<string> {
         dropdownList.value = dropdownList.options.FindIndex(resolutionOption => resolutionOption.text.Equals(value));
     }
 
+    public void AddListener(UnityAction<int> callback) => dropdownList.onValueChanged.AddListener(callback);
+    
     private void ValueChanged(int value) {
 
         dynamic item = dropdownList.options[dropdownList.value].text;

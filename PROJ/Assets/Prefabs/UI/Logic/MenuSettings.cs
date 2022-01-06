@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,12 +27,13 @@ public abstract class MenuSettings : MonoBehaviour {
         List<UIMenuItemBase> childOptions = GetComponentsInChildren<UIMenuItemBase>().ToList();
 
         foreach (UIMenuItemBase menuItem in childOptions) {
+            menuItem.Initialize();
             menuOptions.Add(menuItem.GetType(), menuItem);
         }
-            
         
         SubMenuInitialize();
-
+        
+        
         //fontChanger.GatherAllTextComponents();
         
         gameObject.SetActive(false);

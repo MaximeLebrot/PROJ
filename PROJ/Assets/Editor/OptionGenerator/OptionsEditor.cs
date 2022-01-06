@@ -6,13 +6,9 @@ using System.Text;
 using UnityEditor;
 using UnityEngine;
 
-public interface IRequestSetting<T> where T : UIMenuItemBase {
 
-    public Action RequestSetting<T>();
 
-}
-
-public class OptionsEditor : EditorWindow, IRequestSetting<MouseSensitivity> {
+public class OptionsEditor : EditorWindow  {
     
     private static readonly string Title = "Option Generator";
     private GUIStyle titleStyle;
@@ -50,8 +46,6 @@ public class OptionsEditor : EditorWindow, IRequestSetting<MouseSensitivity> {
 
     private void OnEnable() {
 
-        RequestSetting<MouseSensitivity>().Invoke();
-        
         leftPane = new Rect(new Vector2(0, StartingElementHeight), new Vector2(WindowSize.x * .45f, 100));
         rightPane = new Rect(new Vector2(WindowSize.x / 2 - 20, StartingElementHeight), new Vector2(WindowSize.x * .5f, WindowSize.y * .9f));
         
@@ -172,9 +166,5 @@ public class OptionsEditor : EditorWindow, IRequestSetting<MouseSensitivity> {
         }
         
     }
-
-
-    public Action RequestSetting<T>() {
-        return () => Debug.Log($"From camera, requesting a {typeof(T)}");
-    }
+    
 }

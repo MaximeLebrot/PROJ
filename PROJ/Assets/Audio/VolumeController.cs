@@ -15,8 +15,34 @@ public class VolumeController : MonoBehaviour
     private void Start()
     {
         VcaController = FMODUnity.RuntimeManager.GetVCA("vca:/Master");
+
+        (GameMenuController.Instance.RequestOption<MasterVolume>() as MasterVolume).AddListener(SetMasterVolume);
+        (GameMenuController.Instance.RequestOption<MusicVolume>() as MusicVolume).AddListener(SetMusicVolume);
+        (GameMenuController.Instance.RequestOption<SFXVolume>() as SFXVolume).AddListener(SetSFXVolume);
+        (GameMenuController.Instance.RequestOption<VoiceVolume>() as VoiceVolume).AddListener(SetVoiceVolume);
     }
 
+    private void SetMasterVolume(float val)
+    {
+        masterVolume = val;
+        VcaController.setVolume(masterVolume);
+    }
+    private void SetMusicVolume(float val)
+    {
+        musicVolume = val; 
+    }
+    private void SetSFXVolume(float val)
+    {
+       soundEffectsVolume = val;
+    }
+    private void SetVoiceVolume(float val)
+    {
+        voiceVolume = val;
+    }
+
+
+    #region Legacy listener
+    /*
     private void OnEnable()
     {
         EventHandler<SaveSettingsEvent>.RegisterListener(UpdateVolume);
@@ -36,5 +62,6 @@ public class VolumeController : MonoBehaviour
         voiceVolume = eve.settingsData.voiceVolume;
 
         VcaController.setVolume(masterVolume);
-    }
+    }*/
+    #endregion
 }

@@ -18,20 +18,20 @@ public class Resolutioner {
     private void AutoDetectResolution() {
         int resolutionIndex = GetResolutionOptionIndex(Screen.currentResolution);
 
-        Resolution autoDetectedResolution = ConvertStringToResolution(resolutionIndex);
+        Resolution autoDetectedSResolution = ConvertStringToResolution(resolutionIndex);
         
-        Screen.SetResolution(autoDetectedResolution.width, autoDetectedResolution.height, FullScreenMode.FullScreenWindow);
+        Screen.SetResolution(autoDetectedSResolution.width, autoDetectedSResolution.height, FullScreenMode.FullScreenWindow);
     }
     
     private void AddResolutionOptions() {
 
         List<string> options = new List<string>(Screen.resolutions.Length);
 
-        foreach (Resolution resolution in Screen.resolutions) {
+      /*  foreach (Resolution resolution in Screen.resolutions) {
             string[] displayReadyText = resolution.ToString().Split(' ');
             options.Add(displayReadyText[0] + "x" + displayReadyText[2]);
         }
-        
+        */
         resolutionList.AddOptions(options);
     }
     
@@ -46,12 +46,12 @@ public class Resolutioner {
         int width = int.Parse(chosenResolution[0]);
         int height = int.Parse(chosenResolution[2]);
 
-        Resolution resolution = new Resolution {
+        Resolution sResolution = new Resolution {
             width = width,
             height = height
         };
 
-        return resolution;
+        return sResolution;
     }
     
 }
