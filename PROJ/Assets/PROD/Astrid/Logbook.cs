@@ -25,6 +25,8 @@ public class Logbook : MonoBehaviour
 
     [SerializeField] private Animator notificationAnim;
 
+    private FMOD.Studio.EventInstance PageScribbleSound;
+
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
@@ -307,6 +309,7 @@ public class Logbook : MonoBehaviour
     {
         if (newPage == null)
             return;
+
         TriggerNotificationAnimation();
         switch (newPage.GetPageType())
         {
@@ -332,6 +335,10 @@ public class Logbook : MonoBehaviour
     private void TriggerNotificationAnimation()
     {
         notificationAnim.SetTrigger("Notify");
+        PageScribbleSound = FMODUnity.RuntimeManager.CreateInstance("event:/Environment/PageScribble");
+        PageScribbleSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        PageScribbleSound.start();
+        PageScribbleSound.release();
     }
 
     public void AddRightSide(Page page)
@@ -358,19 +365,6 @@ public class Logbook : MonoBehaviour
                 p = page;
         }
         return p;
-    }
-
-    private Page GetLatestTwoSidedPage()
-    {
-        Page page = null;
-
-        foreach (Page p in allPages)
-        {
-            if (!p.complete)
-                page = p;
-        }
-
-        return page;
     }
 
     private void UpdatePageNr(Page page)

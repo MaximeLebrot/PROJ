@@ -4,26 +4,24 @@ using UnityEngine;
 public class LogbookUpdater : MonoBehaviour
 {
     [SerializeField] private int puzzleID;
+    [SerializeField] private Logbook book;
     [SerializeField] private int pagesAdded;
-    [SerializeField] private Logbook log;
 
     [Header("Options for adding right page"), SerializeField] private bool rightPageOnly;
     [SerializeField] private string[] rightSidePagesName;
-    [SerializeField] private Page[] rightSidePages;
-    private static Logbook book;
 
 
-    private void Awake()
+    private void Start()
     {
-        if (log != null)
-            book = log;
+        book = FindObjectOfType(typeof(Logbook)) as Logbook;
         //FindLogbook();
     }
 
     private void FindLogbook()
     {
-        //if (book == null)
-            //book = GameObject.FindGameObjectWithTag("Logbook").GetComponent<Logbook>();
+        if (book == null)
+            book = GameObject.FindGameObjectWithTag("CanvasLogbook").GetComponent<LogbookHandler>().Logbook;
+        Debug.Log(book);
     }
 
     private void OnEnable()
@@ -40,11 +38,9 @@ public class LogbookUpdater : MonoBehaviour
     {
         if (eve.info.ID == puzzleID)
         {
-            FindLogbook();
+            //FindLogbook();
             if (rightPageOnly)
             {
-                //for (int i = 0; i < rightSidePages.Length; i++)
-                    //book.AddRightSide(rightSidePages[i]);
                 for (int i = 0; i < rightSidePagesName.Length; i++)
                     book.AddRightSide(rightSidePagesName[i]);
             }

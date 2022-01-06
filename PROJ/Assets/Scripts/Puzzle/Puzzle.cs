@@ -187,6 +187,8 @@ public class Puzzle : MonoBehaviour
         PuzzleSolved.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         PuzzleSolved.start();
         PuzzleSolved.release();
+
+        FMODUnity.RuntimeManager.StudioSystem.setParameterByName("PuzzleVolume", 1f, false);
     }
 
     private void CompleteGrid()
@@ -313,6 +315,8 @@ public class Puzzle : MonoBehaviour
                     PuzzleExit.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
                     PuzzleExit.start();
                     PuzzleExit.release();
+
+                    FMODUnity.RuntimeManager.StudioSystem.setParameterByName("PuzzleVolume", 1f, false);
                 }
                     
             }

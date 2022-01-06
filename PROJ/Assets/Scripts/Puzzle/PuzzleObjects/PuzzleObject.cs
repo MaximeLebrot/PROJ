@@ -39,27 +39,32 @@ public abstract class PuzzleObject : MonoBehaviour
 
     private void Start()
     {
-        EventHandler<RequestSettingsEvent>.FireEvent(null);
-    }
-
-    private void OnEnable()
-    {
-        EventHandler<SaveSettingsEvent>.RegisterListener(ApplyDifficulty);
+        (GameMenuController.Instance.RequestOption<SymbolDifficulty>() as SymbolDifficulty).AddListener(ApplyDifficulty);
+        //EventHandler<RequestSettingsEvent>.FireEvent(null);
     }
 
     private void OnDisable()
     {
-        EventHandler<SaveSettingsEvent>.UnregisterListener(ApplyDifficulty);
+        (GameMenuController.Instance.RequestOption<SymbolDifficulty>() as SymbolDifficulty).RemoveListener(ApplyDifficulty);
+        //EventHandler<SaveSettingsEvent>.UnregisterListener(ApplyDifficulty);
     }
-
-    private void ApplyDifficulty(SaveSettingsEvent obj)
+    private void ApplyDifficulty(int choice)
     {
+        string difficulty = (GameMenuController.Instance.RequestOption<SymbolDifficulty>() as SymbolDifficulty).GetValue();
+        
+        if (materials_EASY_MEDIUM_HARD.Count > 0)
+        {
+            SetMaterialBasedOnDifficulty(difficulty);
+        }
+    }
    
+    /* private void ApplyDifficulty(SaveSettingsEvent obj)
+    {  
         if (materials_EASY_MEDIUM_HARD.Count > 0)
         {
             SetMaterialBasedOnDifficulty(obj.settingsData.symbolDifficulty);
         }
-    }
+    }*/
 
     private void SetUpMaterials()
     {

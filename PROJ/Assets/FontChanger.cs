@@ -15,7 +15,7 @@ public class FontChanger : MonoBehaviour {
 
     public void Awake() {
         
-        EventHandler<SaveSettingsEvent>.RegisterListener(ChangeFont);
+        //EventHandler<SaveSettingsEvent>.RegisterListener(ChangeFont);
 
         defaultFontSizes = new Dictionary<int, float>();
         defaultFonts = new Dictionary<int, TMP_FontAsset>();
@@ -30,25 +30,17 @@ public class FontChanger : MonoBehaviour {
     private void Start()
     {
         (GameMenuController.Instance.RequestOption<ChangeFontSize>() as ChangeFontSize).AddListener(ChangeFontSize);
+        (GameMenuController.Instance.RequestOption<Use_DyslexiaFont>() as Use_DyslexiaFont).AddListener(ChangeFont);
     }
     private void OnDisable() {
-        EventHandler<SaveSettingsEvent>.UnregisterListener(ChangeFont);
+       // EventHandler<SaveSettingsEvent>.UnregisterListener(ChangeFont);
     }
 
     private void ChangeFontSize(int choice)
     {
+        string newFontSize = (GameMenuController.Instance.RequestOption<ChangeFontSize>() as ChangeFontSize).GetValue();
 
-        switch (choice)
-        {
-            case 0: 
-                break;
-            case 1:
-                break;
-            case 2: 
-                break;
-
-        }
-        /*if (newFontSize.Equals("Default")) {
+        if (newFontSize.Equals("Default")) {
             foreach (TextMeshProUGUI text in textComponents) 
                 text.fontSize = defaultFontSizes[text.GetInstanceID()];
             
@@ -58,13 +50,13 @@ public class FontChanger : MonoBehaviour {
         
             foreach (TextMeshProUGUI text in textComponents)
                 text.fontSize = size;
-        }*/
+        }
         
     }
 
-    private void ChangeFont(SaveSettingsEvent e) {
+    private void ChangeFont(bool choice) {
         
-        if(e.settingsData.dyslexiaFont)
+        if(choice)
             foreach (TextMeshProUGUI text in textComponents) 
                 text.font = dyslexiaFont;
         else 

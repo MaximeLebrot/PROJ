@@ -1,5 +1,86 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &347902277772758886
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6421219470842198538}
+  - component: {fileID: 7776619798559699557}
+  - component: {fileID: 1855715933004883031}
+  - component: {fileID: 1547774950402276685}
+  m_Layer: 0
+  m_Name: MusicTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6421219470842198538
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 347902277772758886}
+  m_LocalRotation: {x: -0, y: -0.94245946, z: -0, w: -0.33432046}
+  m_LocalPosition: {x: 43.48, y: -203.95, z: -39.29}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6114474829425582532}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: -219.062, z: 0}
+--- !u!54 &7776619798559699557
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 347902277772758886}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &1855715933004883031
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 347902277772758886}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 7.71, y: 6.78, z: 1}
+  m_Center: {x: 0.63958675, y: 2.108201, z: 0.0000004583622}
+--- !u!114 &1547774950402276685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 347902277772758886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744a208c85da6d04c861d81b992e4ead, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  Emitters:
+  - Target: {fileID: 465248299060315664}
+    Params:
+    - Name: LavaSynthCello
+      Value: 1
+  TriggerEvent: 3
 --- !u!1 &1011858543880244672
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,9 +234,175 @@ Transform:
   - {fileID: 5075629656688289262}
   - {fileID: 6835496877302604765}
   - {fileID: 459434072616120321}
+  - {fileID: 6421219470842198538}
+  - {fileID: 7193339261404517648}
+  - {fileID: 3385673411609440150}
+  - {fileID: 6649605165228736873}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5555845353006394062
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6649605165228736873}
+  - component: {fileID: 3861074558828143548}
+  - component: {fileID: 2868772234906788924}
+  - component: {fileID: 7837146395451858744}
+  m_Layer: 0
+  m_Name: MusicTrigger (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6649605165228736873
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5555845353006394062}
+  m_LocalRotation: {x: -0, y: 0.8397498, z: -0, w: -0.5429736}
+  m_LocalPosition: {x: -23.09, y: -210.94, z: -86.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6114474829425582532}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: -474.227, z: 0}
+--- !u!54 &3861074558828143548
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5555845353006394062}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &2868772234906788924
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5555845353006394062}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 15.33, y: 8.24, z: 1.56}
+  m_Center: {x: 0.63958675, y: 2.108201, z: 0.0000004583622}
+--- !u!114 &7837146395451858744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5555845353006394062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744a208c85da6d04c861d81b992e4ead, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  Emitters:
+  - Target: {fileID: 465248299060315664}
+    Params:
+    - Name: LavaSynth
+      Value: 1
+  TriggerEvent: 3
+--- !u!1 &6908425251995004609
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3385673411609440150}
+  - component: {fileID: 201357183125986804}
+  - component: {fileID: 4693520718299672596}
+  - component: {fileID: 56584532392798085}
+  m_Layer: 0
+  m_Name: MusicTrigger (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3385673411609440150
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6908425251995004609}
+  m_LocalRotation: {x: -0, y: 0.028586296, z: -0, w: -0.99959135}
+  m_LocalPosition: {x: -57.605515, y: -209.21, z: -83.875275}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6114474829425582532}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: -363.276, z: 0}
+--- !u!54 &201357183125986804
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6908425251995004609}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &4693520718299672596
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6908425251995004609}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 7.71, y: 6.78, z: 1}
+  m_Center: {x: 0.63958675, y: 2.108201, z: 0.0000004583622}
+--- !u!114 &56584532392798085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6908425251995004609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744a208c85da6d04c861d81b992e4ead, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  Emitters:
+  - Target: {fileID: 465248299060315664}
+    Params:
+    - Name: LavaSynthPerc
+      Value: 1
+  TriggerEvent: 3
 --- !u!1 &6968807737634114935
 GameObject:
   m_ObjectHideFlags: 0
@@ -183,7 +430,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6968807737634114935}
   m_LocalRotation: {x: -0, y: -0.28334144, z: -0, w: 0.9590191}
-  m_LocalPosition: {x: -9.81, y: -197.76, z: -183.14}
+  m_LocalPosition: {x: -9.81, y: -197.06, z: -183.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6114474829425582532}
@@ -217,15 +464,15 @@ MonoBehaviour:
   Preload: 0
   Params:
   - Name: LavaSynth
-    Value: 1
+    Value: 0
   - Name: LavaSynth1
     Value: 1
   - Name: LavaSynthCello
-    Value: 1
+    Value: 0
   - Name: LavaSynthHorns
-    Value: 1
+    Value: 0
   - Name: LavaSynthPerc
-    Value: 1
+    Value: 0
   - Name: LavaSynthViolin
     Value: 1
   OverrideAttenuation: 0
@@ -255,11 +502,92 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6968807737634114935}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 6.7374573, y: 5.216402, z: 1}
   m_Center: {x: 0.63958675, y: 2.108201, z: 0.0000004583622}
+--- !u!1 &8158365240577420506
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7193339261404517648}
+  - component: {fileID: 8342759016951490945}
+  - component: {fileID: 4162965145700928259}
+  - component: {fileID: 2999731267426632613}
+  m_Layer: 0
+  m_Name: MusicTrigger (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7193339261404517648
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8158365240577420506}
+  m_LocalRotation: {x: -0, y: -0.6291487, z: -0, w: -0.777285}
+  m_LocalPosition: {x: -38.11, y: -206.38, z: -19.08}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6114474829425582532}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: -282.025, z: 0}
+--- !u!54 &8342759016951490945
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8158365240577420506}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &4162965145700928259
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8158365240577420506}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 7.71, y: 6.78, z: 1}
+  m_Center: {x: 0.63958675, y: 2.108201, z: 0.0000004583622}
+--- !u!114 &2999731267426632613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8158365240577420506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744a208c85da6d04c861d81b992e4ead, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  Emitters:
+  - Target: {fileID: 465248299060315664}
+    Params:
+    - Name: LavaSynthHorns
+      Value: 1
+  TriggerEvent: 3
 --- !u!1 &8269872360487465955
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,6 +7,8 @@ public class LogbookHandler : MonoBehaviour
     [SerializeField]private ControllerInputReference inputReference;
     [SerializeField] private GameObject logbook;
 
+    public Logbook Logbook => logbook.GetComponent<Logbook>();
+
     private bool isOpen;
     private Animator animator;
     private Logbook logbookScript;
@@ -23,7 +25,6 @@ public class LogbookHandler : MonoBehaviour
     private void Start()
     {
         isOpen = false;
-        logbook.SetActive(false);
         animator = logbook.GetComponent<Animator>();
         logbookScript = logbook.GetComponent<Logbook>();
     }
