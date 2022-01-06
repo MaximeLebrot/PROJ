@@ -9,6 +9,11 @@ public class EnableBlindMode : MonoBehaviour
     private InputMaster inputMaster;
     private bool blindToggle;
 
+    private FMOD.Studio.EventInstance currentAudioSource;
+    private FMOD.Studio.EventInstance nextAudioSource;
+
+    Breadloaf breadloaf;
+
     private void OnEnable()
     {
 
@@ -32,6 +37,8 @@ public class EnableBlindMode : MonoBehaviour
         {
             if (blindToggle)
             {
+                breadloaf = breadLoaf.GetComponent<Breadloaf>();
+                breadloaf.EndAudioSources();
                 ExitBlindMode();
             }
             else if (!blindToggle)
