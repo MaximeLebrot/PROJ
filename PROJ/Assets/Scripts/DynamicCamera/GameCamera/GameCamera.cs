@@ -125,8 +125,12 @@ public class GameCamera : MonoBehaviour {
                 previousCameraBehaviour = typeof(OneHandCameraBehaviour);
             }
             else
+            {
+                previousCameraBehaviour = typeof(BaseCameraBehaviour);
                 ChangeBehaviour<BaseCameraBehaviour>();
-        });
+            }
+        }
+        );
     }
     
     private void OnAwayFromKeyboard(AwayFromKeyboardEvent e) {
