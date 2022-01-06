@@ -74,7 +74,7 @@ public class VoiceMovementArmless : MonoBehaviour
 
     private void Update()
     {
-        if (walking && time<1.5)
+        if (walking && time<1)
         {
             mpc.InputWalk(new Vector3(0, 1, 0));
             animator.SetFloat(x, 1);

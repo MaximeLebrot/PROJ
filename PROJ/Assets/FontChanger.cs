@@ -27,14 +27,28 @@ public class FontChanger : MonoBehaviour {
         
       //  dropDown.onValueChanged += ChangeFontSize;
     }
-
+    private void Start()
+    {
+        (GameMenuController.Instance.RequestOption<ChangeFontSize>() as ChangeFontSize).AddListener(ChangeFontSize);
+    }
     private void OnDisable() {
         EventHandler<SaveSettingsEvent>.UnregisterListener(ChangeFont);
     }
 
-    private void ChangeFontSize(dynamic newFontSize) {
+    private void ChangeFontSize(int choice)
+    {
 
-        if (newFontSize.Equals("Default")) {
+        switch (choice)
+        {
+            case 0: 
+                break;
+            case 1:
+                break;
+            case 2: 
+                break;
+
+        }
+        /*if (newFontSize.Equals("Default")) {
             foreach (TextMeshProUGUI text in textComponents) 
                 text.fontSize = defaultFontSizes[text.GetInstanceID()];
             
@@ -44,7 +58,7 @@ public class FontChanger : MonoBehaviour {
         
             foreach (TextMeshProUGUI text in textComponents)
                 text.fontSize = size;
-        }
+        }*/
         
     }
 
