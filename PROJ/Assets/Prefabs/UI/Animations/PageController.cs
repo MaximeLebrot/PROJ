@@ -67,9 +67,7 @@ public class PageController : MonoBehaviour {
     }
     
 
-    public void ResetPages() {
-        currentActivePage.DeactivatePage(DisableCurrentPage);
-    }
+    public void ResetPages() => currentActivePage?.DeactivatePage(DisableCurrentPage);
 
     private void SwitchPage(MenuSettings page) {
 
@@ -103,7 +101,7 @@ public class PageController : MonoBehaviour {
 
     //Called from scene changer buttons (beta release) /Martin
     public void CloseMenuOnSceneChange() {
-        DisableCurrentPage();
+        ResetPages();
         gameMenuController.SceneChangerCloseMenu();
         EventHandler<SceneChangeEvent>.FireEvent(null);
     }
