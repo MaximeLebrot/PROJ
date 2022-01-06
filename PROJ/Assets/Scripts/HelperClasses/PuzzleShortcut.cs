@@ -5,6 +5,7 @@ public class PuzzleShortcut : MonoBehaviour
     private InputMaster inputMaster;
     [SerializeField] private Puzzle puzzle;
     [SerializeField] private bool inPuzzle;
+    private VoiceMovementArmless vc;
 
     void Awake()
     {
