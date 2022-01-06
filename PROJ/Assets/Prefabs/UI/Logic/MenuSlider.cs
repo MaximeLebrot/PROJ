@@ -16,6 +16,8 @@ public abstract class MenuSlider : UIMenuItem<float> {
 
     public void AddListener(UnityAction<float> callback) => slider.onValueChanged.AddListener(callback);
     
+    public void RemoveListener(UnityAction<float> callback) => slider.onValueChanged.RemoveListener(callback);
+    
     private void UpdateSlider(float newValue) {
         slider.value = newValue;
         percentText.text = ((int)(newValue)).ToString();

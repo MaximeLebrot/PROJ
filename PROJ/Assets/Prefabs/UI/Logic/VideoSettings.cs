@@ -3,15 +3,7 @@ using TMPro;
 using UnityEngine;
 
 public class VideoSettings : MenuSettings {
-
-    [SerializeField] private TMP_Dropdown resolutionList;
-
-    private Resolutioner resolutioner;
-
-    protected override void SubMenuInitialize() {
-        resolutioner = new Resolutioner(resolutionList, true);
-    }
-
+    
     public override void SetMenuItems(SettingsData settingsData) {
       /*  
         menuOptions[ExtractMenuItem("Field of View").ID].SetValue(settingsData.fieldOfView);
