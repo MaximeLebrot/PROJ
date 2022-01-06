@@ -31,6 +31,7 @@ public class VoiceMovementMouse : MonoBehaviour
         actions.Add("straight", Forward);
         actions.Add("walk", Forward);
         actions.Add("go", Forward);
+        actions.Add("infront", Forward);
 
         actions.Add("stop", Stop);
         actions.Add("cancel", Stop);
@@ -67,6 +68,8 @@ public class VoiceMovementMouse : MonoBehaviour
 
         actions.Add("down", Down);
         actions.Add("back", Down);
+        actions.Add("backwards", Down);
+        actions.Add("behind", Down);
 
         actions.Add("right", Right);
         actions.Add("left", Left);
