@@ -41,6 +41,7 @@ public class GameMenuController : MenuController {
     private void CloseMenu() {
         ActivateComponents(false);
         menuButtons.SetActive(false, false);
+        pageController.ResetPages();
         EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(false));
     }
 

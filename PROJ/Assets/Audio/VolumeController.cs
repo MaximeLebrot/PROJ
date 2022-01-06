@@ -19,7 +19,6 @@ public class VolumeController : MonoBehaviour
         (GameMenuController.Instance.RequestOption<MasterVolume>() as MasterVolume).AddListener(SetMasterVolume);
         (GameMenuController.Instance.RequestOption<MusicVolume>() as MusicVolume).AddListener(SetMusicVolume);
         (GameMenuController.Instance.RequestOption<SFXVolume>() as SFXVolume).AddListener(SetSFXVolume);
-        (GameMenuController.Instance.RequestOption<VoiceVolume>() as VoiceVolume).AddListener(SetVoiceVolume);
     }
 
     private void SetMasterVolume(float val)

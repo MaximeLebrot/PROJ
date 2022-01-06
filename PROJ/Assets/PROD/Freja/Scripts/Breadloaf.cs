@@ -11,18 +11,17 @@ public class Breadloaf : MonoBehaviour
 
     private FMOD.Studio.EventInstance Breadcrumbs;
 
-    private void Start()
+    private void OnEnable()
     {
         breadcrumbs = GetComponentsInChildren<Breadcrumb>();
         foreach (Breadcrumb crumb in breadcrumbs)
             crumb.parent = this;
         nextCrumb = breadcrumbs[0];
-
         nextAudioSource = FMODUnity.RuntimeManager.CreateInstance("event:/Blind/NextSound");
         nextAudioSource.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(nextCrumb.transform.position));
         nextAudioSource.start();
-        nextAudioSource.release();
-        nextAudioSource.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(nextCrumb.transform.position));
+        CASplaying = false;
+
     }
 
     public void UpdateCrumbStep(Breadcrumb crumb)
@@ -48,6 +47,14 @@ public class Breadloaf : MonoBehaviour
         }
         currentAudioSource.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(currentCrumb.transform.position));
         nextAudioSource.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(nextCrumb.transform.position));
+    }
+
+    public void EndAudioSources()
+    {
+        currentAudioSource.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        currentAudioSource.release();
+        nextAudioSource.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        nextAudioSource.release();
     }
 
 }
