@@ -118,14 +118,19 @@ public class GameCamera : MonoBehaviour {
 
     private void Start() {
         
+        
+        
         (GameMenuController.Instance.RequestOption<VoiceControl>() as VoiceControl).AddListener((option) => {
 
             if (option == 1) {
                 ChangeBehaviour<OneHandCameraBehaviour>();
                 previousCameraBehaviour = typeof(OneHandCameraBehaviour);
             }
-            else
+            else {
+                previousCameraBehaviour = typeof(BaseCameraBehaviour);
                 ChangeBehaviour<BaseCameraBehaviour>();
+            }
+                
         });
     }
     
