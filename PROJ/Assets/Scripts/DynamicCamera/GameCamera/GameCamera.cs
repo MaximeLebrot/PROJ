@@ -116,6 +116,19 @@ public class GameCamera : MonoBehaviour {
         EventHandler<CameraLookAtEvent>.UnregisterListener(OnCameraLook);
     }
 
+    private void Start() {
+        
+        (GameMenuController.Instance.RequestOption<VoiceControl>() as VoiceControl).AddListener((option) => {
+            
+            if(option != 0)
+                ChangeBehaviour<OneHandCameraBehaviour>();
+            else
+                ChangeBehaviour<BaseCameraBehaviour>();
+            
+        });
+        
+    }
+    
     private void OnAwayFromKeyboard(AwayFromKeyboardEvent e) {
         ChangeBehaviour<IdleBehaviour>();
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
