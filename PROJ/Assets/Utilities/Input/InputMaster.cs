@@ -309,7 +309,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""f7ba6274-c8c0-4f69-b79b-d33fd1b138ab"",
-                    ""path"": ""<Keyboard>/o"",
+                    ""path"": ""<Keyboard>/numpad8"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Stnd KBM;xboxcontroller"",
@@ -320,7 +320,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""c5047cd6-0881-4d4e-a90f-f057edacb3a6"",
-                    ""path"": ""<Keyboard>/0"",
+                    ""path"": ""<Keyboard>/numpad9"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
