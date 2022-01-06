@@ -13,19 +13,29 @@ public abstract class MenuController : MonoBehaviour {
     private GraphicRaycaster graphicRaycaster;
     
     protected Action onBackInput;
+
+    private static MenuController instance;
+
+    public static MenuController Instance => instance;
     
     protected void Awake() {
+        
+        instance = this;
+        
         controllerInputReference.Initialize();
 
-        pageController = GetComponentInChildren<PageController>();
+        pageController = GetComponent<PageController>();
 ;        
-        graphicRaycaster = GetComponentInParent<GraphicRaycaster>();
-
-        InputController.SuspendInputEvent += SuspendInputEvent;
+        graphicRaycaster = GetComponent<GraphicRaycaster>();
         
         Initialize();
+
+        pageController.Initialize();
         
+        pageController.OnSuspendInput += SuspendInputEvent;
     }
+    
+    protected abstract void Initialize();
     
     private void OnEnable() {
         EventHandler<StartPuzzleEvent>.RegisterListener((OnPuzzleStart));
@@ -38,6 +48,8 @@ public abstract class MenuController : MonoBehaviour {
         EventHandler<ExitPuzzleEvent>.UnregisterListener(OnPuzzleExit);
     }
 
+    public UIMenuItemBase RequestOption<T>() => pageController.FindRequestedOption<T>();
+
     private void HandleBackInput(InputAction.CallbackContext e) => onBackInput?.Invoke();
 
     private void OnPuzzleStart(StartPuzzleEvent e) => controllerInputReference.InputMaster.Menu.performed -= HandleBackInput;
@@ -45,12 +57,11 @@ public abstract class MenuController : MonoBehaviour {
     private void OnPuzzleExit(ExitPuzzleEvent e) => controllerInputReference.InputMaster.Menu.performed += HandleBackInput;
 
 
-    protected abstract void Initialize();
+    
     
     private void SuspendInputEvent(bool suspend) {
         inputSuspended = suspend;
         graphicRaycaster.enabled = !inputSuspended;
     }
-    
-    public void ActivateSubMenu(MenuSettings page) => pageController.RegisterSubMenuAsActive(page);
+
 }

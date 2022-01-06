@@ -70,11 +70,17 @@ public class VoiceMovementArmless : MonoBehaviour
 
         actions.Add("rotate twohundred and seventy", Rotate270);
         actions.Add("rotate two seventy", Rotate270);
+
+        actions.Add("Closest node", ClosestNote);
+        actions.Add("Walk to node", ClosestNote);
+        actions.Add("Node", ClosestNote);
+
+
     }
 
     private void Update()
     {
-        if (walking && time<1.5)
+        if (walking && time<1)
         {
             mpc.InputWalk(new Vector3(0, 1, 0));
             animator.SetFloat(x, 1);
@@ -139,17 +145,14 @@ public class VoiceMovementArmless : MonoBehaviour
     {
             transform.Rotate(0, 90, 0);
     }
-
     private void Rotate180()
     {
         transform.Rotate(0, 180, 0);
     }
-
     private void Rotate270()
     {
         transform.Rotate(0, 270, 0);
     }
-
     private void DiagonalRightUp()
     {
         if (puzzleActive)
@@ -189,6 +192,11 @@ public class VoiceMovementArmless : MonoBehaviour
             Vector3 puzzleMovement = activePuzzleRotation * Vector3.forward * 3;
             transform.position -= puzzleMovement;
         }
+    }
+    private void ClosestNote()
+    {
+        Debug.Log("Walking to closest node");
+        
     }
     private void OnStartPuzzle(StartPuzzleEvent eve)
     {

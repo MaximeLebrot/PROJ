@@ -22,7 +22,7 @@ public class Rebinding : MenuSettings
     {
         compositeName = "";
 
-       // Debug.Log("Action binding is : ´" + action.bindings[bindingIndex]);
+       // Debug.Log("Action binding is : Â´" + action.bindings[bindingIndex]);
         //Composite binding
         if (action.bindings[bindingIndex].isComposite)
         {
@@ -57,7 +57,7 @@ public class Rebinding : MenuSettings
             .OnComplete(operation =>
             {
                 CleanUp();
-                //Debug.Log("New action binding is : ´" + action.bindings[0]);
+                //Debug.Log("New action binding is : Â´" + action.bindings[0]);
 
                 if (composite)
                 {

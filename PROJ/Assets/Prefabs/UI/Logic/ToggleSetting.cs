@@ -1,11 +1,13 @@
-using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class ToggleSetting : UIMenuItem {
+public abstract class ToggleSetting : UIMenuItem<bool> {
 
-    [SerializeField] private Toggle toggle;
+    [SerializeField] protected Toggle toggle;
+
+    public void AddListener(UnityAction<bool> callback) => toggle.onValueChanged.AddListener(callback);
     
-    public override dynamic GetValue() => toggle.isOn;
-    public override void SetValue(dynamic value) => toggle.isOn = value;
+    public override bool GetValue() => toggle.isOn;
+    public override void SetValue(bool value) => toggle.isOn = value;
 }

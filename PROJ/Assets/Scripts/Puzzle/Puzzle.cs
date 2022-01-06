@@ -16,8 +16,12 @@ public class Puzzle : MonoBehaviour
 
     protected PuzzleGrid grid;
 
+    public PuzzleGrid Grid => grid;
+    
     private SymbolPlacer symbolPlacer;
  
+    
+    
     //should NOT be public, but ModularHintSystem currently relies on this List
     public List<PuzzleObject> placedSymbols = new List<PuzzleObject>();
     [SerializeField] private List<TranslationAndObject> translationsSorted = new List<TranslationAndObject>();
