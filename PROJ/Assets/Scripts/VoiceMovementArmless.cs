@@ -26,9 +26,10 @@ public class VoiceMovementArmless : MonoBehaviour
     {
         actions.Add("forward", Forward);
         actions.Add("up", Forward);
-        actions.Add("straight", Forward);
         actions.Add("walk", Forward);
         actions.Add("go", Forward);
+        actions.Add("straight", Forward);
+        actions.Add("infront", Forward);
 
         actions.Add("diagonal right up", DiagonalRightUp);
         actions.Add("diagonal up right", DiagonalRightUp);
@@ -60,6 +61,8 @@ public class VoiceMovementArmless : MonoBehaviour
 
         actions.Add("down", Down);
         actions.Add("back", Down);
+        actions.Add("backwards", Down);
+        actions.Add("behind", Down);
 
         actions.Add("right", Right);
         actions.Add("left", Left);
