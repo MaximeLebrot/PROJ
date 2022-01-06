@@ -51,8 +51,6 @@ public class GameCamera : MonoBehaviour {
         behaviours.Add(typeof(SceneChangeCameraBehaviour),  cameraBehaviours[6]);
         
         ChangeBehaviour<BaseCameraBehaviour>();
-        
-        //MouseSensitivity a = MenuController.Instance.RequestOption<MouseSensitivity>() as MouseSensitivity;
 
     }
 
@@ -118,6 +116,23 @@ public class GameCamera : MonoBehaviour {
         EventHandler<CameraLookAtEvent>.UnregisterListener(OnCameraLook);
     }
 
+    private void Start() {
+        
+        (GameMenuController.Instance.RequestOption<VoiceControl>() as VoiceControl).AddListener((option) => {
+
+            if (option == 1) {
+                ChangeBehaviour<OneHandCameraBehaviour>();
+                previousCameraBehaviour = typeof(OneHandCameraBehaviour);
+            }
+            else
+            {
+                previousCameraBehaviour = typeof(BaseCameraBehaviour);
+                ChangeBehaviour<BaseCameraBehaviour>();
+            }
+        }
+        );
+    }
+    
     private void OnAwayFromKeyboard(AwayFromKeyboardEvent e) {
         ChangeBehaviour<IdleBehaviour>();
         EventHandler<AwayFromKeyboardEvent>.UnregisterListener(OnAwayFromKeyboard);
@@ -180,9 +195,8 @@ public class GameCamera : MonoBehaviour {
     private void LockInput(LockInputEvent lockInputEvent) => lockInput = lockInputEvent.lockInput;
 
     private void ActivateMenuCamera(InGameMenuEvent inGameMenuEvent) {
-        if (inGameMenuEvent.Activate) {
+        if (inGameMenuEvent.Activate) 
             previousCameraBehaviour = currentBaseCameraBehaviour.GetType();
-        }
         else 
             ChangeBehaviour(previousCameraBehaviour);
     }

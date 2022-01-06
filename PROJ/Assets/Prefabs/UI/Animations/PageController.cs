@@ -18,7 +18,8 @@ public class PageController : MonoBehaviour {
     //F�rl�t Jonathan /martin
     GameMenuController gameMenuController;
 
-    private void Awake() {
+    public void Initialize() {
+        
         gameMenuController = GetComponentInParent<GameMenuController>();
         
         PageObjects = new List<MenuSettings>();
@@ -46,8 +47,11 @@ public class PageController : MonoBehaviour {
     public UIMenuItemBase FindRequestedOption<T>() {
         foreach (MenuSettings menuSetting in PageObjects) {
 
-            if (menuSetting.HasMenuItem<T>()) 
+            if (menuSetting.HasMenuItem<T>()) {
+                Debug.Log(menuSetting.HasMenuItem<T>());
                 return menuSetting.GetOption<T>();
+            }
+                
         }
 
         return null;

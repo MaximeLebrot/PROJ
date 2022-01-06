@@ -19,7 +19,7 @@ public abstract class MenuController : MonoBehaviour {
     public static MenuController Instance => instance;
     
     protected void Awake() {
-
+        
         instance = this;
         
         controllerInputReference.Initialize();
@@ -30,6 +30,8 @@ public abstract class MenuController : MonoBehaviour {
         
         Initialize();
 
+        pageController.Initialize();
+        
         pageController.OnSuspendInput += SuspendInputEvent;
     }
     
