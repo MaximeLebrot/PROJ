@@ -253,7 +253,7 @@ public class GameCamera : MonoBehaviour {
     }
 
     private void OnApplicationQuit() {
-        cancellationTokenSource.Cancel();
+        cancellationTokenSource?.Cancel();
     }
 
     [ContextMenu("Auto-assign targets", false,0)]
