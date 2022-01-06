@@ -167,6 +167,8 @@ public class PuzzleGrid : MonoBehaviour {
         SymbolClear.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         SymbolClear.start();
         SymbolClear.release();
+
+        FMODUnity.RuntimeManager.StudioSystem.setParameterByName("PuzzleVolume", 0.25f, false);
     }
 
     private void InstantiateFirstLine()

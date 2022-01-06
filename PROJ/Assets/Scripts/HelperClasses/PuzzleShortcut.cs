@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PuzzleShortcut : MonoBehaviour
 {
+    
     private InputMaster inputMaster;
     [SerializeField] private Puzzle puzzle;
     [SerializeField] private bool inPuzzle;
@@ -61,4 +62,5 @@ public class PuzzleShortcut : MonoBehaviour
     {
         inputMaster.Disable();
     }
+    
 }
