@@ -32,12 +32,11 @@ public abstract class MenuSettings : MonoBehaviour {
         }
         
         SubMenuInitialize();
-        
-        gameObject.SetActive(false);
     }
 
-    private void Start() {
-        foreach (UIMenuItemBase uiItem in menuOptions.Values)
+    public void InvokeFirstRead() {
+        
+        foreach (UIMenuItemBase uiItem in menuOptions.Values) 
             uiItem.DemandFirstRead();
     }
     
