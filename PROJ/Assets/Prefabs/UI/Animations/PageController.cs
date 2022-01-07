@@ -41,6 +41,16 @@ public class PageController : MonoBehaviour {
         UIButton.onResetCalled += ResetPages;
     }
 
+    private void Start() {
+        foreach (var menuSetting in PageObjects) {
+            
+            menuSetting.gameObject.SetActive(true);
+            menuSetting.InvokeFirstRead();
+            menuSetting.gameObject.SetActive(false);
+
+        }
+    }
+    
     private void OnEnable() => graphicRaycaster.enabled = true;
 
     public UIMenuItemBase FindRequestedOption<T>() {

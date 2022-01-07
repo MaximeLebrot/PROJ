@@ -38,7 +38,7 @@ public class Logbook : MonoBehaviour
         CloseEveryPage();
         allPages[pageNr].Activate();
     }
-
+    
     private void CloseEveryPage()
     {
         foreach (Page page in allPages)
@@ -352,6 +352,10 @@ public class Logbook : MonoBehaviour
     {
         Page page = FindPageByName(pageName);
         TriggerNotificationAnimation();
+        
+        if (page == null)
+            return;
+        
         page.AddRightSide();
         OpenPage(page);
     }

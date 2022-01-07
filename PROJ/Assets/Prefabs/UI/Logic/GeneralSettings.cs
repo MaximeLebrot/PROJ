@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class GeneralSettings : MenuSettings {
     
     public override void SetMenuItems(SettingsData settingsData) {
