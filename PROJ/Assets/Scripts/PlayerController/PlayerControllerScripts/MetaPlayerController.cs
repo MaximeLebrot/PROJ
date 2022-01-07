@@ -54,10 +54,17 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         //EventHandler<SaveSettingsEvent>.UnregisterListener(HandleOneSwitchSetting)
     }
 
-    private void Start() => (GameMenuController.Instance.RequestOption<OneHandMode>() as OneHandMode).AddListener(SetOneSwitchMode);
+    private void Start() => (GameMenuController.Instance.RequestOption<OneSwitchMode>() as OneSwitchMode).AddListener(SetOneSwitchMode);
 
-    private void SetOneSwitchMode(bool isActive) => oneSwitchMode = isActive;
+    private void SetOneSwitchMode(bool isActive)
+    {
+        oneSwitchMode = isActive;
+        if (oneSwitchMode)
+            ChangeStateToOSWalk();
+        else
+            stateMachine.ChangeState<WalkState>();
     
+    }
     //TEMPORARY
     private void OnHub(InputAction.CallbackContext obj)
     {
@@ -119,6 +126,12 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     }
 
     public void ChangeStateToOSWalk(ExitPuzzleEvent eve)
+    {
+        Debug.Log("Change State to OS Walk");
+        stateMachine.ChangeState<OSWalkState>();
+    }
+
+    public void ChangeStateToOSWalk()
     {
         Debug.Log("Change State to OS Walk");
         stateMachine.ChangeState<OSWalkState>();
