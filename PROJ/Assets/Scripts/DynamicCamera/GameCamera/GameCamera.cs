@@ -74,7 +74,7 @@ public class GameCamera : MonoBehaviour {
 
     
     private void LateUpdate() {
-        if(behaviorExecutionIsAllowedToRun || currentBaseCameraBehaviour != null)
+        if(behaviorExecutionIsAllowedToRun)
             ExecuteCameraBehaviour();
     }
 
