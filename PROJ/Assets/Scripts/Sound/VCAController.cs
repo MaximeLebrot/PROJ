@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class VCAController : MonoBehaviour
-{
+public class VCAController : MonoBehaviour {
+
+    [SerializeField] private MenuSlider menuSlider;
 
     private FMOD.Studio.VCA VcaController;
     public string VcaName;
@@ -16,6 +17,8 @@ public class VCAController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        menuSlider.AddListener(SetVolume);
+        
         VcaController = FMODUnity.RuntimeManager.GetVCA("vca:/" + VcaName);
         slider = GetComponentInChildren<Slider>();
 

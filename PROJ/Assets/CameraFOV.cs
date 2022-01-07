@@ -4,17 +4,16 @@ public class CameraFOV : MonoBehaviour {
     
     private Camera camera;
 
-    private void Awake() => camera = GetComponent<Camera>();
-
-    private void Start() {
+    private void Awake() {
+        camera = GetComponent<Camera>();
         
         FieldOfView fov = GameMenuController.Instance.RequestOption<FieldOfView>() as FieldOfView;
         
         
         fov?.AddListener(UpdateFOV);
         UpdateFOV(fov.GetValue());
-        
     }
 
-    private void UpdateFOV(float value) => camera.fieldOfView = value;
+
+    private void UpdateFOV(float value) => camera.fieldOfView = (int)(value * 100);
 }

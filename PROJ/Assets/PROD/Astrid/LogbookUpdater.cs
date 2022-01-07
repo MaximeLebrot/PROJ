@@ -13,10 +13,7 @@ public class LogbookUpdater : MonoBehaviour
 
     private void Start()
     {
-        if (log != null)
-        {
-            book = FindObjectOfType(typeof(Logbook)) as Logbook;
-        }
+        book = FindObjectOfType(typeof(Logbook)) as Logbook;
         //FindLogbook();
     }
 

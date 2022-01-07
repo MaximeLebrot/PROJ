@@ -1,19 +1,15 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public abstract class MenuController : MonoBehaviour {
     
     [SerializeField] protected ControllerInputReference controllerInputReference;
-
-    protected bool inputSuspended;
+    
     protected PageController pageController;
     
-    private GraphicRaycaster graphicRaycaster;
-    
     protected Action onBackInput;
-
+    
     private static MenuController instance;
 
     public static MenuController Instance {
@@ -34,14 +30,11 @@ public abstract class MenuController : MonoBehaviour {
         controllerInputReference.Initialize();
 
         pageController = GetComponent<PageController>();
-;        
-        graphicRaycaster = GetComponent<GraphicRaycaster>();
-        
+
         Initialize();
 
         pageController.Initialize();
         
-        pageController.OnSuspendInput += SuspendInputEvent;
         controllerInputReference.InputMaster.Menu.performed += HandleBackInput;
     }
     
@@ -66,12 +59,5 @@ public abstract class MenuController : MonoBehaviour {
 
     private void OnPuzzleExit(ExitPuzzleEvent e) => controllerInputReference.InputMaster.Menu.performed += HandleBackInput;
 
-
     
-    
-    private void SuspendInputEvent(bool suspend) {
-        inputSuspended = suspend;
-        graphicRaycaster.enabled = !inputSuspended;
-    }
-
 }

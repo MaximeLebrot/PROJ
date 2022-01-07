@@ -38,7 +38,7 @@ public class Logbook : MonoBehaviour
         CloseEveryPage();
         allPages[pageNr].Activate();
     }
-
+    
     private void CloseEveryPage()
     {
         foreach (Page page in allPages)
@@ -309,6 +309,7 @@ public class Logbook : MonoBehaviour
     {
         if (newPage == null)
             return;
+
         TriggerNotificationAnimation();
         switch (newPage.GetPageType())
         {
@@ -351,6 +352,10 @@ public class Logbook : MonoBehaviour
     {
         Page page = FindPageByName(pageName);
         TriggerNotificationAnimation();
+        
+        if (page == null)
+            return;
+        
         page.AddRightSide();
         OpenPage(page);
     }
@@ -364,19 +369,6 @@ public class Logbook : MonoBehaviour
                 p = page;
         }
         return p;
-    }
-
-    private Page GetLatestTwoSidedPage()
-    {
-        Page page = null;
-
-        foreach (Page p in allPages)
-        {
-            if (!p.complete)
-                page = p;
-        }
-
-        return page;
     }
 
     private void UpdatePageNr(Page page)

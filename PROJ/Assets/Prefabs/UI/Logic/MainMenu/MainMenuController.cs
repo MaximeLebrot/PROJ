@@ -17,7 +17,7 @@ public class MainMenuController : MenuController {
     
 
     private void GoBack(InputAction.CallbackContext e) {
-        if (inputSuspended)
+        if (pageController.InputSuspended)
             return;
 
         pageController.IsPageActive();

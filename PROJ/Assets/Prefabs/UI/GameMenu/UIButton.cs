@@ -16,7 +16,7 @@ public enum ButtonState {
 
 public class UIButton : MonoBehaviour {
 
-    private static float moveDuration = 1f;
+    private static float moveDuration = .2f;
     private ButtonState state;
     
     [SerializeField] private ControllerInputReference controllerInputReference;
@@ -36,22 +36,20 @@ public class UIButton : MonoBehaviour {
     
     private RectTransform rectTransform;
     
-    private Button buttonComponent;
-    
     private void Awake() {
         rectTransform = GetComponent<RectTransform>();
-        buttonComponent = GetComponent<Button>();
-
+        
         onButtonClicked += OnAnotherButtonPressed;
         onResetCalled += ResetButton;
         state = ButtonState.Inactive;
         
     }
 
-    private void Start() => controllerInputReference.InputMaster.Menu.performed += ResetButton;
+    private void OnEnable() => controllerInputReference.InputMaster.Menu.performed += ResetButton;
     
     private void OnDisable() {
         controllerInputReference.InputMaster.Menu.performed -= ResetButton;
+        GetComponent<CanvasGroup>().alpha = 0;
     }
 
     private void Move(float duration) {
@@ -90,8 +88,7 @@ public class UIButton : MonoBehaviour {
     }
 
     private IEnumerator Move_Coroutine(float duration) {
-
-        buttonComponent.enabled = false;
+        controllerInputReference.InputMaster.Menu.performed -= ResetButton;
         
         yield return new WaitForSeconds(timeUntilMove);
         
@@ -113,7 +110,7 @@ public class UIButton : MonoBehaviour {
         
         onMoveCallback?.Invoke();
         onMoveCallback = null;
-        buttonComponent.enabled = true;
+        controllerInputReference.InputMaster.Menu.performed += ResetButton;
     }
 }
 

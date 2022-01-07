@@ -26,5 +26,6 @@ public abstract class MenuSlider : UIMenuItem<float> {
         percentText.text = ((int)(displayValue)).ToString();
         ExecuteAdditionalLogic();
     }
-    
+
+    public override void DemandFirstRead() => slider.onValueChanged.Invoke(slider.value);
 }

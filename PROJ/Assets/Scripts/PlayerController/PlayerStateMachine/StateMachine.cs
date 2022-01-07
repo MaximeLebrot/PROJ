@@ -60,8 +60,4 @@ public class StateMachine
         else
             Debug.Log(typeof(T) + "not found");
     }
-    private void OnSaveSettings(SaveSettingsEvent eve)
-    {
-        holdToSprint = !eve.settingsData.pressToSprint;
-    }
 }

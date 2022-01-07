@@ -12,10 +12,10 @@ public class SettingsController : MonoBehaviour {
 
    
     private void Awake() {
-        
+
+        MenuButtons.OnCloseDone += UpdateUserSettings;
+
         settingObjects = GetComponent<PageController>().PageObjects;
-        
-        UpdateUserSettings();
         
         LoadSavedSettings();
         EventHandler<RequestSettingsEvent>.RegisterListener(SendOutUserSettingsData);
@@ -67,13 +67,12 @@ public class SettingsController : MonoBehaviour {
         SaveSettings(true);
     }
     
-    /// <summary>
-    /// For each json-value, get type and menusetting and give the menusetting the type of component + the value to be applied
-    /// </summary>
     private void UpdateUserSettings() {
-        foreach (MenuSettings menuSettings in settingObjects) {
+        foreach (MenuSettings menuSettings in settingObjects) 
             menuSettings.ApplyItemValues(ref userSettings);
-        }
+        
+        var json = JsonUtility.ToJson(userSettings);
+        PlayerPrefs.SetString("SavedSettings", json);
     }
 
     private void SetValues(SettingsData settings) {

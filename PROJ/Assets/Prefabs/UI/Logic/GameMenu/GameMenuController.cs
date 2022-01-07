@@ -26,7 +26,7 @@ public class GameMenuController : MenuController {
 
     private void Back() {
         
-        if (inputSuspended)
+        if (pageController.InputSuspended) 
             return;
         
         if (pageController.IsPageActive()) {
@@ -40,8 +40,8 @@ public class GameMenuController : MenuController {
     
     private void CloseMenu() {
         ActivateComponents(false);
-        menuButtons.SetActive(false, false);
-        pageController.ResetPages();
+        menuButtons.SetActive(false, true);
+        //pageController.ResetPages();
         EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(false));
     }
 
@@ -56,4 +56,6 @@ public class GameMenuController : MenuController {
         CloseMenu();
         onBackInput = OpenMenu;
     }
+
+    public void Quit() => Application.Quit();
 }

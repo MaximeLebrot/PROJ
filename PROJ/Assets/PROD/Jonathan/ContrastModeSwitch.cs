@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
@@ -29,12 +27,21 @@ public class ContrastModeSwitch : MonoBehaviour {
         overlayCamera.transform.gameObject.SetActive(false);
     }
 
-    private void OnEnable() => EventHandler<SaveSettingsEvent>.RegisterListener(SwitchToContrastMode);
-    private void OnDisable() => EventHandler<SaveSettingsEvent>.UnregisterListener(SwitchToContrastMode);
-    
+    private void OnEnable() {
+        
+        (GameMenuController.Instance.RequestOption<Use_HighContrastMode>() as Use_HighContrastMode).AddListener(SwitchToContrastMode);
+        
+       // EventHandler<SaveSettingsEvent>.RegisterListener(SwitchToContrastMode);
+    }
 
-    private void SwitchToContrastMode(SaveSettingsEvent settings) {
-        contrastModeActive = settings.settingsData.highContrastMode;
+    private void OnDisable() {
+        if(GameMenuController.Instance != null)
+            (GameMenuController.Instance.RequestOption<Use_HighContrastMode>() as Use_HighContrastMode).RemoveListener(SwitchToContrastMode);
+    }
+
+
+    private void SwitchToContrastMode(bool isOn) {
+        contrastModeActive = isOn;
         overlayCamera.gameObject.SetActive(contrastModeActive);
         mainCamera.cullingMask = contrastModeActive ? contrastModeRenderLayers : mainRegularRenderLayers; 
         colorAdjustments.saturation.value = contrastModeActive ? colorAdjustments.saturation.min : 0;

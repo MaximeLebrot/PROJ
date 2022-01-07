@@ -6,9 +6,8 @@ public class SettingsData
 {
     //General
     public float mouseSensitivity;
-    public bool holdToSprint;
-    public bool pressToSprint;
-    
+    public string sprintMode;
+
     //Audio
     public float masterVolume;
     public float musicVolume;

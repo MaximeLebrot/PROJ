@@ -1,34 +1,34 @@
 public class AccessibilitySettings : MenuSettings {
     
     public override void SetMenuItems(SettingsData settingsData) {
-        /*menuOptions[ExtractMenuItem("ChangeFontSize").ID].SetValue(settingsData.fontSize);
-        menuOptions[ExtractMenuItem("Use_DyslexiaFont").ID].SetValue(settingsData.dyslexiaFont);
-        menuOptions[ExtractMenuItem("Use_HighContrastMode").ID].SetValue(settingsData.highContrastMode);
-        menuOptions[ExtractMenuItem("BlindMode").ID].SetValue(settingsData.blindMode);
-        menuOptions[ExtractMenuItem("OneHandMode").ID].SetValue(settingsData.oneHandMode);
-        menuOptions[ExtractMenuItem("CurrentNodeMarker").ID].SetValue(settingsData.currentNodeMarker);
-        menuOptions[ExtractMenuItem("ShowClearedSymbols").ID].SetValue(settingsData.showClearedSymbols);
-        menuOptions[ExtractMenuItem("EasyPuzzleControls").ID].SetValue(settingsData.easyPuzzleControls);
-        menuOptions[ExtractMenuItem("BigNodes").ID].SetValue(settingsData.bigNodes);
-        menuOptions[ExtractMenuItem("SymbolDifficulty").ID].SetValue(settingsData.symbolDifficulty);
-        menuOptions[ExtractMenuItem("OneSwitchMode").ID].SetValue(settingsData.oneSwitchMode);
-        */
+        
+        (menuOptions[typeof(ChangeFontSize)] as ChangeFontSize).SetValue(settingsData.fontSize);
+        (menuOptions[typeof(Use_DyslexiaFont)] as Use_DyslexiaFont).SetValue(settingsData.dyslexiaFont);
+        (menuOptions[typeof(Use_HighContrastMode)] as Use_HighContrastMode).SetValue(settingsData.highContrastMode);
+        (menuOptions[typeof(BlindMode)] as BlindMode).SetValue(settingsData.blindMode);
+        (menuOptions[typeof(OneHandMode)] as OneHandMode).SetValue(settingsData.oneHandMode);
+        (menuOptions[typeof(CurrentNodeMarker)] as CurrentNodeMarker).SetValue(settingsData.currentNodeMarker);
+        (menuOptions[typeof(ShowClearedSymbols)] as ShowClearedSymbols).SetValue(settingsData.showClearedSymbols);
+        (menuOptions[typeof(EasyPuzzleControls)] as EasyPuzzleControls).SetValue(settingsData.easyPuzzleControls);
+        (menuOptions[typeof(BigNodes)] as BigNodes).SetValue(settingsData.bigNodes);
+        (menuOptions[typeof(SymbolDifficulty)] as SymbolDifficulty).SetValue(settingsData.symbolDifficulty);
+        (menuOptions[typeof(OneSwitchMode)] as OneSwitchMode).SetValue(settingsData.oneSwitchMode);
     }
     
     public override void ApplyItemValues(ref SettingsData settingsData) {
-        /*
-        settingsData.fontSize = menuOptions[ExtractMenuItem("ChangeFontSize").ID].GetValue();
-        settingsData.dyslexiaFont = menuOptions[ExtractMenuItem("Use_DyslexiaFont").ID].GetValue();
-        settingsData.highContrastMode = menuOptions[ExtractMenuItem("Use_HighContrastMode").ID].GetValue();
-        settingsData.blindMode = menuOptions[ExtractMenuItem("BlindMode").ID].GetValue();
-        settingsData.oneHandMode = menuOptions[ExtractMenuItem("OneHandMode").ID].GetValue();
-        settingsData.currentNodeMarker = menuOptions[ExtractMenuItem("CurrentNodeMarker").ID].GetValue();
-        settingsData.showClearedSymbols = menuOptions[ExtractMenuItem("ShowClearedSymbols").ID].GetValue();
-        settingsData.easyPuzzleControls = menuOptions[ExtractMenuItem("EasyPuzzleControls").ID].GetValue();
-        settingsData.bigNodes = menuOptions[ExtractMenuItem("BigNodes").ID].GetValue();
-        settingsData.symbolDifficulty = menuOptions[ExtractMenuItem("SymbolDifficulty").ID].GetValue();
-        settingsData.oneSwitchMode = menuOptions[ExtractMenuItem("OneSwitchMode").ID].GetValue();
-        */
+        
+        settingsData.fontSize = (menuOptions[typeof(ChangeFontSize)] as ChangeFontSize).GetValue();
+        settingsData.dyslexiaFont = (menuOptions[typeof(Use_DyslexiaFont)] as Use_DyslexiaFont).GetValue();
+        settingsData.highContrastMode = (menuOptions[typeof(Use_HighContrastMode)] as Use_HighContrastMode).GetValue();
+        settingsData.blindMode = (menuOptions[typeof(BlindMode)] as BlindMode).GetValue();
+        settingsData.oneHandMode =(menuOptions[typeof(OneHandMode)] as OneHandMode).GetValue();
+        settingsData.currentNodeMarker = (menuOptions[typeof(CurrentNodeMarker)] as CurrentNodeMarker).GetValue();
+        settingsData.showClearedSymbols = (menuOptions[typeof(ShowClearedSymbols)] as ShowClearedSymbols).GetValue();
+        settingsData.easyPuzzleControls = (menuOptions[typeof(EasyPuzzleControls)] as EasyPuzzleControls).GetValue();
+        settingsData.bigNodes = (menuOptions[typeof(BigNodes)] as BigNodes).GetValue();
+        settingsData.symbolDifficulty = (menuOptions[typeof(SymbolDifficulty)] as SymbolDifficulty).GetValue();
+        settingsData.oneSwitchMode = (menuOptions[typeof(OneSwitchMode)] as OneSwitchMode).GetValue();
+        
     }
     
 }

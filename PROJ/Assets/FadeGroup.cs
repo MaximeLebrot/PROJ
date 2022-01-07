@@ -8,10 +8,20 @@ public class FadeGroup : MonoBehaviour {
     [Header("FADE IN occurs from index 0-n | FADE OUT occurs from index n-0")]
     [SerializeField] private List<FadeEntity> fadeOrder;
 
-    public void InitiateFade(FadeMode fadeMode, Action onDone) => StartCoroutine(Fade(fadeMode, onDone));
+    private bool isRunning;
+    
+    public void InitiateFade(FadeMode fadeMode, Action onDone) {
+        
+        if(isRunning)
+            StopCoroutine("Fade");
+      
+        StartCoroutine(Fade(fadeMode, onDone));
+    }
 
     private IEnumerator Fade(FadeMode fadeMode, Action onDone) {
 
+        isRunning = true;
+        
         float totalTime = 0;
 
         foreach (FadeEntity fadeEntity in fadeOrder)
@@ -39,10 +49,8 @@ public class FadeGroup : MonoBehaviour {
             yield return null;
         }
         
-
-        Debug.Log("Fade Done");
-        
         onDone?.Invoke();
+        isRunning = false;
     }
 
     

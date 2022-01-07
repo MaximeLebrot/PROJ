@@ -32,13 +32,14 @@ public abstract class MenuSettings : MonoBehaviour {
         }
         
         SubMenuInitialize();
-        
-        
-        //fontChanger.GatherAllTextComponents();
-        
-        gameObject.SetActive(false);
     }
 
+    public void InvokeFirstRead() {
+        
+        foreach (UIMenuItemBase uiItem in menuOptions.Values) 
+            uiItem.DemandFirstRead();
+    }
+    
     public UIMenuItemBase GetOption<T>() => menuOptions[typeof(T)];
     
     public void ActivatePage(Action onDone) => fadeGroup.InitiateFade(FadeMode.FadeIn, onDone);

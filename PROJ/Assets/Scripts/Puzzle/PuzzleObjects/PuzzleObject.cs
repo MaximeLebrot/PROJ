@@ -45,7 +45,8 @@ public abstract class PuzzleObject : MonoBehaviour
 
     private void OnDisable()
     {
-        (GameMenuController.Instance.RequestOption<SymbolDifficulty>() as SymbolDifficulty).RemoveListener(ApplyDifficulty);
+        if(GameMenuController.Instance != null)
+            (GameMenuController.Instance.RequestOption<SymbolDifficulty>() as SymbolDifficulty).RemoveListener(ApplyDifficulty);
         //EventHandler<SaveSettingsEvent>.UnregisterListener(ApplyDifficulty);
     }
     private void ApplyDifficulty(int choice)
