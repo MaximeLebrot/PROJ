@@ -53,11 +53,9 @@ public class LogbookHandler : MonoBehaviour
     private void CloseBook()
     {
         animator.SetTrigger("trigger");
-        //logbook.SetActive(false);
         isOpen = false;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(false));
         EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(false));
 
         BookClose = FMODUnity.RuntimeManager.CreateInstance("event:/Environment/BookClose");
@@ -73,7 +71,6 @@ public class LogbookHandler : MonoBehaviour
         isOpen = true;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
-        EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(true));
         EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(true));
 
         BookOpen = FMODUnity.RuntimeManager.CreateInstance("event:/Environment/BookOpen");

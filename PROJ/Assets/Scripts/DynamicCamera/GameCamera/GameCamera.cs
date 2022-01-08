@@ -150,7 +150,7 @@ public class GameCamera : MonoBehaviour {
     
 
     private void OnPuzzleExit(ExitPuzzleEvent exitPuzzleEvent) {
-
+        Debug.Log("OnPuzzleExit from GameCamera");
         //if (exitPuzzleEvent.success) {
             EventHandler<AwayFromKeyboardEvent>.RegisterListener(OnAwayFromKeyboard);
             ChangeBehaviour(previousCameraBehaviour);
