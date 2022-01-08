@@ -51,10 +51,10 @@ public class ActivatorEvent : IEvent
 public class PuzzleInfo
 {
     public int ID;
-    public Transform puzzlePos;
-
+    public Puzzle puzzle;
+    
     public PuzzleInfo(int id) { ID = id; }
-    public PuzzleInfo(int id, Transform pp) { ID = id; puzzlePos = pp; }
+    public PuzzleInfo(int id, Puzzle pp) { ID = id; puzzle = pp; }
 }
 
 public readonly struct PlayerStateChangeEvent : IEvent {
@@ -66,34 +66,23 @@ public readonly struct PlayerStateChangeEvent : IEvent {
 public readonly struct CameraLookAtEvent : IEvent {
 
     public readonly Transform lookAtTarget;
-    public readonly float transitionTime;
-    public readonly float delayWhenDone;
-    public readonly float rotationSpeed;
+    public readonly LookAtTransitionData transitionData;
     
-    public CameraLookAtEvent(Transform lookAtTarget, float transitionTime, float delayWhenDone, float rotationSpeed) {
+    public CameraLookAtEvent(Transform lookAtTarget, LookAtTransitionData transitionData) {
         this.lookAtTarget = lookAtTarget;
-        this.transitionTime = transitionTime;
-        this.delayWhenDone = delayWhenDone;
-        this.rotationSpeed = rotationSpeed;
+        this.transitionData = transitionData;
     }
-
 }
 
 public readonly struct CameraLookAndMoveToEvent : IEvent {
 
-    public readonly MoveToTransitionData moveToTransitionData;
-    public readonly LookAtTransitionData lookAtTransitionData;
+    public readonly Transform targetTransform;
+    public readonly LookAndMoveTransitionData lookAndMoveTransitionData;
 
-    public readonly Vector3 endPosition;
-    public readonly Quaternion endRotation;
-    
-    public CameraLookAndMoveToEvent(Vector3 endPosition, Quaternion endRotation, MoveToTransitionData moveToTransitionData, LookAtTransitionData lookAtTransitionData) {
-        this.endPosition = endPosition;
-        this.endRotation = endRotation;
-        this.moveToTransitionData = moveToTransitionData;
-        this.lookAtTransitionData = lookAtTransitionData;
+    public CameraLookAndMoveToEvent(Transform targetTransform, LookAndMoveTransitionData lookAndMoveTransitionData) {
+        this.targetTransform = targetTransform;
+        this.lookAndMoveTransitionData = lookAndMoveTransitionData;
     }
-
 }
 
 public class ClearPuzzleEvent : IEvent
@@ -132,7 +121,37 @@ public class UpdateHazardEvent : IEvent
     public bool reverse;
     public UpdateHazardEvent (bool isReverse) { reverse = isReverse; }
 }
-public class ResetHazardEvent : IEvent
-{
+public class ResetHazardEvent : IEvent{}
 
+public class UnLoadSceneEvent : IEvent 
+{
+    public string sceneToLoad;
+
+    public UnLoadSceneEvent(string scene) { sceneToLoad = scene; }
 }
+
+public class LoadSceneEvent : IEvent{}
+
+public class SetUpCameraEvent : IEvent
+{
+    public Transform followTarget;
+    public Transform shoulderPos;
+
+    public SetUpCameraEvent(Transform f, Transform s) { followTarget = f; shoulderPos = s; }
+}
+
+public class InGameMenuEvent : IEvent {
+
+    public readonly bool Activate;
+
+    public InGameMenuEvent(bool activate) => Activate = activate;
+}
+
+public class TransportationBegunEvent : IEvent {}
+public class TransportationEndedEvent : IEvent {}
+
+//Use for making the settings menu to fire a SaveSettingsData
+public class RequestSettingsEvent : IEvent {}
+public class SceneChangeEvent : IEvent {}
+public class SceneLoadedEvent : IEvent {}
+

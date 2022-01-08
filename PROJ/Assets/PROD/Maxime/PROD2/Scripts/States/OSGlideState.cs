@@ -12,7 +12,6 @@ public class OSGlideState : PlayerState
     public override void EnterState()
     {
         Debug.Log("Entered Glide State");
-        player.physics.SetGlide(true);
         base.EnterState();
     }
 
@@ -26,8 +25,8 @@ public class OSGlideState : PlayerState
         if (!player.playerController3D.IsGrounded())
             stateMachine.ChangeState<OSAirborneState>();
         
-        if (player.physics.velocity.magnitude < player.physics.SurfThreshold - 1)
-            stateMachine.ChangeState<OSWalkState>();
+        /*if (player.physics.velocity.magnitude < player.physics.SurfThreshold - 1)
+            stateMachine.ChangeState<OSWalkState>();*/
     }
         //NOTE
         //SetGlide(false) & playerController3D.TransitionSurf() would do well in ExitState, but this means that airborne state cannot use the glide camera

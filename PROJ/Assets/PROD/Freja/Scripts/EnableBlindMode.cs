@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class EnableBlindMode : MonoBehaviour
 {
-    [SerializeField]private GameObject blindPanel;
+    [SerializeField] private GameObject breadLoaf;
 
     private InputMaster inputMaster;
     private bool blindToggle;
 
-    void Awake()
-    {
-        
-    }
+    private FMOD.Studio.EventInstance currentAudioSource;
+    private FMOD.Studio.EventInstance nextAudioSource;
+
+    Breadloaf breadloaf;
+
     private void OnEnable()
     {
-        
+
     }
     private void OnDisable()
     {
@@ -26,6 +27,7 @@ public class EnableBlindMode : MonoBehaviour
     {
         inputMaster = new InputMaster();
         inputMaster.Enable();
+
         ExitBlindMode();
     }
 
@@ -35,8 +37,11 @@ public class EnableBlindMode : MonoBehaviour
         {
             if (blindToggle)
             {
+                breadloaf = breadLoaf.GetComponent<Breadloaf>();
+                breadloaf.EndAudioSources();
                 ExitBlindMode();
-            }else if (!blindToggle)
+            }
+            else if (!blindToggle)
             {
                 EnterBlindMode();
             }
@@ -45,13 +50,13 @@ public class EnableBlindMode : MonoBehaviour
 
     private void EnterBlindMode()
     {
-        blindPanel.SetActive(true);
+        breadLoaf.SetActive(true);
         blindToggle = true;
     }
 
     private void ExitBlindMode()
     {
-        blindPanel.SetActive(false);
+        breadLoaf.SetActive(false);
         blindToggle = false;
     }
 }

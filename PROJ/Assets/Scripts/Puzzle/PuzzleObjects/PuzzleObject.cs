@@ -12,8 +12,13 @@ public abstract class PuzzleObject : MonoBehaviour
     [SerializeField] private Vector3 modifierPosition;
     [SerializeField] private GameObject modHolder;
 
-    //[HideInInspector]
+    [HideInInspector]
     [SerializeField] private ModifierVariant modVariant;
+
+    [SerializeField]private MeshRenderer mesh;
+
+    [SerializeField] private List<Material> materials_EASY_MEDIUM_HARD = new List<Material>();
+    private Dictionary<string, Material> materialsByDifficulty = new Dictionary<string, Material>();
     
 
     private ModInfo modInfo;
@@ -21,13 +26,65 @@ public abstract class PuzzleObject : MonoBehaviour
     private GameObject modifier;
     private Animator anim;
 
+    private FMOD.Studio.EventInstance SymbolClear;
+
+
     public bool Active { get; private set; }
 
-    private void Awake()
-    {
+
+    private void Awake() {
         anim = GetComponent<Animator>();
+        SetUpMaterials();
     }
 
+    private void Start()
+    {
+        (GameMenuController.Instance.RequestOption<SymbolDifficulty>() as SymbolDifficulty).AddListener(ApplyDifficulty);
+        //EventHandler<RequestSettingsEvent>.FireEvent(null);
+    }
+
+    private void OnDisable()
+    {
+        if(GameMenuController.Instance != null)
+            (GameMenuController.Instance.RequestOption<SymbolDifficulty>() as SymbolDifficulty).RemoveListener(ApplyDifficulty);
+        //EventHandler<SaveSettingsEvent>.UnregisterListener(ApplyDifficulty);
+    }
+    private void ApplyDifficulty(int choice)
+    {
+        string difficulty = (GameMenuController.Instance.RequestOption<SymbolDifficulty>() as SymbolDifficulty).GetValue();
+        
+        if (materials_EASY_MEDIUM_HARD.Count > 0)
+        {
+            SetMaterialBasedOnDifficulty(difficulty);
+        }
+    }
+   
+    /* private void ApplyDifficulty(SaveSettingsEvent obj)
+    {  
+        if (materials_EASY_MEDIUM_HARD.Count > 0)
+        {
+            SetMaterialBasedOnDifficulty(obj.settingsData.symbolDifficulty);
+        }
+    }*/
+
+    private void SetUpMaterials()
+    {
+        if(materials_EASY_MEDIUM_HARD.Count > 0)
+        {
+            materialsByDifficulty.Add("Easy", materials_EASY_MEDIUM_HARD[0]);
+            materialsByDifficulty.Add("Medium", materials_EASY_MEDIUM_HARD[1]);
+            materialsByDifficulty.Add("Hard", materials_EASY_MEDIUM_HARD[2]);
+        }
+    }
+
+    private void SetMaterialBasedOnDifficulty(string difficulty)
+    {
+        if (materials_EASY_MEDIUM_HARD.Count > 0) {
+            
+            mesh.material = materialsByDifficulty[difficulty];
+        }
+            
+    }
 
     public string GetTranslation()
     {
@@ -94,6 +151,11 @@ public abstract class PuzzleObject : MonoBehaviour
             if(hasBeenSolved == true)
             {
                 anim.SetTrigger("activate");
+
+                SymbolClear = FMODUnity.RuntimeManager.CreateInstance("event:/Game/Puzzle/SymbolClear");
+                SymbolClear.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+                SymbolClear.start();
+                SymbolClear.release();
 
                 if (modInfo.variant != ModifierVariant.None == true)
                 {

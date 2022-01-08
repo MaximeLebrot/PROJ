@@ -27,7 +27,11 @@ namespace Obi
         public void DecreaseReferenceCount()
         {
             if (--refCount <= 0 && gameObject != null)
-                DestroyImmediate(gameObject);
+            {
+                //not allowed during physics interaction, results in a lag spike
+                //when flight animation starts, and we try to reset the obi 
+                //DestroyImmediate(gameObject);
+            }
         }
 
         public void UpdateWorld(float deltaTime)

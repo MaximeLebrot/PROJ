@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8680455241735901970}
   - component: {fileID: 8273701334773719087}
   - component: {fileID: 7857293697865115725}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Symbol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -410,9 +410,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   translation: 862
-  modifierPosition: {x: 0, y: 0.8, z: 0}
+  modifierPosition: {x: 0, y: 1, z: 0}
   modHolder: {fileID: 1073604482966591804, guid: c9638917c5349b04cbbf5a4d7c06321e, type: 3}
   modVariant: 0
+  mesh: {fileID: 8680455241735901970}
+  materials_EASY_MEDIUM_HARD:
+  - {fileID: 2100000, guid: 7c3529c783e3815429afdc4edf72e0ef, type: 2}
+  - {fileID: 2100000, guid: e30caa3e333da384585f7142fa9abfb9, type: 2}
+  - {fileID: 2100000, guid: f03adf16d1a3fbc4bb82aa7146112f31, type: 2}
 --- !u!114 &-1107165004537960014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -425,7 +430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1116b784c33ecf34d8289cbcc266c101, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meshRenderer: {fileID: 4256342891345540589}
+  meshRenderer: {fileID: 8680455241735901970}
   replaceMaterials: 1
   contrastMaterials:
   - {fileID: 2100000, guid: 1e374d60350965b4f8cfead260e23387, type: 2}

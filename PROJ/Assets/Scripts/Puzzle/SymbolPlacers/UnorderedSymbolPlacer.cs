@@ -9,9 +9,9 @@ public class UnorderedSymbolPlacer : SymbolPlacer
     private List<PuzzleObject> instantiatedSymbolsClone;
 
     //Symbol placement
+    [SerializeField] private float panelSize = 2f;
     private float degreeOffset;
     private float startingOffset;
-    private float panelSize = 2f;
     private float panelPlacementDepthOffset = 0.1f;
 
     protected override void UnevenPlaceSymbols()
@@ -41,7 +41,8 @@ public class UnorderedSymbolPlacer : SymbolPlacer
         {
             float radians = startingOffset + counter * degreeOffset;
             //this does not consider symbolPos rotation?
-            PlaceSymbols(symbolPos.transform.position + new Vector3(Mathf.Cos(radians), Mathf.Sin(radians), 0) * panelSize);
+
+            PlaceSymbols(symbolPos.position + (symbolPos.rotation * new Vector3(Mathf.Cos(radians), Mathf.Sin(radians), 0) * panelSize));
             counter++;
         } 
 

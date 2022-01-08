@@ -9,25 +9,25 @@ public class PuzzleGrid : MonoBehaviour {
     [SerializeField] private GameObject linePrefab;
     [SerializeField] private GameObject nodePrefab;
     [SerializeField] private GameObject startNodePrefab;
+
     [SerializeField] private int size;
     [SerializeField] private VisualEffect currentNodeEffect;
+    [SerializeField] private string solution;
 
     private int nodeOffset = 3;
     
+    //Grid components
     private List<Node> walkableNodes = new List<Node>();
     private List<Node> lineNodes = new List<Node>();
     private Stack<LineObject> lineRenderers = new Stack<LineObject>();
     private Node currentNode;
     private Node startNode;
 
-    [SerializeField] private string solution;
-    //private List<Node> allNodesLIST = new List<Node>();
+    
+
     public Node[,] allNodes { get; private set; }
 
-
     private List<Node> unrestrictedNodes = new List<Node>();
-
-
     private PuzzleLine currentLine;
     private GameObject currentLineObject;
 
@@ -37,9 +37,12 @@ public class PuzzleGrid : MonoBehaviour {
 
     private Puzzle masterPuzzle;
 
+    private FMOD.Studio.EventInstance CreateNewLineSound;
+    private FMOD.Studio.EventInstance EraseLineSound;
+    private FMOD.Studio.EventInstance SymbolClear;
+
     public string GetSolution() 
     {
-        //Debug.Log(solution);
         if (solution.Length > 0)
             return solution;
         else
@@ -56,6 +59,24 @@ public class PuzzleGrid : MonoBehaviour {
             currentLine.transform.localRotation = Quaternion.Inverse(GetComponentInParent<Puzzle>().transform.rotation);
             currentLine.SetPosition((new Vector3(Player.position.x,currentLine.transform.position.y, Player.position.z) - currentLine.transform.position));
         }
+    }
+
+    private void OnEnable()
+    {
+        EventHandler<SaveSettingsEvent>.RegisterListener(ApplySettings);
+    }
+
+    private void OnDisable()
+    {
+        EventHandler<SaveSettingsEvent>.UnregisterListener(ApplySettings);
+    }
+
+    private void ApplySettings(SaveSettingsEvent obj)
+    {
+        if (obj.settingsData.currentNodeMarker)
+            currentNodeEffect.Play();
+        else
+            currentNodeEffect.Stop();
     }
 
 
@@ -103,7 +124,6 @@ public class PuzzleGrid : MonoBehaviour {
 
     void GenerateGrid()
     {
-        Debug.Log("Generate grid");
         allNodes = new Node[size, size];
         int midIndex = size / 2;
         for (int x = 0; x < size; x++)
@@ -134,14 +154,21 @@ public class PuzzleGrid : MonoBehaviour {
         allNodes[midIndex, midIndex].SetStartNode();
         startNode = currentNode = allNodes[midIndex, midIndex];
         transform.localPosition = (Vector3.right * -midIndex * nodeOffset) + (Vector3.forward * -midIndex * nodeOffset);
+        
+        //Move up the grid
+        transform.localPosition += Vector3.up * 0.5f;
     }
-
-
 
     public void StartPuzzle()
     {
         ActivateNode(startNode, false);
         InstantiateFirstLine();
+        SymbolClear = FMODUnity.RuntimeManager.CreateInstance("event:/Game/Puzzle/PuzzleStart");
+        SymbolClear.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        SymbolClear.start();
+        SymbolClear.release();
+
+        FMODUnity.RuntimeManager.StudioSystem.setParameterByName("PuzzleVolume", 0.25f, false);
     }
 
     private void InstantiateFirstLine()
@@ -160,7 +187,6 @@ public class PuzzleGrid : MonoBehaviour {
         
         foreach(Vector2Int vInt in unrestricted)
         {
-            //Debug.Log(vInt);
             allNodes[vInt.x + midIndex, vInt.y + midIndex].Drawable = true;
         }
 
@@ -195,7 +221,6 @@ public class PuzzleGrid : MonoBehaviour {
                 //Checks if there exists a line between these nodes already, if so it destroys the line that was created
                 if (node.HasLineToNode(currentNode))
                 {
-                    Debug.Log("This line already exists");
                     return;
                 }
             }
@@ -214,14 +239,12 @@ public class PuzzleGrid : MonoBehaviour {
         if (SendToPuzzleForEvaluation())
         {
             TurnOffCollision();
-            Debug.Log("RÄTT   " + node.gameObject);
             return;
         }
 
         #endregion
 
         #region MOVE_CURRENT_NODE
-        //Debug.Log("AKTIVERA NODE   " + node.gameObject);
         
         currentNode = node;
         lineNodes.Add(currentNode);
@@ -236,6 +259,10 @@ public class PuzzleGrid : MonoBehaviour {
 
     private void CreateNewLine(Node node)
     {
+
+        if (currentLine == null)
+            return;
+
         if(lineRenderers.Count > 0)
             lineRenderers.Peek().ErasableLine(false);
 
@@ -243,6 +270,10 @@ public class PuzzleGrid : MonoBehaviour {
         GameObject newLineRenderer = Instantiate(linePrefab, transform);
         newLineRenderer.transform.position = currentNode.transform.position;
         newLineRenderer.transform.localRotation = Quaternion.Inverse(masterPuzzle.transform.rotation);
+        CreateNewLineSound = FMODUnity.RuntimeManager.CreateInstance("event:/Game/Puzzle/Node");
+        CreateNewLineSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        CreateNewLineSound.start();
+        CreateNewLineSound.release();
 
 
         //Set position of the particle system
@@ -266,12 +297,15 @@ public class PuzzleGrid : MonoBehaviour {
     private void EraseLine(Node node)
     {
   
-        //Debug.Log("ERASE");
         //Checks if this was the last line that was drawn, if so delete that line (eraser)
         LineObject oldLine = lineRenderers.Pop();
         foreach (Node n in currentNode.neighbours.Keys)
         {
             n.RemoveEnablingNode(currentNode);
+            EraseLineSound = FMODUnity.RuntimeManager.CreateInstance("event:/Game/Puzzle/NodeErase");
+            EraseLineSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+            EraseLineSound.start();
+            EraseLineSound.release();
         }
 
         /*
@@ -363,12 +397,12 @@ public class PuzzleGrid : MonoBehaviour {
     #region RESET_GRID
     public void ResetGrid()
     {
+        TurnOffLines();
+        TurnOffNodes();
+
         solution = "";
 
         currentNodeEffect.transform.localPosition = startNode.transform.localPosition;
-
-        TurnOffLines();
-        TurnOffNodes();
 
         DestroyCurrentLine();
 
@@ -387,16 +421,17 @@ public class PuzzleGrid : MonoBehaviour {
 
     private void TurnOffNodes()
     {
-        //Debug.Log("TURN OFF NODES");
         foreach (Node n in allNodes)
         {
-            if(n.startNode == false)
+            if (n.startNode == false)
             {
                 n.ResetNeighbours();
                 n.TurnOffCollider();
                 n.TurnOff();
                 n.Drawable = true;
             }
+            else
+                n.TurnOffCollider();
         }
         //RestartStartNode();
         Invoke("RestartStartNode", 1f);
@@ -420,7 +455,6 @@ public class PuzzleGrid : MonoBehaviour {
     {
         if (currentLine != null)
         {
-            //Debug.Log("DESTROY CURRENT LINE");
             currentLine.Stop();
             Destroy(currentLine.gameObject);
             currentLine = null;

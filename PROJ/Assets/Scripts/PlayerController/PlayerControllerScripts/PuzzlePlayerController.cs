@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -26,7 +27,6 @@ public class PuzzlePlayerController : MonoBehaviour
 
 
     //Input
-    private InputAction skipMove;
     private InputAction quitPuzzle;
     private Vector3 input;
     private float inputThreshold = 0.1f;
@@ -37,31 +37,63 @@ public class PuzzlePlayerController : MonoBehaviour
     public MetaPlayerController metaPlayerController;
     private void OnEnable()
     {
-        quitPuzzle = metaPlayerController.inputReference.InputMaster.ExitPuzzle;
-        quitPuzzle.Enable();
-       
-        skipMove = metaPlayerController.inputReference.InputMaster.Interact;
-        skipMove.Enable();
-        metaPlayerController.inputReference.InputMaster.Interact.performed += OnSkipMove;
-
+        /*quitPuzzle = metaPlayerController.inputReference.InputMaster.ExitPuzzle;
+        quitPuzzle.Enable();*/
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
+        metaPlayerController.inputReference.InputMaster.PlayPuzzleDescription.performed += OnPlayPuzzleDescription;
+
+        EventHandler<StartPuzzleEvent>.RegisterListener(OnPuzzleStart);
+        EventHandler<ClearPuzzleEvent>.RegisterListener(OnPuzzleCompleted);
+        EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
+
+        EventHandler<RequestSettingsEvent>.FireEvent(null);
     }
+
+    
+
     private void OnDisable()
     {
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle;
-        quitPuzzle.Disable();
+        metaPlayerController.inputReference.InputMaster.PlayPuzzleDescription.performed -= OnPlayPuzzleDescription;
+        EventHandler<ClearPuzzleEvent>.UnregisterListener(OnPuzzleCompleted);
+        EventHandler<StartPuzzleEvent>.UnregisterListener(OnPuzzleStart);
+        EventHandler<SaveSettingsEvent>.UnregisterListener(OnSaveSettings);
+        //quitPuzzle.Disable();
     }
+
+    private void OnSaveSettings(SaveSettingsEvent obj)
+    {
+        if (obj.settingsData.easyPuzzleControls == true)
+            acceleration = 50;
+        else
+            acceleration = 100;
+    }
+
+    private void OnPuzzleStart(StartPuzzleEvent obj)
+    {
+        metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
+    }
+
+    private void OnPuzzleCompleted(ClearPuzzleEvent obj)
+    {
+        metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle; 
+
+    }
+
     void Start()
     {
         physics = GetComponent<PlayerPhysicsSplit>();
     }
-    private void OnSkipMove(InputAction.CallbackContext obj)
-    {
-        //EventHandler<UpdateHazardEvent>.FireEvent(new UpdateHazardEvent());
-    }
     private void OnQuitPuzzle(InputAction.CallbackContext obj)
     {
         EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(PuzzleTransform.GetComponent<Puzzle>().GetPuzzleID()), false));
+    }
+
+
+    private void OnPlayPuzzleDescription(InputAction.CallbackContext obj)
+    {
+        if(PuzzleTransform != null)
+            PuzzleTransform.GetComponent<Puzzle>().PlayPuzzleDescription();
     }
 
     //NOTE! Currently not safe for very low FPS
@@ -103,8 +135,6 @@ public class PuzzlePlayerController : MonoBehaviour
 
     private void Decelerate()
     {
-        /*Debug.Log("Puzzle player controller decelerate");
-        force = -deceleration * physics.velocity.normalized;*/
         Vector3 projectedDeceleration = -physics.GetXZMovement() * deceleration;
         force += projectedDeceleration;
     }
@@ -116,8 +146,5 @@ public class PuzzlePlayerController : MonoBehaviour
 
     #endregion
 
-    public float GetMaxSpeed()
-    {
-        return maxSpeed;
-    }
+
 }

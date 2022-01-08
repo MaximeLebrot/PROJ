@@ -7,6 +7,7 @@ public class StateMachine
 {
     private Dictionary<Type, PlayerState> instantiatedStates = new Dictionary<Type, PlayerState>();
     public PlayerState currentState { get; private set; }
+    public bool holdToSprint { get; private set; }
 
     public StateMachine(object owner, PlayerState[] states)
     {
@@ -22,7 +23,12 @@ public class StateMachine
                 currentState = instantiated;
         }
         currentState.EnterState();
+
+        //Sub
+        //EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
+        (GameMenuController.Instance.RequestOption<SprintMode>() as SprintMode).AddListener((menuValue) => holdToSprint = Convert.ToBoolean(menuValue));
     }
+  
     public void RunUpdate()
     {
         currentState?.RunUpdate();

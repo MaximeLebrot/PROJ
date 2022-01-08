@@ -247,28 +247,28 @@ public static class PuzzleHelper
             switch (c)
             {
                 case '8':
+                rotatedString += '8';
+                    break;
+                case '2':
                     rotatedString += '2';
                     break;
                 case '6':
-                    rotatedString += '6';
-                    break;
-                case '2':
-                    rotatedString += '8';
-                    break;
-                case '4':
                     rotatedString += '4';
                     break;
+                case '4':
+                    rotatedString += '6';
+                    break;
                 case '9':
-                    rotatedString += '3';
-                    break;
-                case '3':
-                    rotatedString += '9';
-                    break;
-                case '1':
                     rotatedString += '7';
                     break;
-                case '7':
+                case '3':
                     rotatedString += '1';
+                    break;
+                case '1':
+                    rotatedString += '3';
+                    break;
+                case '7':
+                    rotatedString += '9';
                     break;
             }
         }

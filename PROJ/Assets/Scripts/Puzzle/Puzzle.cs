@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class Puzzle : MonoBehaviour
 {
-    //[SerializeField] int puzzleID; //should be compared to solution on a EvaluatePuzzleEvent and fire a SUCCESS EVENT or FAIL EVENT
     [SerializeField] private int masterPuzzleID; 
-    
     [SerializeField] private List<PuzzleInstance> puzzleInstances = new List<PuzzleInstance>();
     [SerializeField] private string playerInput = "";
     [SerializeField] protected string solution;
@@ -16,10 +14,14 @@ public class Puzzle : MonoBehaviour
     protected PuzzleTranslator translator = new PuzzleTranslator();
     protected List<TranslationAndObject> translations;
 
-    public PuzzleGrid grid;
+    protected PuzzleGrid grid;
 
+    public PuzzleGrid Grid => grid;
+    
     private SymbolPlacer symbolPlacer;
  
+    
+    
     //should NOT be public, but ModularHintSystem currently relies on this List
     public List<PuzzleObject> placedSymbols = new List<PuzzleObject>();
     [SerializeField] private List<TranslationAndObject> translationsSorted = new List<TranslationAndObject>();
@@ -35,6 +37,13 @@ public class Puzzle : MonoBehaviour
     public float NextPuzzleTimer { get; } = 2.5f;
     public void SetPlayer(Transform t) { player = t; grid.Player = player; }
 
+    public PuzzleGrid GetGrid() { return grid; }
+
+    private FMOD.Studio.EventInstance PuzzleSolved; 
+    private FMOD.Studio.EventInstance CompletePuzzleSound;
+    private FMOD.Studio.EventInstance PuzzleExit;
+    private FMOD.Studio.EventInstance SectionSolved;
+    private FMOD.Studio.EventInstance SymbolClear;
     void Awake()
     {
         symbolPlacer = GetComponent<SymbolPlacer>();
@@ -71,24 +80,42 @@ public class Puzzle : MonoBehaviour
         while(currentPuzzleInstance.IsSolved() && 
             currentPuzzleNum + 1 <= puzzleInstances.Count)
         {
-            Debug.Log("LOAD NEXT PUZZLE");
+            //Debug.Log("LOAD NEXT PUZZLE");
             NextPuzzle();
         }
 
     }
+
+    public void GoToNextPuzzle() { if (currentPuzzleNum+1 <= puzzleInstances.Count) { Debug.Log("Pushing to next puzzle"); NextPuzzle(); } }
 
     private void OnEnable()
     {
         EventHandler<ExitPuzzleEvent>.RegisterListener(OnExitPuzzle);
         EventHandler<ResetPuzzleEvent>.RegisterListener(OnResetPuzzle);
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
+        EventHandler<SaveSettingsEvent>.RegisterListener(ApplySettings);
     }
     private void OnDisable()
     {
         EventHandler<ExitPuzzleEvent>.UnregisterListener(OnExitPuzzle);
         EventHandler<ResetPuzzleEvent>.UnregisterListener(OnResetPuzzle);
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
+        EventHandler<SaveSettingsEvent>.UnregisterListener(ApplySettings);
     }
+
+    private void ApplySettings(SaveSettingsEvent obj)
+    {
+        showClearedSymbols = obj.settingsData.showClearedSymbols;
+
+        if(showClearedSymbols == false)
+        {
+            foreach(TranslationAndObject pair in translationsSorted)
+            {
+                pair.pObj.Activate(false);
+            }
+        }
+    }
+
     private void SetupPuzzleInstances()
     {
         foreach (PuzzleInstance pi in puzzleInstances)
@@ -114,11 +141,16 @@ public class Puzzle : MonoBehaviour
         solution = Translate();
         translations = translator.GetTranslations();
     }
+
     protected virtual void NextPuzzle()
     {
         symbolPlacer.UnloadSymbols();
         currentPuzzleInstance.DestroyHazards();
-        ResetClearanceVariables();
+
+        SectionSolved = FMODUnity.RuntimeManager.CreateInstance("event:/Game/Puzzle/SectionSolved");
+        SectionSolved.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        SectionSolved.start();
+        SectionSolved.release();
 
 
         if (particles != null)
@@ -140,19 +172,29 @@ public class Puzzle : MonoBehaviour
         currentPuzzleInstance = puzzleInstances[currentPuzzleNum];
     }
 
+    public void PlayPuzzleDescription()
+    {
+        currentPuzzleInstance.PlayDescription();
+    }
+
     private void CompletePuzzle()
     {
+        Debug.Log("Klar, exit event skickas");
         Invoke("CompleteGrid", 2);
         EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(masterPuzzleID), true));
         GetComponent<Collider>().enabled = false;
+        PuzzleSolved = FMODUnity.RuntimeManager.CreateInstance("event:/Game/Puzzle/PuzzleSolved");
+        PuzzleSolved.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        PuzzleSolved.start();
+        PuzzleSolved.release();
+
+        FMODUnity.RuntimeManager.StudioSystem.setParameterByName("PuzzleVolume", 1f, false);
     }
 
     private void CompleteGrid()
     {
         grid.CompleteGrid();
     }
-
-   
 
     public void RemoveInput()
     {
@@ -190,7 +232,6 @@ public class Puzzle : MonoBehaviour
         return false;
     }
 
-
     private void OnTriggerExit(Collider other)
     {
         PuzzleInfo info = new PuzzleInfo(currentPuzzleInstance.GetPuzzleID());
@@ -198,8 +239,6 @@ public class Puzzle : MonoBehaviour
         GetComponentInChildren<PuzzleStarter>().ResetStarter();
 
     }
-
-
 
     public void StartPuzzle(StartPuzzleEvent eve)
     {
@@ -219,22 +258,16 @@ public class Puzzle : MonoBehaviour
 
     //Maybe return ID from current PuzzleInstance instead
     public int GetPuzzleID() { return currentPuzzleInstance.GetPuzzleID(); }
-
-
-    private void ResetClearanceVariables()
-    {
-
-    }
-
     
     protected List<bool> clearedSymbols = new List<bool>();
+    protected bool showClearedSymbols;
 
     public virtual void CheckIfClearedSymbol(string currentSolution) //currentSolution = what the player has drawn
     {
-        Debug.Log("CHECK");
+        if(showClearedSymbols == false)
+             return;
 
         int solutionOffset = 0;
-
         //Checks for empty solution
         if(currentSolution.Length > 0 == false)
         {
@@ -243,50 +276,34 @@ public class Puzzle : MonoBehaviour
                 pair.pObj.Activate(false);
             }
         }
-
         //goes through each index of strings in translations
         for (int i = 0; i < translations.Count; i++)
         {
-
             if (IsEqualRange(solutionOffset, translations[i].translation.Length, currentSolution, i))
             {
                 solutionOffset += translations[i].translation.Length;
-
                 translations[i].pObj.Activate(true);
             }
             else
             {
-                
                 translations[i].pObj.Activate(false);
             }
-
         }
-
-
-        //ApplyClearedSymbols();
-
     }
 
 
     private bool IsEqualRange(int offset, int length, string currentSolution, int translationIndex)
     {
-        //Debug.Log(length);
-
         if (offset + length > currentSolution.Length)
-        {
-            //Debug.Log("LENGTH IS WRONG");
             return false;
-        }
-
-        Debug.Log("input: " + currentSolution.Substring(offset, length) + " translation: " + translations[translationIndex].translation);
-        //Debug.Log("equal = " + currentSolution.Substring(offset, length).Equals(translations[translationIndex]));
 
         return currentSolution.Substring(offset, length).Equals(translations[translationIndex].translation);
-        
     }
 
     public void OnExitPuzzle(ExitPuzzleEvent eve)
     {
+        GetComponent<SphereCollider>().enabled = false;
+
         if (eve.success != true)
         {
             if (eve.info.ID == currentPuzzleInstance.GetPuzzleID())
@@ -294,6 +311,12 @@ public class Puzzle : MonoBehaviour
                 if(eve.success == false)
                 {
                     ResetPuzzle();
+                    PuzzleExit = FMODUnity.RuntimeManager.CreateInstance("event:/Game/Puzzle/PuzzleExit");
+                    PuzzleExit.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+                    PuzzleExit.start();
+                    PuzzleExit.release();
+
+                    FMODUnity.RuntimeManager.StudioSystem.setParameterByName("PuzzleVolume", 1f, false);
                 }
                     
             }
@@ -316,7 +339,6 @@ public class Puzzle : MonoBehaviour
     {
         EventHandler<ResetPuzzleEvent>.UnregisterListener(OnResetPuzzle);
         registered = false;
-        Debug.Log("Reset puzzle called");
 
         symbolPlacer.UnloadSymbols();
         grid.ResetGrid();
@@ -327,7 +349,6 @@ public class Puzzle : MonoBehaviour
         if (registered)
             return;
 
-        Debug.Log("Registered listener to reset puzzle event");
         EventHandler<ResetPuzzleEvent>.RegisterListener(OnResetPuzzle);
         registered = true;
     }

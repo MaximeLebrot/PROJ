@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,10 @@ public class PuzzleInstance : MonoBehaviour
     private Puzzle masterPuzzle;
     private bool currentState;
     private List<Hazard> instantiatedHazards = new List<Hazard>();
+
+    public string puzzleDescription;
+
+    private FMOD.Studio.EventInstance puzzleDescriptionSound;
 
     public bool IsSolved() => currentState;
 
@@ -84,6 +89,16 @@ public class PuzzleInstance : MonoBehaviour
     public List<Vector2Int> GetRestrictions()
     {
         return activeNodes;
+    }
+
+    internal void PlayDescription()
+    {
+        Debug.Log("Play Puzzle Sound");
+        puzzleDescriptionSound = FMODUnity.RuntimeManager.CreateInstance("event:/puzzleDescription/" + puzzleDescription);
+        puzzleDescriptionSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        puzzleDescriptionSound.start();
+        puzzleDescriptionSound.release();
+        //play puzzleDescription;
     }
 }
 
