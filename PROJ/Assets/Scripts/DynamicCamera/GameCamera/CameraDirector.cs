@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using NewCamera;
 using UnityEngine;
 
-public class CameraDirector : MonoBehaviour {
+public class CameraDirector : PersistentSingleton<CameraDirector> {
     
     [SerializeField] private Transform pivotTarget;
     [SerializeField] private Transform character;
