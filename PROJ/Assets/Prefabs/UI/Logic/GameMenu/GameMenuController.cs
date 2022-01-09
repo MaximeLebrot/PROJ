@@ -25,7 +25,6 @@ public class GameMenuController : MenuController {
     }
 
     private void Back() {
-        
         if (pageController.InputSuspended) 
             return;
         

@@ -3,18 +3,18 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public abstract class MenuController : MonoBehaviour {
-    
+
     [SerializeField] protected ControllerInputReference controllerInputReference;
-    
+
     protected PageController pageController;
-    
+
     protected Action onBackInput;
-    
+
     private static MenuController instance;
 
     public static MenuController Instance {
         get {
-            
+
             if (instance == null) {
                 instance = FindObjectOfType<MenuController>();
             }
@@ -24,9 +24,9 @@ public abstract class MenuController : MonoBehaviour {
     }
 
     protected void Awake() {
-        
+
         instance = this;
-        
+
         controllerInputReference.Initialize();
 
         pageController = GetComponent<PageController>();
@@ -34,16 +34,18 @@ public abstract class MenuController : MonoBehaviour {
         Initialize();
 
         pageController.Initialize();
-        
+
+    }
+    private void Start()
+    {
         controllerInputReference.InputMaster.Menu.performed += HandleBackInput;
     }
-    
     protected abstract void Initialize();
-    
+
     private void OnEnable() {
         EventHandler<StartPuzzleEvent>.RegisterListener((OnPuzzleStart));
         EventHandler<ExitPuzzleEvent>.RegisterListener(OnPuzzleExit);
-        
+
     }
 
     private void OnDisable() {
@@ -55,9 +57,16 @@ public abstract class MenuController : MonoBehaviour {
 
     private void HandleBackInput(InputAction.CallbackContext e) => onBackInput?.Invoke();
 
-    private void OnPuzzleStart(StartPuzzleEvent e) => controllerInputReference.InputMaster.Menu.performed -= HandleBackInput;
+    private void OnPuzzleStart(StartPuzzleEvent e)
+    {
+        Debug.Log("Unsub HandleBackInput");
+        controllerInputReference.InputMaster.Menu.performed -= HandleBackInput;
+        controllerInputReference.InputMaster.Menu.performed -= HandleBackInput;
+    }
 
-    private void OnPuzzleExit(ExitPuzzleEvent e) => controllerInputReference.InputMaster.Menu.performed += HandleBackInput;
-
-    
+    private void OnPuzzleExit(ExitPuzzleEvent e)
+    {
+        controllerInputReference.InputMaster.Menu.performed += HandleBackInput;
+        Debug.Log("Sub HandleBackInput");
+    }
 }

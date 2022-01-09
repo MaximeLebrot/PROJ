@@ -19,7 +19,7 @@ public class ModularHintSystem : MonoBehaviour
     {
         inputMaster = new InputMaster();
         inputMaster.Enable();
-        foreach (PuzzleObject symbol in puzzle.placedSymbols)
+        foreach (PuzzleObject symbol in puzzle.PlacedSymbols)
         {
             Debug.Log(symbol.name);
             foreach (Component component in symbol.GetComponents(typeof(Component)))
@@ -54,24 +54,24 @@ public class ModularHintSystem : MonoBehaviour
         {
             hintGO.SetActive(true);
 
-            for (int i = 0; i < puzzle.placedSymbols.Count; i++)
+            for (int i = 0; i < puzzle.PlacedSymbols.Count; i++)
             {
                 if (i % 2 != 0)
-                    puzzle.placedSymbols[i].GetComponent<MeshRenderer>().material = rightHint;
+                    puzzle.PlacedSymbols[i].GetComponent<MeshRenderer>().material = rightHint;
                 else
-                    puzzle.placedSymbols[i].GetComponent<MeshRenderer>().material = downHint;
+                    puzzle.PlacedSymbols[i].GetComponent<MeshRenderer>().material = downHint;
             }
         }
         else
         {
             hintGO.SetActive(false);
 
-            for (int i = 0; i < puzzle.placedSymbols.Count; i++)
+            for (int i = 0; i < puzzle.PlacedSymbols.Count; i++)
             {
                 if (i % 2 != 0)
-                    puzzle.placedSymbols[i].GetComponent<MeshRenderer>().material = rightOG;
+                    puzzle.PlacedSymbols[i].GetComponent<MeshRenderer>().material = rightOG;
                 else
-                    puzzle.placedSymbols[i].GetComponent<MeshRenderer>().material = downOG;
+                    puzzle.PlacedSymbols[i].GetComponent<MeshRenderer>().material = downOG;
             }
         }
         this.showHints = !showHints;
