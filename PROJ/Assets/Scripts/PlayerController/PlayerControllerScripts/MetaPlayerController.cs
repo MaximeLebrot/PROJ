@@ -39,12 +39,17 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     private void OnEnable()
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
+        EventHandler<InGameMenuEvent>.RegisterListener(EnterInGameMenuState);
     }
     private void OnDisable()
     {
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
     }
 
+    private void OnDestroy()
+    {
+        EventHandler<InGameMenuEvent>.UnregisterListener(EnterInGameMenuState);
+    }
     private void Start() {
         (GameMenuController.Instance.RequestOption<OneSwitchMode>() as OneSwitchMode).AddListener(SetOneSwitchMode);
         stateMachine = new StateMachine(this, states);
