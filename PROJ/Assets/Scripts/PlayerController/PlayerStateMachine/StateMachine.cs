@@ -25,7 +25,7 @@ public class StateMachine
         currentState.EnterState();
 
         //Sub
-        (GameMenuController.Instance.RequestOption<SprintMode>() as SprintMode).AddListener((menuValue) => holdToSprint = !Convert.ToBoolean(menuValue));
+        (GameMenuController.Instance.RequestOption<SprintMode>() as SprintMode).AddListener(callback: (menuValue) => holdToSprint = menuValue.Equals("Hold To Sprint"));
     }
   
     public void RunUpdate()

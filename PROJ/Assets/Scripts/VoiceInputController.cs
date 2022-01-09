@@ -29,16 +29,16 @@ public class VoiceInputController : MonoBehaviour
     private void Start() {
         VoiceControl voiceControl = GameMenuController.Instance.RequestOption<VoiceControl>() as VoiceControl;
         
-        voiceControl.AddListener((@dropdownValue) => {
+        voiceControl.AddListener((@option) => {
 
-            switch (dropdownValue) {
-                case 0: 
+            switch (option) {
+                case "Inactive": 
                     NoVoiceMovement();
                     break;
-                case 1:
+                case "Voice Only":
                     VoiceMovementArmless();
                     break;
-                case 2:
+                case "Voice + Mouse":
                     VoiceMovementMouse();
                     break;
             }

@@ -6,8 +6,8 @@ public class ResolutionHandler : MonoBehaviour {
     
     private void Start() => (GameMenuController.Instance.RequestOption<SResolution>() as SResolution).AddListener(ChangeScreenResolution);
 
-    private void ChangeScreenResolution(int value) {
-        string resolution = (GameMenuController.Instance.RequestOption<SResolution>() as SResolution).GetValue();
+    private void ChangeScreenResolution(string value) {
+        string resolution = value;
 
         bool fullscreen = (GameMenuController.Instance.RequestOption<Fullscreen>() as Fullscreen).GetValue();
         
