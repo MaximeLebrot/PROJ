@@ -64,8 +64,6 @@ public class HazardObject : MonoBehaviour
     }
     public void CheckHazardBounds(int boundsMax, Vector3 moveDirection, float hazardOffset)
     {
-        //Check if this reached the bounds. if so: movingBackwards = true
-
         CheckParticleBounds(boundsMax, moveDirection, hazardOffset);
 
         Vector3 vec;
@@ -120,10 +118,7 @@ public class HazardObject : MonoBehaviour
     }
     private void TurnAround()
     {
-        //Debug.Log("TURN AROUND");
         movingBackwards = !movingBackwards;
-
-
     }
 
     private void TurnParticlesAround()
