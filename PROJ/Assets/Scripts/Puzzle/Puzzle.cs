@@ -179,7 +179,6 @@ public class Puzzle : MonoBehaviour
 
     private void CompletePuzzle()
     {
-        Debug.Log("Klar, exit event skickas");
         Invoke("CompleteGrid", 2);
         EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(masterPuzzleID), true));
         GetComponent<Collider>().enabled = false;

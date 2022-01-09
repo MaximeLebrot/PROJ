@@ -44,7 +44,8 @@ public class PlayerController : MonoBehaviour
         SecureDelegates();
     }
     private void OnEnable()
-    {
+    { 
+        (GameMenuController.Instance?.RequestOption<OneHandMode>() as OneHandMode).AddListener(HandleOneHandMode);
         force = Vector3.zero;
     }
     private void OnDisable()
@@ -52,11 +53,6 @@ public class PlayerController : MonoBehaviour
         if(GameMenuController.Instance != null)
             (GameMenuController.Instance.RequestOption<OneHandMode>() as OneHandMode).RemoveListener(HandleOneHandMode);
     }
-
-    private void Start() {
-        (GameMenuController.Instance?.RequestOption<OneHandMode>() as OneHandMode).AddListener(HandleOneHandMode);
-    }
-
     
     
     //This could instead load a delegate with a preffered input chain, but as of now that would require more code than the current solution. 

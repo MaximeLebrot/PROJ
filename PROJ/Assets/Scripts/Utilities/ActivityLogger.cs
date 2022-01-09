@@ -79,7 +79,6 @@ public class ActivityLogger : MonoBehaviour
     }
     private void OnPuzzleComplete(ActivatorEvent eve)
     {
-        Debug.Log("OnPuzzleComplete Log");
         AddDataPoint(eve.info.ID);
         Save();
     }

@@ -1,6 +1,5 @@
-
-using System.Security.Cryptography;
 using NewCamera;
+
 using UnityEngine;
 [System.Serializable]
 [CreateAssetMenu(menuName = "Camera/Camera Behaviours/One Hand Camera Behaviour", fileName = "One Hand Camera Behaviour")]

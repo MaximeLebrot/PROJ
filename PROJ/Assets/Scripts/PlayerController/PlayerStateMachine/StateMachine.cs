@@ -25,8 +25,7 @@ public class StateMachine
         currentState.EnterState();
 
         //Sub
-        //EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
-        (GameMenuController.Instance.RequestOption<SprintMode>() as SprintMode).AddListener((menuValue) => holdToSprint = Convert.ToBoolean(menuValue));
+        (GameMenuController.Instance.RequestOption<SprintMode>() as SprintMode).AddListener((menuValue) => holdToSprint = !Convert.ToBoolean(menuValue));
     }
   
     public void RunUpdate()
@@ -55,7 +54,7 @@ public class StateMachine
             currentState?.ExitState();
             currentState = instance;
             currentState.EnterState(previousState);
-            EventHandler<PlayerStateChangeEvent>.FireEvent(new PlayerStateChangeEvent(currentState));
+            //EventHandler<PlayerStateChangeEvent>.FireEvent(new PlayerStateChangeEvent(currentState));
         }
         else
             Debug.Log(typeof(T) + "not found");

@@ -145,7 +145,7 @@ public abstract class PuzzleObject : MonoBehaviour
     {
         if(Active != hasBeenSolved)
         {
-            Debug.Log(gameObject + "  " + hasBeenSolved);
+            //Debug.Log(gameObject + "  " + hasBeenSolved);
             Active = hasBeenSolved;
 
             if(hasBeenSolved == true)

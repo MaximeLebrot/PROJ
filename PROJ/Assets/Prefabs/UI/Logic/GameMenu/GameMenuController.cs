@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -57,12 +56,11 @@ public class GameMenuController : PersistentSingleton<GameMenuController> {
     private async void OpenMenu() {
 
         DisableInput();
+        EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(true));
         
         ActivateComponents(true);
         
         await menuButtons.EnableButtons();
-        
-        EventHandler<InGameMenuEvent>.FireEvent(new InGameMenuEvent(true));
         
         Cursor.lockState = CursorLockMode.None;
         EnableInput(CloseMenu);

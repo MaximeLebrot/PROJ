@@ -40,25 +40,18 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     private void OnEnable()
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
-        //EventHandler<SaveSettingsEvent>.RegisterListener(HandleOneSwitchSetting);
     }
     private void OnDisable()
     {
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
-        //EventHandler<SaveSettingsEvent>.UnregisterListener(HandleOneSwitchSetting)
     }
 
-    private void Start()
-    {
+    private void Start() {
         (GameMenuController.Instance.RequestOption<OneSwitchMode>() as OneSwitchMode).AddListener(SetOneSwitchMode);
-        EventHandler<InGameMenuEvent>.RegisterListener(EnterInGameMenuState);
-
-        //State machine placed here because it sets up listeners, which should not be done in Awake
-        stateMachine = new StateMachine(this, states);
     }
 
     private void SetOneSwitchMode(bool isActive) => oneSwitchMode = isActive;
-    
+
     //TEMPORARY
     private void OnHub(InputAction.CallbackContext obj)
     {
@@ -67,17 +60,11 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     private void StartPuzzle(StartPuzzleEvent spe)
     {
-        //No need for any of this to happen if we're already inside puzzle state
-        if (stateMachine.currentState.GetType() == typeof(PuzzleState))
-            return;
-
-        Debug.Log("Start puzzle, one switch mode is:" + oneSwitchMode);
-        puzzleController.currentPuzzleID = spe.info.ID;
-        puzzleController.puzzleTransform = spe.info.puzzle.transform;
+        puzzleController.CurrentPuzzleID = spe.info.ID;
+        puzzleController.PuzzleTransform = spe.info.puzzle.transform;
         playerController3D.ResetCharacterModel();
         if (!oneSwitchMode)
         {
-            Debug.Log("Changing to puzzle state");
             stateMachine.ChangeState<PuzzleState>();
         }
         else
