@@ -139,7 +139,7 @@ public class Rebinding : MenuSettings
     {
         foreach (RebindUIButton btn in rebindButtons)
         {
-            InputAction action = inputReference.inputMaster.asset.FindAction(btn.action.action.name);
+            InputAction action = inputReference.Asset.asset.FindAction(btn.action.action.name);
             Debug.Assert(action != null);
             string bindingName = "";
             for (int i = 0; i < action.bindings.Count; i++)

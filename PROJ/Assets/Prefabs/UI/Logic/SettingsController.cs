@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -8,13 +7,7 @@ public class SettingsController : MonoBehaviour {
     [SerializeField] private SettingsData userSettings;
     private List<MenuSettings> settingObjects;
 
-    private const string JSONFileName = "SavedSettings";
-
-   
     private void Awake() {
-
-        MenuButtons.OnCloseDone += UpdateUserSettings;
-
         settingObjects = GetComponent<PageController>().PageObjects;
         
         LoadSavedSettings();
