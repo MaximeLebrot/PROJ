@@ -18,27 +18,23 @@ public class PuzzlePlayerController : MonoBehaviour
 
 
     #endregion
-
     [HideInInspector] public Vector3 force;
     
     //Component references
     public PlayerPhysicsSplit physics { get; private set; }
     public Animator animator { get; private set; }
-
+    public Transform puzzleTransform { get; set; }
+    public MetaPlayerController metaPlayerController;
 
     //Input
-    private InputAction quitPuzzle;
     private Vector3 input;
     private float inputThreshold = 0.1f;
 
-    public int CurrentPuzzleID { get; set; }
-    public Transform PuzzleTransform { get; set; }
+    public int currentPuzzleID { get; set; }
 
-    public MetaPlayerController metaPlayerController;
+
     private void OnEnable()
     {
-        /*quitPuzzle = metaPlayerController.inputReference.InputMaster.ExitPuzzle;
-        quitPuzzle.Enable();*/
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
         metaPlayerController.inputReference.InputMaster.PlayPuzzleDescription.performed += OnPlayPuzzleDescription;
 
@@ -47,10 +43,7 @@ public class PuzzlePlayerController : MonoBehaviour
         EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
 
         EventHandler<RequestSettingsEvent>.FireEvent(null);
-    }
-
-    
-
+    }    
     private void OnDisable()
     {
         metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle;
@@ -58,42 +51,10 @@ public class PuzzlePlayerController : MonoBehaviour
         EventHandler<ClearPuzzleEvent>.UnregisterListener(OnPuzzleCompleted);
         EventHandler<StartPuzzleEvent>.UnregisterListener(OnPuzzleStart);
         EventHandler<SaveSettingsEvent>.UnregisterListener(OnSaveSettings);
-        //quitPuzzle.Disable();
-    }
-
-    private void OnSaveSettings(SaveSettingsEvent obj)
-    {
-        if (obj.settingsData.easyPuzzleControls == true)
-            acceleration = 50;
-        else
-            acceleration = 100;
-    }
-
-    private void OnPuzzleStart(StartPuzzleEvent obj)
-    {
-        metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
-    }
-
-    private void OnPuzzleCompleted(ClearPuzzleEvent obj)
-    {
-        metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle; 
-
-    }
-
+    }  
     void Start()
     {
         physics = GetComponent<PlayerPhysicsSplit>();
-    }
-    private void OnQuitPuzzle(InputAction.CallbackContext obj)
-    {
-        EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(PuzzleTransform.GetComponent<Puzzle>().GetPuzzleID()), false));
-    }
-
-
-    private void OnPlayPuzzleDescription(InputAction.CallbackContext obj)
-    {
-        if(PuzzleTransform != null)
-            PuzzleTransform.GetComponent<Puzzle>().PlayPuzzleDescription();
     }
 
     //NOTE! Currently not safe for very low FPS
@@ -102,14 +63,14 @@ public class PuzzlePlayerController : MonoBehaviour
         physics.AddForce(force);
         force = Vector3.zero;
     }
-
+  
     #region Movement
     public void SetInput(Vector2 inp)
     {
         //Local space
         input =
-        PuzzleTransform.right * inp.x +
-        PuzzleTransform.forward * inp.y ;
+        puzzleTransform.right * inp.x +
+        puzzleTransform.forward * inp.y ;
 
         RotateCharacterInsidePuzzle();
         if (input.magnitude < inputThreshold)
@@ -141,10 +102,47 @@ public class PuzzlePlayerController : MonoBehaviour
 
     private void RotateCharacterInsidePuzzle()
     {
+        if (input.magnitude < inputThreshold)
+            return;
         transform.forward = Vector3.Lerp(transform.forward, input.normalized, turnSpeed * Time.deltaTime);
     }
 
     #endregion
+
+    #region OnEvent Methods
+    private void OnSaveSettings(SaveSettingsEvent obj)
+    {
+        if (obj.settingsData.easyPuzzleControls == true)
+            acceleration = 50;
+        else
+            acceleration = 100;
+    }
+
+    private void OnPuzzleStart(StartPuzzleEvent obj)
+    {
+        metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed += OnQuitPuzzle;
+    }
+
+    private void OnPuzzleCompleted(ClearPuzzleEvent obj)
+    {
+        metaPlayerController.inputReference.InputMaster.ExitPuzzle.performed -= OnQuitPuzzle;
+
+    }
+    private void OnQuitPuzzle(InputAction.CallbackContext obj)
+    {
+        EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(new PuzzleInfo(puzzleTransform.GetComponent<Puzzle>().GetPuzzleID()), false));
+    }
+
+
+    private void OnPlayPuzzleDescription(InputAction.CallbackContext obj)
+    {
+        if (puzzleTransform != null)
+            puzzleTransform.GetComponent<Puzzle>().PlayPuzzleDescription();
+    }
+
+
+    #endregion
+
 
 
 }

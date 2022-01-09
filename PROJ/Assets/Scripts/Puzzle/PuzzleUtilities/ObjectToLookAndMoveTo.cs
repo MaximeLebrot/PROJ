@@ -7,6 +7,7 @@ public class ObjectToLookAndMoveTo : ObjectToActivate
     
     public override void Activate(ActivatorEvent eve)
     {
+       
         if (eve.info.ID == puzzleID)
         {
             EventHandler<CameraLookAndMoveToEvent>.FireEvent(

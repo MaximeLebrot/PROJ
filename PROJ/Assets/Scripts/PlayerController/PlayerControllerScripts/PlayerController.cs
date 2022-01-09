@@ -208,7 +208,7 @@ public class PlayerController : MonoBehaviour
     private void RotateCharacterModel()
     {
         Vector3 charVelocity = physics.GetXZMovement();
-        if (charVelocity.magnitude < inputThreshold)
+        if (input.magnitude < inputThreshold)
             return;
         characterModel.transform.forward = Vector3.Lerp(characterModel.transform.forward, charVelocity.normalized, modelTurnSpeed * Time.deltaTime);
     }

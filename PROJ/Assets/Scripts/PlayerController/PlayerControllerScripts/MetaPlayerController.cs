@@ -12,7 +12,6 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     public PuzzlePlayerController puzzleController { get; private set; }
     public Animator animator { get; private set; }
     public ControllerInputReference inputReference;
-    public InputActionAsset inputMaster;
 
     //StateMachine
     private StateMachine stateMachine;
@@ -28,10 +27,6 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     private void Awake()
     {
-        //Must listen even when script is disabled, so unregister cannot be called in "OnDisable"
-        //Therefore, the register cannot be done in "OnEnable", because that subs the method several times.
-        EventHandler<InGameMenuEvent>.RegisterListener(EnterInGameMenuState);
-
         inputReference.Initialize();
         DontDestroyOnLoad(this);
 
@@ -39,25 +34,28 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         playerController3D = GetComponent<PlayerController>();
         puzzleController = GetComponent<PuzzlePlayerController>();
         animator = GetComponent<Animator>();
-
-        
     }
-
+    
     private void OnEnable()
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
+        EventHandler<InGameMenuEvent>.RegisterListener(EnterInGameMenuState);
     }
     private void OnDisable()
     {
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
     }
 
+    private void OnDestroy()
+    {
+        EventHandler<InGameMenuEvent>.UnregisterListener(EnterInGameMenuState);
+    }
     private void Start() {
+        (GameMenuController.Instance.RequestOption<OneSwitchMode>() as OneSwitchMode).AddListener(SetOneSwitchMode);
         stateMachine = new StateMachine(this, states);
-        (GameMenuController.Instance.RequestOption<ControlMode>() as ControlMode).AddListener(SetOneSwitchMode);
     }
 
-    private void SetOneSwitchMode(string option) => oneSwitchMode = option.Equals("OneSwitch Mode");
+    private void SetOneSwitchMode(bool isActive) => oneSwitchMode = isActive;
 
     //TEMPORARY
     private void OnHub(InputAction.CallbackContext obj)
@@ -67,8 +65,10 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     private void StartPuzzle(StartPuzzleEvent spe)
     {
-        puzzleController.CurrentPuzzleID = spe.info.ID;
-        puzzleController.PuzzleTransform = spe.info.puzzle.transform;
+        if (stateMachine.currentState.GetType() == typeof(PuzzleState))
+            return;
+        puzzleController.currentPuzzleID = spe.info.ID;
+        puzzleController.puzzleTransform = spe.info.puzzle.transform;
         playerController3D.ResetCharacterModel();
         if (!oneSwitchMode)
         {
@@ -76,7 +76,6 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         }
         else
         {
-            //OSPuzzle osPuzzle = spe.info.puzzlePos.gameObject.GetComponent<OSPuzzle>();
             OSPuzzle osPuzzle = GetComponent<OSPuzzle>();
             osPuzzle.enabled = true;
             osPuzzle.StartOSPuzzle(spe);

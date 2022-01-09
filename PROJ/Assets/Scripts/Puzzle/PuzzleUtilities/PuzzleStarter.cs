@@ -5,7 +5,7 @@ public class PuzzleStarter : MonoBehaviour
     private Puzzle puzzle;
     private int puzzleID;
 
-    public bool Active;
+    public bool active;
 
     private void Start()
     {
@@ -15,23 +15,20 @@ public class PuzzleStarter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
-        if (Active == false)
+        if (active == false)
         {
             puzzle.GetComponent<SphereCollider>().enabled = true;
-            EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzle.GetPuzzleID(), GetComponentInParent<Puzzle>())));
+            EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzleID, puzzle)));
             puzzle.SetPlayer(other.transform);
-            Active = true;
+            active = true;
         }
-
-
     }
 
 
     public void ResetStarter()
     {
         //Debug.Log("RESET STARTER");
-            Active = false;
+            active = false;
     }
 
 

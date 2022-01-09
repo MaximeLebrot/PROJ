@@ -16,10 +16,10 @@ public class SoundEvent : MonoBehaviour
     private void OnDisable()
     {
         //EventHandler<ExitPuzzleEvent>.UnregisterListener(OnStartPuzzle);
-        EventHandler<StartPuzzleEvent>.RegisterListener(OnStartPuzzle);
+        EventHandler<StartPuzzleEvent>.UnregisterListener(OnStartPuzzle);
         //EventHandler<ClearPuzzleEvent>.RegisterListener(OnNextPuzzle);
         //EventHandler<ResetPuzzleEvent>.RegisterListener(OnResetPuzzle);
-        EventHandler<ActivatorEvent>.RegisterListener(OnNextPuzzle);
+        EventHandler<ActivatorEvent>.UnregisterListener(OnNextPuzzle);
 
     }
     //private void OnExitPuzzle(ExitPuzzleEvent eve)
@@ -33,6 +33,11 @@ public class SoundEvent : MonoBehaviour
     private void OnStartPuzzle(StartPuzzleEvent eve)
     {
         PuzzleStart = FMODUnity.RuntimeManager.CreateInstance("event:/Game/Puzzle/PuzzleStart");
+        if(!PuzzleStart.isValid() || !gameObject)
+        {
+            Debug.LogError("Event Instance unassigned or not valid");
+            return;
+        }    
         PuzzleStart.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         PuzzleStart.start();
         PuzzleStart.release();
