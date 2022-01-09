@@ -13,6 +13,17 @@ public class ControllerInputReference : ScriptableObject {
         }
     }
 
+    public InputMaster Asset {
+
+        get {
+            if(inputMaster == null)
+                Initialize();
+
+            return inputMaster;
+        }
+        
+    }
+
     public InputMaster.OneSwitchActions OneSwitchInputMaster => inputMaster.OneSwitch;
 
     public void Initialize() {       

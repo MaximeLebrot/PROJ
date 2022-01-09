@@ -233,19 +233,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b560ea9dcaeb15443a09d7c717025819, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputReference: {fileID: 11400000, guid: 54398b8fed501aa41813fa11036bc179, type: 2}
-  globalCameraSettings: {fileID: 11400000, guid: 178997108c592e743ab86335e4404734, type: 2}
   pivotTarget: {fileID: 0}
   character: {fileID: 0}
-  cameraBehaviours:
-  - {fileID: 11400000, guid: eabfb2596d8f5744fa06e8dd9887687f, type: 2}
-  - {fileID: 11400000, guid: 8c98cd50cc119384f8ed52faab7bf2cd, type: 2}
-  - {fileID: 11400000, guid: 1a2431dbab80f754db58a81d327a9649, type: 2}
-  - {fileID: 11400000, guid: 581263f5e539d1349ba8f899d10a8114, type: 2}
-  - {fileID: 11400000, guid: 23f20788444a5564ca64d09eae4cebfa, type: 2}
-  - {fileID: 11400000, guid: 7f1352e241ed24c4ba79b182add2bef5, type: 2}
-  - {fileID: 11400000, guid: 1ca8e4579ad12db40b6be4d2279e5217, type: 2}
-  transitioner: {fileID: 11400000, guid: c311b583607874a46ae5071fc90e5e0b, type: 2}
+  wantedCameras:
+  - {fileID: 11400000, guid: cb92eb6eca8fb5d4c81fe270c687f062, type: 2}
+  - {fileID: 11400000, guid: ba4bf2c3150e6204aaf498e7f3e2df21, type: 2}
+  - {fileID: 11400000, guid: b12a8eaa87673064287512ac8ffd8070, type: 2}
+  - {fileID: 11400000, guid: fd60ed258f15a3145a0fc59215dde920, type: 2}
+  - {fileID: 11400000, guid: 19a66fbade4ab274da3c09d33c1ad5e3, type: 2}
+  smoothResetData: {fileID: 0}
 --- !u!114 &3911496624126169352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,7 +255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputReference: {fileID: 11400000, guid: 54398b8fed501aa41813fa11036bc179, type: 2}
-  awayTimer: 60
+  awayTimer: 30
 --- !u!114 &221933214
 MonoBehaviour:
   m_ObjectHideFlags: 0
