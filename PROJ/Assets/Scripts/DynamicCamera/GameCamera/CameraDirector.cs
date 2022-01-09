@@ -124,8 +124,10 @@ public class CameraDirector : MonoBehaviour {
     }
 
     private void ActivateMenuCamera(InGameMenuEvent inGameMenuEvent) {
-        activeCamera = inGameMenuEvent.Activate ? gameCameras[typeof(NullCamera)] : currentDefaultCamera;
-        SwitchCamera(activeCamera);
+        if (inGameMenuEvent.Activate)
+            activeCamera = gameCameras[typeof(NullCamera)];
+        else
+            SwitchCamera(currentDefaultCamera);
     }
     
     private async Task PlayTransition<T>(CameraTransition<T> transition) where T : TransitionData {
