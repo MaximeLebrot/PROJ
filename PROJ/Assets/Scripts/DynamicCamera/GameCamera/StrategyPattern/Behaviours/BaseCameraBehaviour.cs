@@ -1,5 +1,4 @@
 using System;
-using Unity.Mathematics;
 using UnityEngine;
 
 namespace NewCamera {
@@ -15,6 +14,8 @@ namespace NewCamera {
         protected Transform thisTransform;
         protected Transform pivotTarget;
         protected Transform characterModel;
+
+        public Vector3 DefaultCameraPosition => pivotTarget.position + pivotTarget.localRotation * behaviourValues.Offset;
 
         //"Constructor"
         public virtual void InjectReferences(Transform transform, Transform pivotTarget, Transform characterModel) {
@@ -67,6 +68,7 @@ namespace NewCamera {
             previousRotation = pivotTarget.localRotation;
         }
 
+        
         protected T BehaviourData<T>() where T : BehaviourData => behaviourValues as T;
 
         protected Vector3 PreventCircleReset(Vector3 input) {

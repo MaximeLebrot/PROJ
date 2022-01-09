@@ -46,18 +46,18 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     private void OnEnable()
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
-        //EventHandler<SaveSettingsEvent>.RegisterListener(HandleOneSwitchSetting);
     }
     private void OnDisable()
     {
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
-        //EventHandler<SaveSettingsEvent>.UnregisterListener(HandleOneSwitchSetting)
     }
 
-    private void Start() => (GameMenuController.Instance.RequestOption<OneHandMode>() as OneHandMode).AddListener(SetOneSwitchMode);
+    private void Start() {
+        (GameMenuController.Instance.RequestOption<OneSwitchMode>() as OneSwitchMode).AddListener(SetOneSwitchMode);
+    }
 
     private void SetOneSwitchMode(bool isActive) => oneSwitchMode = isActive;
-    
+
     //TEMPORARY
     private void OnHub(InputAction.CallbackContext obj)
     {
@@ -66,13 +66,11 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     private void StartPuzzle(StartPuzzleEvent spe)
     {
-        Debug.Log("Start puzzle, one switch mode is:" + oneSwitchMode);
         puzzleController.CurrentPuzzleID = spe.info.ID;
         puzzleController.PuzzleTransform = spe.info.puzzle.transform;
         playerController3D.ResetCharacterModel();
         if (!oneSwitchMode)
         {
-            Debug.Log("Changing to puzzle state");
             stateMachine.ChangeState<PuzzleState>();
         }
         else
