@@ -33,6 +33,11 @@ public class SoundEvent : MonoBehaviour
     private void OnStartPuzzle(StartPuzzleEvent eve)
     {
         PuzzleStart = FMODUnity.RuntimeManager.CreateInstance("event:/Game/Puzzle/PuzzleStart");
+        if(!PuzzleStart.isValid())
+        {
+            Debug.LogError("Event Instance unassigned or not valid");
+            return;
+        }    
         PuzzleStart.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         PuzzleStart.start();
         PuzzleStart.release();

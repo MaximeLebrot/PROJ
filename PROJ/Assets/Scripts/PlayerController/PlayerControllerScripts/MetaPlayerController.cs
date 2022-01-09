@@ -28,10 +28,6 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     private void Awake()
     {
-        //Must listen even when script is disabled, so unregister cannot be called in "OnDisable"
-        //Therefore, the register cannot be done in "OnEnable", because that subs the method several times.
-        EventHandler<InGameMenuEvent>.RegisterListener(EnterInGameMenuState);
-
         inputReference.Initialize();
         DontDestroyOnLoad(this);
 
@@ -39,10 +35,8 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         playerController3D = GetComponent<PlayerController>();
         puzzleController = GetComponent<PuzzlePlayerController>();
         animator = GetComponent<Animator>();
-
-        stateMachine = new StateMachine(this, states);
     }
-
+    
     private void OnEnable()
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
@@ -53,6 +47,7 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     }
 
     private void Start() {
+        stateMachine = new StateMachine(this, states);
         (GameMenuController.Instance.RequestOption<OneSwitchMode>() as OneSwitchMode).AddListener(SetOneSwitchMode);
     }
 
@@ -66,8 +61,10 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     private void StartPuzzle(StartPuzzleEvent spe)
     {
-        puzzleController.CurrentPuzzleID = spe.info.ID;
-        puzzleController.PuzzleTransform = spe.info.puzzle.transform;
+        if (stateMachine.currentState.GetType() == typeof(PuzzleState))
+            return;
+        puzzleController.currentPuzzleID = spe.info.ID;
+        puzzleController.puzzleTransform = spe.info.puzzle.transform;
         playerController3D.ResetCharacterModel();
         if (!oneSwitchMode)
         {
@@ -75,7 +72,6 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         }
         else
         {
-            //OSPuzzle osPuzzle = spe.info.puzzlePos.gameObject.GetComponent<OSPuzzle>();
             OSPuzzle osPuzzle = GetComponent<OSPuzzle>();
             osPuzzle.enabled = true;
             osPuzzle.StartOSPuzzle(spe);
