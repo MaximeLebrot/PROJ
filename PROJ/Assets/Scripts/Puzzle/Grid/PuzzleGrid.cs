@@ -27,7 +27,6 @@ public class PuzzleGrid : MonoBehaviour {
 
     public Node[,] allNodes { get; private set; }
 
-    private List<Node> unrestrictedNodes = new List<Node>();
     private PuzzleLine currentLine;
     private GameObject currentLineObject;
 
