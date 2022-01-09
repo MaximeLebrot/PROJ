@@ -12,7 +12,6 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     public PuzzlePlayerController puzzleController { get; private set; }
     public Animator animator { get; private set; }
     public ControllerInputReference inputReference;
-    public InputActionAsset inputMaster;
 
     //StateMachine
     private StateMachine stateMachine;
