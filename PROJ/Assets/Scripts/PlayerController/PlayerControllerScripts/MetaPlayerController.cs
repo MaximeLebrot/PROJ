@@ -50,7 +50,7 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     private void Start()
     {
-        (GameMenuController.Instance.RequestOption<OneHandMode>() as OneHandMode).AddListener(SetOneSwitchMode);
+        (GameMenuController.Instance.RequestOption<OneSwitchMode>() as OneSwitchMode).AddListener(SetOneSwitchMode);
         EventHandler<InGameMenuEvent>.RegisterListener(EnterInGameMenuState);
 
         //State machine placed here because it sets up listeners, which should not be done in Awake
