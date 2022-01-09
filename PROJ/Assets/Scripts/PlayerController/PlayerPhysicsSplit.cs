@@ -71,12 +71,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
     {
         float time = 0f;
 
-        //Glide, remove this entirely?? 
-        if (typeof(GlideValues) == values.GetType())
-        {
-            GlideValues glideValues = (GlideValues)values;
-        }
-
         while (time <= setValuesLerpSpeed)
         {
             //Friction and air resistance
@@ -95,7 +89,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
 
     private void CheckForCollisions(int i)
     {
-
         YCollisionRayCast();
         XZCollision(i);
     }
@@ -113,7 +106,8 @@ public class PlayerPhysicsSplit : MonoBehaviour
             //Debug.Log("Raycast hit at height: " + hit.point.y);
             float partDistanceHit = hit.distance / castLength; // => 0.75 / 1 = 0.75 1 + (1 - hit.distance / castLength)
             yNormalForce = PhysicsFunctions.NormalForce3D(velocity /** (1 + (1 - partDistanceHit))*/, hit.normal)
-                                        + (1 - partDistanceHit) * Vector3.up;            
+                                        + (1 - partDistanceHit) * Vector3.up;
+            ApplyFriction(yNormalForce);
         }
         else
         {
@@ -121,7 +115,6 @@ public class PlayerPhysicsSplit : MonoBehaviour
             yNormalForce = PhysicsFunctions.NormalForce(yVelocity, Vector3.down);
         }
         velocity += yNormalForce;
-        ApplyFriction(yNormalForce);
     }
     private void XZCollision(int i)
     {
@@ -152,7 +145,9 @@ public class PlayerPhysicsSplit : MonoBehaviour
                 CheckForCollisions(i + 1);
         }
         else
+        {
             MoveOutOfGeometry(velocity * Time.deltaTime);
+        }
 
         ApplyAirResistance();
     }  
