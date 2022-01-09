@@ -11,7 +11,6 @@ public class PuzzleInstance : MonoBehaviour
     [SerializeField] private List<Vector2Int> activeNodes;
     [SerializeField] private List<Hazard> hazards;
 
-    private Puzzle masterPuzzle;
     private bool currentState;
     private List<Hazard> instantiatedHazards = new List<Hazard>();
 
@@ -26,11 +25,8 @@ public class PuzzleInstance : MonoBehaviour
         PuzzleDictionary.AddPuzzle(puzzleID);
     }
 
-    
-
     public void SetupPuzzleInstance(Puzzle puzzle, int masterPuzzleID)
     {
-        masterPuzzle = puzzle;
         puzzleID = int.Parse(masterPuzzleID.ToString() + puzzleID.ToString());
     }
     public int GetPuzzleID()
