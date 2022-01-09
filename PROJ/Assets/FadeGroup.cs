@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class FadeGroup : MonoBehaviour {
@@ -8,55 +10,58 @@ public class FadeGroup : MonoBehaviour {
     [Header("FADE IN occurs from index 0-n | FADE OUT occurs from index n-0")]
     [SerializeField] private List<FadeEntity> fadeOrder;
 
-    private bool isRunning;
-    
-    public void InitiateFade(FadeMode fadeMode, Action onDone) {
+    private void OnDisable() => SetAlpha(0);
+
+
+    public void SetAlpha(float value) {
         
-        if(isRunning)
-            StopCoroutine("Fade");
-      
-        StartCoroutine(Fade(fadeMode, onDone));
-    }
-
-    private IEnumerator Fade(FadeMode fadeMode, Action onDone) {
-
-        isRunning = true;
-        
-        float totalTime = 0;
-
         foreach (FadeEntity fadeEntity in fadeOrder)
-            totalTime += fadeEntity.FadeTime;
+            fadeEntity.CanvasGroup.alpha = value;
+        
+    }
+    
+    public async Task InitiateFade(FadeMode fadeMode) => await Fade(fadeMode);
 
-        float endTime = Time.time + totalTime;
-        float currentTime = Time.time;
+    private async Task Fade(FadeMode fadeMode) {
         
         foreach (FadeEntity entity in fadeOrder) {
             
             switch (fadeMode) {
                 case FadeMode.FadeIn:
-                    StartCoroutine(FadeIn(entity));
+                    await Fade(entity, 0, 1);
                     break;
                 
                 case FadeMode.FadeOut:
-                    StartCoroutine(FadeOut(entity));
+                    await Fade(entity, 1, 0);
                     break;
             }
-            yield return new WaitForSeconds(entity.TimeUntilNextFade);
-        }
-
-        while (currentTime < endTime) {
-            currentTime += Time.deltaTime;
-            yield return null;
+            
         }
         
-        onDone?.Invoke();
-        isRunning = false;
     }
 
+    private async Task Fade(FadeEntity fadeEntity, float startValue, float endValue) {
+        fadeEntity.CanvasGroup.alpha = startValue;
+
+        float endTime = Time.time + fadeEntity.FadeTime;
+        float lerpValue = 0;
+        
+        while (endTime > Time.time) {
+            
+            fadeEntity.CanvasGroup.alpha = Mathf.Lerp(startValue, endValue, lerpValue);
+                
+            lerpValue += Time.deltaTime / fadeEntity.FadeTime;    
+            
+            await Task.Yield();
+        }
+
+        fadeEntity.CanvasGroup.alpha = endValue;
+        
+    }
     
-    //Har viktigare saker för mig än att vara effektiv. 
-    private IEnumerator FadeIn(FadeEntity fadeEntity) {
-        fadeEntity.CanvasGroup.interactable = false;
+    
+  /*  //Har viktigare saker för mig än att vara effektiv. 
+    private async Task FadeIn(FadeEntity fadeEntity) {
         fadeEntity.CanvasGroup.alpha = 0;
 
         float endTime = Time.time + fadeEntity.FadeTime;
@@ -67,15 +72,14 @@ public class FadeGroup : MonoBehaviour {
                 
             lerpValue += Time.deltaTime / fadeEntity.FadeTime;    
             
-            yield return null;
+            await Task.Yield();
         }
 
         fadeEntity.CanvasGroup.alpha = 1;
-        fadeEntity.CanvasGroup.interactable = true;
     }
 
-    private IEnumerator FadeOut(FadeEntity fadeEntity) {
-        fadeEntity.CanvasGroup.interactable = false;
+    private async Task FadeOut(FadeEntity fadeEntity) {
+
         fadeEntity.CanvasGroup.alpha = 1;
 
         float endTime = Time.time + fadeEntity.FadeTime;
@@ -84,13 +88,14 @@ public class FadeGroup : MonoBehaviour {
         while (endTime > Time.time) {
             fadeEntity.CanvasGroup.alpha = Mathf.Lerp(1, 0, lerpValue);
                 
-            lerpValue += Time.deltaTime / fadeEntity.FadeTime;    
-            
-            yield return null;
+            lerpValue += Time.deltaTime / fadeEntity.FadeTime;
+
+            await Task.Yield();
         }
 
         fadeEntity.CanvasGroup.alpha = 0;
-        fadeEntity.CanvasGroup.interactable = true;
+
     }
+    */
 
 }

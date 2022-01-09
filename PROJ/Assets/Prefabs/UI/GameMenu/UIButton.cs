@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 [Serializable]
 public enum ButtonState {
@@ -19,83 +16,35 @@ public class UIButton : MonoBehaviour {
     private static float moveDuration = .2f;
     private ButtonState state;
     
-    [SerializeField] private ControllerInputReference controllerInputReference;
-    [SerializeField] private MenuSettings menuSettings;
     [SerializeField] private AnimationCurve movementCurve;
-    [SerializeField] private float timeUntilMove;
+    [SerializeField] private double timeUntilMove;
 
-    public MenuSettings MenuSetting => menuSettings;
+    [SerializeField] private MenuSettings associatedMenuSetting;
+    public MenuSettings AssociatedMenuSetting => associatedMenuSetting;
     
-    public delegate void OnButtonClick(UIButton pressedButton);
-    public delegate void OnResetCalled();
-    
-    public static event OnButtonClick onButtonClicked;
-    public static event OnResetCalled onResetCalled;
-
-    public event Action onMoveCallback;
     
     private RectTransform rectTransform;
     
-    private void Awake() {
+    private void OnEnable() {
         rectTransform = GetComponent<RectTransform>();
+
+        rectTransform.localPosition = Vector2.zero;
         
-        onButtonClicked += OnAnotherButtonPressed;
-        onResetCalled += ResetButton;
         state = ButtonState.Inactive;
-        
     }
 
-    private void OnEnable() => controllerInputReference.InputMaster.Menu.performed += ResetButton;
+    public void SetState(ButtonState newState) => state = newState;
     
-    private void OnDisable() {
-        controllerInputReference.InputMaster.Menu.performed -= ResetButton;
-        GetComponent<CanvasGroup>().alpha = 0;
-    }
-
-    private void Move(float duration) {
-        if (Math.Abs(rectTransform.anchoredPosition.x - (int)state) < .01f)
-            return;
-        
-        StartCoroutine(Move_Coroutine(duration));
-    }
+    private void OnDisable() => GetComponent<CanvasGroup>().alpha = 0;
     
-    public void OnAnotherButtonPressed(UIButton button) {
-
-        if (this != button || state == ButtonState.Inactive)
-            state = ButtonState.NotSelected;
+    public async Task Move() {
         
-        Move(moveDuration);
-    }
-
-    private void ResetButton(InputAction.CallbackContext e) {
-        ResetButton();
-    }
-    
-    public void ResetButton() {
-        state = ButtonState.Inactive;
-        Move(moveDuration);
-    }
-
-    //Called on button
-    public void ActivateButton() {
-        if(state == ButtonState.Selected)
-            onResetCalled?.Invoke();
-        else {
-            state = ButtonState.Selected;
-            onButtonClicked?.Invoke(this);
-        }
-        
-    }
-
-    private IEnumerator Move_Coroutine(float duration) {
-        controllerInputReference.InputMaster.Menu.performed -= ResetButton;
-        
-        yield return new WaitForSeconds(timeUntilMove);
+        await Task.Delay(TimeSpan.FromSeconds(timeUntilMove));
         
         Vector2 start = rectTransform.anchoredPosition;
         Vector2 end = new Vector2((int)state, rectTransform.anchoredPosition.y);
 
-        float endTime = Time.time + duration;
+        float endTime = Time.time + moveDuration;
 
         float lerp = 0;
         
@@ -103,14 +52,11 @@ public class UIButton : MonoBehaviour {
             
             rectTransform.anchoredPosition = Vector2.Lerp(start, end, movementCurve.Evaluate(lerp));
             
-            lerp += Time.deltaTime / duration;
+            lerp += Time.deltaTime / moveDuration;
             
-            yield return null;
+            await Task.Yield();
         }
         
-        onMoveCallback?.Invoke();
-        onMoveCallback = null;
-        controllerInputReference.InputMaster.Menu.performed += ResetButton;
     }
 }
 

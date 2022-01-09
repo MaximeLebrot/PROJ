@@ -37,8 +37,6 @@ public class PageController : MonoBehaviour {
             
         }
 
-        UIButton.onButtonClicked += HandleButtonClicked;
-        UIButton.onResetCalled += ResetPages;
     }
 
     private void Start() {
@@ -65,13 +63,6 @@ public class PageController : MonoBehaviour {
     }
     
     
-    private void HandleButtonClicked(UIButton clickedButton) {
-        InputSuspended = true;
-        graphicRaycaster.enabled = false;
-        clickedButton.onMoveCallback += () => {
-            SwitchPage(clickedButton.MenuSetting);
-        };
-    }
     
     public void ResetPages() {
         
@@ -82,7 +73,7 @@ public class PageController : MonoBehaviour {
             InputSuspended = false;
             graphicRaycaster.enabled = true;
         };
-        currentActivePage?.DeactivatePage(callback);
+   //     currentActivePage?.DeactivatePage(callback);
     }
 
     private void SwitchPage(MenuSettings page) {
@@ -96,7 +87,7 @@ public class PageController : MonoBehaviour {
                 graphicRaycaster.enabled = true;
                 InputSuspended = false;
             };
-            currentActivePage.DeactivatePage(onDone);
+     //       currentActivePage.DeactivatePage(onDone);
         }
         else 
             ActivateNewPage();
@@ -115,10 +106,10 @@ public class PageController : MonoBehaviour {
         currentActivePage = newPage; //HÄR SÄTTS NEW PAGE
         currentActivePage.gameObject.SetActive(true);
 
-        currentActivePage.ActivatePage(() => {
-            graphicRaycaster.enabled = true;
-            InputSuspended = false;
-        });
+    //    currentActivePage.ActivatePage(() => {
+     //       graphicRaycaster.enabled = true;
+     //       InputSuspended = false;
+    //    });
         onDone = null;
         newPage = null;
 

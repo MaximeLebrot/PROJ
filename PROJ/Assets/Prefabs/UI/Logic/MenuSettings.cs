@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -42,9 +43,9 @@ public abstract class MenuSettings : MonoBehaviour {
     
     public UIMenuItemBase GetOption<T>() => menuOptions[typeof(T)];
     
-    public void ActivatePage(Action onDone) => fadeGroup.InitiateFade(FadeMode.FadeIn, onDone);
+    public async Task ActivatePage() => await fadeGroup.InitiateFade(FadeMode.FadeIn);
 
-    public void DeactivatePage(Action action) => fadeGroup.InitiateFade(FadeMode.FadeOut, action);
+    public async Task DisablePage() => await fadeGroup.InitiateFade(FadeMode.FadeOut);
 
     public bool HasMenuItem<T>() => menuOptions.ContainsKey(typeof(T));
     
