@@ -5,7 +5,8 @@ using UnityEditor;
 public class HazardEditor : Editor {
     
     private SerializedProperty hazardMatrix;
-    private SerializedProperty hazardObjectProp;
+    private SerializedProperty staticHazardObjectProp;
+    private SerializedProperty movingHazardObjectProp;
     private SerializedProperty gridObjectTypeProp;
     private SerializedProperty moveDirectionProp;
     private SerializedProperty hazardObjectsProp;
@@ -18,7 +19,8 @@ public class HazardEditor : Editor {
     
     private void OnEnable() {
         hazardMatrix = serializedObject.FindProperty("customPattern");
-        hazardObjectProp = serializedObject.FindProperty("hazardObj");
+        staticHazardObjectProp = serializedObject.FindProperty("staticHazardObject");
+        movingHazardObjectProp = serializedObject.FindProperty("movingHazardObject");
         gridObjectTypeProp = serializedObject.FindProperty("grid");
         moveDirectionProp = serializedObject.FindProperty("moveDirection");
         hazardObjectsProp = serializedObject.FindProperty("hazardObjects");
@@ -42,7 +44,8 @@ public class HazardEditor : Editor {
             return;
         }
         
-        EditorGUILayout.PropertyField(hazardObjectProp);
+        EditorGUILayout.PropertyField(staticHazardObjectProp);
+        EditorGUILayout.PropertyField(movingHazardObjectProp);
         EditorGUI.BeginChangeCheck();
         EditorGUILayout.PropertyField(gridObjectTypeProp);
 

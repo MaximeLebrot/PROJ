@@ -15,15 +15,13 @@ public class Puzzle : MonoBehaviour
     protected List<TranslationAndObject> translations;
 
     protected PuzzleGrid grid;
-
-    public PuzzleGrid Grid => grid;
     
     private SymbolPlacer symbolPlacer;
- 
-    
-    
+
+
+
     //should NOT be public, but ModularHintSystem currently relies on this List
-    public List<PuzzleObject> placedSymbols = new List<PuzzleObject>();
+    private List<PuzzleObject> placedSymbols = new List<PuzzleObject>();
     [SerializeField] private List<TranslationAndObject> translationsSorted = new List<TranslationAndObject>();
 
     //track progress
@@ -35,6 +33,8 @@ public class Puzzle : MonoBehaviour
     private PuzzleParticles particles;
 
     public float NextPuzzleTimer { get; } = 2.5f;
+    public List<PuzzleObject> PlacedSymbols { get => placedSymbols; set => placedSymbols = value; }
+
     public void SetPlayer(Transform t) { player = t; grid.Player = player; }
 
     public PuzzleGrid GetGrid() { return grid; }
@@ -207,8 +207,8 @@ public class Puzzle : MonoBehaviour
 
     private string Translate()
     {
-        if (placedSymbols.Count > 0)
-            return translator.CalculateSolution(placedSymbols);
+        if (PlacedSymbols.Count > 0)
+            return translator.CalculateSolution(PlacedSymbols);
         else
         {
             Debug.LogWarning("SOLUTION EMPTY, NO INSTANTIATED SYMBOLS");
@@ -234,10 +234,12 @@ public class Puzzle : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (!player)
+            return;
+
         PuzzleInfo info = new PuzzleInfo(currentPuzzleInstance.GetPuzzleID());
         EventHandler<ExitPuzzleEvent>.FireEvent(new ExitPuzzleEvent(info, false));
         GetComponentInChildren<PuzzleStarter>().ResetStarter();
-
     }
 
     public void StartPuzzle(StartPuzzleEvent eve)
@@ -328,7 +330,6 @@ public class Puzzle : MonoBehaviour
     private bool registered = true;
     private void OnResetPuzzle(ResetPuzzleEvent eve)
     {
-
         if (eve.info.ID == currentPuzzleInstance.GetPuzzleID())
         {
             ResetPuzzle();
@@ -337,6 +338,8 @@ public class Puzzle : MonoBehaviour
 
     private void ResetPuzzle()
     {
+        player = null;
+
         EventHandler<ResetPuzzleEvent>.UnregisterListener(OnResetPuzzle);
         registered = false;
 
@@ -355,7 +358,7 @@ public class Puzzle : MonoBehaviour
     
     private void PlaceSymbols()
     {
-        placedSymbols = symbolPlacer.PlaceSymbols(currentPuzzleInstance, symbolPos);
+        PlacedSymbols = symbolPlacer.PlaceSymbols(currentPuzzleInstance, symbolPos);
         
     }
 

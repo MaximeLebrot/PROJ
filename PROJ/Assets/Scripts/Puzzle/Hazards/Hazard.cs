@@ -76,7 +76,6 @@ public class Hazard : MonoBehaviour
     {
         for(int i = 0; i < hazardObjects.Count; i++)
         {
-            //Animate hazardsobject instead
             Destroy(hazardObjects[i].gameObject);
         }
         hazardObjects.Clear();
@@ -101,11 +100,7 @@ public class Hazard : MonoBehaviour
     }
     private void InitializeHazardObjects(int puzzleID)
     {
-
         hazardOffset = grid.NodeOffset;
-
-
-
         int hazardObjectCounter = 0; 
         foreach (HazardObject ho in hazardObjects)
         {

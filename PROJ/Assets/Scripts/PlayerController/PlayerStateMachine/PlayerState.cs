@@ -11,7 +11,6 @@ public class PlayerState : ScriptableObject
     protected StateMachine stateMachine;
     protected MetaPlayerController player;
     protected object owner;
-    protected int glideableLayer = 14;
     //Input
     protected float xMove, zMove;
 
@@ -21,9 +20,6 @@ public class PlayerState : ScriptableObject
         this.owner = owner;
         player = (MetaPlayerController)owner;
         Debug.Assert(player.physics);
-
-
-
         Initialize();
     }
     public virtual void Initialize() { }
