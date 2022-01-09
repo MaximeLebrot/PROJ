@@ -60,8 +60,10 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     private void StartPuzzle(StartPuzzleEvent spe)
     {
-        puzzleController.CurrentPuzzleID = spe.info.ID;
-        puzzleController.PuzzleTransform = spe.info.puzzle.transform;
+        if (stateMachine.currentState.GetType() == typeof(PuzzleState))
+            return;
+        puzzleController.currentPuzzleID = spe.info.ID;
+        puzzleController.puzzleTransform = spe.info.puzzle.transform;
         playerController3D.ResetCharacterModel();
         if (!oneSwitchMode)
         {
