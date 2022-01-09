@@ -121,7 +121,7 @@ public class PageController : MonoBehaviour {
     //Called from scene changer buttons (beta release) /Martin
     public void CloseMenuOnSceneChange() {
         ResetPages();
-        gameMenuController.SceneChangerCloseMenu();
+        //gameMenuController.SceneChangerCloseMenu();
         EventHandler<SceneChangeEvent>.FireEvent(null);
     }
 }

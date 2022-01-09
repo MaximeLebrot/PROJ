@@ -105,7 +105,17 @@ public class GameMenuController : PersistentSingleton<GameMenuController> {
 
         activeButton = null;
     }
+    
+    private async Task ResetMenu(MenuSettings menuSetting) {
+        
+        await Task.WhenAll(menuSetting.DisablePage(), menuButtons.ResetButtons());
+        
+        menuSetting.gameObject.SetActive(false);
 
+        activeButton = null;
+    }
+
+    
     private async Task OpenAnotherSetting(UIButton pressedButton) {
         
         await Task.WhenAll(activeButton.AssociatedMenuSetting.DisablePage(), menuButtons.MoveButtons(pressedButton), pressedButton.AssociatedMenuSetting.ActivatePage());
@@ -144,7 +154,8 @@ public class GameMenuController : PersistentSingleton<GameMenuController> {
     }
 
     //Called from scene changer buttons (beta release) / Martin
-    public void SceneChangerCloseMenu() {
+    public async void SceneChangerCloseMenu(MenuSettings menuSetting) {
+        await ResetMenu(menuSetting);
         CloseMenu();
     }
 
