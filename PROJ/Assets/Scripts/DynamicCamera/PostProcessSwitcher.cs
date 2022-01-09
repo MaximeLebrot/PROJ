@@ -15,7 +15,6 @@ public class PostProcessSwitcher : MonoBehaviour
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-        //EventHandler<SaveSettingsEvent>.RegisterListener(CheckForContrastMode);
         (GameMenuController.Instance.RequestOption<Use_HighContrastMode>() as Use_HighContrastMode).AddListener(EnableContrastMode);
     }
 
@@ -24,7 +23,6 @@ public class PostProcessSwitcher : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
         if(GameMenuController.Instance != null)
             (GameMenuController.Instance.RequestOption<Use_HighContrastMode>() as Use_HighContrastMode).RemoveListener(EnableContrastMode);
-        //EventHandler<SaveSettingsEvent>.UnregisterListener(CheckForContrastMode);
     }
     private void EnableContrastMode(bool active)
     {

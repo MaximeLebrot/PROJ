@@ -162,7 +162,7 @@ public static class PuzzleHelper
 
     public static string RotateSymbolsTwoStep(string chars)
     {
-        //switch case för att rotera varje char. foreach char in chars.. switch() t.ex. case 8 = 6
+        //switch case fÃ¶r att rotera varje char. foreach char in chars.. switch() t.ex. case 8 = 6
         string rotatedString = "";
         foreach (char c in chars)
         {
@@ -201,7 +201,7 @@ public static class PuzzleHelper
 
     public static string RotateSymbolsOneStep(string chars)
     {
-        //switch case för att rotera varje char. foreach char in chars.. switch() t.ex. case 8 = 6
+        //switch case fÃ¶r att rotera varje char. foreach char in chars.. switch() t.ex. case 8 = 6
         string rotatedString = "";
         foreach (char c in chars)
         {
@@ -240,7 +240,7 @@ public static class PuzzleHelper
 
     public static string MirrorSymbols(string chars)
     {
-        //switch case för att rotera varje char. foreach char in chars.. switch() t.ex. case 8 = 6
+        //switch case fÃ¶r att rotera varje char. foreach char in chars.. switch() t.ex. case 8 = 6
         string rotatedString = "";
         foreach (char c in chars)
         {

@@ -41,6 +41,9 @@ namespace NewCamera
         public override Quaternion ExecuteRotate() {
             return Quaternion.Lerp(thisTransform.rotation, Quaternion.Euler(puzzle.transform.localEulerAngles + eulerRotation), Time.deltaTime);
         }
-        
+
+        public override void ManipulatePivotTarget(CustomInput input) {
+            pivotTarget.rotation = characterModel.rotation;
+        }
     }
 }
