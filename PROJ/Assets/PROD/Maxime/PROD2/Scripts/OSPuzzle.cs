@@ -38,6 +38,9 @@ public class OSPuzzle : MonoBehaviour
     {
         //if (player == null)
             //player = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<MetaPlayerController>();
+            
+        (GameMenuController.Instance.RequestOption<ControlMode>() as ControlMode).AddListener(HandleOSSetting);
+            
     }
 
     private void FindPuzzleUINodes()
@@ -61,23 +64,22 @@ public class OSPuzzle : MonoBehaviour
 
     private void OnEnable()
     {
-        EventHandler<SaveSettingsEvent>.RegisterListener(HandleOSSetting);
         EventHandler<StartPuzzleEvent>.RegisterListener(StartOSPuzzle);
         EventHandler<ExitPuzzleEvent>.RegisterListener(ExitOSPuzzle);
     }
 
-    private void HandleOSSetting(SaveSettingsEvent eve)
+    private void HandleOSSetting(string option)
     {
         //this.enabled = eve.settingsData.oneSwitchMode;
         /*if (this.enabled == false)
             return;*/
-        Debug.Log("Kör: " + eve.settingsData.oneSwitchMode);
+        Debug.Log("KÃ¶r: " + option.Equals("OneSwitch Mode"));
 
     }
 
     private void OnDisable()
     {
-        EventHandler<SaveSettingsEvent>.UnregisterListener(HandleOSSetting);
+        (GameMenuController.Instance.RequestOption<ControlMode>() as ControlMode).AddListener(HandleOSSetting);
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartOSPuzzle);
         EventHandler<ExitPuzzleEvent>.UnregisterListener(ExitOSPuzzle);
     }

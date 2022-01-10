@@ -51,11 +51,13 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         EventHandler<InGameMenuEvent>.UnregisterListener(EnterInGameMenuState);
     }
     private void Start() {
-        (GameMenuController.Instance.RequestOption<OneSwitchMode>() as OneSwitchMode).AddListener(SetOneSwitchMode);
+        (GameMenuController.Instance.RequestOption<ControlMode>() as ControlMode).AddListener(SetOneSwitchMode);
         stateMachine = new StateMachine(this, states);
     }
 
-    private void SetOneSwitchMode(bool isActive) => oneSwitchMode = isActive;
+    private void SetOneSwitchMode(string option) {
+        oneSwitchMode = option.Equals("OneSwitch Mode");
+    }
 
     //TEMPORARY
     private void OnHub(InputAction.CallbackContext obj)

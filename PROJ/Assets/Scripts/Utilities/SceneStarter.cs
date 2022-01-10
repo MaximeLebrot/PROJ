@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SceneStarter : MonoBehaviour
@@ -20,7 +18,6 @@ public class SceneStarter : MonoBehaviour
         GameObject solver = GameObject.FindGameObjectWithTag("Solver");
         solver.SetActive(false);
         solver.SetActive(true);
-        Debug.Log("SCENE STARTER");
     }
 
 
