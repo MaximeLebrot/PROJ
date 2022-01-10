@@ -15,15 +15,13 @@ public class Puzzle : MonoBehaviour
     protected List<TranslationAndObject> translations;
 
     protected PuzzleGrid grid;
-
-    public PuzzleGrid Grid => grid;
     
     private SymbolPlacer symbolPlacer;
- 
-    
-    
+
+
+
     //should NOT be public, but ModularHintSystem currently relies on this List
-    public List<PuzzleObject> placedSymbols = new List<PuzzleObject>();
+    private List<PuzzleObject> placedSymbols = new List<PuzzleObject>();
     [SerializeField] private List<TranslationAndObject> translationsSorted = new List<TranslationAndObject>();
 
     //track progress
@@ -35,6 +33,8 @@ public class Puzzle : MonoBehaviour
     private PuzzleParticles particles;
 
     public float NextPuzzleTimer { get; } = 2.5f;
+    public List<PuzzleObject> PlacedSymbols { get => placedSymbols; set => placedSymbols = value; }
+
     public void SetPlayer(Transform t) { player = t; grid.Player = player; }
 
     public PuzzleGrid GetGrid() { return grid; }
@@ -206,8 +206,8 @@ public class Puzzle : MonoBehaviour
 
     private string Translate()
     {
-        if (placedSymbols.Count > 0)
-            return translator.CalculateSolution(placedSymbols);
+        if (PlacedSymbols.Count > 0)
+            return translator.CalculateSolution(PlacedSymbols);
         else
         {
             Debug.LogWarning("SOLUTION EMPTY, NO INSTANTIATED SYMBOLS");
@@ -357,7 +357,7 @@ public class Puzzle : MonoBehaviour
     
     private void PlaceSymbols()
     {
-        placedSymbols = symbolPlacer.PlaceSymbols(currentPuzzleInstance, symbolPos);
+        PlacedSymbols = symbolPlacer.PlaceSymbols(currentPuzzleInstance, symbolPos);
         
     }
 

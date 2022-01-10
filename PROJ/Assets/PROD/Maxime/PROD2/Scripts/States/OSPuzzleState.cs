@@ -8,7 +8,7 @@ public class OSPuzzleState : PlayerState
 
     [Header("Variables"), SerializeField, Range(0.1f, 0.9f)] private float speed = 0.5f;
     [SerializeField, Range(0.01f, 0.3f)] private float holdingButtonLimit = 0.2f;
-    [SerializeField] private float puzzleWalkDuration = 1f;
+    [SerializeField] private float puzzleWalkDuration = 0.8f;
 
     private float time = 1f, timer;
     private int iterator = 2;
