@@ -62,6 +62,7 @@ public class PlayerController : MonoBehaviour
 
     private delegate void InputDelegate(Vector3 input);
     private InputDelegate inputDelegate;
+
     private void HandleOneHandMode(string oneHandModeIsActive)
     {
         if (oneHandModeIsActive.Equals("One Hand Mode"))

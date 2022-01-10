@@ -118,7 +118,7 @@ public class PlayerPhysicsSplit : MonoBehaviour
     }
     private void XZCollision(int i)
     {
-        Physics.CapsuleCast(colliderTopHalf, colliderBottomHalf + stepHeightDisplacement, attachedCollider.radius, new Vector3(velocity.x, 0 , velocity.z), out var hitInfo, velocity.magnitude * Time.deltaTime + skinWidth, collisionMask);
+        Physics.CapsuleCast(colliderTopHalf, colliderBottomHalf + stepHeightDisplacement, attachedCollider.radius, new Vector3(velocity.x, 0 , velocity.z).normalized, out var hitInfo, velocity.magnitude * Time.deltaTime + skinWidth, collisionMask);
         if (hitInfo.collider && hitInfo.collider.isTrigger == false)
         {
             // Calculate the allowed distance to the collision point
