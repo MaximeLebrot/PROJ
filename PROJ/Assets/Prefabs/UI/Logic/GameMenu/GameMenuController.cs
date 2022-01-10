@@ -13,7 +13,7 @@ public class GameMenuController : PersistentSingleton<GameMenuController> {
 
     private GraphicRaycaster graphicRaycaster;
     
-    private PageController pageController;
+    private MenuSettingsController menuSettingsController;
 
     private Action onMenuPressed;
     
@@ -25,8 +25,8 @@ public class GameMenuController : PersistentSingleton<GameMenuController> {
         menuButtons = GetComponentInChildren<MenuButtons>();
         menuButtons.Initialize();
         
-        pageController = GetComponent<PageController>();
-        pageController.Initialize();
+        menuSettingsController = GetComponent<MenuSettingsController>();
+        menuSettingsController.Initialize();
 
         graphicRaycaster = GetComponent<GraphicRaycaster>();
         
@@ -144,7 +144,7 @@ public class GameMenuController : PersistentSingleton<GameMenuController> {
         EnableInput(OpenMenu);
     }
 
-    public UIMenuItemBase RequestOption<T>() => pageController.FindRequestedOption<T>();
+    public UIMenuItemBase RequestOption<T>() => menuSettingsController.FindRequestedOption<T>();
     
     private void ActivateComponents(bool activateComponents) {
         menuButtons.gameObject.SetActive(activateComponents);

@@ -26,7 +26,6 @@ public abstract class DropDownItem : UIMenuItem<string> {
     }
     
     public void AddListener(OnValueChangedString callback) {
-        
         externalOnValueChanged += callback;
     }
 

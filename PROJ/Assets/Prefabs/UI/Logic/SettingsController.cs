@@ -8,7 +8,7 @@ public class SettingsController : MonoBehaviour {
     private List<MenuSettings> settingObjects;
 
     private void Awake() {
-        settingObjects = GetComponent<PageController>().PageObjects;
+        settingObjects = GetComponent<MenuSettingsController>().PageObjects;
         
         LoadSavedSettings();
         EventHandler<RequestSettingsEvent>.RegisterListener(SendOutUserSettingsData);
