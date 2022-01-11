@@ -31,7 +31,7 @@ public class ContrastModeObject : MonoBehaviour {
 
         bool isContrastModeActive = requestSettingsEvent.settingsData.highContrastMode;
         
-        SwapMaterials(isContrastModeActive);
+        //SwapMaterials(isContrastModeActive);
 
     }
     

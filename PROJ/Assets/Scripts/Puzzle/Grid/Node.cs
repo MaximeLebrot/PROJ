@@ -31,10 +31,10 @@ public class Node : MonoBehaviour {
     private VisualEffect hitEffect;
     private Animator anim;
     private SphereCollider coll;
-    private int sizeMultiplier = 1;
     private float colliderRadius = 1.2f;
     private Vector3 size = new Vector3(0.4f, 0.4f, 0.4f);
 
+    static private int sizeMultiplier = 1;
     private void Awake() {
         hitEffect = GetComponent<VisualEffect>();
         anim = GetComponent<Animator>();
@@ -42,7 +42,6 @@ public class Node : MonoBehaviour {
         neighbours = new Dictionary<Node, bool>();
         Drawable = true;
         TurnOn();
-        SetSize();
         //FindNeighbours();
         //PosX = transform.localPosition.x;
         //PosY = transform.localPosition.y;
@@ -52,47 +51,44 @@ public class Node : MonoBehaviour {
 
     private void SetSizeMultiplier(bool b)
     {
-        //Get big Nodes bool from settings
-
-        
         if (b)
             sizeMultiplier = 2;
         else
             sizeMultiplier = 1; 
-        
     }
 
     private void SetSize()
     {
         transform.localScale = size * sizeMultiplier;
-        //Make collider smaller also
         coll.radius = colliderRadius / sizeMultiplier;
-        
     }
 
-    
-
-    private void ApplySettings(SaveSettingsEvent obj)
-    {
-        SetSizeMultiplier(obj.settingsData.bigNodes);
-        SetSize();
-    }
     private void OnEnable()
     {
-        EventHandler<SaveSettingsEvent>.RegisterListener(ApplySettings);
+        SetSize();
+    }
+
+
+    private void ApplySettings(bool isBig)
+    {
+        SetSizeMultiplier(isBig);
+        SetSize();
+    }
+    private void Start()
+    {
+        (GameMenuController.Instance.RequestOption<BigNodes>() as BigNodes).AddListener(ApplySettings);
         gameObject.SetActive(true);
         TurnOn();
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
-        EventHandler<SaveSettingsEvent>.UnregisterListener(ApplySettings);
+        (GameMenuController.Instance.RequestOption<BigNodes>() as BigNodes).RemoveListener(ApplySettings);
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
-
         grid.AddSelectedNode(this);
     }
 

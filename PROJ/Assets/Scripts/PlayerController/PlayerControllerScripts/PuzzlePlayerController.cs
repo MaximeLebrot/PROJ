@@ -40,7 +40,7 @@ public class PuzzlePlayerController : MonoBehaviour
 
         EventHandler<StartPuzzleEvent>.RegisterListener(OnPuzzleStart);
         EventHandler<ClearPuzzleEvent>.RegisterListener(OnPuzzleCompleted);
-        EventHandler<SaveSettingsEvent>.RegisterListener(OnSaveSettings);
+        (GameMenuController.Instance.RequestOption<EasyPuzzleControls>() as EasyPuzzleControls).AddListener(ApplySettings);
 
         EventHandler<RequestSettingsEvent>.FireEvent(null);
     }    
@@ -50,7 +50,7 @@ public class PuzzlePlayerController : MonoBehaviour
         metaPlayerController.inputReference.InputMaster.PlayPuzzleDescription.performed -= OnPlayPuzzleDescription;
         EventHandler<ClearPuzzleEvent>.UnregisterListener(OnPuzzleCompleted);
         EventHandler<StartPuzzleEvent>.UnregisterListener(OnPuzzleStart);
-        EventHandler<SaveSettingsEvent>.UnregisterListener(OnSaveSettings);
+        (GameMenuController.Instance.RequestOption<EasyPuzzleControls>() as EasyPuzzleControls).RemoveListener(ApplySettings);
     }  
     void Start()
     {
@@ -108,9 +108,9 @@ public class PuzzlePlayerController : MonoBehaviour
     #endregion
 
     #region OnEvent Methods
-    private void OnSaveSettings(SaveSettingsEvent obj)
+    private void ApplySettings(bool easyControls)
     {
-        if (obj.settingsData.easyPuzzleControls == true)
+        if (easyControls == true)
             acceleration = 50;
         else
             acceleration = 100;

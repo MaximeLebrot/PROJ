@@ -87,25 +87,28 @@ public class Puzzle : MonoBehaviour
     }
 
     public void GoToNextPuzzle() { if (currentPuzzleNum+1 <= puzzleInstances.Count) { Debug.Log("Pushing to next puzzle"); NextPuzzle(); } }
-
+    private void Start()
+    {
+        (GameMenuController.Instance.RequestOption<ShowClearedSymbols>() as ShowClearedSymbols).AddListener(ApplySettings);
+    }
     private void OnEnable()
     {
         EventHandler<ExitPuzzleEvent>.RegisterListener(OnExitPuzzle);
         EventHandler<ResetPuzzleEvent>.RegisterListener(OnResetPuzzle);
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
-        EventHandler<SaveSettingsEvent>.RegisterListener(ApplySettings);
+        
     }
     private void OnDisable()
     {
         EventHandler<ExitPuzzleEvent>.UnregisterListener(OnExitPuzzle);
         EventHandler<ResetPuzzleEvent>.UnregisterListener(OnResetPuzzle);
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
-        EventHandler<SaveSettingsEvent>.UnregisterListener(ApplySettings);
+        (GameMenuController.Instance.RequestOption<ShowClearedSymbols>() as ShowClearedSymbols).RemoveListener(ApplySettings);
     }
 
-    private void ApplySettings(SaveSettingsEvent obj)
+    private void ApplySettings(bool isShowClearedSymbols)
     {
-        showClearedSymbols = obj.settingsData.showClearedSymbols;
+        showClearedSymbols = isShowClearedSymbols;
 
         if(showClearedSymbols == false)
         {
