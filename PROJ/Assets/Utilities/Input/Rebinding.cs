@@ -151,7 +151,7 @@ public class Rebinding : MenuSettings
                     //Debug.Log("Load: " + action + " applied override " + loadedBindingName + "counter " + i);
                     bindingName += InputControlPath.ToHumanReadableString(loadedBindingName, InputControlPath.HumanReadableStringOptions.OmitDevice);
 
-                    if (action.bindings[i + 1].isPartOfComposite)
+                    if (i + 1  < action.bindings.Count && action.bindings[i + 1].isPartOfComposite)
                         bindingName += "/";
                 }
             }
