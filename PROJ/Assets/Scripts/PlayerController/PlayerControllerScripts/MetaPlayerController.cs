@@ -51,8 +51,14 @@ public class MetaPlayerController : MonoBehaviour, IPersist
         (GameMenuController.Instance.RequestOption<OneSwitchMode>() as OneSwitchMode).AddListener(SetOneSwitchMode);
     }
 
-    private void SetOneSwitchMode(bool isActive) => oneSwitchMode = isActive;
-
+    private void SetOneSwitchMode(bool isActive)
+    {
+        oneSwitchMode = isActive;
+        if (oneSwitchMode)
+            stateMachine.ChangeState<OSSpinState>();
+        else
+            stateMachine.ChangeState<WalkState>();
+    }
     //TEMPORARY
     private void OnHub(InputAction.CallbackContext obj)
     {
