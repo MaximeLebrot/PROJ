@@ -23,7 +23,7 @@ public class StateMachine
                 currentState = instantiated;
         }
         currentState.EnterState();
-
+        
         //Sub
         (GameMenuController.Instance.RequestOption<SprintMode>() as SprintMode).AddListener(callback: (menuValue) => holdToSprint = menuValue.Equals("Hold To Sprint"));
     }
