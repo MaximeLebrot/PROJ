@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class SResolution : DropDownItem {
     public override void Initialize() {
+        base.Initialize();
 
         Resolution[] resolutions = Screen.resolutions;
 
