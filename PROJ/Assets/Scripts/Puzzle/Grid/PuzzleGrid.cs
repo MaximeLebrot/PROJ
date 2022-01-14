@@ -60,19 +60,19 @@ public class PuzzleGrid : MonoBehaviour {
         }
     }
 
-    private void OnEnable()
+    private void Start()
     {
-        EventHandler<SaveSettingsEvent>.RegisterListener(ApplySettings);
+        (GameMenuController.Instance.RequestOption<CurrentNodeMarker>() as CurrentNodeMarker).AddListener(ApplySettings);
     }
 
     private void OnDisable()
     {
-        EventHandler<SaveSettingsEvent>.UnregisterListener(ApplySettings);
+        (GameMenuController.Instance.RequestOption<CurrentNodeMarker>() as CurrentNodeMarker).RemoveListener(ApplySettings);
     }
 
-    private void ApplySettings(SaveSettingsEvent obj)
+    private void ApplySettings(bool showCurrentNodeMarker)
     {
-        if (obj.settingsData.currentNodeMarker)
+        if (showCurrentNodeMarker)
             currentNodeEffect.Play();
         else
             currentNodeEffect.Stop();

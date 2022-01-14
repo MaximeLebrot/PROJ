@@ -15,15 +15,13 @@ public class Puzzle : MonoBehaviour
     protected List<TranslationAndObject> translations;
 
     protected PuzzleGrid grid;
-
-    public PuzzleGrid Grid => grid;
     
     private SymbolPlacer symbolPlacer;
- 
-    
-    
+
+
+
     //should NOT be public, but ModularHintSystem currently relies on this List
-    public List<PuzzleObject> placedSymbols = new List<PuzzleObject>();
+    private List<PuzzleObject> placedSymbols = new List<PuzzleObject>();
     [SerializeField] private List<TranslationAndObject> translationsSorted = new List<TranslationAndObject>();
 
     //track progress
@@ -35,6 +33,8 @@ public class Puzzle : MonoBehaviour
     private PuzzleParticles particles;
 
     public float NextPuzzleTimer { get; } = 2.5f;
+    public List<PuzzleObject> PlacedSymbols { get => placedSymbols; set => placedSymbols = value; }
+
     public void SetPlayer(Transform t) { player = t; grid.Player = player; }
 
     public PuzzleGrid GetGrid() { return grid; }
@@ -87,25 +87,28 @@ public class Puzzle : MonoBehaviour
     }
 
     public void GoToNextPuzzle() { if (currentPuzzleNum+1 <= puzzleInstances.Count) { Debug.Log("Pushing to next puzzle"); NextPuzzle(); } }
-
+    private void Start()
+    {
+        (GameMenuController.Instance.RequestOption<ShowClearedSymbols>() as ShowClearedSymbols).AddListener(ApplySettings);
+    }
     private void OnEnable()
     {
         EventHandler<ExitPuzzleEvent>.RegisterListener(OnExitPuzzle);
         EventHandler<ResetPuzzleEvent>.RegisterListener(OnResetPuzzle);
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
-        EventHandler<SaveSettingsEvent>.RegisterListener(ApplySettings);
+        
     }
     private void OnDisable()
     {
         EventHandler<ExitPuzzleEvent>.UnregisterListener(OnExitPuzzle);
         EventHandler<ResetPuzzleEvent>.UnregisterListener(OnResetPuzzle);
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
-        EventHandler<SaveSettingsEvent>.UnregisterListener(ApplySettings);
+        (GameMenuController.Instance.RequestOption<ShowClearedSymbols>() as ShowClearedSymbols).RemoveListener(ApplySettings);
     }
 
-    private void ApplySettings(SaveSettingsEvent obj)
+    private void ApplySettings(bool isShowClearedSymbols)
     {
-        showClearedSymbols = obj.settingsData.showClearedSymbols;
+        showClearedSymbols = isShowClearedSymbols;
 
         if(showClearedSymbols == false)
         {
@@ -206,8 +209,8 @@ public class Puzzle : MonoBehaviour
 
     private string Translate()
     {
-        if (placedSymbols.Count > 0)
-            return translator.CalculateSolution(placedSymbols);
+        if (PlacedSymbols.Count > 0)
+            return translator.CalculateSolution(PlacedSymbols);
         else
         {
             Debug.LogWarning("SOLUTION EMPTY, NO INSTANTIATED SYMBOLS");
@@ -357,7 +360,7 @@ public class Puzzle : MonoBehaviour
     
     private void PlaceSymbols()
     {
-        placedSymbols = symbolPlacer.PlaceSymbols(currentPuzzleInstance, symbolPos);
+        PlacedSymbols = symbolPlacer.PlaceSymbols(currentPuzzleInstance, symbolPos);
         
     }
 

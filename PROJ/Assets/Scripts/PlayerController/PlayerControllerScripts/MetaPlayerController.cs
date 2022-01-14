@@ -12,6 +12,7 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     public PuzzlePlayerController puzzleController { get; private set; }
     public Animator animator { get; private set; }
     public ControllerInputReference inputReference;
+    public InputActionAsset inputMaster;
 
     //StateMachine
     private StateMachine stateMachine;
@@ -39,26 +40,25 @@ public class MetaPlayerController : MonoBehaviour, IPersist
     private void OnEnable()
     {
         EventHandler<StartPuzzleEvent>.RegisterListener(StartPuzzle);
-        EventHandler<InGameMenuEvent>.RegisterListener(EnterInGameMenuState);
     }
     private void OnDisable()
     {
         EventHandler<StartPuzzleEvent>.UnregisterListener(StartPuzzle);
     }
 
-    private void OnDestroy()
-    {
-        EventHandler<InGameMenuEvent>.UnregisterListener(EnterInGameMenuState);
-    }
     private void Start() {
-        (GameMenuController.Instance.RequestOption<ControlMode>() as ControlMode).AddListener(SetOneSwitchMode);
         stateMachine = new StateMachine(this, states);
+        (GameMenuController.Instance.RequestOption<OneSwitchMode>() as OneSwitchMode).AddListener(SetOneSwitchMode);
     }
 
-    private void SetOneSwitchMode(string option) {
-        oneSwitchMode = option.Equals("OneSwitch Mode");
+    private void SetOneSwitchMode(bool isActive)
+    {
+        oneSwitchMode = isActive;
+        if (oneSwitchMode)
+            stateMachine.ChangeState<OSSpinState>();
+        else
+            stateMachine.ChangeState<WalkState>();
     }
-
     //TEMPORARY
     private void OnHub(InputAction.CallbackContext obj)
     {
