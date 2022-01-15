@@ -25,16 +25,15 @@ public class FragmentFollow : MonoBehaviour
   
     private void OnDisable()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded();
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
-    private UnityAction<Scene, LoadSceneMode> OnSceneLoaded()
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log("Fragment Follow calling On Scene Loaded, holder is " + fragmentHolder);
         Debug.Log("Fragment Follow calling On Scene Loaded, deposit is " + fragmentDeposit);
-        if (!fragmentHolder)
+        if (fragmentHolder == null)
             fragmentHolder = GameObject.FindWithTag("Player").transform;
 
-        return null;
 
     }
 
@@ -52,7 +51,7 @@ public class FragmentFollow : MonoBehaviour
             fragmentHolder = other.transform;
             follow = true;
             GetComponent<Collider>().isTrigger = false;
-            SceneManager.sceneLoaded += OnSceneLoaded();
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
             
     }
