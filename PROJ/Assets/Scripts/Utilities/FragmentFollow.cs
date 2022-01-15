@@ -33,6 +33,8 @@ public class FragmentFollow : MonoBehaviour
         Debug.Log("Fragment Follow calling On Scene Loaded, deposit is " + fragmentDeposit);
         if (!fragmentHolder)
             fragmentHolder = GameObject.FindWithTag("Player").transform;
+        if (!fragmentOrb)
+            fragmentOrb = transform.GetChild(0);
 
     }
 
