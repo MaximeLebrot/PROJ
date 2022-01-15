@@ -7,11 +7,11 @@ public class SceneChangeCameraBehaviour : BaseCameraBehaviour {
     private Transform m;
     
     public override void EnterBehaviour() {
-        pivotTarget.localRotation = Quaternion.Euler(0,0,0);
+        PivotTarget.localRotation = Quaternion.Euler(0,0,0);
         m = FindObjectOfType<CharacterModel>().transform;
     }
 
     public override void ManipulatePivotTarget(CustomInput input) {
-        pivotTarget.rotation = m.rotation;
+        PivotTarget.rotation = m.rotation;
     }
 }

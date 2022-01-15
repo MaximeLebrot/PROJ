@@ -49,13 +49,9 @@ public abstract class PuzzleObject : MonoBehaviour
             (GameMenuController.Instance.RequestOption<SymbolDifficulty>() as SymbolDifficulty).RemoveListener(ApplyDifficulty);
         //EventHandler<SaveSettingsEvent>.UnregisterListener(ApplyDifficulty);
     }
-    private void ApplyDifficulty(int choice)
+    private void ApplyDifficulty(string difficulty)
     {
 
-        Debug.Log("Apply MAterial");
-
-        string difficulty = (GameMenuController.Instance.RequestOption<SymbolDifficulty>() as SymbolDifficulty).GetValue();
-        
         if (materials_EASY_MEDIUM_HARD.Count > 0)
         {
             SetMaterialBasedOnDifficulty(difficulty);

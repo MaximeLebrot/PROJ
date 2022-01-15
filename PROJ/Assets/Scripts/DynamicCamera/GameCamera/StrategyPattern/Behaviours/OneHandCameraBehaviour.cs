@@ -5,5 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Camera/Camera Behaviours/One Hand Camera Behaviour", fileName = "One Hand Camera Behaviour")]
 public class OneHandCameraBehaviour : BaseCameraBehaviour {
 
-    public override void ManipulatePivotTarget(CustomInput input) => pivotTarget.rotation = characterModel.rotation;
+    public override void ManipulatePivotTarget(CustomInput input) => PivotTarget.rotation = CharacterModel.rotation;
 }

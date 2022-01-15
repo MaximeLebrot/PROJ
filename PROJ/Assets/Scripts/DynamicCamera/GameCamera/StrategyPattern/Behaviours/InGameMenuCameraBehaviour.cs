@@ -6,7 +6,7 @@ public class InGameMenuCameraBehaviour : BaseCameraBehaviour {
 
     private Quaternion menuRotation;
     
-    public override void EnterBehaviour() => menuRotation = Quaternion.Inverse(Quaternion.LookRotation(pivotTarget.position - thisTransform.position));
+    public override void EnterBehaviour() => menuRotation = Quaternion.Inverse(Quaternion.LookRotation(PivotTarget.position - ThisTransform.position));
 
     /*public override Quaternion ExecuteRotate() {
         

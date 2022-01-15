@@ -4,6 +4,6 @@ using NewCamera;
 public class OneSwitchCameraBehaviour : BaseCameraBehaviour
 {
     public override void ManipulatePivotTarget(CustomInput input) {
-        pivotTarget.rotation = pivotTarget.parent.rotation;
+        PivotTarget.rotation = PivotTarget.parent.rotation;
     }
 }

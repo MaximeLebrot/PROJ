@@ -1,7 +1,5 @@
-using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 
 public abstract class DropDownItem : UIMenuItem<string> {
 
@@ -14,7 +12,10 @@ public abstract class DropDownItem : UIMenuItem<string> {
     public override void Initialize() {
         base.Initialize();
 
-        dropdownList.onValueChanged.AddListener(delegate { externalOnValueChanged?.Invoke(GetValue());});
+        dropdownList.onValueChanged.AddListener(delegate {
+            externalOnValueChanged?.Invoke(dropdownList.options[dropdownList.value].text);
+            ExecuteAdditionalLogic();
+        });
     }
 
     public override string GetValue() {
