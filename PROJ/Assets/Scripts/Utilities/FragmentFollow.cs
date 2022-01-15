@@ -1,4 +1,7 @@
+using System;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class FragmentFollow : MonoBehaviour
 {
@@ -14,6 +17,26 @@ public class FragmentFollow : MonoBehaviour
     private bool deposit;
 
     [SerializeField] private Animator anim;
+    private void OnEnable()
+    {
+
+    }
+
+  
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded();
+    }
+    private UnityAction<Scene, LoadSceneMode> OnSceneLoaded()
+    {
+        Debug.Log("Fragment Follow calling On Scene Loaded, holder is " + fragmentHolder);
+        Debug.Log("Fragment Follow calling On Scene Loaded, deposit is " + fragmentDeposit);
+        if (!fragmentHolder)
+            fragmentHolder = GameObject.FindWithTag("Player").transform;
+
+        return null;
+
+    }
 
     private void Start()
     {
@@ -29,6 +52,7 @@ public class FragmentFollow : MonoBehaviour
             fragmentHolder = other.transform;
             follow = true;
             GetComponent<Collider>().isTrigger = false;
+            SceneManager.sceneLoaded += OnSceneLoaded();
         }
             
     }

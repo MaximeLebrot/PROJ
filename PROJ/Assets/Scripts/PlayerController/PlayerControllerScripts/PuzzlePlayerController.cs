@@ -102,6 +102,8 @@ public class PuzzlePlayerController : MonoBehaviour
 
     private void RotateCharacterInsidePuzzle()
     {
+        if (input.magnitude < inputThreshold)
+            return;
         transform.forward = Vector3.Lerp(transform.forward, input.normalized, turnSpeed * Time.deltaTime);
     }
 
