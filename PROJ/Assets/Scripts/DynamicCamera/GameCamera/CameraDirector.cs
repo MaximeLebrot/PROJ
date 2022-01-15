@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using NewCamera;
 using UnityEngine;
-using UnityEngine.InputSystem.Editor;
 
 public class CameraDirector : PersistentSingleton<CameraDirector> {
     
