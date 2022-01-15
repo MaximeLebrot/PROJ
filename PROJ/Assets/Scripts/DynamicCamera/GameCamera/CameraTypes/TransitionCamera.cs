@@ -16,7 +16,7 @@ public class TransitionCamera : GameCamera {
     
     
     public async Task PlayTransition<T>(CameraTransition<T> transition) where T : TransitionData {
-        await transition.RunTransition(transform, cancellationTokenSource.Token);
+        await transition.RunTransition(Transform, cancellationTokenSource.Token);
     }
     
 }

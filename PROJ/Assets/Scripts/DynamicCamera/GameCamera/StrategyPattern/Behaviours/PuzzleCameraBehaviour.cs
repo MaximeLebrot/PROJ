@@ -35,15 +35,15 @@ namespace NewCamera
         }
 
         public override Vector3 ExecuteMove(Vector3 calculatedOffset) {
-            return thisTransform.position = Vector3.SmoothDamp(thisTransform.position, pivotTarget.position + puzzle.transform.localRotation * behaviourValues.Offset, ref referenceVelocity, behaviourValues.FollowSpeed);
+            return ThisTransform.position = Vector3.SmoothDamp(ThisTransform.position, PivotTarget.position + puzzle.transform.localRotation * behaviourValues.Offset, ref ReferenceVelocity, behaviourValues.FollowSpeed);
         }
 
         public override Quaternion ExecuteRotate() {
-            return Quaternion.Lerp(thisTransform.rotation, Quaternion.Euler(puzzle.transform.localEulerAngles + eulerRotation), Time.deltaTime);
+            return Quaternion.Lerp(ThisTransform.rotation, Quaternion.Euler(puzzle.transform.localEulerAngles + eulerRotation), Time.deltaTime);
         }
 
         public override void ManipulatePivotTarget(CustomInput input) {
-            pivotTarget.rotation = characterModel.rotation;
+            PivotTarget.rotation = CharacterModel.rotation;
         }
     }
 }

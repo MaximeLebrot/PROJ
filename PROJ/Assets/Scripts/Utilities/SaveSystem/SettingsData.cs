@@ -25,11 +25,10 @@ public class SettingsData
     
     //Accessibility
     public string fontSize;
+    public string controlMode;
     public bool blindMode;
     public bool highContrastMode;
     public bool dyslexiaFont;
-    public bool oneHandMode;
-    public bool oneSwitchMode;
     public bool bigNodes;
     public bool currentNodeMarker; 
     public bool showClearedSymbols; //CHECK

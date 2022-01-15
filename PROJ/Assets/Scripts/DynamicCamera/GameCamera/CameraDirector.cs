@@ -4,8 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using NewCamera;
 using UnityEngine;
+using UnityEngine.InputSystem.Editor;
 
-public class CameraDirector : MonoBehaviour {
+public class CameraDirector : PersistentSingleton<CameraDirector> {
     
     [SerializeField] private Transform pivotTarget;
     [SerializeField] private Transform character;
@@ -49,22 +50,29 @@ public class CameraDirector : MonoBehaviour {
     
     private void Start() {
         
-        (GameMenuController.Instance.RequestOption<OneHandMode>() as OneHandMode).AddListener((isOn) => {
+        (GameMenuController.Instance.RequestOption<ControlMode>() as ControlMode).AddListener((option) => {
 
-            currentDefaultCamera = isOn ? gameCameras[typeof(OneHandCamera)] : gameCameras[typeof(DefaultCamera)];
+            switch (option) {
+                case "Default":
+                    currentDefaultCamera = gameCameras[typeof(DefaultCamera)];
+                    break;
+                case "One Hand Mode":
+                    currentDefaultCamera = gameCameras[typeof(OneHandCamera)];
+                    break;
+                case "OneSwitch Mode":
+                    currentDefaultCamera = gameCameras[typeof(OneSwitchCamera)];
+                    break;
+                default:
+                        currentDefaultCamera = gameCameras[typeof(DefaultCamera)];
+                        break;
 
-        });
-
-        
-        (GameMenuController.Instance.RequestOption<OneSwitchMode>() as OneSwitchMode).AddListener((isOn) => {
-
-            currentDefaultCamera = isOn ? gameCameras[typeof(OneSwitchCamera)] : gameCameras[typeof(DefaultCamera)];
-
+            }
+            
         });
         
         (GameMenuController.Instance.RequestOption<VoiceControl>() as VoiceControl).AddListener((option) => {
 
-                if (option == 1)
+                if (option.Equals("Voice Only") || option.Equals("Voice + Mouse"))
                     SwitchCamera<OneHandCamera>();
                 else {
                     SwitchCamera<DefaultCamera>();

@@ -9,9 +9,9 @@ namespace NewCamera {
         
         public override Quaternion ExecuteRotate() {
             
-            Quaternion targetRotation = Quaternion.LookRotation(((pivotTarget.position - thisTransform.position) + BehaviourData<GlideData>().LookRotationOffset));
+            Quaternion targetRotation = Quaternion.LookRotation(((PivotTarget.position - ThisTransform.position) + BehaviourData<GlideData>().LookRotationOffset));
             
-            return Quaternion.Slerp(thisTransform.rotation, targetRotation, Time.deltaTime * behaviourValues.RotationSpeed);
+            return Quaternion.Slerp(ThisTransform.rotation, targetRotation, Time.deltaTime * behaviourValues.RotationSpeed);
         }
         
         

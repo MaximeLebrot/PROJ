@@ -36,9 +36,8 @@ public class FontChanger : MonoBehaviour {
        // EventHandler<SaveSettingsEvent>.UnregisterListener(ChangeFont);
     }
 
-    private void ChangeFontSize(int choice)
-    {
-        string newFontSize = (GameMenuController.Instance.RequestOption<ChangeFontSize>() as ChangeFontSize).GetValue();
+    private void ChangeFontSize(string choice) {
+        string newFontSize = choice;
 
         if (newFontSize.Equals("Default")) {
             foreach (TextMeshProUGUI text in textComponents) 
