@@ -28,7 +28,6 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     private void Awake()
     {
-        inputReference.Initialize();
         DontDestroyOnLoad(this);
 
         physics = GetComponent<PlayerPhysicsSplit>();

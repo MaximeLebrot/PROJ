@@ -26,7 +26,8 @@ public class ControllerInputReference : ScriptableObject {
 
     public InputMaster.OneSwitchActions OneSwitchInputMaster => inputMaster.OneSwitch;
 
-    public void Initialize() {       
+    private void Initialize() {
+        Debug.Log("InputMaster Created");
         inputMaster = new InputMaster();
         inputMaster.Enable();
     }
