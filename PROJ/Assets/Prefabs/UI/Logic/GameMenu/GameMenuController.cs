@@ -13,7 +13,7 @@ public class GameMenuController : PersistentSingleton<GameMenuController> {
 
     private GraphicRaycaster graphicRaycaster;
     
-    private MenuSettingsController menuSettingsController;
+    private PageController pageController;
 
     private Action onMenuPressed;
     
@@ -25,8 +25,8 @@ public class GameMenuController : PersistentSingleton<GameMenuController> {
         menuButtons = GetComponentInChildren<MenuButtons>();
         menuButtons.Initialize();
         
-        menuSettingsController = GetComponent<MenuSettingsController>();
-        menuSettingsController.Initialize();
+        pageController = GetComponent<PageController>();
+        pageController.Initialize();
 
         graphicRaycaster = GetComponent<GraphicRaycaster>();
         
@@ -105,17 +105,7 @@ public class GameMenuController : PersistentSingleton<GameMenuController> {
 
         activeButton = null;
     }
-    
-    private async Task ResetMenu(MenuSettings menuSetting) {
-        
-        await Task.WhenAll(menuSetting.DisablePage(), menuButtons.ResetButtons());
-        
-        menuSetting.gameObject.SetActive(false);
 
-        activeButton = null;
-    }
-
-    
     private async Task OpenAnotherSetting(UIButton pressedButton) {
         
         await Task.WhenAll(activeButton.AssociatedMenuSetting.DisablePage(), menuButtons.MoveButtons(pressedButton), pressedButton.AssociatedMenuSetting.ActivatePage());
@@ -144,7 +134,7 @@ public class GameMenuController : PersistentSingleton<GameMenuController> {
         EnableInput(OpenMenu);
     }
 
-    public UIMenuItemBase RequestOption<T>() => menuSettingsController.FindRequestedOption<T>();
+    public UIMenuItemBase RequestOption<T>() => pageController.FindRequestedOption<T>();
     
     private void ActivateComponents(bool activateComponents) {
         menuButtons.gameObject.SetActive(activateComponents);
@@ -154,8 +144,7 @@ public class GameMenuController : PersistentSingleton<GameMenuController> {
     }
 
     //Called from scene changer buttons (beta release) / Martin
-    public async void SceneChangerCloseMenu(MenuSettings menuSetting) {
-        await ResetMenu(menuSetting);
+    public void SceneChangerCloseMenu() {
         CloseMenu();
     }
 

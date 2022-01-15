@@ -1,10 +1,7 @@
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.InputSystem;
 
-public class PlayMainTheme : MonoBehaviour {
-    [SerializeField] private ControllerInputReference controllerInputReference;
-    
+public class PlayMainTheme : MonoBehaviour
+{
     //[SerializeField] private AudioClip theme;
     //SerializeField] private AudioSource source;
 
@@ -15,10 +12,6 @@ public class PlayMainTheme : MonoBehaviour {
     //        source = GetComponent<AudioSource>();
     //}
 
-    private void Start() {
-        controllerInputReference.InputMaster.Menu.performed += EndCutSceneEarly;
-    }
-    
     public void PlayTheme()
     {
         //    source.PlayOneShot(theme);
@@ -32,12 +25,4 @@ public class PlayMainTheme : MonoBehaviour {
         cutsceneTheme.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         cutsceneTheme.release();
     }
-
-    private void EndCutSceneEarly(InputAction.CallbackContext e) {
-        controllerInputReference.InputMaster.Menu.performed -= EndCutSceneEarly;
-        StopTheme();
-        GetComponent<Animator>().StopPlayback();
-        GetComponent<SceneChanger>().Scene("TutorialMainHub");
-    }
-
 }

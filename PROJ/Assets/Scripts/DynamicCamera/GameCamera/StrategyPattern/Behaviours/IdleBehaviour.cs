@@ -13,7 +13,7 @@ namespace NewCamera
         }
 
         public override Vector3 ExecuteMove(Vector3 calculatedOffset) {
-            return Vector3.SmoothDamp(ThisTransform.position, PivotTarget.parent.position + calculatedOffset, ref ReferenceVelocity, behaviourValues.FollowSpeed);
+            return Vector3.SmoothDamp(thisTransform.position, pivotTarget.parent.position + calculatedOffset, ref referenceVelocity, behaviourValues.FollowSpeed);
         }
 
         public override Quaternion ExecuteRotate() {
@@ -21,14 +21,14 @@ namespace NewCamera
             float newIndex = BehaviourData<IdleBehaviourData>().RotationCurve.Evaluate(pointOnCurve);
             pointOnCurve +=  Time.deltaTime / BehaviourData<IdleBehaviourData>().FollowSpeed;
             
-            return Quaternion.Lerp(ThisTransform.rotation, Quaternion.LookRotation(PivotTarget.parent.forward), newIndex);
+            return Quaternion.Lerp(thisTransform.rotation, Quaternion.LookRotation(pivotTarget.parent.forward), newIndex);
         }
 
         public override Vector3 ExecuteCollision(GlobalCameraSettings data) {
             
-            Vector3 collisionOffset = PivotTarget.parent.rotation * BehaviourData<IdleBehaviourData>().Offset;
+            Vector3 collisionOffset = pivotTarget.parent.rotation * BehaviourData<IdleBehaviourData>().Offset;
         
-            if (Physics.SphereCast(PivotTarget.position, data.CollisionRadius, collisionOffset.normalized, out var hitInfo, collisionOffset.magnitude, data.CollisionMask))
+            if (Physics.SphereCast(pivotTarget.position, data.CollisionRadius, collisionOffset.normalized, out var hitInfo, collisionOffset.magnitude, data.CollisionMask))
                 collisionOffset = collisionOffset.normalized * hitInfo.distance;
 
             return collisionOffset;
@@ -37,7 +37,7 @@ namespace NewCamera
         
         
 
-        public override void ManipulatePivotTarget(CustomInput input) => PivotTarget.rotation = ThisTransform.rotation;
+        public override void ManipulatePivotTarget(CustomInput input) => pivotTarget.rotation = thisTransform.rotation;
         
     }
 

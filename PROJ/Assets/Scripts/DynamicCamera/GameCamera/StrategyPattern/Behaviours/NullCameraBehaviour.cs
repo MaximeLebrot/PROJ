@@ -12,9 +12,9 @@ public class NullCameraBehaviour : BaseCameraBehaviour {
     
     public override void EnterBehaviour() { }
 
-    public override Vector3 ExecuteCollision(GlobalCameraSettings data) => PivotTarget.rotation * behaviourValues.Offset;
+    public override Vector3 ExecuteCollision(GlobalCameraSettings data) => pivotTarget.rotation * behaviourValues.Offset;
 
     public override Quaternion ExecuteRotate() => Quaternion.identity;
 
-    public override Vector3 ExecuteMove(Vector3 calculatedOffset) => ThisTransform.position;
+    public override Vector3 ExecuteMove(Vector3 calculatedOffset) => thisTransform.position;
 }

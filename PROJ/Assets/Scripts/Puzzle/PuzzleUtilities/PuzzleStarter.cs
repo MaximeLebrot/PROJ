@@ -18,7 +18,7 @@ public class PuzzleStarter : MonoBehaviour
         if (active == false)
         {
             puzzle.GetComponent<SphereCollider>().enabled = true;
-            EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzleID, puzzle)));
+            EventHandler<StartPuzzleEvent>.FireEvent(new StartPuzzleEvent(new PuzzleInfo(puzzle.GetPuzzleID(), GetComponentInParent<Puzzle>())));
             puzzle.SetPlayer(other.transform);
             active = true;
         }

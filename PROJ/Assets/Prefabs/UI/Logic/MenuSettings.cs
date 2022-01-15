@@ -36,6 +36,7 @@ public abstract class MenuSettings : MonoBehaviour {
     }
 
     public void InvokeFirstRead() {
+        
         foreach (UIMenuItemBase uiItem in menuOptions.Values) 
             uiItem.DemandFirstRead();
     }

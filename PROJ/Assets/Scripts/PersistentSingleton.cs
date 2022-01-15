@@ -6,7 +6,7 @@ public class PersistentSingleton<T> : MonoBehaviour where T : Component {
 
     private void Awake() {
         
-        if (Instance == null) {
+        if (Instance == null || Instance != this) {
             Instance = this as T;
             DontDestroyOnLoad(this);
         }

@@ -15,13 +15,13 @@ public abstract class GameCamera : ScriptableObject {
 
     private BaseCameraBehaviour currentCameraBehavior;
 
-    protected Transform Transform;
+    protected Transform transform;
     
     public virtual void Initialize(Transform transform, Transform pivotTarget, Transform character) {
         
         cameraBehaviors = new Dictionary<Type, BaseCameraBehaviour>();
         
-        this.Transform = transform;
+        this.transform = transform;
 
         foreach (BaseCameraBehaviour behavior in wantedBehaviors) {
             behavior.InjectReferences(transform, pivotTarget, character);
@@ -32,6 +32,7 @@ public abstract class GameCamera : ScriptableObject {
         cameraBehaviors.Add(defaultCameraBehavior.GetType(), defaultCameraBehavior);
     }
 
+    public Vector3 GetDefaultPosition() => currentCameraBehavior.DefaultCameraPosition;
     
     public void ResetCamera() => currentCameraBehavior = defaultCameraBehavior;
     
@@ -46,10 +47,21 @@ public abstract class GameCamera : ScriptableObject {
         
         Vector3 calculatedOffset = currentCameraBehavior.ExecuteCollision(globalCameraSettings);
         
-        Transform.position = currentCameraBehavior.ExecuteMove(calculatedOffset);
-        Transform.rotation = currentCameraBehavior.ExecuteRotate();
+        transform.position = currentCameraBehavior.ExecuteMove(calculatedOffset);
+        transform.rotation = currentCameraBehavior.ExecuteRotate();
     }
     
+    /// <summary>
+    /// Use to inject references
+    /// </summary>
+    /// <param name="followTarget"></param>
+    /// <param name="lookTarget"></param>
+    /// <typeparam name="T"></typeparam>
+    public void ChangeBehavior<T>(Transform followTarget, Transform lookTarget) where T : BaseCameraBehaviour {
+        currentCameraBehavior = cameraBehaviors[typeof(T)];
+        currentCameraBehavior.InjectReferences(transform, followTarget, lookTarget);
+        currentCameraBehavior.EnterBehaviour();
+    }
     
     /// <summary>
     /// Use to switch from one behavior to another without injecting references
@@ -61,14 +73,19 @@ public abstract class GameCamera : ScriptableObject {
         return currentCameraBehavior as T;
     }
     
+    public void ChangeBehavior(Type behaviorType, Transform followTarget, Transform lookTarget) {
+        currentCameraBehavior = cameraBehaviors[behaviorType];
+        currentCameraBehavior.InjectReferences(transform, followTarget, lookTarget);
+        currentCameraBehavior.EnterBehaviour();
+    }
     
     private CustomInput ReadInput() {
         Vector2 inputDirection = inputReference.InputMaster.MoveCamera.ReadValue<Vector2>();
 
         CustomInput input = new CustomInput();
         
-        input.aim.x = -inputDirection.y * MouseSensitivity.Sensitivity;
-        input.aim.y = inputDirection.x * MouseSensitivity.Sensitivity;
+        input.aim.x = -inputDirection.y * globalCameraSettings.MouseSensitivity;
+        input.aim.y = inputDirection.x * globalCameraSettings.MouseSensitivity;
         
         input.movement = inputReference.InputMaster.Movement.ReadValue<Vector2>();
         

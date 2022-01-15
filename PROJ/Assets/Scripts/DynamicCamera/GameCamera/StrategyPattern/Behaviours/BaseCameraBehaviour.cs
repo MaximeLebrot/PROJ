@@ -9,39 +9,39 @@ namespace NewCamera {
         
         [SerializeField] protected BehaviourData behaviourValues;
         
-        protected Vector3 ReferenceVelocity;
-        protected Quaternion PreviousRotation;
-        protected Transform ThisTransform;
-        protected Transform PivotTarget;
-        protected Transform CharacterModel;
-        
-        public Vector3 DefaultCameraPosition => PivotTarget.position + PivotTarget.localRotation * behaviourValues.Offset;
+        protected Vector3 referenceVelocity;
+        protected Quaternion previousRotation;
+        protected Transform thisTransform;
+        protected Transform pivotTarget;
+        protected Transform characterModel;
+
+        public Vector3 DefaultCameraPosition => pivotTarget.position + pivotTarget.localRotation * behaviourValues.Offset;
 
         //"Constructor"
         public virtual void InjectReferences(Transform transform, Transform pivotTarget, Transform characterModel) {
-            ThisTransform = transform;
-            PivotTarget = pivotTarget;
-            CharacterModel = characterModel;
+            thisTransform = transform;
+            this.pivotTarget = pivotTarget;
+            this.characterModel = characterModel;
         }
 
         public virtual void EnterBehaviour() {}
 
         public virtual Vector3 ExecuteMove(Vector3 calculatedOffset) {
-            return Vector3.SmoothDamp(ThisTransform.position, PivotTarget.position + calculatedOffset, ref ReferenceVelocity, behaviourValues.FollowSpeed);
+            return Vector3.SmoothDamp(thisTransform.position, pivotTarget.position + calculatedOffset, ref referenceVelocity, behaviourValues.FollowSpeed);
         }
 
         public virtual Quaternion ExecuteRotate() {
             
-            Quaternion targetRotation = Quaternion.LookRotation((PivotTarget.position - ThisTransform.position) + PivotTarget.forward * behaviourValues.CameraLookAhead);
+            Quaternion targetRotation = Quaternion.LookRotation((pivotTarget.position - thisTransform.position) + pivotTarget.forward * behaviourValues.CameraLookAhead);
             
-            return Quaternion.Slerp(ThisTransform.rotation, targetRotation, Time.deltaTime * behaviourValues.RotationSpeed);
+            return Quaternion.Slerp(thisTransform.rotation, targetRotation, Time.deltaTime * behaviourValues.RotationSpeed);
         }
 
         public virtual Vector3 ExecuteCollision(GlobalCameraSettings data) {
             
-            Vector3 collisionOffset = PivotTarget.rotation * behaviourValues.Offset;
+            Vector3 collisionOffset = pivotTarget.rotation * behaviourValues.Offset;
             
-            if (Physics.SphereCast(PivotTarget.position, data.CollisionRadius, collisionOffset.normalized, out var hitInfo, collisionOffset.magnitude, data.CollisionMask))
+            if (Physics.SphereCast(pivotTarget.position, data.CollisionRadius, collisionOffset.normalized, out var hitInfo, collisionOffset.magnitude, data.CollisionMask))
                 collisionOffset = collisionOffset.normalized * hitInfo.distance;
 
             return collisionOffset;
@@ -49,23 +49,23 @@ namespace NewCamera {
 
         public virtual void ManipulatePivotTarget(CustomInput input) {
 
-            Vector3 desiredRotation = PreviousRotation.eulerAngles;
+            Vector3 desiredRotation = previousRotation.eulerAngles;
 
             if (input.aim != Vector2.zero) {
 
-                desiredRotation = PivotTarget.localEulerAngles + (Vector3)input.aim;
+                desiredRotation = pivotTarget.localEulerAngles + (Vector3)input.aim;
 
                 desiredRotation = PreventCircleReset(desiredRotation);
 
                 desiredRotation.x = Mathf.Clamp(desiredRotation.x, behaviourValues.ClampValues.x, behaviourValues.ClampValues.y);
             }
             else {
-                PivotTarget.localRotation = PreviousRotation;
+                pivotTarget.localRotation = previousRotation;
                 return;
             }
             
-            PivotTarget.localEulerAngles = desiredRotation;
-            PreviousRotation = PivotTarget.localRotation;
+            pivotTarget.localEulerAngles = desiredRotation;
+            previousRotation = pivotTarget.localRotation;
         }
 
         
@@ -81,8 +81,8 @@ namespace NewCamera {
         }
         
         public void ResetRotation() {
-            PreviousRotation = CharacterModel.rotation;
-            PivotTarget.localRotation = PreviousRotation;
+            previousRotation = characterModel.rotation;
+            pivotTarget.localRotation = previousRotation;
         }
     }
 }

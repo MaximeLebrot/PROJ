@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using NewCamera;
 using UnityEngine;
 
-public class CameraDirector : PersistentSingleton<CameraDirector> {
+public class CameraDirector : MonoBehaviour {
     
     [SerializeField] private Transform pivotTarget;
     [SerializeField] private Transform character;
@@ -49,29 +49,22 @@ public class CameraDirector : PersistentSingleton<CameraDirector> {
     
     private void Start() {
         
-        (GameMenuController.Instance.RequestOption<ControlMode>() as ControlMode).AddListener((option) => {
+        (GameMenuController.Instance.RequestOption<OneHandMode>() as OneHandMode).AddListener((isOn) => {
 
-            switch (option) {
-                case "Default":
-                    currentDefaultCamera = gameCameras[typeof(DefaultCamera)];
-                    break;
-                case "One Hand Mode":
-                    currentDefaultCamera = gameCameras[typeof(OneHandCamera)];
-                    break;
-                case "OneSwitch Mode":
-                    currentDefaultCamera = gameCameras[typeof(OneSwitchCamera)];
-                    break;
-                default:
-                        currentDefaultCamera = gameCameras[typeof(DefaultCamera)];
-                        break;
+            currentDefaultCamera = isOn ? gameCameras[typeof(OneHandCamera)] : gameCameras[typeof(DefaultCamera)];
 
-            }
-            
+        });
+
+        
+        (GameMenuController.Instance.RequestOption<OneSwitchMode>() as OneSwitchMode).AddListener((isOn) => {
+
+            currentDefaultCamera = isOn ? gameCameras[typeof(OneSwitchCamera)] : gameCameras[typeof(DefaultCamera)];
+
         });
         
         (GameMenuController.Instance.RequestOption<VoiceControl>() as VoiceControl).AddListener((option) => {
 
-                if (option.Equals("Voice Only") || option.Equals("Voice + Mouse"))
+                if (option == 1)
                     SwitchCamera<OneHandCamera>();
                 else {
                     SwitchCamera<DefaultCamera>();

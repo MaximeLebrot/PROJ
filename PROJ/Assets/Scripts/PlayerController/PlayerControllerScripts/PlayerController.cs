@@ -45,13 +45,13 @@ public class PlayerController : MonoBehaviour
     }
     private void OnEnable()
     { 
-        (GameMenuController.Instance?.RequestOption<ControlMode>() as ControlMode).AddListener(HandleOneHandMode);
+        (GameMenuController.Instance?.RequestOption<OneHandMode>() as OneHandMode).AddListener(HandleOneHandMode);
         force = Vector3.zero;
     }
     private void OnDisable()
     {
         if(GameMenuController.Instance != null)
-            (GameMenuController.Instance.RequestOption<ControlMode>() as ControlMode).RemoveListener(HandleOneHandMode);
+            (GameMenuController.Instance.RequestOption<OneHandMode>() as OneHandMode).RemoveListener(HandleOneHandMode);
     }
     
     
@@ -62,10 +62,9 @@ public class PlayerController : MonoBehaviour
 
     private delegate void InputDelegate(Vector3 input);
     private InputDelegate inputDelegate;
-
-    private void HandleOneHandMode(string oneHandModeIsActive)
+    private void HandleOneHandMode(bool oneHandModeIsActive)
     {
-        if (oneHandModeIsActive.Equals("One Hand Mode"))
+        if (oneHandModeIsActive)
         {
             transform.forward = cameraTransform.forward;
             characterModel.transform.forward = cameraTransform.forward;
@@ -209,7 +208,7 @@ public class PlayerController : MonoBehaviour
     private void RotateCharacterModel()
     {
         Vector3 charVelocity = physics.GetXZMovement();
-        if (input.magnitude < inputThreshold)
+        if (charVelocity.magnitude < inputThreshold)
             return;
         characterModel.transform.forward = Vector3.Lerp(characterModel.transform.forward, charVelocity.normalized, modelTurnSpeed * Time.deltaTime);
     }
