@@ -7,7 +7,7 @@ public class SettingsController : MonoBehaviour {
     [SerializeField] private SettingsData userSettings;
     private List<MenuSettings> settingObjects;
 
-    private void Awake() {
+    public void Initialize() {
         settingObjects = GetComponent<PageController>().PageObjects;
         
         LoadSavedSettings();

@@ -53,12 +53,14 @@ public class FlightAnimationScript : MonoBehaviour
         EventHandler<TransportationEndedEvent>.FireEvent(null);
         GetComponent<SphereCollider>().enabled = false;
         mpc.transform.parent = null;
+        DontDestroyOnLoad(mpc);
         mpc.physics.enabled = true;
         mpc.enabled = true;
         EventHandler<TransportationEndedEvent>.FireEvent(null);
         mpc.GetComponentInChildren<Obi.ObiCloth>().enabled = true;
 
-        flight = false;
+        flight = false; 
+        
     //    playerAnimator.SetLayerWeight(2, 0);
     }
 
@@ -73,7 +75,6 @@ public class FlightAnimationScript : MonoBehaviour
 
             if (Vector2.Distance(XZPos, mpcXZPos) < 0.05f)
             {
-                Debug.Log("Detach");
                 moveToCenter = false;
             }
 

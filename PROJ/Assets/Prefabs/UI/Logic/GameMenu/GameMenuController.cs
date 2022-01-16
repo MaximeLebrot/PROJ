@@ -11,6 +11,8 @@ public class GameMenuController : PersistentSingleton<GameMenuController> {
     private MenuButtons menuButtons;
     [SerializeField] private GameObject backdrop;
 
+    private SettingsController settingsController;
+    
     private GraphicRaycaster graphicRaycaster;
     
     private PageController pageController;
@@ -27,7 +29,11 @@ public class GameMenuController : PersistentSingleton<GameMenuController> {
         
         pageController = GetComponent<PageController>();
         pageController.Initialize();
+        
+        settingsController = GetComponent<SettingsController>();
+        settingsController.Initialize();
 
+        
         graphicRaycaster = GetComponent<GraphicRaycaster>();
         
         DontDestroyOnLoad(this);

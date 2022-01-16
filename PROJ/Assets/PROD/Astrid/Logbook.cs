@@ -26,7 +26,8 @@ public class Logbook : MonoBehaviour
     [SerializeField] private Animator notificationAnim;
 
     private FMOD.Studio.EventInstance PageScribbleSound;
-
+    
+    
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();

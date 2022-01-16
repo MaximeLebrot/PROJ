@@ -48,6 +48,8 @@ public class LogbookUpdater : MonoBehaviour
             {
                 for (int i = 0; i < pagesAdded; i++)
                     book.AddNextPage();
+                
+                    
             }
         }
     }

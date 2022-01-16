@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.VFX;
 
-public class MetaPlayerController : MonoBehaviour, IPersist
+public class MetaPlayerController : PersistentSingleton<MetaPlayerController>, IPersist
 {
     //Component references
     public PlayerPhysicsSplit physics { get; private set; }
@@ -26,10 +26,8 @@ public class MetaPlayerController : MonoBehaviour, IPersist
 
     public bool oneSwitchMode = false;
 
-    private void Awake()
+    protected override void InitializeSingleton()
     {
-        DontDestroyOnLoad(this);
-
         physics = GetComponent<PlayerPhysicsSplit>();
         playerController3D = GetComponent<PlayerController>();
         puzzleController = GetComponent<PuzzlePlayerController>();

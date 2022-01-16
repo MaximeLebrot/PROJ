@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using NewCamera;
 using UnityEngine;
 
-public class CameraDirector : MonoBehaviour {
+public class CameraDirector : PersistentSingleton<CameraDirector> {
     
     [SerializeField] private Transform pivotTarget;
     [SerializeField] private Transform character;
@@ -20,12 +20,10 @@ public class CameraDirector : MonoBehaviour {
     private CancellationTokenSource cancellationTokenSource;
     [SerializeField] private LookAndMoveTransitionData smoothResetData;
     
-    private void Awake() {
+    protected override void InitializeSingleton() {
 
         gameCameras = new Dictionary<Type, GameCamera>();
         
-        DontDestroyOnLoad(this);
-
         foreach (GameCamera gameCamera in wantedCameras) {
             gameCamera.Initialize(transform, pivotTarget, character);
             gameCameras.Add(gameCamera.GetType(), gameCamera);

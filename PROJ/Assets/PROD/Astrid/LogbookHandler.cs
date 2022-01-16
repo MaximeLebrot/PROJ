@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LogbookHandler : MonoBehaviour
+public class LogbookHandler : PersistentSingleton<LogbookHandler>
 {
-    [SerializeField]private ControllerInputReference inputReference;
+    [SerializeField] private ControllerInputReference inputReference;
     [SerializeField] private GameObject logbook;
 
     public Logbook Logbook => logbook.GetComponent<Logbook>();
@@ -16,12 +16,7 @@ public class LogbookHandler : MonoBehaviour
     private FMOD.Studio.EventInstance BookOpen;
     private FMOD.Studio.EventInstance BookClose;
     private FMOD.Studio.EventInstance PageOpen;
-
-    private void Awake()
-    {
-        DontDestroyOnLoad(this.gameObject);    
-    }
-
+    
     private void Start()
     {
         isOpen = false;
@@ -43,6 +38,7 @@ public class LogbookHandler : MonoBehaviour
         if (isOpen)
         {
             // Change page with keys
+            
             if (inputReference.inputMaster.Logbook.TurnLeft.triggered)
                 TurnPageLeft();          
             if (inputReference.inputMaster.Logbook.TurnRight.triggered)
@@ -56,8 +52,6 @@ public class LogbookHandler : MonoBehaviour
         isOpen = false;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        EventHandler<LockInputEvent>.FireEvent(new LockInputEvent(false));
-
         BookClose = FMODUnity.RuntimeManager.CreateInstance("event:/Environment/BookClose");
         BookClose.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         BookClose.start();
