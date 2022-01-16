@@ -60,6 +60,8 @@ namespace NewCamera {
                 desiredRotation.x = Mathf.Clamp(desiredRotation.x, behaviourValues.ClampValues.x, behaviourValues.ClampValues.y);
             }
             else {
+                if (pivotTarget == null)
+                    pivotTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
                 pivotTarget.localRotation = previousRotation;
                 return;
             }
