@@ -61,8 +61,7 @@ namespace NewCamera {
             }
             else {
                 if (pivotTarget == null)
-                    pivotTarget = GameObject.FindWithTag("CameraPivotTarget").transform;
-                
+                    pivotTarget = GameObject.FindWithTag("CameraFollowTarget").transform;
                 pivotTarget.localRotation = previousRotation;
                 return;
             }

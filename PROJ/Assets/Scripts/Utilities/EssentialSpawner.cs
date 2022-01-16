@@ -15,30 +15,35 @@ public class EssentialSpawner : MonoBehaviour
     {
         if (GameObject.FindGameObjectWithTag("GameMenu") == false)
         {
+            Debug.Log("DID NOT FIND :: MENU");
             menu.gameObject.SetActive(true);
             menu.transform.SetParent(null);
             DontDestroyOnLoad(menu);
         }
         if (GameObject.FindGameObjectWithTag("MainCamera") == false)
         {
+            Debug.Log("DID NOT FIND :: CAMERA");
             cam.gameObject.SetActive(true);
             cam.transform.SetParent(null);
             DontDestroyOnLoad(cam);
         }
-        if (GameObject.FindGameObjectWithTag("Player") == false)
+        if (GameObject.FindObjectOfType<MetaPlayerController>() == false)
         {
+            Debug.Log("DID NOT FIND :: PLAYER");
             player.gameObject.SetActive(true);
             player.transform.SetParent(null);
             DontDestroyOnLoad(player);
         }
         if (GameObject.FindGameObjectWithTag("CanvasLogbook") == false)
         {
+            Debug.Log("DID NOT FIND :: LOGBOOK");
             canvasLogbook.gameObject.SetActive(true);
             canvasLogbook.transform.SetParent(null);
             DontDestroyOnLoad(canvasLogbook);
         }
         if (GameObject.FindGameObjectWithTag("AudioManager") == false)
         {
+            Debug.Log("DID NOT FIND :: AUDIO");
             audioManager.gameObject.SetActive(true);
             audioManager.transform.SetParent(null);
             DontDestroyOnLoad(audioManager);

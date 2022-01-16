@@ -27,14 +27,13 @@ public class FragmentFollow : MonoBehaviour
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
-    private void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log("Fragment Follow calling On Scene Loaded, holder is " + fragmentHolder);
         Debug.Log("Fragment Follow calling On Scene Loaded, deposit is " + fragmentDeposit);
-        if (!fragmentHolder)
+        if (fragmentHolder == null)
             fragmentHolder = GameObject.FindWithTag("Player").transform;
-        if (!fragmentOrb)
-            fragmentOrb = transform.GetChild(0);
+
 
     }
 
@@ -88,5 +87,7 @@ public class FragmentFollow : MonoBehaviour
     {
         fragmentDeposit = frag.transform;
         deposit = true;
+
+    
     }
 }
